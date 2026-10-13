@@ -1259,3 +1259,6 @@ html.modal-open { overflow: hidden; }
   .vmodal-frame { border-radius: 10px; }
   .vmodal-title { font-size: 13px; }
 }
+
+/* 動画のサムネイル：下の字幕が見えないよう、上側を拡大して下を切る */
+.video button img { transform: scale(1.2); transform-origin: 50% 0; }
