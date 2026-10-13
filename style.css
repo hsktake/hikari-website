@@ -944,3 +944,10 @@ img { display: block; max-width: 100%; height: auto; }
   .app-title { padding: 6px 14px 6px 6px; border-radius: 18px; box-shadow: 0 4px 0 var(--orange-deep); }
   .app-name strong { text-shadow: none; }
 }
+@media (max-width: 600px) {
+  .app-kicker { padding: 3px 10px; }
+  .app-copy h2 { margin-top: 6px; }
+  .app-points { margin-top: 14px; }
+  .install { margin-top: 10px; }
+  .wait-fun { margin-top: 8px; }
+}
