@@ -1220,3 +1220,25 @@ img { display: block; max-width: 100%; height: auto; }
   .sns-others a { font-size: 12px; }
   .ig-heart { width: 40px; height: 40px; font-size: 19px; top: -12px; right: -12px; }
 }
+
+/* 会社案内：添削（動画タイトルを2段に・表は1行ずつ改行、言葉の途中で折り返さない） */
+.video-title .vt-tag { display: table; margin: 0 auto 4px; padding: 1px 10px; border-radius: 999px; background: var(--orange-soft); color: var(--orange-deep); font-size: 12px; font-weight: 800; }
+.video-title .vt-main { display: block; }
+.video-title .ph, .company-table .ph { display: inline-block; }
+.company-table dd .s { display: block; }
+.company-table dd .sub { font-size: .88em; color: var(--brown-soft); margin-top: 2px; }
+.company-table .tel { color: var(--brown); font-weight: 700; text-decoration: none; }
+.company-table .tel:hover { text-decoration: underline; }
+@media (max-width: 600px) {
+  .video-title { font-size: 12.5px; }
+  .video-title .vt-tag { font-size: 10px; padding: 0 8px; margin-bottom: 3px; }
+  .company-table dd .sub { margin-top: 0; }
+}
+/* 動画：再生ボタンで代表の顔が隠れないよう、左下に小さく置く */
+.video button { place-items: end start; }
+.video .play { margin: 0 0 14px 14px; width: 56px; height: 56px; }
+.video .play::after { left: 22px; top: 17px; border-left-width: 17px; border-top-width: 11px; border-bottom-width: 11px; }
+@media (max-width: 600px) {
+  .video .play { margin: 0 0 7px 7px; width: 32px; height: 32px; box-shadow: 0 3px 0 var(--orange-deep); }
+  .video .play::after { left: 12px; top: 9px; border-left-width: 11px; border-top-width: 7px; border-bottom-width: 7px; }
+}
