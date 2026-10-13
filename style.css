@@ -339,7 +339,7 @@ img { display: block; max-width: 100%; height: auto; }
 @media (max-width: 920px) {
   .app-visual { display: none; }
   .app-copy { position: relative; }
-  .phone-mini { display: block; position: absolute; z-index: 2; right: 4px; top: -86px; width: 128px; filter: drop-shadow(0 8px 0 rgba(0,0,0,.18)); animation: floatMini 5s ease-in-out infinite; }
+  .phone-mini { display: block; position: absolute; z-index: 2; right: 8px; top: -86px; width: 110px; filter: drop-shadow(0 8px 0 rgba(0,0,0,.18)); animation: floatMini 5s ease-in-out infinite; }
 }
 @media (max-width: 600px) {
   .phone-mini { right: -2px; top: -88px; width: 82px; }
