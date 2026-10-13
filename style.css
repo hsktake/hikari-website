@@ -698,6 +698,7 @@ img { display: block; max-width: 100%; height: auto; }
 .app-copy h2 .mark { display: inline-block; background: var(--sun); color: var(--brown); text-shadow: none; padding: 0 .18em; border-radius: 12px; rotate: -3deg; box-shadow: 0 5px 0 var(--orange-deep); animation: markPop 2.6s ease-in-out infinite !important; }
 @keyframes markPop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
 
+.app-grid > * { min-width: 0; }
 .wait-fun { margin-top: 22px; background: rgba(74,46,26,.16); border-radius: 22px; padding: 14px 0 12px; overflow: hidden; }
 .wf-title { padding: 0 16px; font-size: 17px; font-weight: 800; }
 .wf-title span { color: var(--sun); }
@@ -711,7 +712,7 @@ img { display: block; max-width: 100%; height: auto; }
 @keyframes wfMove { to { transform: translateX(-50%); } }
 
 /* ポイントは色ちがいのカードにして、アイコンを動かす */
-.app-points { counter-reset: pt; gap: 14px; margin-top: 26px; }
+.app-points { counter-reset: pt; gap: 22px; margin-top: 30px; }
 .app-points li { counter-increment: pt; position: relative; padding: 16px 16px 14px; border-radius: 22px; }
 .app-points li::before { content: "POINT " counter(pt); position: absolute; top: -11px; left: 18px; font-family: var(--en); font-weight: 600; font-size: 12px; letter-spacing: .08em; background: var(--brown); color: var(--sun); padding: 1px 10px; border-radius: 999px; }
 .app-points li:nth-child(1) { rotate: -1.2deg; }
