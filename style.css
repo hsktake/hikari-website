@@ -1142,3 +1142,19 @@ img { display: block; max-width: 100%; height: auto; }
   .app-merits li { font-size: 13px; }
   #app .wf-marquee { margin-top: 4px; }
 }
+
+/* 小見出し：＼ ／ でくくって分かりやすく */
+#app .sub-ttl { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 19px; font-weight: 800; color: var(--brown); letter-spacing: .04em; }
+#app .sub-ttl em { font-style: normal; color: var(--orange); }
+#app .sub-ttl .br { color: var(--orange); font-weight: 800; }
+.app-merits ul { width: fit-content; margin-left: auto; margin-right: auto; }
+@media (max-width: 600px) {
+  #app .sub-ttl { font-size: 16.5px; }
+  /* スマホは中央ぞろえ */
+  #app .app-copy { text-align: center; }
+  #app .app-kicker, #app .app-title { display: flex; justify-content: center; }
+  #app .app-name { text-align: left; }
+  #app .phone-mini { width: 44px; right: -10px; top: 36px; }
+  .app-merits ul { margin-top: 6px; }
+  .app-merits li { text-align: left; }
+}
