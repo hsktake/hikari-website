@@ -11,7 +11,7 @@
 
   ready(function () {
     // 中身を1つずつ順番にポンッと出す（リストの子要素に番号をふる）
-    var groups = ".pref-grid > li, .flow > li, .rc-stats > li, .rc-jobs > li, .rc-tags > li, .videos > div, .stores > a";
+    var groups = ".pref-grid > li, .flow > li, .rx-staff > li, .rx-stats > li, .videos > div, .stores > a";
     document.querySelectorAll(groups).forEach(function (el) {
       var i = Array.prototype.indexOf.call(el.parentNode.children, el);
       el.classList.add("rv");
