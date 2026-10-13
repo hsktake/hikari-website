@@ -1201,3 +1201,5 @@ img { display: block; max-width: 100%; height: auto; }
 
 /* 予約からカットまで：言葉の途中で改行しない（文節ごとに折り返す） */
 .flow p .ph { display: inline-block; }
+/* 1文ずつ改行して、2行目の頭をそろえる */
+.flow p .s { display: block; }
