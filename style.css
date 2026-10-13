@@ -1018,3 +1018,34 @@ img { display: block; max-width: 100%; height: auto; }
   .os { font-size: 10px; }
   .app-note { font-size: 10px; }
 }
+
+/* ======================================================
+   公式アプリ：オレンジを減らし、白い枠＋タブでスッキリ
+   ====================================================== */
+#app.app { background: var(--cream); background-image: none; color: var(--brown); }
+#app .app-grid { position: relative; background: var(--white); border: 3px solid var(--orange); border-radius: 28px; padding: 44px 36px 30px; box-shadow: 0 8px 0 var(--orange-soft); }
+#app .app-grid::before { content: "OFFICIAL APP"; position: absolute; top: -17px; left: 28px; background: var(--orange); color: var(--white); font-family: var(--en); font-weight: 600; font-size: 14px; letter-spacing: .12em; padding: 3px 18px; border-radius: 10px; }
+#app .app-kicker { color: var(--brown); }
+#app .app-kicker em { background: var(--orange); color: var(--white); }
+#app .app-icon { background: var(--cream); border: 2px solid var(--orange-soft); box-shadow: none; }
+#app .app-name small { color: var(--brown-soft); opacity: 1; }
+#app .app-name strong { color: var(--orange); text-shadow: none; }
+#app .app-copy h2 { color: var(--brown); }
+#app .app-copy h2 .mark { color: var(--orange); }
+#app .app-lead { color: var(--brown-soft); opacity: 1; }
+#app .wf-title { color: var(--brown-soft); opacity: 1; }
+#app .wf-track li, #app .wf-track li:nth-child(3n), #app .wf-track li:nth-child(3n+2) { background: var(--cream); color: var(--brown); box-shadow: none; border: 2px solid var(--line); }
+#app .app-points .ic { background: var(--orange-soft) !important; }
+#app .app-points strong { color: var(--brown); }
+#app .app-points li > span:last-child { color: var(--brown-soft) !important; }
+#app .install { background: var(--cream); border: 0; box-shadow: none; }
+#app .os { color: var(--brown-soft); }
+#app .app-note { color: var(--brown-soft); opacity: 1; }
+#app .halo { background: var(--orange-soft); }
+#app .halo::after { border-color: var(--orange); opacity: .4; }
+@media (max-width: 600px) {
+  #app .app-grid { padding: 30px 14px 16px; border-radius: 20px; box-shadow: 0 5px 0 var(--orange-soft); }
+  #app .app-grid::before { font-size: 11px; top: -13px; left: 16px; padding: 2px 12px; }
+  #app .phone-mini { right: -2px; }
+  #app .install { margin-top: 12px; padding: 12px 10px 10px; }
+}
