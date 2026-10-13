@@ -93,7 +93,10 @@
     [["住所", s.address], ["営業時間", s.hours], ["定休日", s.holiday]].forEach(function (r) {
       var d = el("div");
       d.appendChild(el("dt", null, r[0]));
-      d.appendChild(el("dd", null, r[1]));
+      var dd = el("dd");
+      // 住所は空白の区切りごとにまとめ、言葉の途中で折り返さない
+      r[1].split(" ").forEach(function (part) { if (part) dd.appendChild(el("span", "ph", part)); });
+      d.appendChild(dd);
       dl.appendChild(d);
     });
     body.appendChild(dl);

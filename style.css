@@ -1401,3 +1401,5 @@ a.shop-photo { display: grid; }
 /* 店舗一覧の下の注意書き：1文ずつ改行 */
 .test-note .s { display: block; }
 .test-note .gap { margin-top: 10px; }
+/* 住所：区切りごとに折り返す（言葉の途中で切らない） */
+.sp-addr .ph, .sp-info dd .ph, .shop dd .ph { display: inline-block; margin-right: .5em; }

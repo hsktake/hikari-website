@@ -145,6 +145,11 @@ FOOTER = """
 """
 
 
+def addr_html(addr):
+    """住所を空白の区切りごとにまとめ、言葉の途中で折り返さない"""
+    return "".join(f'<span class="ph">{esc(p)}</span>' for p in addr.split(" ") if p)
+
+
 def name_html(s):
     if s["name"].startswith(BRAND):
         return f'<span class="brand-small">{BRAND}</span>{esc(s["short"])}'
@@ -163,8 +168,6 @@ def badges(s):
         out.append('<span class="sb sb-other">別ブランド</span>')
     if s["station"]:
         out.append('<span class="sb">駅チカ</span>')
-    if s["wifi"]:
-        out.append('<span class="sb">フリーWi-Fi</span>')
     return "".join(out)
 
 
@@ -243,8 +246,8 @@ def shop_page(s, shops, v):
       <div class="{photo_cls}">{photo}<span class="pref-tag">{esc(pref_full)} {esc(s["city"])}</span></div>
       <div class="sp-head">
         <h1>{name_html(s)}</h1>
-        <p class="sp-addr">{ICON["pin"]}<span>{esc(s["address"])}</span></p>
-        <div class="sp-badges">{badges(s)}</div>
+        <p class="sp-addr">{ICON["pin"]}<span>{addr_html(s["address"])}</span></p>
+        {('<div class="sp-badges">' + badges(s) + '</div>') if badges(s) else ""}
         <div class="sp-actions">
           <a class="btn sp-btn-wait" href="{esc(s["mis"])}" rel="noopener">{ICON["wait"]}いまの待ち状況を見る</a>
           <a class="btn sp-btn-app" href="#sp-app">{ICON["phone"]}アプリで予約する</a>
@@ -261,7 +264,7 @@ def shop_page(s, shops, v):
       <dl class="sp-info">
         <div><dt>{ICON["clock"]}営業時間</dt><dd><strong>{esc(s["hours"])}</strong><ul class="sp-notes">{notes}</ul></dd></div>
         <div><dt>{ICON["cal"]}定休日</dt><dd><strong>{esc(s["holiday"])}</strong><a class="sp-link" href="{EIGYO_URL}" rel="noopener">臨時休業・営業時間の変更はこちら</a></dd></div>
-        <div><dt>{ICON["pin"]}住所</dt><dd>{esc(s["address"])}</dd></div>
+        <div><dt>{ICON["pin"]}住所</dt><dd>{addr_html(s["address"])}</dd></div>
         <div><dt>{ICON["card"]}{pay_label}</dt><dd><span class="chips">{pay}</span></dd></div>
         <div><dt>{ICON["wifi"]}Wi-Fi</dt><dd>{esc(wifi)}</dd></div>
       </dl>
