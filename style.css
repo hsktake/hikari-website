@@ -1136,3 +1136,9 @@ img { display: block; max-width: 100%; height: auto; }
   .app-merits li:last-child { grid-column: auto; }
   .app-merits svg { width: 18px; height: 18px; }
 }
+@media (max-width: 600px) {
+  .app-merits { margin-top: 10px; padding: 8px 12px; }
+  .app-merits ul { gap: 3px; margin-top: 4px; }
+  .app-merits li { font-size: 13px; }
+  #app .wf-marquee { margin-top: 4px; }
+}
