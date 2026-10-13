@@ -14,3 +14,4 @@
 - トップの並び順（お客様の動線）：ヒーロー → ヘアカタログ帯 → 店舗を探す → 公式アプリ → 予約からカットまで（イラスト）→ メニュー（カット／フェイスケア）→ Instagram → 動画・会社案内 → 採用情報（採用は大切なので目立たせる。内容は recruit.cut-hikari.com の掲載事実のみ）。同じ内容をくり返さない。
 - アプリ素材は assets/app/（アプリ紹介サイトの画面・イラスト）。お客様の声はアプリ紹介サイトの掲載文。
 - 公式Instagramは @cut_hikari（https://www.instagram.com/cut_hikari/）。
+- サイト内ページ：privacy.html（プライバシーポリシー）・tokushoho.html（特定商取引法に基づく表記）・contact.html（お問い合わせ）・faq.html（よくあるご質問）。内容は現行サイト（sp-privacypolicy / sp-tokushoho / お問い合わせ受付 / sp-qanda）の掲載文そのまま。CSS/JS を変えたらこれらの `?v=` も上げる。
