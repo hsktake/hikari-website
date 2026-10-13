@@ -165,14 +165,23 @@ img { display: block; max-width: 100%; }
 
 .hero-visual { position: relative; }
 .hero-photo {
-  width: 100%; aspect-ratio: 5 / 4; object-fit: cover;
-  border-radius: 46% 54% 48% 52% / 55% 45% 55% 45%;   /* ころんとした形 */
-  border: 8px solid var(--white);
-  box-shadow: 0 14px 0 var(--orange-soft);
+  width: 100%; height: auto; aspect-ratio: 466 / 299; object-fit: cover;
+  border-radius: 32px;
+  border: 6px solid var(--orange);
+  box-shadow: 0 12px 0 var(--orange-soft);
+  background: var(--white);
 }
-.hero-smile { position: absolute; width: 96px; left: -18px; bottom: 6px; transform: rotate(-10deg); }
+.hero-en {
+  font-family: var(--en); font-weight: 600; font-size: 22px; letter-spacing: .04em;
+  margin-top: 6px;
+}
+.spark { position: absolute; width: 44px; pointer-events: none; }
+.spark-1 { left: -22px; top: -26px; width: 58px; }
+.spark-2 { left: 22px; top: -40px; width: 30px; }
+.spark-3 { right: 120px; bottom: -30px; width: 40px; }
+.hero-smile { position: absolute; width: 84px; right: -22px; bottom: -26px; transform: rotate(10deg); }
 .hero-badge {
-  position: absolute; right: -6px; top: 4px;
+  position: absolute; right: -18px; top: -34px;
   width: 128px; height: 128px; border-radius: 50%;
   background: var(--orange); color: var(--white);
   display: grid; place-content: center; text-align: center; line-height: 1.2;
@@ -194,9 +203,11 @@ img { display: block; max-width: 100%; }
 @media (max-width: 860px) {
   .hero-frame { grid-template-columns: 1fr; gap: 36px; padding-top: 32px; }
   .hero-visual { order: -1; max-width: 520px; margin: 0 auto; width: 100%; }
-  .hero-badge { width: 100px; height: 100px; right: 0; }
+  .hero-badge { width: 92px; height: 92px; right: -4px; top: -26px; }
+  .spark-1 { left: -6px; top: -22px; width: 44px; }
+  .spark-3 { display: none; }
   .hero-badge strong { font-size: 36px; }
-  .hero-smile { width: 74px; left: -4px; }
+  .hero-smile { width: 64px; right: -4px; bottom: -22px; }
 }
 
 /* ---------- メニュー ---------- */
