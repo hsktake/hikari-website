@@ -178,7 +178,7 @@ img { display: block; max-width: 100%; height: auto; }
 
 @media (max-width: 880px) {
   .hero { padding-bottom: 56px; }
-  .hero-frame { grid-template-columns: 1fr; gap: 50px; padding-top: 44px; }
+  .hero-frame { grid-template-columns: 1fr; gap: 76px; padding-top: 56px; }
   .hero-visual { order: -1; max-width: 560px; margin: 0 auto; width: 100%; }
   .hero-scissors { width: 340px; right: -120px; top: 120px; }
   .hero-comb { width: 300px; left: -140px; bottom: 120px; }
@@ -190,7 +190,7 @@ img { display: block; max-width: 100%; height: auto; }
   .b1::after { bottom: -7px; left: 26px; }
   .b2 { left: -6px; bottom: -22px; }
   .b2::after { top: -7px; left: 26px; }
-  .b3 { right: -6px; bottom: -40px; }
+  .b3 { right: -6px; bottom: -60px; }
   .b3::after { top: -7px; right: 26px; }
   .spark-1 { left: 52%; top: -30px; width: 30px; }
   .spark-2 { display: none; }
