@@ -102,8 +102,7 @@
     if (s.care) tags.appendChild(el("span", "tag tag-care", "ヒゲ脱毛・光フェイシャル"));
     if (s.other) tags.appendChild(el("span", "tag tag-other", s.men ? "別ブランド・男性専用" : "別ブランド"));
     if (s.station) tags.appendChild(el("span", "tag", "駅チカ"));
-    if (s.wifi) tags.appendChild(el("span", "tag", "フリーWi-Fi"));
-    body.appendChild(tags);
+    if (tags.children.length) body.appendChild(tags);
 
     var act = el("div", "shop-actions");
     var a1 = el("a", "primary", "店舗ページを見る");
