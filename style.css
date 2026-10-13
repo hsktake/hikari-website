@@ -951,3 +951,4 @@ img { display: block; max-width: 100%; height: auto; }
   .install { margin-top: 10px; }
   .wait-fun { margin-top: 8px; }
 }
+.rc-type { word-break: keep-all; overflow-wrap: normal; }
