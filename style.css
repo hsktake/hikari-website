@@ -1269,3 +1269,11 @@ html.modal-open { overflow: hidden; }
   .rc-cta { gap: 16px 12px; margin-top: 18px; }
   .rc-cta .rc-btn-main { margin-bottom: 4px; }
 }
+
+/* 採用：職種カードの見え方を統一（ラベルを同じ幅・同じ高さの帯に、カードの高さもそろえる） */
+.rc-jobs > li { display: flex; }
+.rc-jobs a { flex: 1; }
+.rc-type { align-self: stretch; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 10px; }
+@media (max-width: 600px) {
+  .rc-type { min-height: 2.8em; border-radius: 8px; }
+}
