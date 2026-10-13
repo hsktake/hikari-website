@@ -445,7 +445,9 @@ img { display: block; max-width: 100%; height: auto; }
 .menu-media { position: relative; aspect-ratio: 1 / 1; background: var(--sky); overflow: hidden; }
 .menu-media > img { width: 100%; height: 100%; object-fit: cover; }
 .mm-cut > img { object-position: 50% 0; }
-.mm-face > img { object-position: 50% 35%; }
+.mm-face > img { object-position: 50% 50%; }
+.mm-tag { position: absolute; bottom: 8px; left: 8px; font-family: var(--en); font-weight: 600; font-size: 13px; letter-spacing: .06em; background: var(--brown); color: var(--white); padding: 0 10px; border-radius: 999px; }
+.mm-tag.after { left: auto; right: 8px; background: var(--orange); }
 .mm-brow { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4%; padding: 6%; background: var(--sun-soft); }
 .mm-brow figure { position: relative; margin: 0; width: 100%; }
 .mm-brow figure img { display: block; width: 100%; height: auto; border-radius: 12px; border: 3px solid var(--white); box-shadow: 0 4px 0 rgba(74,46,26,.12); }
@@ -472,7 +474,10 @@ img { display: block; max-width: 100%; height: auto; }
   .menu-body .more { font-size: 11px; letter-spacing: 0; }
   .mm-brow { padding: 7% 6%; }
   .mm-brow figure img { border-width: 2px; border-radius: 6px; }
-  .mm-brow figcaption { font-size: 8px; left: 3px; top: 3px; padding: 0 5px; }
+  .mm-brow figcaption, .mm-tag { font-size: 8px; padding: 0 5px; }
+  .mm-brow figcaption { left: 3px; top: 3px; }
+  .mm-tag { bottom: 4px; left: 4px; }
+  .mm-tag.after { right: 4px; }
   .mm-arrow { border-left-width: 6px; border-right-width: 6px; border-top-width: 6px; }
 }
 
