@@ -917,3 +917,13 @@ img { display: block; max-width: 100%; height: auto; }
   .app-copy h2 { font-size: 21px; margin-top: 10px; }
   .phone-mini { top: 56px; width: 54px; right: 6px; }
 }
+
+/* フッターのリンクをボタンらしく */
+.footer-nav { gap: 10px; }
+.footer-nav a { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; opacity: 1; padding: 8px 16px; border-radius: 999px; border: 2px solid rgba(255,255,255,.35); background: rgba(255,255,255,.08); font-weight: 700; box-shadow: 0 3px 0 rgba(0,0,0,.25); transition: background .15s, border-color .15s; }
+.footer-nav a:hover { background: var(--orange); border-color: var(--orange); text-decoration: none; }
+.footer-nav a::after { content: "›"; margin-left: 6px; color: var(--sun); }
+@media (max-width: 600px) {
+  .footer-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0; }
+  .footer-nav a { padding: 9px 6px; font-size: 12px; letter-spacing: 0; text-align: center; line-height: 1.35; }
+}
