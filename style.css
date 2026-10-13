@@ -220,9 +220,9 @@ img { display: block; max-width: 100%; height: auto; }
 /* 位置と傾きをあえて少しずつ変えて、ランダムに散らした印象に */
 .b1 { left: -44px; top: -26px; rotate: -5deg; }
 .b1::after { left: 46px; bottom: -9px; transform: rotate(45deg); }
-.b2 { right: -52px; top: 40%; rotate: 4deg; animation-delay: 1.2s; font-size: 18px; padding: 10px 22px; }
-.b2::after { left: -9px; top: calc(50% - 8px); transform: rotate(135deg); }
-.b3 { left: 14%; bottom: -40px; rotate: -2deg; animation-delay: 2.4s; }
+.b2 { left: -36px; bottom: -26px; rotate: 3deg; animation-delay: 1.2s; font-size: 18px; padding: 10px 22px; }
+.b2::after { left: 44px; top: -9px; transform: rotate(-135deg); }
+.b3 { right: -30px; bottom: -58px; rotate: -3deg; animation-delay: 2.4s; }
 .b3::after { right: 44px; top: -9px; transform: rotate(-135deg); }
 @keyframes bubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
@@ -230,7 +230,7 @@ img { display: block; max-width: 100%; height: auto; }
   .hero { padding-bottom: 56px; }
   .hero-frame { grid-template-columns: 1fr; grid-template-areas: "head" "photo" "sub"; gap: 0; padding-top: 34px; }
   .hero-head { text-align: center; }
-  .hero-visual { max-width: 560px; margin: 74px auto 68px; width: 100%; }
+  .hero-visual { max-width: 560px; margin: 74px auto 76px; width: 100%; }
   .hero-sub { text-align: center; }
   .hero-scissors { width: 230px; right: -64px; top: 4px; opacity: .2; }
   .hero-comb { width: 300px; left: -140px; bottom: 120px; }
@@ -238,9 +238,9 @@ img { display: block; max-width: 100%; height: auto; }
   .bubble::after { width: 10px; height: 10px; border-width: 2px; }
   .b1 { left: -4px; top: -54px; }
   .b1::after { bottom: -7px; left: 30px; }
-  .b2 { right: -6px; top: -20px; font-size: 13.5px; padding: 5px 14px; }
-  .b2::after { left: auto; right: 28px; top: auto; bottom: -7px; transform: rotate(45deg); }
-  .b3 { left: auto; right: 10%; bottom: -46px; }
+  .b2 { left: -4px; bottom: -24px; font-size: 13.5px; padding: 5px 14px; }
+  .b2::after { left: 28px; top: -7px; }
+  .b3 { right: -4px; bottom: -58px; }
   .b3::after { top: -7px; right: 30px; }
   .k1 { width: 24px; left: -20px; }
   .k3 { width: 26px; right: -26px; }
