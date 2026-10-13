@@ -14,7 +14,7 @@ import urllib.parse
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PREFS = ["茨城", "栃木", "千葉", "福島"]
 BRAND = "カットハウスひかり"
-EIGYO_URL = "https://www.cut-hikari.com/sp-eigyo.html"
+EIGYO_URL = "../news.html#eigyo"
 APP_IOS = "https://apple.co/3tl829o"
 APP_ANDROID = "https://play.google.com/store/apps/details?id=hsk.hims_app&hl=ja"
 
@@ -133,6 +133,8 @@ FOOTER = """
       <a href="https://www.cut-hikari-app.com/" rel="noopener">公式アプリ</a>
       <a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a>
       <a href="https://recruit.cut-hikari.com/" rel="noopener">採用情報</a>
+      <a href="../news.html">お知らせ・休業情報</a>
+      <a href="../member.html">HiCARD会員</a>
       <a href="../faq.html">よくあるご質問</a>
       <a href="../contact.html">お問い合わせ</a>
       <a href="../privacy.html">プライバシーポリシー</a>
@@ -222,7 +224,7 @@ def shop_page(s, shops, v):
     notice = ""
     if s.get("notice"):
         notice = (f'<div class="sp-notice"><p>{esc(s["notice"]["text"])}</p>'
-                  f'<a class="ext" href="{esc(s["notice"]["url"])}" rel="noopener">お知らせを見る</a></div>')
+                  f'<a class="ext" href="{esc(s["notice"]["url"])}">お知らせを見る</a></div>')
     parking = ""
     if s.get("parking"):
         parking = (f'<section class="sp-block reveal"><h2 class="sp-h">駐車場のご案内</h2>'
@@ -264,7 +266,7 @@ def shop_page(s, shops, v):
       <h2 class="sp-h" id="h-info">店舗情報</h2>
       <dl class="sp-info">
         <div><dt>{ICON["clock"]}営業時間</dt><dd><strong>{esc(s["hours"])}</strong><ul class="sp-notes">{notes}</ul></dd></div>
-        <div><dt>{ICON["cal"]}定休日</dt><dd><strong>{esc(s["holiday"])}</strong><a class="sp-link" href="{EIGYO_URL}" rel="noopener">臨時休業・営業時間の変更はこちら</a></dd></div>
+        <div><dt>{ICON["cal"]}定休日</dt><dd><strong>{esc(s["holiday"])}</strong><a class="sp-link" href="{EIGYO_URL}">臨時休業・営業時間の変更はこちら</a></dd></div>
         <div><dt>{ICON["pin"]}住所</dt><dd>{addr_html(s["address"])}</dd></div>
         <div><dt>{ICON["card"]}{pay_label}</dt><dd><span class="chips">{pay}</span></dd></div>
         <div><dt>{ICON["wifi"]}Wi-Fi</dt><dd>{esc(wifi)}</dd></div>

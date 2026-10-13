@@ -1660,3 +1660,32 @@ a.shop-photo { display: grid; }
   #app .ax-install .stores img { height: 38px; }
   #app .ax-note { font-size: 10px; letter-spacing: 0; }
 }
+
+/* ===== お知らせ・休業情報 ===== */
+.nw-upd { display: inline-block; font-size: 12px; font-weight: 800; color: var(--orange-deep); background: var(--orange-soft); border-radius: 999px; padding: 0 12px; margin-bottom: 8px; }
+.nw-list { margin-top: 14px; display: grid; gap: 8px; }
+.nw-day { display: grid; grid-template-columns: 13.5em 1fr; gap: 10px; background: var(--cream); border-radius: 12px; padding: 10px 14px; }
+.nw-date { font-family: var(--en); font-weight: 600; color: var(--brown); }
+.nw-day ul { list-style: none; margin: 0 !important; padding: 0 !important; }
+.nw-day li { margin: 0 !important; }
+.nw-day li strong { color: #D23B1E; }
+.nw-info { box-shadow: none; border: 2px solid var(--line); margin-top: 10px; }
+.nw-info summary { padding-left: 16px; }
+.nw-info .q-text small { display: block; font-family: var(--en); font-weight: 600; font-size: 12px; color: var(--brown-soft); margin-top: 2px; }
+.nw-info .a-body { padding-left: 16px; }
+@media (max-width: 600px) {
+  .nw-day { grid-template-columns: 1fr; gap: 0; padding: 8px 12px; }
+  .nw-date { font-size: 14px; }
+}
+
+/* ===== HiCARD会員 ===== */
+.mb-badge { display: inline-block; background: var(--sun); color: var(--brown); font-weight: 800; font-size: 13px; border-radius: 999px; padding: 2px 14px; margin-bottom: 10px; }
+.mb-merit { margin-top: 16px; background: var(--cream); border-radius: 14px; padding: 14px 16px; }
+.mb-no { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 13px; color: var(--orange-deep); }
+.mb-no span { display: inline-grid; place-items: center; min-width: 2.2em; height: 2.2em; border-radius: 50%; background: var(--orange); color: var(--white); font-size: 13px; padding: 0 4px; }
+.legal-card .mb-merit h3 { font-size: 15.5px; line-height: 1.55; margin: 6px 0 4px; }
+.mb-points { margin-top: 10px; border-left: 4px solid var(--sky-deep); padding: 4px 0 4px 14px; font-size: 14px; }
+.mb-pttl { font-weight: 800; color: var(--brown); }
+.mb-free { margin-top: 18px !important; text-align: center; font-weight: 800; font-size: 20px; color: var(--orange-deep); }
+.mb-free small { display: block; font-size: 13px; color: var(--brown); }
+.legal-card .contact-links { justify-content: center; }

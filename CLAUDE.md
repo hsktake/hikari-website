@@ -15,3 +15,4 @@
 - アプリ素材は assets/app/（アプリ紹介サイトの画面・イラスト）。お客様の声はアプリ紹介サイトの掲載文。
 - 公式Instagramは @cut_hikari（https://www.instagram.com/cut_hikari/）。
 - サイト内ページ：privacy.html（プライバシーポリシー）・tokushoho.html（特定商取引法に基づく表記）・contact.html（お問い合わせ）・faq.html（よくあるご質問）。内容は現行サイト（sp-privacypolicy / sp-tokushoho / お問い合わせ受付 / sp-qanda）の掲載文そのまま。CSS/JS を変えたらこれらの `?v=` も上げる。
+- news.html（お知らせ・休業情報）と member.html（HiCARD会員：メリット・会員ポイント・会員マイページ）も現行サイトの掲載文から作成。休業・営業時間変更は日付ごとに変わるので、オーナーから連絡があれば news.html の該当欄と「更新」日付を直す。リンクは原則サイト内ページへ（現行サイト cut-hikari.com へのリンクは使わない。採用サイト・アプリ紹介サイト・待ち状況システムは別サイトなのでそのまま）。

@@ -123,6 +123,15 @@
       timer = setInterval(function () { show((cur + 1) % tabs.length); }, 4000);
     });
 
+    // ページ内リンク（#お知らせ）で開いたときは、その項目を開いておく
+    function openFromHash() {
+      var id = decodeURIComponent(location.hash.slice(1));
+      var t = id && document.getElementById(id);
+      if (t && t.tagName === "DETAILS") { t.open = true; t.scrollIntoView(); }
+    }
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
+
     // 動画：押すと大きな画面（ポップアップ）で再生。閉じると止まる
     var lastBtn = null;
     function closeVideo() {
