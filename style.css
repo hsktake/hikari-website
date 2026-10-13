@@ -892,3 +892,23 @@ img { display: block; max-width: 100%; height: auto; }
   .rc-more { margin-top: 10px; font-size: 11.5px; gap: 4px 14px; }
   .rc-scissors { width: 150px; top: 4px; }
 }
+
+/* 公式アプリ：アプリ感を前面に（「ヘアカットの常識が変わる！」＋大きなアプリ名） */
+.app-kicker { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 2px; font-size: clamp(22px, 2.6vw, 30px); font-weight: 800; letter-spacing: .04em; color: var(--sun); text-shadow: 0 3px 0 var(--orange-deep); rotate: -2deg; }
+.app-kicker em { font-style: normal; display: inline-block; background: var(--brown); color: var(--white); text-shadow: none; padding: 0 .3em; margin: 0 .1em; border-radius: 10px; font-size: 1.2em; box-shadow: 0 4px 0 rgba(0,0,0,.25); animation: markPop 2.2s ease-in-out infinite !important; }
+.app-title { display: flex; align-items: center; gap: 14px; margin-top: 14px; }
+.app-icon { flex: none; width: 76px; height: 76px; border-radius: 22px; background: var(--white); display: grid; place-items: center; box-shadow: 0 6px 0 var(--orange-deep), 0 0 0 4px rgba(255,255,255,.35); animation: iconBounce 2.8s ease-in-out infinite !important; }
+.app-icon img { width: 82%; height: auto; }
+@keyframes iconBounce { 0%, 70%, 100% { transform: translateY(0) rotate(0); } 78% { transform: translateY(-10px) rotate(-6deg); } 86% { transform: translateY(0) rotate(4deg); } 92% { transform: translateY(-3px) rotate(0); } }
+.app-name small { display: block; font-size: 15px; font-weight: 800; letter-spacing: .08em; opacity: .95; }
+.app-name strong { display: block; font-size: clamp(38px, 4.6vw, 56px); line-height: 1.1; font-weight: 800; letter-spacing: .06em; text-shadow: 0 5px 0 var(--orange-deep); }
+.app-copy h2 { margin-top: 18px; }
+@media (max-width: 600px) {
+  .app-kicker { font-size: 19px; }
+  .app-title { gap: 10px; margin-top: 8px; }
+  .app-icon { width: 54px; height: 54px; border-radius: 16px; box-shadow: 0 4px 0 var(--orange-deep), 0 0 0 3px rgba(255,255,255,.35); }
+  .app-name small { font-size: 11.5px; }
+  .app-name strong { font-size: 30px; text-shadow: 0 4px 0 var(--orange-deep); }
+  .app-copy h2 { font-size: 21px; margin-top: 10px; }
+  .phone-mini { top: -14px; width: 74px; right: 2px; }
+}
