@@ -174,6 +174,10 @@
   $care.addEventListener("change", function () { state.care = $care.checked; render(); });
   $open.addEventListener("change", function () { state.open = $open.checked; render(); });
 
+  // トップページの検索欄から来たときは、その言葉で絞り込む
+  var qParam = new URLSearchParams(location.search).get("q");
+  if (qParam) { state.q = qParam; $q.value = qParam; }
+
   var fromHash = decodeURIComponent(location.hash.slice(1));
   setPref(PREFS.indexOf(fromHash) >= 0 ? fromHash : "すべて", false);
 })();

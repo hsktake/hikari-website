@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>カットハウスひかり｜ヘアカット専門店 毎日の暮らしに、ひかりをプラス♪</title>
-<meta name="description" content="北関東に62店舗のヘアカット専門店カットハウスひかり。公式アプリで予約すれば、お店での待ち時間を大幅にカット。茨城・栃木・千葉・福島。">
+<meta name="description" content="北関東に62店舗のヘアカット専門店カットハウスひかり。公式アプリで予約すれば、待ち時間はおうちで過ごせて、お店ではほとんど待ちません。茨城・栃木・千葉・福島。">
 <!-- 試作版のため検索エンジンに載せない（本番切り替え時に削除） -->
 <meta name="robots" content="noindex, nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://i.ytimg.com https://www.cut-hikari.com; frame-src https://www.youtube-nocookie.com; script-src 'self'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://i.ytimg.com https://www.cut-hikari.com; frame-src https://www.youtube-nocookie.com; script-src 'self'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#EF7A00">
 <link rel="icon" href="assets/scissors.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=15">
-<script src="main.js?v=15"></script>
+<link rel="stylesheet" href="style.css?v=16">
+<script src="main.js?v=16"></script>
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
@@ -27,11 +27,10 @@
       <span class="brand-label">ヘアカット専門店</span>
     </a>
     <nav class="nav" aria-label="メインメニュー">
-      <a href="./" aria-current="page">ホーム</a>
-      <a href="#app">アプリで予約</a>
-      <a href="shops.html">店舗一覧</a>
+      <a href="#shops">店舗を探す</a>
+      <a href="#app">公式アプリ</a>
+      <a href="#flow">ご利用の流れ</a>
       <a href="#menu">メニュー</a>
-      <a href="#flow">ご利用方法</a>
       <a href="#company">会社案内</a>
     </nav>
     <a class="btn btn-main header-cta" href="#app">アプリで予約</a>
@@ -40,6 +39,7 @@
 
 <main id="main">
 
+  <!-- ① ファーストビュー -->
   <section class="hero">
     <svg class="hero-scissors" viewBox="0 0 200 200" aria-hidden="true">
       <g class="blade-a" fill="currentColor"><path d="M95 103 178 8q12-4 12 8l-85 91Z"/><path d="M100 100 72 136" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><circle cx="56" cy="156" r="24" fill="none" stroke="currentColor" stroke-width="14"/></g>
@@ -59,31 +59,30 @@
           </p>
           <h1><span>毎日の暮らしに、</span><span><span class="hl">ひかりをプラス</span>♪</span></h1>
           <p class="hero-en">Best time &amp; Smile!</p>
-          <p class="hero-text">カットだけを、早く・ていねいに。<br>大人も子どもも、男性も女性も。<br><strong>アプリで予約すれば、お店での待ち時間はほとんどなし。</strong></p>
+          <p class="hero-text">カットだけを、早く・ていねいに。<br>大人も子どもも、いつもの近所で。</p>
           <div class="hero-actions">
             <a class="btn btn-main" href="#app">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>
               アプリで予約する
             </a>
-            <a class="btn btn-ghost" href="shops.html">近くの店舗を探す</a>
+            <a class="btn btn-ghost" href="#shops">近くの店舗を探す</a>
           </div>
         </div>
         <div class="hero-visual">
           <img class="hero-photo" src="assets/hero-family.jpg" alt="寝転んで手をつなぐ笑顔の家族" width="1158" height="756" fetchpriority="high">
-          <p class="hero-badge"><strong>62</strong><span>店舗</span></p>
           <img class="spark spark-1" src="assets/sparkle.svg" alt="">
           <img class="spark spark-2" src="assets/sparkle.svg" alt="">
-          <img class="spark spark-3" src="assets/sparkle.svg" alt="">
           <ul class="bubbles">
-            <li class="bubble b1">茨城・栃木・千葉・福島に<strong>62店舗</strong></li>
-            <li class="bubble b2">予約なしでも<strong>OK</strong></li>
-            <li class="bubble b3">アプリで<strong>日時指定</strong>もできる</li>
+            <li class="bubble b1">待ち時間は<strong>おうちで</strong>のんびり</li>
+            <li class="bubble b2">お買い物ついでに<strong>サクッと</strong></li>
+            <li class="bubble b3">家族みんなの<strong>近くに62店舗</strong></li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ② ヘアスタイル -->
   <section class="style-band" aria-label="ヘアカタログ">
     <div class="wrap style-head">
       <p class="style-title"><span class="en">Hair catalog</span>ヘアカタログ</p>
@@ -119,210 +118,211 @@
     </div>
   </section>
 
-  <section id="app" class="section app">
+  <!-- ③ 店舗を探す -->
+  <section id="shops" class="section">
+    <div class="wrap">
+      <div class="heading reveal"><span class="en">Shop</span><h2>お近くのひかりを探す</h2><p>オレンジの看板が目印。スーパーやショッピングセンターのそばにあります。</p></div>
+      <form class="quick-search reveal" action="shops.html" method="get" role="search">
+        <label class="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input type="search" name="q" placeholder="市町村名・店名で探す（例：水戸、宇都宮）" aria-label="市町村名・店名で探す" autocomplete="off">
+        </label>
+        <button class="btn btn-main" type="submit">探す</button>
+      </form>
+      <ul class="pref-grid reveal">
+        <li><a class="pref-card" href="shops.html#茨城"><img src="assets/shops/p86.jpg" alt="" loading="lazy"><span class="txt"><span class="en">Ibaraki</span><span class="ja">茨城県</span><span class="count">32店舗</span></span></a></li>
+        <li><a class="pref-card" href="shops.html#栃木"><img src="assets/shops/p78.jpg" alt="" loading="lazy"><span class="txt"><span class="en">Tochigi</span><span class="ja">栃木県</span><span class="count">17店舗</span></span></a></li>
+        <li><a class="pref-card" href="shops.html#千葉"><img src="assets/shops/p88.jpg" alt="" loading="lazy"><span class="txt"><span class="en">Chiba</span><span class="ja">千葉県</span><span class="count">9店舗</span></span></a></li>
+        <li><a class="pref-card" href="shops.html#福島"><img src="assets/shops/p69.jpg" alt="" loading="lazy"><span class="txt"><span class="en">Fukushima</span><span class="ja">福島県</span><span class="count">4店舗</span></span></a></li>
+      </ul>
+      <p class="center"><a class="more" href="https://www.cut-hikari.com/list-mis.html" rel="noopener">各店舗の今の混雑状況を見る</a></p>
+    </div>
+  </section>
+
+  <!-- ④ 公式アプリ（当社の強み） -->
+  <section id="app" class="section app wave-top">
     <div class="wrap">
       <div class="heading heading-light reveal">
-        <span class="en">App</span>
-        <h2>待たずに、切れる。</h2>
-        <p class="lead">公式アプリで予約すれば、お店での待ち時間を大幅カット！<br>待つのはおうちやお買い物のあいだで。時間になったら来るだけです。</p>
+        <span class="en">Official App</span>
+        <h2>ヘアカットの常識が変わる！</h2>
+        <p class="lead">公式アプリなら、待ち時間はおうちやお買い物で。<br>案内時刻に来るだけで、お店ではほとんど待ちません。</p>
       </div>
 
-      <div class="app-grid">
-        <div class="compare reveal" id="compare">
-          <h3>お店での待ち時間、こんなに違います</h3>
-          <div class="lane lane-shop">
-            <p class="lane-label"><span class="tag">アプリなし</span>そのままご来店</p>
-            <div class="track">
-              <div class="bar bar-wait"><span class="clock" aria-hidden="true"></span>お店で順番を待つ…</div>
-              <div class="bar bar-cut">カット</div>
-            </div>
-            <p class="lane-note">混んでいる時間帯は、店内で待つことも。</p>
-          </div>
-          <div class="lane lane-app">
-            <p class="lane-label"><span class="tag">アプリで予約</span>案内時刻にご来店</p>
-            <div class="track">
-              <div class="bar bar-wait"></div>
-              <div class="bar bar-cut">すぐカット！</div>
-            </div>
-            <p class="lane-note">待ち時間はおうちやお買い物で。来店したらほとんど待ちません。</p>
-          </div>
-          <p class="compare-foot">※イメージです。待ち時間は店舗・時間帯によって異なります。</p>
+      <div class="app-stage">
+        <div class="pain reveal">
+          <p class="pain-title">こんな“あるある”、<br>ありませんか？</p>
+          <img src="assets/app/aruaru.webp" alt="困った顔の男女のイラスト" width="600" height="455" loading="lazy">
+          <ul class="pain-list">
+            <li>いつも混んでいて、待ち時間が長い</li>
+            <li>お店で順番を待っていないといけない</li>
+            <li>行ってみないと混雑がわからない</li>
+            <li>毎回、髪型を説明するのが面倒</li>
+          </ul>
         </div>
 
-        <div class="phone-wrap reveal">
-          <div class="phone" role="img" aria-label="アプリの画面イメージ：店舗を選び、案内時刻を確認して、時間になったら来店">
-            <div class="screen-area">
-              <div class="screen">
-                <p class="screen-title">① 店舗とメニューを選ぶ</p>
-                <div class="s-row on"><span>ひかり ○○店<br><small>すぐご案内できます</small></span><span class="s-pill">空き</span></div>
-                <div class="s-row"><span>ひかり △△店<br><small>混雑状況を確認</small></span></div>
-                <div class="s-row"><span>ひかり □□店<br><small>混雑状況を確認</small></span></div>
-                <p class="s-btn">チケットを購入</p>
-              </div>
-              <div class="screen">
-                <p class="screen-title">② 案内時刻を確認</p>
-                <div class="ticket"><small>ご案内の目安</small><strong>14:30</strong><span class="no">日時指定チケット</span></div>
-                <p class="s-msg">それまでは、おうちや<br>お買い物でゆっくり。</p>
-              </div>
-              <div class="screen">
-                <p class="screen-title">③ 時間になったらお店へ</p>
-                <p class="s-big" aria-hidden="true">✂️</p>
-                <p class="s-msg">ほとんど待たずに<br>カットスタート！</p>
-                <p class="s-btn">いってきます！</p>
-              </div>
-            </div>
-          </div>
+        <div class="solve reveal" aria-hidden="true">
+          <span>アプリで</span><strong>まるっと<br>解決！</strong>
+        </div>
+
+        <div class="phone-stage reveal">
+          <img class="phone-img" src="assets/app/phone.webp" alt="カットハウスひかり公式アプリのホーム画面" width="540" height="1121" loading="lazy">
+          <span class="chip c1">おうちから予約</span>
+          <span class="chip c2">案内時刻がわかる</span>
+          <span class="chip c3">混雑がリアルタイムで</span>
+          <span class="chip c4">髪型を事前に登録</span>
+          <span class="chip c5">お気に入りスタッフ</span>
         </div>
       </div>
 
-      <ol class="app-steps">
-        <li class="reveal"><h3>アプリでチケットを購入</h3><p>店舗とメニューを選ぶだけ。日時指定もでき、予約手数料は無料です。</p></li>
-        <li class="reveal"><h3>待ち時間は好きな場所で</h3><p>案内時刻の目安がわかるので、おうちやお買い物で過ごせます。</p></li>
-        <li class="reveal"><h3>時間になったらご来店</h3><p>案内時刻に合わせて来るだけ。ほとんど待たずにカットできます。</p></li>
-      </ol>
-
-      <ul class="app-features">
-        <li>リアルタイムの混雑状況</li>
-        <li>案内時刻の目安がわかる</li>
-        <li>カットのご要望を事前に登録</li>
-        <li>ご家族の分もまとめて管理</li>
-        <li>アプリ限定のお得な価格</li>
+      <ul class="benefits">
+        <li class="reveal">
+          <span class="b-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 22 24 8l16 14v18H8Z"/><path d="M19 40V28h10v12"/></svg></span>
+          <h3>待ち時間は、<br>おうちやお買い物で</h3>
+          <p>案内時刻の目安がわかるから、それまで自由に過ごせます。時間になったら来るだけ。</p>
+        </li>
+        <li class="reveal">
+          <span class="b-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16"/><path d="M24 14v10l7 5"/></svg></span>
+          <h3>行く前に、<br>混雑がわかる</h3>
+          <p>店舗ごとの混雑状況をリアルタイムで確認。すいているお店を選んで行けます。</p>
+        </li>
+        <li class="reveal">
+          <span class="b-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 40s-14-8-14-19a8 8 0 0 1 14-5 8 8 0 0 1 14 5c0 11-14 19-14 19Z"/></svg></span>
+          <h3>注文は、<br>登録しておけばラクラク</h3>
+          <p>カットのご要望やお気に入りスタイルを事前に登録。お気に入りのスタッフも探せます。</p>
+        </li>
       </ul>
 
-      <div class="app-cta">
-        <a class="btn btn-white" href="https://apple.co/3tl829o" rel="noopener">App Store でダウンロード</a>
-        <a class="btn btn-white" href="https://play.google.com/store/apps/details?id=hsk.hims_app&amp;hl=ja" rel="noopener">Google Play でダウンロード</a>
+      <div class="voices reveal">
+        <img src="assets/app/voice.webp" alt="笑顔でグッドサインをする男女のイラスト" width="600" height="417" loading="lazy">
+        <div>
+          <p class="voices-title">アプリを使っているお客様の声</p>
+          <ul class="voice-list">
+            <li>お店に行かなくても予約ができて便利！</li>
+            <li>案内の目安時刻がわかるので、自分の時間を有効に使えるようになりました</li>
+            <li>一度使ったらやみつきです。もう手放せません！</li>
+            <li>スマホが苦手ですが、思ったよりも簡単に使えるようになりました</li>
+          </ul>
+        </div>
       </div>
-      <p class="app-note">日時指定の予約手数料は無料（アプリからのご購入）。指定時刻の1時間前を過ぎてのキャンセルは300円のキャンセル料がかかります。</p>
-    </div>
-  </section>
 
-  <section id="menu" class="section">
-    <div class="wrap">
-      <div class="heading reveal"><span class="en">Menu</span><h2>メニュー</h2></div>
-      <ul class="menu-row reveal">
-        <li>
-          <div class="ic"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="18" cy="46" r="7"/><circle cx="34" cy="50" r="7"/><path d="M22 41 48 10M29 44 44 14"/></svg></div>
-          <h3>カット</h3>
-          <p>丸刈りからロングまで</p>
-        </li>
-        <li>
-          <div class="ic"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="24" r="12"/><path d="M21 21c4-7 18-7 22 0"/><path d="M14 56c2-10 9-16 18-16s16 6 18 16"/><path d="M28 28c2 2 6 2 8 0"/></svg></div>
-          <h3>キッズカット</h3>
-          <p>膝の上でのカットもOK</p>
-        </li>
-        <li>
-          <div class="ic"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M18 26c0-10 6-16 14-16s14 6 14 16v4"/><path d="M18 30c0 14 6 24 14 24s14-10 14-24"/><path d="M23 38c3 6 6 8 9 8s6-2 9-8"/></svg></div>
-          <h3>ヒゲ脱毛</h3>
-          <p>カットのついでに</p>
-        </li>
-        <li>
-          <div class="ic"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="30" cy="34" r="15"/><path d="M48 10v8M44 14h8M52 26v5M49.5 28.5h5"/><path d="M24 36c3 3 9 3 12 0"/></svg></div>
-          <h3>光フェイシャル</h3>
-          <p>お肌のトーンケア</p>
-        </li>
-        <li>
-          <div class="ic"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="18" y="6" width="28" height="52" rx="6"/><circle cx="32" cy="28" r="9"/><path d="M32 23v5l3 3"/></svg></div>
-          <h3>アプリで予約</h3>
-          <p>日時指定も手数料無料</p>
-        </li>
-      </ul>
-      <p class="menu-foot"><a class="more" href="https://www.cut-hikari.com/price.html" rel="noopener">料金は店舗ごとにご案内しています</a></p>
-    </div>
-  </section>
-
-  <section class="section shops-band wave-top">
-    <div class="wrap">
-      <div class="heading reveal"><span class="en">Our shops</span><h2>街のあちこちに、ひかり。</h2><p>オレンジの看板が目印。スーパーやショッピングセンターのそばにあります。</p></div>
-    </div>
-    <div class="photo-marquee">
-      <div class="photo-track">
-        <figure><img src="assets/shops/p29.jpg" alt="羽鳥店の外観" decoding="async" width="720" height="540"><figcaption>羽鳥店</figcaption></figure>
-        <figure><img src="assets/shops/p76.jpg" alt="みらい平店の外観" decoding="async" width="720" height="540"><figcaption>みらい平店</figcaption></figure>
-        <figure><img src="assets/shops/p95.jpg" alt="常陸太田店の外観" decoding="async" width="720" height="540"><figcaption>常陸太田店</figcaption></figure>
-        <figure><img src="assets/shops/p07.jpg" alt="青葉店の外観" decoding="async" width="720" height="540"><figcaption>青葉店</figcaption></figure>
-        <figure><img src="assets/shops/p86.jpg" alt="上水戸店の外観" decoding="async" width="720" height="540"><figcaption>上水戸店</figcaption></figure>
-        <figure><img src="assets/shops/p60.jpg" alt="水戸赤塚店の外観" decoding="async" width="720" height="540"><figcaption>水戸赤塚店</figcaption></figure>
-        <figure><img src="assets/shops/p20.jpg" alt="高萩店の外観" decoding="async" width="720" height="540"><figcaption>高萩店</figcaption></figure>
-        <figure><img src="assets/shops/p48.jpg" alt="大子店の外観" decoding="async" width="720" height="540"><figcaption>大子店</figcaption></figure>
-        <figure><img src="assets/shops/p91.jpg" alt="鹿嶋東店の外観" decoding="async" width="720" height="540"><figcaption>鹿嶋東店</figcaption></figure>
-        <figure><img src="assets/shops/p90.jpg" alt="大津港店の外観" decoding="async" width="720" height="540"><figcaption>大津港店</figcaption></figure>
-        <figure><img src="assets/shops/p51.jpg" alt="鮎川店の外観" decoding="async" width="720" height="540"><figcaption>鮎川店</figcaption></figure>
-        <figure><img src="assets/shops/p71.jpg" alt="川尻店の外観" decoding="async" width="720" height="540"><figcaption>川尻店</figcaption></figure>
-        <figure aria-hidden="true"><img src="assets/shops/p29.jpg" alt="" decoding="async" width="720" height="540"><figcaption>羽鳥店</figcaption></figure>
-        <figure aria-hidden="true"><img src="assets/shops/p76.jpg" alt="" decoding="async" width="720" height="540"><figcaption>みらい平店</figcaption></figure>
-        <figure aria-hidden="true"><img src="assets/shops/p95.jpg" alt="" decoding="async" width="720" height="540"><figcaption>常陸太田店</figcaption></figure>
-        <figure aria-hidden="true"><img src="assets/shops/p07.jpg" alt="" decoding="async" width="720" height="540"><figcaption>青葉店</figcaption></figure>
-        <figure aria-hidden="true"><img src="assets/shops/p86.jpg" alt="" decoding="async" width="720" height="540"><figcaption>上水戸店</figcaption></figure>
-        <figure aria-hidden="true"><img src="assets/shops/p60.jpg" alt="" decoding="async" width="720" height="540"><figcaption>水戸赤塚店</figcaption></figure>
-        <figure aria-hidden="true"><img src="assets/shops/p20.jpg" alt="" decoding="async" width="720" height="540"><figcaption>高萩店</figcaption></figure>
-        <figure aria-hidden="true"><img src="assets/shops/p48.jpg" alt="" decoding="async" width="720" height="540"><figcaption>大子店</figcaption></figure>
-        <figure aria-hidden="true"><img src="assets/shops/p91.jpg" alt="" decoding="async" width="720" height="540"><figcaption>鹿嶋東店</figcaption></figure>
-        <figure aria-hidden="true"><img src="assets/shops/p90.jpg" alt="" decoding="async" width="720" height="540"><figcaption>大津港店</figcaption></figure>
-        <figure aria-hidden="true"><img src="assets/shops/p51.jpg" alt="" decoding="async" width="720" height="540"><figcaption>鮎川店</figcaption></figure>
-        <figure aria-hidden="true"><img src="assets/shops/p71.jpg" alt="" decoding="async" width="720" height="540"><figcaption>川尻店</figcaption></figure>
+      <div class="download reveal">
+        <p class="dl-title">かんたん3ステップではじめられます</p>
+        <ol class="dl-steps">
+          <li>アプリをダウンロード</li>
+          <li>会員登録・ログイン</li>
+          <li>店舗とメニューを選んで予約</li>
+        </ol>
+        <div class="app-cta">
+          <a class="btn btn-main" href="https://apple.co/3tl829o" rel="noopener">App Store でダウンロード</a>
+          <a class="btn btn-main" href="https://play.google.com/store/apps/details?id=hsk.hims_app&amp;hl=ja" rel="noopener">Google Play でダウンロード</a>
+        </div>
+        <p class="app-note">日時指定の予約手数料は無料（アプリからのご購入）。指定時刻の1時間前を過ぎてのキャンセルは300円のキャンセル料がかかります。</p>
       </div>
     </div>
-    <div class="wrap">
-      <ul class="points points-gap reveal">
-        <li>
-          <h3>早さだけで終わらせない、<br>ていねいな仕上がり</h3>
-          <p>10分という時間をノルマにせず、ご注文をていねいにうかがいます。</p>
-        </li>
-        <li>
-          <h3>お買い物のついでに寄れる、<br>身近な62店舗</h3>
-          <p>スーパーやショッピングセンターの中・となりの店舗が中心です。</p>
-        </li>
-        <li>
-          <h3>気になるところは、<br>2週間以内ならお直し無料</h3>
-          <p>仕上がりで気になる部分があれば、お気軽にご来店ください。</p>
-        </li>
-      </ul>
-    </div>
   </section>
 
-  <section id="flow" class="section flow-bg wave-top">
+  <!-- ⑤ ご来店の流れ -->
+  <section id="flow" class="section flow-bg">
     <div class="wrap">
       <div class="heading reveal"><span class="en">How to</span><h2>ご来店からカットまで</h2></div>
       <ol class="flow reveal">
-        <li class="hot"><span class="chip">アプリがおすすめ</span><h3>チケットを買う</h3><p>公式アプリで事前に購入するか、店頭の券売機（現金・QR決済）で購入します。</p></li>
-        <li><h3>目安時間を確認</h3><p>チケットに目安時間が出ます。5分前までにお戻りいただければ外出もOK。</p></li>
-        <li><h3>チケットを渡す</h3><p>番号が呼ばれたら席へ。HiCARD会員の方は会員カードもご一緒に。</p></li>
-        <li><h3>ご注文を伝える</h3><p>仕上がりのイメージを遠慮なくお伝えください。</p></li>
-        <li><h3>できあがり！</h3><p>気になる部分は2週間以内なら無料でお直しします。</p></li>
+        <li>
+          <svg class="flow-ill" viewBox="0 0 160 110" aria-hidden="true">
+            <circle cx="80" cy="58" r="50" fill="#FFF3D1"/>
+            <rect x="50" y="12" width="44" height="82" rx="9" fill="#4A2E1A"/>
+            <rect x="54" y="20" width="36" height="66" rx="5" fill="#EF7A00"/>
+            <rect x="60" y="32" width="24" height="17" rx="3" fill="#fff"/>
+            <path d="M65 40h14" stroke="#EF7A00" stroke-width="3" stroke-linecap="round"/>
+            <rect x="60" y="58" width="24" height="9" rx="4.5" fill="#FFC94D"/>
+            <g transform="rotate(12 120 62)"><rect x="100" y="48" width="42" height="28" rx="4" fill="#fff" stroke="#EF7A00" stroke-width="2.5" stroke-dasharray="4 3"/><text x="121" y="67" font-size="12" text-anchor="middle" fill="#4A2E1A" font-weight="800" font-family="Fredoka, sans-serif">14:30</text></g>
+          </svg>
+          <span class="chip-hot">アプリがおすすめ</span>
+          <h3>チケットを買う</h3>
+          <p>公式アプリで事前購入。店頭の券売機（現金・QR決済）でも買えます。</p>
+        </li>
+        <li>
+          <svg class="flow-ill" viewBox="0 0 160 110" aria-hidden="true">
+            <circle cx="80" cy="58" r="50" fill="#CDEBF7"/>
+            <circle cx="62" cy="54" r="26" fill="#fff" stroke="#4A2E1A" stroke-width="4"/>
+            <path d="M62 40v14l10 6" stroke="#EF7A00" stroke-width="4" stroke-linecap="round" fill="none"/>
+            <path d="M96 52h34l-4 40H100Z" fill="#EF7A00"/>
+            <path d="M104 52v-6a9 9 0 0 1 18 0v6" stroke="#4A2E1A" stroke-width="4" fill="none"/>
+            <circle cx="113" cy="70" r="5" fill="#FFC94D"/>
+          </svg>
+          <h3>目安時間まで自由に</h3>
+          <p>チケットに案内の目安時間が出ます。5分前までに戻れば、お買い物もOK。</p>
+        </li>
+        <li>
+          <svg class="flow-ill" viewBox="0 0 160 110" aria-hidden="true">
+            <circle cx="80" cy="58" r="50" fill="#FFE6C7"/>
+            <rect x="34" y="18" width="62" height="34" rx="6" fill="#4A2E1A"/>
+            <text x="65" y="42" fill="#FFC94D" font-size="19" text-anchor="middle" font-weight="600" font-family="Fredoka, sans-serif">023</text>
+            <path d="M58 92c2-10 10-16 20-14l14 2" stroke="#F2C6A0" stroke-width="12" stroke-linecap="round" fill="none"/>
+            <g transform="rotate(-10 108 74)"><rect x="86" y="60" width="46" height="28" rx="4" fill="#fff" stroke="#EF7A00" stroke-width="2.5"/><text x="109" y="79" font-size="13" text-anchor="middle" fill="#4A2E1A" font-weight="800" font-family="Fredoka, sans-serif">No.023</text></g>
+          </svg>
+          <h3>呼ばれたらチケットを</h3>
+          <p>番号が呼ばれたら席へ。HiCARD会員の方は会員カードもご一緒に。</p>
+        </li>
+        <li>
+          <svg class="flow-ill" viewBox="0 0 160 110" aria-hidden="true">
+            <circle cx="80" cy="58" r="50" fill="#D5F0E1"/>
+            <rect x="42" y="42" width="30" height="34" rx="8" fill="#EF7A00"/>
+            <rect x="36" y="72" width="46" height="12" rx="6" fill="#C96400"/>
+            <rect x="56" y="84" width="6" height="12" fill="#4A2E1A"/>
+            <rect x="44" y="94" width="30" height="5" rx="2.5" fill="#4A2E1A"/>
+            <path d="M86 16h54a8 8 0 0 1 8 8v26a8 8 0 0 1-8 8h-36l-10 10V58h-8a8 8 0 0 1-8-8V24a8 8 0 0 1 8-8Z" fill="#fff" stroke="#4A2E1A" stroke-width="3"/>
+            <text x="113" y="43" font-size="13" text-anchor="middle" fill="#4A2E1A" font-weight="800">短めで！</text>
+          </svg>
+          <h3>ご注文を伝える</h3>
+          <p>仕上がりのイメージを遠慮なく。アプリに登録しておけばさらにスムーズ。</p>
+        </li>
+        <li>
+          <svg class="flow-ill" viewBox="0 0 160 110" aria-hidden="true">
+            <circle cx="80" cy="58" r="50" fill="#FFF3D1"/>
+            <ellipse cx="80" cy="52" rx="30" ry="38" fill="#CDEBF7" stroke="#EF7A00" stroke-width="6"/>
+            <circle cx="80" cy="56" r="15" fill="#F7D7B5"/>
+            <path d="M64 54c0-14 8-20 16-20s16 6 16 20c-4-6-10-8-16-8s-12 2-16 8Z" fill="#4A2E1A"/>
+            <circle cx="74" cy="58" r="2" fill="#4A2E1A"/><circle cx="86" cy="58" r="2" fill="#4A2E1A"/>
+            <path d="M74 63c3 4 9 4 12 0" stroke="#4A2E1A" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+            <rect x="76" y="90" width="8" height="10" fill="#4A2E1A"/>
+            <path d="M126 22c1 7 3 9 10 10-7 1-9 3-10 10-1-7-3-9-10-10 7-1 9-3 10-10Z" fill="#FFC94D"/>
+            <path d="M36 30c1 5 2 6 7 7-5 1-6 2-7 7-1-5-2-6-7-7 5-1 6-2 7-7Z" fill="#FFC94D"/>
+          </svg>
+          <h3>すっきり完成！</h3>
+          <p>気になる部分は、2週間以内なら無料でお直しします。</p>
+        </li>
       </ol>
-      <p class="flow-note">お支払いは、公式アプリ・QR決済・現金（券売機）の3通り。使える決済は店舗ごとに異なります。</p>
     </div>
   </section>
 
-  <section id="shops" class="section">
+  <!-- ⑥ メニュー -->
+  <section id="menu" class="section">
     <div class="wrap">
-      <div class="heading reveal"><span class="en">Shop</span><h2>お近くの店舗を探す</h2></div>
-      <ul class="pref-grid reveal">
-        <li><a class="pref-card" href="shops.html#茨城"><img src="assets/shops/p86.jpg" alt="" decoding="async"><span class="txt"><span class="en">Ibaraki</span><span class="ja">茨城県</span><span class="count">32店舗</span></span></a></li>
-        <li><a class="pref-card" href="shops.html#栃木"><img src="assets/shops/p78.jpg" alt="" decoding="async"><span class="txt"><span class="en">Tochigi</span><span class="ja">栃木県</span><span class="count">17店舗</span></span></a></li>
-        <li><a class="pref-card" href="shops.html#千葉"><img src="assets/shops/p88.jpg" alt="" decoding="async"><span class="txt"><span class="en">Chiba</span><span class="ja">千葉県</span><span class="count">9店舗</span></span></a></li>
-        <li><a class="pref-card" href="shops.html#福島"><img src="assets/shops/p69.jpg" alt="" decoding="async"><span class="txt"><span class="en">Fukushima</span><span class="ja">福島県</span><span class="count">4店舗</span></span></a></li>
-      </ul>
-      <p class="center"><a class="btn btn-main" href="shops.html">すべての店舗を見る</a></p>
-    </div>
-  </section>
-
-  <section id="facecare" class="section pt0">
-    <div class="wrap">
-      <div class="care reveal">
-        <div class="care-photo"><img loading="lazy" src="assets/facecare.jpg" alt="あごに手を当てて微笑む男性" width="280" height="470"></div>
-        <div class="care-body">
-          <p class="en">Face care</p>
-          <h2>カットのついでに、<br>ヒゲと肌のお悩みも。</h2>
-          <p>ヒゲ脱毛・光フェイシャルを、いつものカットと同じ店舗で。ご予約は公式アプリまたは店頭で承ります。</p>
-          <a class="btn btn-main" href="https://beauty-wellness-hub.com/" rel="noopener">フェイスケアについて</a>
-        </div>
+      <div class="heading reveal"><span class="en">Menu</span><h2>メニュー</h2></div>
+      <div class="menu-cards">
+        <article class="menu-card reveal">
+          <img src="assets/styles/u35-03.jpg" alt="ショートヘアのスタイル例" width="340" height="400" loading="lazy">
+          <div class="menu-body">
+            <h3>カット</h3>
+            <p>丸刈りからロングまで。大人もお子さまも、男性も女性も。はじめてのお子さまは、保護者の方の膝の上でのカットもできます。</p>
+            <a class="more" href="https://www.cut-hikari.com/price.html" rel="noopener">料金を見る（店舗ごとに異なります）</a>
+          </div>
+        </article>
+        <article class="menu-card reveal">
+          <img src="assets/facecare.jpg" alt="あごに手を当てて微笑む男性" width="280" height="470" loading="lazy">
+          <div class="menu-body">
+            <h3>フェイスケア</h3>
+            <ul class="menu-tags"><li>ヒゲ脱毛</li><li>光フェイシャル</li></ul>
+            <p>カットのついでに、ヒゲと肌のお悩みも。いつもと同じ店舗で受けられます。</p>
+            <a class="more" href="https://beauty-wellness-hub.com/" rel="noopener">フェイスケアについて</a>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="section pt0">
+  <!-- ⑦ スタッフの声・会社案内 -->
+  <section class="section flow-bg wave-top">
     <div class="wrap">
       <div class="heading reveal"><span class="en">Movie</span><h2>映像で見るひかり</h2><p>働くスタッフの声をお届けします。</p></div>
       <div class="videos reveal">
@@ -339,20 +339,18 @@
           <p class="video-title">スタッフ体験談02　この会社でありこの仕事だからこそ</p>
         </div>
       </div>
-    </div>
-  </section>
 
-  <section id="company" class="section flow-bg wave-top">
-    <div class="wrap">
-      <div class="heading reveal"><span class="en">Company</span><h2>会社案内</h2></div>
-      <dl class="company-table reveal">
-        <div><dt>会社名</dt><dd>株式会社エイチ・エス・ケイ</dd></div>
-        <div><dt>所在地</dt><dd>茨城県水戸市金町3丁目4-27</dd></div>
-        <div><dt>設立</dt><dd>1997年10月7日</dd></div>
-        <div><dt>事業内容</dt><dd>ヘアカット専門店「カットハウスひかり」の経営（茨城・栃木・千葉・福島、全店直営）ほか</dd></div>
-        <div><dt>お問い合わせ</dt><dd>050-1720-5983（平日 9:00〜18:00）</dd></div>
-      </dl>
-      <p class="center"><a class="more" href="https://recruit.cut-hikari.com/" rel="noopener">いっしょに働く仲間を募集しています</a></p>
+      <div id="company" class="company">
+        <div class="heading reveal"><span class="en">Company</span><h2>会社案内</h2></div>
+        <dl class="company-table reveal">
+          <div><dt>会社名</dt><dd>株式会社エイチ・エス・ケイ</dd></div>
+          <div><dt>所在地</dt><dd>茨城県水戸市金町3丁目4-27</dd></div>
+          <div><dt>設立</dt><dd>1997年10月7日</dd></div>
+          <div><dt>事業内容</dt><dd>ヘアカット専門店「カットハウスひかり」の経営（茨城・栃木・千葉・福島、全店直営）ほか</dd></div>
+          <div><dt>お問い合わせ</dt><dd>050-1720-5983（平日 9:00〜18:00）</dd></div>
+        </dl>
+        <p class="center"><a class="more" href="https://recruit.cut-hikari.com/" rel="noopener">いっしょに働く仲間を募集しています</a></p>
+      </div>
     </div>
   </section>
 
