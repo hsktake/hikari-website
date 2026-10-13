@@ -123,20 +123,58 @@
       timer = setInterval(function () { show((cur + 1) % tabs.length); }, 4000);
     });
 
-    // 動画はクリックしたときだけ読み込む（ページを軽く保つため）
+    // 動画：押すと大きな画面（ポップアップ）で再生。閉じると止まる
+    var lastBtn = null;
+    function closeVideo() {
+      var m = document.querySelector(".vmodal");
+      if (!m) return;
+      m.parentNode.removeChild(m); // iframe ごと消すので再生も止まる
+      document.documentElement.classList.remove("modal-open");
+      if (lastBtn) lastBtn.focus();
+    }
+    function openVideo(id, title) {
+      closeVideo();
+      var m = document.createElement("div");
+      m.className = "vmodal";
+      m.setAttribute("role", "dialog");
+      m.setAttribute("aria-modal", "true");
+      m.setAttribute("aria-label", title);
+      var box = document.createElement("div");
+      box.className = "vmodal-box";
+      var x = document.createElement("button");
+      x.type = "button";
+      x.className = "vmodal-close";
+      x.setAttribute("aria-label", "閉じる");
+      x.textContent = "×";
+      var frame = document.createElement("div");
+      frame.className = "vmodal-frame";
+      var f = document.createElement("iframe");
+      f.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id) + "?autoplay=1&rel=0&playsinline=1";
+      f.title = title;
+      f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+      f.allowFullscreen = true;
+      frame.appendChild(f);
+      var cap = document.createElement("p");
+      cap.className = "vmodal-title";
+      cap.textContent = title;
+      box.appendChild(x);
+      box.appendChild(frame);
+      box.appendChild(cap);
+      m.appendChild(box);
+      m.addEventListener("click", function (e) { if (e.target === m) closeVideo(); });
+      x.addEventListener("click", closeVideo);
+      document.body.appendChild(m);
+      document.documentElement.classList.add("modal-open");
+      x.focus();
+    }
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeVideo(); });
     document.querySelectorAll(".video[data-id]").forEach(function (box) {
       var btn = box.querySelector("button");
       if (!btn) return;
-      btn.addEventListener("click", function () {
-        var f = document.createElement("iframe");
-        f.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(box.dataset.id) + "?autoplay=1&rel=0";
-        f.title = btn.getAttribute("aria-label") || "動画";
-        f.allow = "autoplay; encrypted-media; picture-in-picture";
-        f.allowFullscreen = true;
-        f.loading = "lazy";
-        box.textContent = "";
-        box.appendChild(f);
-      });
+      var wrap = box.parentNode;
+      var tag = wrap.querySelector(".vt-tag"), main = wrap.querySelector(".vt-main");
+      var title = ((tag ? tag.textContent + "　" : "") + (main ? main.textContent : "")) || "動画";
+      btn.addEventListener("click", function () { lastBtn = btn; openVideo(box.dataset.id, title); });
     });
   });
 })();
