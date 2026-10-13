@@ -603,7 +603,7 @@ img { display: block; max-width: 100%; height: auto; }
 .nav a.nav-recruit:hover { background: var(--orange); }
 @media (max-width: 1060px) { .nav a.nav-recruit { background: var(--sun); color: var(--brown); text-align: center; font-weight: 800; } }
 
-.recruit { background: var(--brown); color: var(--white); overflow-x: clip;
+.recruit { background: var(--brown); color: var(--white); overflow-x: clip; border-bottom: 10px solid var(--orange);
   background-image: radial-gradient(rgba(255,201,77,.12) 2px, transparent 2.5px); background-size: 24px 24px; }
 .rc-scissors { position: absolute; width: 300px; right: -60px; top: 30px; color: var(--sun); opacity: .14; transform: rotate(-20deg); pointer-events: none; }
 .rc-scissors .blade-a { animation: snipA 2.8s ease-in-out infinite !important; }
