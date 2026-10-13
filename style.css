@@ -958,3 +958,46 @@ img { display: block; max-width: 100%; height: auto; }
 .st-name { position: absolute; left: 50%; bottom: 10px; translate: -50% 0; white-space: nowrap; background: rgba(255,255,255,.94); color: var(--brown); font-size: 12.5px; font-weight: 800; padding: 2px 10px; border-radius: 999px; box-shadow: 0 2px 0 rgba(0,0,0,.18); pointer-events: none; }
 .style-note { font-size: 11px; font-weight: 500; letter-spacing: 0; opacity: .7; margin-left: 4px; }
 @media (max-width: 600px) { .st-name { font-size: 10.5px; bottom: 7px; padding: 1px 8px; } .style-note { display: none; } }
+
+/* ======================================================
+   シンプル＆メリハリ（箱を減らし、主役だけを大きく）
+   ====================================================== */
+/* 公式アプリ：主役は「公式アプリ」の大きな文字。白い箱はインストール欄だけ */
+.app-kicker { background: none; box-shadow: none; padding: 0; rotate: 0deg; color: var(--white); text-shadow: none; font-size: clamp(17px, 2vw, 22px); }
+.app-kicker em { background: var(--brown); color: var(--sun); box-shadow: none; border-radius: 8px; font-size: 1.1em; padding: 0 .3em; }
+.app-title { background: none; box-shadow: none; padding: 0; margin-top: 8px; gap: 14px; }
+.app-title .app-icon { background: var(--white); border: 0; box-shadow: 0 5px 0 var(--orange-deep); }
+.app-name small { color: var(--white); opacity: .9; }
+.app-name strong { color: var(--white); font-size: clamp(46px, 5.4vw, 66px); text-shadow: 0 5px 0 var(--orange-deep); }
+.app-copy h2 { font-size: clamp(21px, 2.4vw, 28px); text-shadow: none; margin-top: 20px; }
+.app-copy h2 .mark { background: none; box-shadow: none; padding: 0; rotate: 0deg; color: var(--sun); border-radius: 0; animation: none !important; }
+.app-lead { opacity: .92; font-weight: 500; }
+.wait-fun { background: none; padding: 0; margin-top: 22px; border-radius: 0; overflow: visible; }
+.wf-title { padding: 0; font-size: 14px; }
+.wf-title span { color: var(--white); }
+.app-points li { background: none !important; box-shadow: none; rotate: 0deg !important; padding: 0; color: var(--white); }
+.app-points li::before { display: none; }
+.app-points .ic { background: var(--white) !important; }
+.app-points strong { color: var(--white); }
+.app-points li > span:last-child { color: rgba(255,255,255,.88) !important; }
+.app-points { gap: 16px; }
+
+/* 採用：数字は箱なしで大きく */
+.rc-stats li { background: none; box-shadow: none; color: var(--white); border-radius: 0; border-left: 1px solid rgba(255,255,255,.22); }
+.rc-stats li:first-child { border-left: 0; }
+.rc-stats small, .rc-stats em { color: rgba(255,255,255,.75); }
+.rc-stats .num { color: var(--sun); }
+
+@media (max-width: 600px) {
+  .app-kicker { font-size: 15px; padding: 0; }
+  .app-title { margin-top: 6px; padding: 0; gap: 10px; }
+  .app-name small { font-size: 11px; }
+  .app-name strong { font-size: 36px; text-shadow: 0 4px 0 var(--orange-deep); }
+  .app-copy h2 { font-size: 19px; margin-top: 12px; }
+  .phone-mini { top: 18px; width: 64px; right: 4px; }
+  .wait-fun { margin-top: 12px; padding: 0; }
+  .wf-title { font-size: 12.5px; }
+  .app-points { gap: 6px; margin-top: 16px; }
+  .app-points li { padding: 0; }
+  .rc-stats li { padding: 4px 2px; }
+}
