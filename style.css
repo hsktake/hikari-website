@@ -1187,3 +1187,14 @@ img { display: block; max-width: 100%; height: auto; }
   #app .app-copy h2 { margin-top: 16px; }
 }
 @media (max-width: 600px) { #app .app-head { padding: 10px 12px 12px; } #app .app-head .app-kicker { font-size: 13px; } #app .app-head .phone-mini { width: 48px; right: 8px; bottom: -16px; } #app .app-copy h2 { margin-top: 12px; } }
+
+/* 予約からカットまで：文字を短く、強調は1つ、影をやめて点線でつなぐ */
+.flow li { box-shadow: none; border: 2px solid var(--line); }
+.flow p strong { color: var(--orange-deep); font-weight: 800; }
+@media (max-width: 600px) {
+  .flow { position: relative; gap: 10px; }
+  .flow::before { content: ""; position: absolute; left: 4px; top: 14px; bottom: 14px; border-left: 3px dotted var(--orange); }
+  .flow li::before { z-index: 1; }
+  .flow h3 { font-size: 15px; }
+  .flow p { font-size: 12px; }
+}
