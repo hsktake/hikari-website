@@ -858,7 +858,7 @@ img { display: block; max-width: 100%; height: auto; }
   .video .play::after { left: 15px; top: 11px; border-left-width: 13px; border-top-width: 9px; border-bottom-width: 9px; }
   .video-title { font-size: 11.5px; margin-top: 6px; line-height: 1.5; }
   .company-table { margin-top: 14px; padding: 2px 14px; border-radius: 14px; }
-  .company-table div { grid-template-columns: 5.5em 1fr; gap: 8px; padding: 7px 0; font-size: 12px; line-height: 1.55; }
+  .company-table div { grid-template-columns: 6.4em 1fr; gap: 6px; padding: 7px 0; font-size: 12px; line-height: 1.55; }
 
   /* 採用情報 */
   .rc-pill { font-size: 12px; padding: 2px 14px; }
