@@ -609,3 +609,9 @@ img { display: block; max-width: 100%; }
   .style-title { font-size: 17px; }
   .style-track img { width: 128px; height: 150px; border-radius: 14px; border-width: 3px; }
 }
+.style-title { white-space: nowrap; }
+@media (max-width: 600px) {
+  .style-title { gap: 8px; font-size: 16px; }
+  .style-title .en { font-size: 12px; }
+  .style-more { font-size: 12.5px; }
+}
