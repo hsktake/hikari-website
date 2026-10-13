@@ -13,10 +13,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=24">
-<script src="main.js?v=24"></script>
-<script src="shops-data.js?v=24" defer></script>
-<script src="shops.js?v=24" defer></script>
+<link rel="stylesheet" href="style.css?v=25">
+<script src="main.js?v=25"></script>
+<script src="shops-data.js?v=25" defer></script>
+<script src="shops.js?v=25" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
@@ -27,14 +27,15 @@
       <img class="brand-logo" src="assets/logo.png" alt="カットハウスひかり" width="356" height="218">
       <span class="brand-area"><span class="area-sub">茨城・栃木・千葉・福島</span><span class="area-main">北関東に<strong>62</strong>店舗</span></span>
     </a>
-    <nav class="nav" aria-label="メインメニュー">
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="bars" aria-hidden="true"></span><span class="menu-label">メニュー</span></button>
+    <nav class="nav" id="site-nav" aria-label="メインメニュー">
       <a href="shops.html" aria-current="page">店舗を探す</a>
       <a href="./#app">公式アプリ</a>
       <a href="./#flow">ご利用の流れ</a>
       <a href="./#menu">メニュー</a>
+      <a href="./#sns">Instagram</a>
       <a href="./#company">会社案内</a>
     </nav>
-    <a class="btn btn-main header-cta" href="./#app">アプリで予約</a>
   </div>
 </header>
 
