@@ -637,7 +637,10 @@ img { display: block; max-width: 100%; height: auto; }
 .ig-top strong { display: block; font-size: 15px; }
 .ig-top small { font-size: 12px; color: var(--brown-soft); font-weight: 700; }
 .ig-feed { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.ig-feed > span { position: relative; display: block; }
 .ig-feed img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 6px; }
+/* 動画（リール）の目印 */
+.ig-reel::after { content: ""; position: absolute; right: 5px; top: 5px; width: 18px; height: 18px; border-radius: 50%; background: rgba(0,0,0,.55) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3.5 2.5v5l4-2.5z' fill='%23fff'/%3E%3C/svg%3E") center / 12px no-repeat; }
 .ig-heart {
   position: absolute; right: -18px; top: 46%; width: 54px; height: 54px; border-radius: 50%;
   display: grid; place-items: center; font-size: 26px; color: var(--white);
