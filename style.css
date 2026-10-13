@@ -220,11 +220,12 @@ img { display: block; max-width: 100%; height: auto; }
 /* 位置と傾きをあえて少しずつ変えて、ランダムに散らした印象に */
 .b1 { left: -44px; top: -26px; rotate: -5deg; }
 .b1::after { left: 46px; bottom: -9px; transform: rotate(45deg); }
-.b2 { left: -36px; bottom: -26px; rotate: 3deg; animation-delay: 1.2s; font-size: 18px; padding: 10px 22px; }
+.b2 { left: -36px; bottom: -26px; rotate: 3deg; animation-delay: 1.2s; }
 .b2::after { left: 44px; top: -9px; transform: rotate(-135deg); }
 .b3 { right: -30px; bottom: -58px; rotate: -3deg; animation-delay: 2.4s; }
 .b3::after { right: 44px; top: -9px; transform: rotate(-135deg); }
-.b4 { right: -26px; top: -42px; rotate: 4deg; animation-delay: .6s; }
+.b4 { right: -26px; top: -46px; rotate: 4deg; animation-delay: .6s; font-size: 18px; padding: 10px 22px; }
+.sp-br { display: none; }
 .b4::after { right: 40px; bottom: -9px; transform: rotate(45deg); }
 @keyframes bubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
@@ -240,7 +241,7 @@ img { display: block; max-width: 100%; height: auto; }
   .bubble::after { width: 10px; height: 10px; border-width: 2px; }
   .b1 { left: -4px; top: -54px; }
   .b1::after { bottom: -7px; left: 30px; }
-  .b2 { left: -4px; bottom: -24px; font-size: 13.5px; padding: 5px 14px; }
+  .b2 { left: -4px; bottom: -24px; }
   .b2::after { left: 28px; top: -7px; }
   .b3 { right: -4px; bottom: -58px; }
   .b4 { right: -4px; top: -28px; }
@@ -268,6 +269,9 @@ img { display: block; max-width: 100%; height: auto; }
   .hero-text strong { font-size: 1.2em; }
   .hero-actions { margin-top: 14px; }
   .hero-actions .btn { min-height: 52px; }
+  /* 右側の2つは2行にして、左の吹き出しと重ならないように */
+  .sp-br { display: inline; }
+  .b4, .b3 { border-radius: 22px; text-align: center; line-height: 1.45; padding: 5px 14px; font-size: 12.5px; }
 }
 
 /* ---------- ヘアカタログの帯 ---------- */
