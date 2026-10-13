@@ -1198,3 +1198,6 @@ img { display: block; max-width: 100%; height: auto; }
   .flow h3 { font-size: 15px; }
   .flow p { font-size: 12px; }
 }
+
+/* 予約からカットまで：言葉の途中で改行しない（文節ごとに折り返す） */
+.flow p .ph { display: inline-block; }
