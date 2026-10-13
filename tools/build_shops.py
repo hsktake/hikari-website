@@ -282,7 +282,7 @@ def shop_page(s, shops, v):
     <section class="sp-app reveal" id="sp-app" aria-labelledby="h-app">
       <p class="sp-app-kicker">カットハウスひかり 公式アプリ</p>
       <h2 id="h-app">待ち時間は、自由に過ごそう。</h2>
-      <p>アプリで予約すれば、案内時刻に来るだけ。お店ではほとんど待ちません。</p>
+      <p class="sp-app-lead"><span class="s">アプリで予約すれば、案内時刻に来るだけ。</span><span class="s">お店ではほとんど待ちません。</span></p>
       <div class="stores">
         <a class="store" href="{APP_IOS}" rel="noopener"><img src="../assets/app/appstore.png" alt="App Storeからダウンロード" width="480" height="176" loading="lazy"></a>
         <a class="store" href="{esc(APP_ANDROID)}" rel="noopener"><img src="../assets/app/gplay.png" alt="Google Playで手に入れよう" width="480" height="143" loading="lazy"></a>

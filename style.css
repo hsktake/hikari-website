@@ -1397,3 +1397,4 @@ a.shop-photo { display: grid; }
 .sp-map { aspect-ratio: 16 / 8; }
 .sp-price { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 @media (max-width: 600px) { .sp-map { aspect-ratio: 4 / 3; } }
+.sp-app-lead .s { display: block; }
