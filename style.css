@@ -542,3 +542,45 @@ img { display: block; max-width: 100%; }
 @media (max-width: 600px) and (prefers-reduced-motion: reduce) {
   .compare .lane-shop .bar-wait { width: 72%; } .compare .lane-shop .bar-cut { width: 28%; } .compare .lane-app .bar-cut { width: 40%; }
 }
+
+/* ---------- 家族写真の吹き出し ---------- */
+.hero-visual { margin-bottom: 40px; }
+.bubbles { list-style: none; margin: 0; padding: 0; }
+.bubble {
+  position: absolute; z-index: 3;
+  background: var(--white); color: var(--brown);
+  border: 3px solid var(--orange); border-radius: 999px;
+  padding: 8px 18px; font-size: 15px; font-weight: 800; white-space: nowrap;
+  box-shadow: 0 5px 0 rgba(74,46,26,.15);
+  animation: bubble 4s ease-in-out infinite;
+}
+.bubble strong { color: var(--orange-deep); font-size: 1.15em; }
+.bubble::after {                     /* しっぽ（写真の方を向く） */
+  content: ""; position: absolute; width: 14px; height: 14px;
+  background: var(--white); border: 3px solid var(--orange);
+  border-top: 0; border-left: 0;
+}
+.b1 { left: -26px; top: -58px; }
+.b1::after { left: 46px; bottom: -9px; transform: rotate(45deg); }
+.b2 { left: -34px; bottom: -34px; animation-delay: 1.2s; }
+.b2::after { left: 30px; top: -9px; transform: rotate(-135deg); }
+.b3 { right: -14px; bottom: -44px; animation-delay: 2.4s; background: var(--orange); color: var(--white); border-color: var(--orange-deep); }
+.b3 strong { color: var(--sun); }
+.b3::after { right: 40px; top: -9px; transform: rotate(-135deg); background: var(--orange); border-color: var(--orange-deep); }
+@keyframes bubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.spark-1 { left: auto; right: 150px; top: -40px; }
+.spark-2 { left: auto; right: 210px; top: -50px; }
+@media (max-width: 880px) {
+  .hero-visual { margin-top: 44px; margin-bottom: 36px; }
+  .bubble { font-size: 12.5px; padding: 5px 12px; border-width: 2px; }
+  .bubble::after { width: 10px; height: 10px; border-width: 2px; }
+  .b1 { left: -4px; top: -40px; }
+  .b1::after { bottom: -7px; left: 30px; }
+  .b2 { left: -4px; bottom: -26px; }
+  .b2::after { top: -7px; }
+  .b3 { right: -4px; bottom: -30px; }
+  .b3::after { top: -7px; right: 26px; }
+  .spark-1 { right: 104px; top: -30px; width: 36px; }
+  .spark-2 { display: none; }
+}
+@media (max-width: 380px) { .bubble { font-size: 11.5px; padding: 4px 10px; } }
