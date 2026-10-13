@@ -155,7 +155,7 @@
     PREFS.forEach(function (pref) {
       var items = hits.filter(function (s) { return s.p === pref; });
       if (!items.length) return;
-      items.sort(function (a, b) { return a.city.localeCompare(b.city, "ja") || a.name.localeCompare(b.name, "ja"); });
+      // 並び順は現行サイトの掲載順（市町村の読み順）をそのまま使う
       var sec = el("section", "city-group");
       var h = el("h2", "city-name", pref + "県");
       h.appendChild(el("small", null, items.length + "店舗"));
