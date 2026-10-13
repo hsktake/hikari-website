@@ -1901,3 +1901,9 @@ a.shop-photo { display: grid; }
   .rq-q { font-size: 15px; }
   .rq-qa p:not(.rq-q) { font-size: 14px; }
 }
+/* 採用：タブレット幅で職種名が途中で折り返さないように */
+.rx-l, .rx-l em { white-space: nowrap; }
+@media (min-width: 601px) and (max-width: 1000px) {
+  .rx-l { font-size: 14px; padding: 5px 9px 6px; left: 6px; bottom: 8px; }
+  .rx-l em { font-size: 9.5px; padding: 0 7px; }
+}
