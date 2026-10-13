@@ -1106,3 +1106,4 @@ img { display: block; max-width: 100%; height: auto; }
   .wf-grid .em { font-size: 22px; margin-bottom: 2px; }
   #app .app-lead { display: none; }
 }
+@media (max-width: 600px) { #app .app-grid { padding-top: 24px; } #app .wait-fun { margin-top: 8px; } }
