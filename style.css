@@ -1689,3 +1689,23 @@ a.shop-photo { display: grid; }
 .mb-free { margin-top: 18px !important; text-align: center; font-weight: 800; font-size: 20px; color: var(--orange-deep); }
 .mb-free small { display: block; font-size: 13px; color: var(--brown); }
 .legal-card .contact-links { justify-content: center; }
+
+/* 採用：背景のオレンジと写真が同化しないよう、白い枠と淡い2色に */
+.rx-board { background: var(--white); padding: 8px; border-radius: 24px; }
+.rx-staff { gap: 8px; }
+.rx-staff a { border-radius: 14px; }
+.rx-staff .t1 a, .rx-staff .t4 a { background: linear-gradient(135deg, #FFD7A3 0 46%, #FFF6DD 46% 100%); }
+.rx-staff .t2 a, .rx-staff .t3 a { background: linear-gradient(135deg, #FFF6DD 0 46%, var(--sky) 46% 100%); }
+.rx-band { border-radius: 14px; margin-top: 8px; }
+.rx-l { box-shadow: 0 2px 6px rgba(74,46,26,.18); border: 1.5px solid var(--line); }
+.rx-stats { background: var(--white); border-radius: 18px; padding: 12px 6px; box-shadow: 0 5px 0 rgba(74,46,26,.25); color: var(--brown); }
+.rx-stats li { border-left-color: var(--line); }
+.rx-stats small { color: var(--brown-soft); opacity: 1; }
+.rx-stats b { color: var(--orange); text-shadow: none; }
+@media (max-width: 600px) {
+  .rx-board { padding: 5px; border-radius: 18px; }
+  .rx-staff { gap: 5px; }
+  .rx-staff a { border-radius: 10px; }
+  .rx-band { margin-top: 5px; border-radius: 10px; }
+  .rx-stats { padding: 8px 2px; border-radius: 14px; margin-top: 12px; }
+}
