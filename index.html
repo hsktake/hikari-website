@@ -4,177 +4,185 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>カットハウスひかり｜北関東のヘアカット専門店</title>
-<meta name="description" content="北関東を中心に62店舗。茨城・栃木・千葉・福島のヘアカット専門店カットハウスひかり。待ち状況の確認、店舗検索、ご利用方法のご案内。">
+<meta name="description" content="北関東を中心に62店舗。茨城・栃木・千葉・福島のヘアカット専門店カットハウスひかり。">
 <!-- 試作版のため検索エンジンに載せない（本番切り替え時に削除） -->
 <meta name="robots" content="noindex, nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://www.cut-hikari.com; script-src 'self'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="theme-color" content="#14213D">
+<meta name="theme-color" content="#7B736B">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=Great+Vibes&family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <a class="skip" href="#main">本文へ移動</a>
 
 <header class="site-header">
   <div class="wrap header-inner">
-    <a class="logo" href="./" aria-label="カットハウスひかり トップへ">
-      <span class="logo-mark" aria-hidden="true"></span>
-      <span class="logo-text"><small>ヘアカット専門店</small>カットハウスひかり</span>
+    <a class="brand" href="./" aria-label="カットハウスひかり トップへ">
+      <span class="brand-script">Cut house</span>
+      <span class="brand-name">ひかり</span>
     </a>
     <nav class="nav" aria-label="メインメニュー">
-      <a href="#shops">店舗を探す</a>
-      <a href="#flow">ご利用方法</a>
-      <a href="#facecare">フェイスケア</a>
-      <a href="#company">会社案内</a>
-      <a href="https://recruit.cut-hikari.com/" rel="noopener">採用情報</a>
+      <a href="./" aria-current="page"><span class="en">HOME</span><span class="ja">ホーム</span></a>
+      <a href="shops.html"><span class="en">SHOP</span><span class="ja">店舗一覧</span></a>
+      <a href="#menu"><span class="en">MENU</span><span class="ja">メニュー</span></a>
+      <a href="#flow"><span class="en">GUIDE</span><span class="ja">ご利用方法</span></a>
+      <a href="#company"><span class="en">COMPANY</span><span class="ja">会社案内</span></a>
     </nav>
-    <a class="btn btn-sun header-cta" href="https://www.cut-hikari.com/list-mis.html" rel="noopener">待ち状況を見る</a>
+    <a class="btn header-cta" href="https://www.cut-hikari.com/list-mis.html" rel="noopener">待ち状況</a>
   </div>
 </header>
 
 <main id="main">
 
   <section class="hero">
-    <div class="wrap hero-inner">
-      <div class="hero-copy">
-        <p class="hero-lead">北関東のヘアカット専門店</p>
-        <h1><span>近くで、</span><span>さっと、</span><span>ちゃんと切る。</span></h1>
-        <p class="hero-text">茨城・栃木・千葉・福島に62店舗。<br>予約なしでも、アプリで時間指定でも。<br>大人も子どもも、いつもの髪をいつもの近所で。</p>
-        <div class="hero-actions">
-          <a class="btn btn-sun" href="https://www.cut-hikari.com/list-mis.html" rel="noopener">今の待ち状況を見る</a>
-          <a class="btn btn-line" href="#shops">近くの店舗を探す</a>
+    <div class="wrap">
+      <div class="hero-frame">
+        <img class="hero-photo" src="https://images.unsplash.com/photo-1634449571010-02389ed0f9b0?auto=format&fit=crop&w=1800&q=70" alt="スタイリストが髪をカットしている様子" fetchpriority="high">
+        <div class="hero-copy">
+          <p class="hero-script">Natural &amp; Daily</p>
+          <h1><span>暮らしのすぐそばに、</span><span>いつもの心地よさを。</span></h1>
+          <p class="hero-text">お買い物のついでに、ふらっと寄れて、きちんと整う。<br>大人もお子さまも、いつもの髪をいつもの近所で。</p>
+          <div class="hero-actions">
+            <a class="btn btn-main" href="https://www.cut-hikari.com/list-mis.html" rel="noopener">今の待ち状況を見る</a>
+            <a class="btn btn-ghost" href="shops.html">近くの店舗を探す</a>
+          </div>
         </div>
       </div>
+      <ul class="hero-facts">
+        <li><strong>62</strong>店舗</li>
+        <li>茨城・栃木・千葉・福島</li>
+        <li>予約なしでも、アプリで時間指定でも</li>
+      </ul>
+    </div>
+    <img class="leaves" src="assets/leaves.svg" alt="" aria-hidden="true">
+  </section>
 
-      <div class="ticket-slot" aria-label="カットハウスひかりの概要">
-        <div class="ticket">
-          <div class="ticket-head">
-            <span>カットハウスひかり</span>
-            <span>整理券</span>
-          </div>
-          <div class="ticket-number">
-            <span class="num">62</span>
-            <span class="unit">店舗</span>
-          </div>
-          <dl class="ticket-rows">
-            <div><dt>エリア</dt><dd>茨城・栃木・千葉・福島</dd></div>
-            <div><dt>メニュー</dt><dd>ヘアカット専門</dd></div>
-            <div><dt>どなたでも</dt><dd>大人・子ども・男性・女性</dd></div>
-            <div><dt>お支払い</dt><dd>アプリ／QR決済／現金</dd></div>
-          </dl>
-          <p class="ticket-foot">目安時間の5分前までにお戻りください</p>
-        </div>
+  <section id="menu" class="section">
+    <div class="wrap">
+      <div class="heading"><span class="en">Menu</span><h2>メニュー</h2></div>
+      <ul class="menu-row">
+        <li>
+          <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="16" cy="48" r="8"/><circle cx="34" cy="52" r="8"/><path d="M21 42 50 8M29 45 46 12"/><path d="M20 44l6 0"/></svg>
+          <h3>カット</h3>
+          <p>丸刈りからロングまで</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="22" r="11"/><path d="M21 20c4-6 18-6 22 0"/><path d="M14 56c2-10 9-16 18-16s16 6 18 16"/><circle cx="28" cy="23" r="1"/><circle cx="36" cy="23" r="1"/></svg>
+          <h3>キッズカット</h3>
+          <p>膝の上でのカットもOK</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M18 24c0-10 6-16 14-16s14 6 14 16v6"/><path d="M18 30c0 14 6 24 14 24s14-10 14-24"/><path d="M22 38c3 6 6 9 10 9s7-3 10-9"/><path d="M26 41l0 3M32 43v4M38 41v3" /></svg>
+          <h3>ヒゲ脱毛</h3>
+          <p>カットのついでに</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="30" cy="34" r="16"/><path d="M48 10v8M44 14h8M52 26v5M49.5 28.5h5"/><path d="M24 36c3 3 9 3 12 0"/></svg>
+          <h3>光フェイシャル</h3>
+          <p>肌のトーンケア</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="18" y="6" width="28" height="52" rx="5"/><path d="M28 51h8"/><circle cx="32" cy="27" r="9"/><path d="M32 22v5l3 3"/></svg>
+          <h3>時間指定</h3>
+          <p>アプリで手数料無料</p>
+        </li>
+      </ul>
+      <p class="menu-foot"><a class="more" href="https://www.cut-hikari.com/price.html" rel="noopener">料金は店舗ごとにご案内しています</a></p>
+    </div>
+  </section>
+
+  <section class="section pt0">
+    <div class="wrap">
+      <div class="scene-panel">
+        <div class="heading heading-light"><span class="en">Daily scene</span><h2>こんなときに</h2></div>
+        <ul class="scene">
+          <li><figure><img loading="lazy" src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=700&q=70" alt="理容椅子に座る男性"><figcaption>お仕事帰りに</figcaption></figure></li>
+          <li><figure><img loading="lazy" src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=700&q=70" alt="ブローで仕上げる様子"><figcaption>お買い物のついでに</figcaption></figure></li>
+          <li><figure><img loading="lazy" src="https://images.unsplash.com/photo-1593702275687-f8b402bf1fb5?auto=format&fit=crop&w=700&q=70" alt="ハサミでカットする様子"><figcaption>いつもの長さに</figcaption></figure></li>
+          <li><figure><img loading="lazy" src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=700&q=70" alt="バリカンとハサミ、コーム"><figcaption>身だしなみを整えに</figcaption></figure></li>
+        </ul>
       </div>
+      <ul class="points">
+        <li>
+          <svg class="leaf-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20C4 10 10 4 20 4c0 10-6 16-16 16Z"/></svg>
+          <h3>早さだけで終わらせない、<br>ていねいな仕上がり。</h3>
+          <p>10分という時間をノルマにせず、ご注文をていねいにうかがいます。</p>
+        </li>
+        <li>
+          <svg class="leaf-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20C4 10 10 4 20 4c0 10-6 16-16 16Z"/></svg>
+          <h3>お買い物のついでに寄れる、<br>身近な62店舗。</h3>
+          <p>スーパーやショッピングセンターの中・となりにある店舗が中心です。</p>
+        </li>
+        <li>
+          <svg class="leaf-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20C4 10 10 4 20 4c0 10-6 16-16 16Z"/></svg>
+          <h3>気になるところは、<br>2週間以内ならお直し無料。</h3>
+          <p>仕上がりで気になる部分があれば、お気軽にご来店ください。</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section pt0">
+    <div class="wrap concept">
+      <div class="concept-photo">
+        <img loading="lazy" src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?auto=format&fit=crop&w=900&q=70" alt="鏡と椅子が並ぶ店内">
+      </div>
+      <div>
+        <h2>早いのに、<br>ちゃんと満足できる場所へ。</h2>
+        <p>低料金・短時間のカット専門店が増えるなかで、私たちが大切にしているのは、技術と接客の両方で選ばれること。</p>
+        <p>ご注文をていねいに聞き、会話を重ねながら、お客様と一緒にスタイルをつくります。はじめて髪を切るお子さまは、保護者の方の膝の上でのカットもできます。</p>
+        <p class="sign">Cut house Hikari</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="flow" class="section flow-bg">
+    <div class="wrap">
+      <div class="heading"><span class="en">How to</span><h2>ご来店からカットまで</h2></div>
+      <ol class="flow">
+        <li><h3>チケットを買う</h3><p>店頭の券売機（現金・QR決済）か、公式アプリで事前に購入できます。</p></li>
+        <li><h3>目安時間を確認</h3><p>チケットに目安時間が出ます。5分前までにお戻りいただければ外出もOK。</p></li>
+        <li><h3>チケットを渡す</h3><p>番号が呼ばれたら席へ。HiCARD会員の方は会員カードもご一緒に。</p></li>
+        <li><h3>ご注文を伝える</h3><p>仕上がりのイメージを遠慮なくお伝えください。</p></li>
+        <li><h3>仕上がり</h3><p>気になる部分は2週間以内なら無料でお直しします。</p></li>
+      </ol>
+      <p class="flow-note">お支払いは、公式アプリ・QR決済・現金（券売機）の3通り。使える決済は店舗ごとに異なります。</p>
     </div>
   </section>
 
   <section id="shops" class="section">
     <div class="wrap">
-      <h2>お近くの店舗を探す</h2>
-      <p class="section-text">店舗ごとの料金・営業時間・使える電子決済は、各店舗のページでご確認いただけます。</p>
-      <ul class="pref-list">
-        <li><a href="https://www.cut-hikari.com/list-ibaraki.html" rel="noopener"><span class="pref">茨城県</span><span class="pref-sub">店舗一覧</span></a></li>
-        <li><a href="https://www.cut-hikari.com/list-totigi.html" rel="noopener"><span class="pref">栃木県</span><span class="pref-sub">店舗一覧</span></a></li>
-        <li><a href="https://www.cut-hikari.com/list-chiba.html" rel="noopener"><span class="pref">千葉県</span><span class="pref-sub">店舗一覧</span></a></li>
-        <li><a href="https://www.cut-hikari.com/list-fukusima.html" rel="noopener"><span class="pref">福島県</span><span class="pref-sub">店舗一覧</span></a></li>
+      <div class="heading"><span class="en">Shop list</span><h2>店舗を探す</h2></div>
+      <ul class="pref-grid">
+        <li><a class="pref-card" href="shops.html#茨城"><img loading="lazy" src="https://images.unsplash.com/photo-1746723378067-83a345ff3160?auto=format&fit=crop&w=600&q=70" alt=""><span class="txt"><span class="en">Ibaraki</span><span class="ja">茨城県</span><span class="count">32店舗</span></span></a></li>
+        <li><a class="pref-card" href="shops.html#栃木"><img loading="lazy" src="https://images.unsplash.com/photo-1626383137804-ff908d2753a2?auto=format&fit=crop&w=600&q=70" alt=""><span class="txt"><span class="en">Tochigi</span><span class="ja">栃木県</span><span class="count">17店舗</span></span></a></li>
+        <li><a class="pref-card" href="shops.html#千葉"><img loading="lazy" src="https://images.unsplash.com/photo-1626379501846-0df4067b8bb9?auto=format&fit=crop&w=600&q=70" alt=""><span class="txt"><span class="en">Chiba</span><span class="ja">千葉県</span><span class="count">9店舗</span></span></a></li>
+        <li><a class="pref-card" href="shops.html#福島"><img loading="lazy" src="https://images.unsplash.com/photo-1600948835780-9c4a8b55cf50?auto=format&fit=crop&w=600&q=70" alt=""><span class="txt"><span class="en">Fukushima</span><span class="ja">福島県</span><span class="count">4店舗</span></span></a></li>
       </ul>
-      <p class="notice">休業日や営業時間の変更は <a href="https://www.cut-hikari.com/eigyo.html" rel="noopener">休業・営業時間変更のお知らせ</a> をご覧ください。</p>
+      <p class="center"><a class="btn btn-main" href="shops.html">すべての店舗を見る</a></p>
     </div>
   </section>
 
-  <section id="flow" class="section section-tint">
+  <section id="facecare" class="section pt0">
     <div class="wrap">
-      <h2>ご来店からカットまで</h2>
-      <ol class="flow">
-        <li>
-          <h3>チケットを買う</h3>
-          <p>店頭の券売機（現金・QR決済）か、公式アプリで事前に購入できます。券売機は1万円札・5千円札が使えません。</p>
-        </li>
-        <li>
-          <h3>目安時間を確認する</h3>
-          <p>チケットに目安時間が出ます。席が空いていないときは外出もOK。目安時間の5分前までにお戻りください。</p>
-        </li>
-        <li>
-          <h3>呼ばれたらチケットを渡す</h3>
-          <p>HiCARD会員の方は会員カードも一緒に。QR決済の方はこのタイミングでお支払いです。</p>
-        </li>
-        <li>
-          <h3>ご注文を伝える</h3>
-          <p>仕上がりのイメージを遠慮なくお伝えください。カット中のスマートフォン操作はご遠慮ください。</p>
-        </li>
-        <li>
-          <h3>仕上がり</h3>
-          <p>気になる部分があれば、2週間以内なら無料でお直しします。</p>
-        </li>
-      </ol>
-      <p class="notice">はじめてのお子さまは、保護者の方の膝の上でのカットもできます。スタッフにお声がけください。</p>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap concept">
-      <h2>早さだけで終わらせない</h2>
-      <div class="concept-body">
-        <p>低料金・短時間のカット専門店が増えるなかで、私たちが大切にしているのは「早いのに、ちゃんと満足できる」こと。</p>
-        <p>スタッフは10分という時間をノルマにしていません。ご注文をていねいに聞き、会話を重ねながら、お客様と一緒にスタイルをつくります。</p>
+      <div class="care">
+        <div class="care-photo"><img loading="lazy" src="https://images.unsplash.com/photo-1630827020718-3433092696e7?auto=format&fit=crop&w=1000&q=70" alt="ヒゲを整えた男性の横顔"></div>
+        <div class="care-body">
+          <p class="en">Face care</p>
+          <h2>カットのついでに、<br>ヒゲと肌のお悩みも。</h2>
+          <p>ヒゲ脱毛・光フェイシャルを、いつものカットと同じ店舗で。ご予約は公式アプリまたは店頭で承ります。</p>
+          <a class="btn btn-main" href="https://beauty-wellness-hub.com/hair/" rel="noopener">ヒゲ脱毛について</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="pay" class="section section-tint">
+  <section id="company" class="section flow-bg">
     <div class="wrap">
-      <h2>3つの買い方</h2>
-      <div class="pay">
-        <div class="pay-item">
-          <h3>公式アプリで事前購入</h3>
-          <p>家にいながらチケットを購入。日時指定の予約手数料は無料です。</p>
-          <a class="text-link" href="https://www.cut-hikari-app.com/" rel="noopener">公式アプリについて</a>
-        </div>
-        <div class="pay-item">
-          <h3>店頭でQR決済</h3>
-          <p>PayPay、楽天ペイ、d払い、au PAY など。使えるサービスは店舗ごとに異なります。</p>
-        </div>
-        <div class="pay-item">
-          <h3>店頭の券売機で現金</h3>
-          <p>メニューを選んでお金を入れるだけ。チケット番号が受付番号になります。</p>
-        </div>
-      </div>
-      <p class="notice">アプリで時間指定したチケットは、指定時刻の1時間前を過ぎてのキャンセルに300円のキャンセル料がかかります。</p>
-    </div>
-  </section>
-
-  <section id="facecare" class="section facecare">
-    <div class="wrap facecare-inner">
-      <div>
-        <h2>カットのついでに、<br>ヒゲと肌のお悩みも</h2>
-        <p class="section-text">ヒゲ脱毛・光フェイシャルを、いつものカットと同じ店舗で。予約は公式アプリまたは店頭で承ります。</p>
-      </div>
-      <a class="btn btn-sun" href="https://beauty-wellness-hub.com/hair/" rel="noopener">ヒゲ脱毛について見る</a>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap member">
-      <div>
-        <h2>HiCARD会員</h2>
-        <p class="section-text">来店ごとにポイントがたまる会員サービスです。</p>
-        <a class="text-link" href="https://www.cut-hikari.com/hicardmerit.html" rel="noopener">会員のメリットを見る</a>
-      </div>
-      <div>
-        <h2>よくあるご質問</h2>
-        <p class="section-text">混雑する時間帯、お子さまのカット、お直しなど。</p>
-        <a class="text-link" href="https://www.cut-hikari.com/QandA.html" rel="noopener">よくあるご質問を見る</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="company" class="section section-tint">
-    <div class="wrap company">
-      <h2>会社案内</h2>
+      <div class="heading"><span class="en">Company</span><h2>会社案内</h2></div>
       <dl class="company-table">
         <div><dt>会社名</dt><dd>株式会社エイチ・エス・ケイ</dd></div>
         <div><dt>所在地</dt><dd>茨城県水戸市金町3丁目4-27</dd></div>
@@ -182,10 +190,7 @@
         <div><dt>事業内容</dt><dd>ヘアカット専門店「カットハウスひかり」の経営（茨城・栃木・千葉・福島、全店直営）ほか</dd></div>
         <div><dt>お問い合わせ</dt><dd>050-1720-5983（平日 9:00〜18:00）</dd></div>
       </dl>
-      <div class="company-links">
-        <a class="text-link" href="https://www.cut-hikari.com/kaisya.html" rel="noopener">会社案内の詳細</a>
-        <a class="text-link" href="https://recruit.cut-hikari.com/" rel="noopener">スタッフ募集</a>
-      </div>
+      <p class="center"><a class="more" href="https://recruit.cut-hikari.com/" rel="noopener">スタッフ募集について</a></p>
     </div>
   </section>
 
@@ -193,19 +198,17 @@
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <div class="footer-brand">
-      <span class="logo-mark" aria-hidden="true"></span>
-      <span>カットハウスひかり</span>
-    </div>
+    <p class="footer-script">Cut house Hikari</p>
+    <p class="footer-name">カットハウスひかり</p>
     <nav class="footer-nav" aria-label="フッターメニュー">
-      <a href="https://www.cut-hikari.com/otoiawase.html" rel="noopener">お問い合わせ・ご意見</a>
+      <a href="shops.html">店舗一覧</a>
+      <a href="https://www.cut-hikari.com/QandA.html" rel="noopener">よくあるご質問</a>
+      <a href="https://www.cut-hikari.com/otoiawase.html" rel="noopener">お問い合わせ</a>
       <a href="https://www.cut-hikari.com/privacypolicy.html" rel="noopener">プライバシーポリシー</a>
       <a href="https://www.cut-hikari.com/tokushoho.html" rel="noopener">特定商取引法に基づく表記</a>
-      <a href="https://www.cut-hikari.com/lang-e-top.html" rel="noopener">English</a>
     </nav>
-    <p class="copy">© 1997 H.S.K　「カットハウスひかり」は登録商標です。</p>
+    <p class="copy">© 1997 H.S.K</p>
   </div>
 </footer>
-
 </body>
 </html>

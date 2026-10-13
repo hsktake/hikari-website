@@ -6,4 +6,5 @@
 - 料金は店舗ごとに異なるため、金額を書かず店舗ページへ案内する。事実が不明な情報（店舗の地名など）は作らない。
 - 動画は100MB制限があるため YouTube 等の埋め込みにする。
 - 本番切り替え（noindex 削除・CNAME 追加）はオーナーの指示があるまで行わない。
-- 色：紺 #14213D、ひかりの黄 #FFC93C、薄い空色 #F3F7FB。書体：Dela Gothic One（見出し）、Zen Kaku Gothic New（本文）。
+- デザイン：ナチュラル系（グレージュ #7B736B、和紙色 #F6F4F1、セージ #A3AE91）。書体：Shippori Mincho（和文）、Cormorant Garamond（英字）、Great Vibes（筆記体）、Zen Kaku Gothic New（店舗情報など細かい文字）。
+- 店舗データは shops-data.js。写真は試作用に Unsplash を直接参照（本番前に自社写真へ差し替え）。CSP で外部読み込み先を限定しているので、新しい外部サービスを使うときは各HTMLの CSP も更新する。
