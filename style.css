@@ -162,7 +162,7 @@ img { display: block; max-width: 100%; }
 .bubble::after { content: ""; position: absolute; width: 14px; height: 14px; background: var(--white); border: 3px solid var(--orange); border-top: 0; border-left: 0; }
 .b1 { left: -30px; top: -30px; }
 .b1::after { left: 40px; bottom: -9px; transform: rotate(45deg); }
-.b2 { right: -36px; top: 46%; animation-delay: 1.3s; }
+.b2 { right: -14px; top: 64%; animation-delay: 1.3s; }
 .b2::after { left: -9px; top: calc(50% - 7px); transform: rotate(135deg); }
 .b3 { left: 8%; bottom: -30px; animation-delay: 2.6s; }
 .b3::after { left: 46px; top: -9px; transform: rotate(-135deg); }
@@ -178,7 +178,7 @@ img { display: block; max-width: 100%; }
   .bubble::after { width: 10px; height: 10px; border-width: 2px; }
   .b1 { left: -6px; top: -26px; }
   .b1::after { bottom: -7px; left: 26px; }
-  .b2 { right: -6px; top: 44%; }
+  .b2 { right: -4px; top: 62%; }
   .b2::after { left: -7px; top: calc(50% - 5px); }
   .b3 { left: 6%; bottom: -24px; }
   .b3::after { top: -7px; left: 30px; }
