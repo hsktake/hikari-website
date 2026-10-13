@@ -1398,3 +1398,6 @@ a.shop-photo { display: grid; }
 .sp-price { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 @media (max-width: 600px) { .sp-map { aspect-ratio: 4 / 3; } }
 .sp-app-lead .s { display: block; }
+/* 店舗一覧の下の注意書き：1文ずつ改行 */
+.test-note .s { display: block; }
+.test-note .gap { margin-top: 10px; }
