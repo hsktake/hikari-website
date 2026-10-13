@@ -824,6 +824,8 @@ img { display: block; max-width: 100%; height: auto; }
   .stores .store img { height: 40px; width: auto; }
   .os { font-size: 10.5px; margin-top: 6px; }
   .app-note { font-size: 10.5px; margin-top: 8px; line-height: 1.6; }
+  .install, .app-note { text-align: center; }
+  .install-title, .stores { justify-content: center; }
 
   /* 予約からカットまで */
   .flow { gap: 8px; }
