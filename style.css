@@ -775,3 +775,114 @@ img { display: block; max-width: 100%; height: auto; }
   .wf-title { font-size: 15.5px; }
   .wf-track li { font-size: 13.5px; padding: 6px 14px 6px 9px; }
 }
+
+/* ======================================================
+   スマホ：メニューから各コーナーへ飛んだとき、1画面に収まるように
+   ====================================================== */
+@media (max-width: 600px) {
+  section[id] { scroll-margin-top: 70px; }
+  .section { padding: 26px 0 30px; }
+  .heading { margin-bottom: 14px; }
+  .heading .en { font-size: 13px; padding: 1px 12px; }
+  .heading .en::before { width: 12px; height: 12px; }
+  .heading h2 { font-size: 22px; margin-top: 6px; }
+  .heading p { font-size: 12.5px; margin-top: 4px; line-height: 1.6; }
+
+  /* 店舗を探す */
+  .quick-search { margin-bottom: 14px; gap: 8px; }
+  .quick-search .search { min-height: 48px; }
+  .quick-search .btn { min-height: 46px; }
+  .pref-grid { gap: 8px; }
+  .pref-card { min-height: 104px; padding: 10px 12px; border-radius: 16px; }
+  .pref-card .en { font-size: 11px; }
+  .pref-card .ja { font-size: 19px; }
+  .pref-card .count { font-size: 11.5px; margin-top: 2px; }
+  #shops .center { margin-top: 14px; }
+
+  /* 公式アプリ */
+  .app-pill { font-size: 12px; padding: 1px 12px; }
+  .app-copy h2 { font-size: 25px; margin-top: 8px; }
+  .phone-mini { top: -66px; width: 70px; }
+  .app-lead { font-size: 12.5px; margin-top: 8px; line-height: 1.65; }
+  .wait-fun { margin-top: 10px; padding: 8px 0 6px; border-radius: 16px; }
+  .wf-title { font-size: 13px; }
+  .wf-marquee { margin-top: 6px; }
+  .wf-rev { display: none; }
+  .wf-track li { font-size: 12px; padding: 4px 11px 4px 7px; }
+  .wf-track .em { font-size: 15px; }
+  .app-points { grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 18px; }
+  .app-points li { flex-direction: column; text-align: center; gap: 4px; padding: 14px 6px 10px; border-radius: 14px; }
+  .app-points li::before { font-size: 9px; top: -8px; left: 50%; translate: -50% 0; padding: 0 7px; white-space: nowrap; }
+  .app-points .ic { width: 40px; height: 40px; }
+  .app-points svg { width: 24px; height: 24px; }
+  .app-points strong { font-size: 11.5px; line-height: 1.45; }
+  .app-points li > span:last-child { font-size: 0; }
+  .app-points li > span:last-child strong { font-size: 11.5px; }
+  .install { margin-top: 12px; padding: 10px 12px 8px; border-radius: 16px; }
+  .install-title { font-size: 14px; }
+  .stores { margin-top: 6px; gap: 8px; flex-wrap: nowrap; }
+  .stores .store img { height: 40px; width: auto; }
+  .os { font-size: 10.5px; margin-top: 6px; }
+  .app-note { font-size: 10.5px; margin-top: 8px; line-height: 1.6; }
+
+  /* 予約からカットまで */
+  .flow { gap: 8px; }
+  .flow li { grid-template-columns: 64px 1fr; padding: 8px 10px 8px 14px; border-radius: 14px; gap: 0 10px; }
+  .flow li::before { width: 26px; height: 26px; font-size: 13px; border-width: 3px; top: -6px; left: -8px; }
+  .flow-ill { max-width: 64px; margin: 0; }
+  .flow h3 { font-size: 14px; margin-top: 0; }
+  .flow p { font-size: 11px; line-height: 1.55; margin-top: 1px; }
+  .chip-hot { font-size: 9.5px; padding: 0 7px; justify-self: start; }
+
+  /* メニュー */
+  .menu-note { margin-top: 10px; font-size: 12px; }
+
+  /* Instagram */
+  .sns-grid { gap: 14px; }
+  .ig-pill { font-size: 12px; }
+  .sns-copy h2 { font-size: 22px; margin-top: 8px; line-height: 1.35; }
+  .sns-copy p { font-size: 12.5px; margin-top: 6px; line-height: 1.6; }
+  .btn-ig { min-height: 48px; margin-top: 10px; }
+  .sns-others { margin-top: 8px; font-size: 12px; gap: 4px 12px; }
+  .ig-phone { width: 230px; padding: 8px 8px 10px; border-radius: 20px; }
+  .ig-top { padding: 0 2px 6px; gap: 6px; }
+  .ig-top img { width: 34px; height: 34px; padding: 3px; }
+  .ig-top strong { font-size: 12px; }
+  .ig-top small { font-size: 10px; }
+  .ig-feed { gap: 3px; }
+
+  /* 代表メッセージ・会社案内 */
+  .videos { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .video { border-radius: 12px; }
+  .video .play { width: 40px; height: 40px; }
+  .video .play::after { left: 15px; top: 11px; border-left-width: 13px; border-top-width: 9px; border-bottom-width: 9px; }
+  .video-title { font-size: 11.5px; margin-top: 6px; line-height: 1.5; }
+  .company-table { margin-top: 14px; padding: 2px 14px; border-radius: 14px; }
+  .company-table div { grid-template-columns: 5.5em 1fr; gap: 8px; padding: 7px 0; font-size: 12px; line-height: 1.55; }
+
+  /* 採用情報 */
+  .rc-pill { font-size: 12px; padding: 2px 14px; }
+  .rc-head h2 { font-size: 22px; margin-top: 8px; }
+  .rc-catch { font-size: 15px; margin-top: 6px; }
+  .rc-lead { display: none; }
+  .rc-stats { grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 14px; }
+  .rc-stats li { padding: 8px 2px 6px; border-radius: 12px; box-shadow: 0 4px 0 var(--orange); }
+  .rc-stats small { font-size: 9px; line-height: 1.35; min-height: 2.7em; display: grid; place-items: center; }
+  .rc-stats strong { font-size: 10px; margin-top: 0; }
+  .rc-stats .num { font-size: 20px; margin: 0; }
+  .rc-stats em { font-size: 9px; }
+  .rc-sub { margin-top: 14px; font-size: 15px; }
+  .rc-jobs { grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; }
+  .rc-jobs a { padding: 0 4px 8px; border-radius: 14px; box-shadow: 0 4px 0 rgba(0,0,0,.25); }
+  .rc-photo { height: 92px; width: calc(100% + 8px); }
+  .rc-photo img { height: 104px; margin-top: 4px; }
+  .rc-type { margin-top: 6px; font-size: 8.5px; padding: 0 5px; white-space: nowrap; }
+  .rc-jobs strong { font-size: 11px; margin-top: 3px; letter-spacing: 0; text-align: center; line-height: 1.35; }
+  .rc-go { font-size: 9.5px; margin-top: 3px; }
+  .rc-tags { display: none; }
+  .rc-cta { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .rc-cta .btn { min-height: 44px; font-size: 13px; padding: 0 6px; letter-spacing: 0; }
+  .rc-cta .rc-btn-main { grid-column: 1 / -1; min-height: 52px; font-size: 17px; }
+  .rc-more { margin-top: 10px; font-size: 11.5px; gap: 4px 14px; }
+  .rc-scissors { width: 150px; top: 4px; }
+}
