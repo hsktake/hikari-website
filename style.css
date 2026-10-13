@@ -780,7 +780,7 @@ img { display: block; max-width: 100%; height: auto; }
    スマホ：メニューから各コーナーへ飛んだとき、1画面に収まるように
    ====================================================== */
 @media (max-width: 600px) {
-  section[id] { scroll-margin-top: 70px; }
+  html { scroll-padding-top: 70px; }
   .section { padding: 26px 0 30px; }
   .heading { margin-bottom: 14px; }
   .heading .en { font-size: 13px; padding: 1px 12px; }
