@@ -14,8 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=49">
-<script src="main.js?v=49"></script>
+<link rel="stylesheet" href="style.css?v=50">
+<script src="main.js?v=50"></script>
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
@@ -309,7 +309,7 @@
       <div class="heading reveal"><span class="en">Menu</span><h2>メニュー</h2></div>
       <div class="menu-cards">
         <article class="menu-card reveal">
-          <img src="assets/styles/u35-03.jpg" alt="ショートヘアのスタイル例" width="340" height="400" loading="lazy">
+          <div class="menu-media mm-cut"><img src="assets/styles/u35-03.jpg" alt="ショートヘアのスタイル例" width="340" height="400" loading="lazy"></div>
           <div class="menu-body">
             <h3>カット</h3>
             <p>丸刈りからロングまで。大人もお子さまも、男性も女性も。</p>
@@ -317,7 +317,11 @@
           </div>
         </article>
         <article class="menu-card reveal">
-          <img src="assets/eyebrow.jpg" alt="眉毛を整えている様子" width="301" height="211" loading="lazy">
+          <div class="menu-media mm-brow">
+            <figure><img src="assets/menu/brow-before.webp" alt="眉毛カット スペシャルコースの施術前" width="300" height="131" loading="lazy"><figcaption>BEFORE</figcaption></figure>
+            <span class="mm-arrow" aria-hidden="true"></span>
+            <figure class="after"><img src="assets/menu/brow-after.webp" alt="眉毛カット スペシャルコースの施術後" width="300" height="131" loading="lazy"><figcaption>AFTER</figcaption></figure>
+          </div>
           <div class="menu-body">
             <h3>眉毛カット</h3>
             <ul class="menu-tags"><li>スペシャル</li><li>全体</li><li>部分</li></ul>
@@ -326,10 +330,7 @@
           </div>
         </article>
         <article class="menu-card reveal">
-          <div class="face-media">
-            <span class="face-ring"><img src="assets/facecare.jpg" alt="あごに手を当てて微笑む男性" width="280" height="470" loading="lazy"></span>
-            <img class="fk fk1" src="assets/sparkle.svg" alt="" aria-hidden="true"><img class="fk fk2" src="assets/sparkle.svg" alt="" aria-hidden="true"><img class="fk fk3" src="assets/sparkle.svg" alt="" aria-hidden="true">
-          </div>
+          <div class="menu-media mm-face"><img src="assets/menu/facecare.jpg" alt="あごに手を当てて微笑む男性" width="340" height="399" loading="lazy"></div>
           <div class="menu-body">
             <h3>フェイスケア</h3>
             <ul class="menu-tags"><li>ヒゲ脱毛</li><li>光フェイシャル</li></ul>

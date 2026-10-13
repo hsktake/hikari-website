@@ -442,15 +442,16 @@ img { display: block; max-width: 100%; height: auto; }
 /* ---------- メニュー ---------- */
 .menu-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .menu-card { display: flex; flex-direction: column; background: var(--white); border-radius: var(--radius-l); overflow: hidden; box-shadow: var(--pop-shadow); }
-.menu-card > img { width: 100%; height: 240px; object-fit: contain; background: var(--sky); }
-/* フェイスケア：元画像の端が切れているので、顔を丸く切り抜いて見せる */
-.face-media { position: relative; height: 240px; background: var(--sky); display: grid; place-items: center; overflow: hidden; }
-.face-ring { position: relative; width: 200px; height: 200px; border-radius: 50%; overflow: hidden; background: #CFE9F6; border: 6px solid var(--white); box-shadow: 0 0 0 5px var(--orange), 0 10px 0 5px rgba(239,122,0,.25); }
-.face-ring img { position: absolute; width: 191px; max-width: none; height: auto; left: -3px; top: -103px; }
-.fk { position: absolute; height: auto; animation: twinkle 2.6s ease-in-out infinite; }
-.fk1 { width: 30px; left: 18%; top: 22px; }
-.fk2 { width: 20px; right: 20%; top: 40px; animation-delay: .8s; }
-.fk3 { width: 24px; right: 17%; bottom: 30px; animation-delay: 1.6s; }
+.menu-media { position: relative; aspect-ratio: 1 / 1; background: var(--sky); overflow: hidden; }
+.menu-media > img { width: 100%; height: 100%; object-fit: cover; }
+.mm-cut > img { object-position: 50% 0; }
+.mm-face > img { object-position: 50% 35%; }
+.mm-brow { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4%; padding: 6%; background: var(--sun-soft); }
+.mm-brow figure { position: relative; margin: 0; width: 100%; }
+.mm-brow figure img { display: block; width: 100%; height: auto; border-radius: 12px; border: 3px solid var(--white); box-shadow: 0 4px 0 rgba(74,46,26,.12); }
+.mm-brow figcaption { position: absolute; left: 8px; top: 8px; font-family: var(--en); font-weight: 600; font-size: 13px; letter-spacing: .06em; background: var(--brown); color: var(--white); padding: 0 10px; border-radius: 999px; }
+.mm-brow .after figcaption { background: var(--orange); }
+.mm-arrow { width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 12px solid var(--orange); }
 .menu-body { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; flex: 1; }
 .menu-body h3 { font-size: 22px; letter-spacing: .08em; }
 .menu-body p { font-size: 14.5px; font-weight: 500; color: var(--brown-soft); }
@@ -458,7 +459,22 @@ img { display: block; max-width: 100%; height: auto; }
 .menu-tags li { background: var(--sky); border-radius: 999px; padding: 0 12px; font-size: 13px; font-weight: 800; }
 .menu-body .more { margin-top: auto; }
 .menu-note { text-align: center; font-size: 13px; color: var(--brown-soft); margin-top: 20px; }
-@media (max-width: 900px) { .menu-cards { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; } .menu-card > img, .face-media { height: 260px; } }
+@media (max-width: 900px) { .menu-cards { gap: 12px; } .menu-body { padding: 14px 14px 16px; } .menu-body h3 { font-size: 18px; } }
+/* スマホでも3つ横並び */
+@media (max-width: 600px) {
+  .menu-cards { gap: 8px; }
+  .menu-card { border-radius: 16px; }
+  .menu-body { padding: 10px 8px 12px; gap: 6px; }
+  .menu-body h3 { font-size: 14px; letter-spacing: 0; }
+  .menu-body p { font-size: 11px; line-height: 1.6; }
+  .menu-tags { gap: 3px; }
+  .menu-tags li { font-size: 10px; padding: 0 6px; }
+  .menu-body .more { font-size: 11px; letter-spacing: 0; }
+  .mm-brow { padding: 7% 6%; }
+  .mm-brow figure img { border-width: 2px; border-radius: 6px; }
+  .mm-brow figcaption { font-size: 8px; left: 3px; top: 3px; padding: 0 5px; }
+  .mm-arrow { border-left-width: 6px; border-right-width: 6px; border-top-width: 6px; }
+}
 
 /* ---------- 動画 ---------- */
 .videos { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
