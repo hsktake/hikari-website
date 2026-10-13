@@ -224,6 +224,8 @@ img { display: block; max-width: 100%; height: auto; }
 .b2::after { left: 44px; top: -9px; transform: rotate(-135deg); }
 .b3 { right: -30px; bottom: -58px; rotate: -3deg; animation-delay: 2.4s; }
 .b3::after { right: 44px; top: -9px; transform: rotate(-135deg); }
+.b4 { right: -26px; top: -42px; rotate: 4deg; animation-delay: .6s; }
+.b4::after { right: 40px; bottom: -9px; transform: rotate(45deg); }
 @keyframes bubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
 @media (max-width: 880px) {
@@ -241,6 +243,8 @@ img { display: block; max-width: 100%; height: auto; }
   .b2 { left: -4px; bottom: -24px; font-size: 13.5px; padding: 5px 14px; }
   .b2::after { left: 28px; top: -7px; }
   .b3 { right: -4px; bottom: -58px; }
+  .b4 { right: -4px; top: -28px; }
+  .b4::after { bottom: -7px; right: 26px; }
   .b3::after { top: -7px; right: 30px; }
   .k1 { width: 24px; left: -20px; }
   .k3 { width: 26px; right: -26px; }
