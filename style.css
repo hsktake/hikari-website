@@ -1081,3 +1081,10 @@ img { display: block; max-width: 100%; height: auto; }
   .at-panel strong { font-size: 14.5px; }
   .at-panel p { font-size: 12px; line-height: 1.6; }
 }
+@media (max-width: 600px) {
+  .app-tabs { margin-top: 10px; }
+  .at-panel { min-height: 64px; padding: 6px 12px; }
+  #app .install { margin-top: 8px; padding: 10px 10px 8px; }
+  #app .app-grid { padding-bottom: 12px; }
+  #app .app-note { margin-top: 6px; }
+}
