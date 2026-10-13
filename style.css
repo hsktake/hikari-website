@@ -1907,3 +1907,7 @@ a.shop-photo { display: grid; }
   .rx-l { font-size: 14px; padding: 5px 9px 6px; left: 6px; bottom: 8px; }
   .rx-l em { font-size: 9.5px; padding: 0 7px; }
 }
+/* 採用：相談・見学・応募の文を区切りごとに改行 */
+.rq-entry-lead .s, .rq-tel-note .s { display: block; }
+.rq-entry-lead .ph { display: inline-block; }
+.rq-tel-time { margin-top: 4px; font-weight: 800; color: var(--brown); }

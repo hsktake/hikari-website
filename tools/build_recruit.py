@@ -164,11 +164,11 @@ def entry_block(prefix, job=""):
     <div class="wrap">
       <p class="rq-en">ENTRY</p>
       <h2 id="h-entry">相談・見学・応募</h2>
-      <p class="rq-entry-lead">「まだ応募するかどうかを決めかねている」という方も大歓迎です！<br class="pc-br">疑問・質問のご相談も、職場見学も、お気軽にどうぞ。</p>
+      <p class="rq-entry-lead"><span class="s"><span class="ph">「まだ応募するかどうかを</span><span class="ph">決めかねている」</span><span class="ph">という方も大歓迎です！</span></span><span class="s"><span class="ph">疑問・質問のご相談も、</span><span class="ph">職場見学も、</span><span class="ph">お気軽にどうぞ。</span></span></p>
       <div class="rq-tel">
         <p class="rq-tel-ttl">お電話でも受付中です</p>
         <a class="rq-tel-btn" href="tel:{FREE_DIAL_TEL}">{ICON_TEL}<span><small>フリーダイヤル</small>{FREE_DIAL}</span></a>
-        <p class="rq-tel-note">株式会社エイチ・エス・ケイ　カットハウスひかり本部 採用係<br>9:00〜18:00受付（土日祝OK）</p>
+        <p class="rq-tel-note"><span class="s">カットハウスひかり本部　採用係</span><span class="s">（株式会社エイチ・エス・ケイ）</span><span class="s rq-tel-time">9:00〜18:00受付（土日祝OK）</span></p>
       </div>
       <ul class="rq-entries">{''.join(items)}</ul>
       <p class="rq-privacy">ご記入いただいた個人情報は、お問い合わせ（応募）への対応および確認のためのみに利用します。また、この目的のためにお問い合わせ（応募）の記録を残すことがあります。（<a href="{prefix}privacy.html">プライバシーポリシー</a>）</p>
