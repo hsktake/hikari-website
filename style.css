@@ -148,7 +148,7 @@ img { display: block; max-width: 100%; }
 .spark-2 { right: 40px; top: -44px; width: 30px; animation-delay: .8s; }
 @keyframes twinkle { 0%, 100% { transform: scale(1) rotate(0); opacity: 1; } 50% { transform: scale(.6) rotate(25deg); opacity: .6; } }
 
-/* 吹き出し：左上 → 右中 → 左下 のジグザグで読む */
+/* 吹き出し：左上に1つ、写真の下に左右2つ（顔にかからない位置） */
 .bubbles { list-style: none; margin: 0; padding: 0; }
 .bubble {
   position: absolute; z-index: 3;
@@ -162,10 +162,10 @@ img { display: block; max-width: 100%; }
 .bubble::after { content: ""; position: absolute; width: 14px; height: 14px; background: var(--white); border: 3px solid var(--orange); border-top: 0; border-left: 0; }
 .b1 { left: -30px; top: -30px; }
 .b1::after { left: 40px; bottom: -9px; transform: rotate(45deg); }
-.b2 { right: -14px; top: 64%; animation-delay: 1.3s; }
-.b2::after { left: -9px; top: calc(50% - 7px); transform: rotate(135deg); }
-.b3 { left: 8%; bottom: -30px; animation-delay: 2.6s; }
-.b3::after { left: 46px; top: -9px; transform: rotate(-135deg); }
+.b2 { left: -24px; bottom: -28px; animation-delay: 1.3s; }
+.b2::after { left: 40px; top: -9px; transform: rotate(-135deg); }
+.b3 { right: -16px; bottom: -48px; animation-delay: 2.6s; }
+.b3::after { right: 40px; top: -9px; transform: rotate(-135deg); }
 @keyframes bubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
 @media (max-width: 880px) {
@@ -178,10 +178,10 @@ img { display: block; max-width: 100%; }
   .bubble::after { width: 10px; height: 10px; border-width: 2px; }
   .b1 { left: -6px; top: -26px; }
   .b1::after { bottom: -7px; left: 26px; }
-  .b2 { right: -4px; top: 62%; }
-  .b2::after { left: -7px; top: calc(50% - 5px); }
-  .b3 { left: 6%; bottom: -24px; }
-  .b3::after { top: -7px; left: 30px; }
+  .b2 { left: -6px; bottom: -22px; }
+  .b2::after { top: -7px; left: 26px; }
+  .b3 { right: -6px; bottom: -40px; }
+  .b3::after { top: -7px; right: 26px; }
   .spark-1 { right: -4px; top: -26px; width: 40px; }
   .spark-2 { display: none; }
 }
