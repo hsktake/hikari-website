@@ -1911,3 +1911,7 @@ a.shop-photo { display: grid; }
 .rq-entry-lead .s, .rq-tel-note .s { display: block; }
 .rq-entry-lead .ph { display: inline-block; }
 .rq-tel-time { margin-top: 4px; font-weight: 800; color: var(--brown); }
+.rq-e-txt .s, .rq-privacy .s { display: block; }
+.rq-e-txt .ph, .rq-privacy .ph { display: inline-block; }
+.rq-privacy .s + .s { margin-top: 2px; }
+.rq-privacy a { display: inline-block; margin-top: 6px; font-weight: 800; }

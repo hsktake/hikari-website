@@ -65,6 +65,16 @@ def rich(text):
     return "".join(out)
 
 
+def phr(text):
+    """1文ずつ改行し、文の中は読点ごとにまとめて、言葉の途中で折り返さない"""
+    sents = [x for x in re.split(r"(?<=[。！？])", text) if x.strip()]
+    out = []
+    for sn in sents:
+        parts = [x for x in re.split(r"(?<=、)", sn) if x]
+        out.append('<span class="s">' + "".join(f'<span class="ph">{esc(x)}</span>' for x in parts) + "</span>")
+    return "".join(out)
+
+
 def mailto(kind, job=""):
     subject = f"【採用】{kind}の申し込み" + (f"（{job}）" if job else "")
     body = ("お名前：\nふりがな：\n電話番号：\nお住まいの地域（市町村まで）：\n性別：\n年齢：\n"
@@ -157,7 +167,7 @@ def entry_block(prefix, job=""):
         else:
             href, label, ext = mailto(kind, job), f"メールで{kind}する", ""
         cls = "rq-e is-main" if kind == "応募" else "rq-e"
-        items.append(f'<li class="{cls}"><p class="rq-e-tag">{kind}</p><h3>{head}</h3><p>{esc(text)}</p>'
+        items.append(f'<li class="{cls}"><p class="rq-e-tag">{kind}</p><h3>{head}</h3><p class="rq-e-txt">{phr(text)}</p>'
                      f'<a class="btn" href="{esc(href)}"{ext}>{ICON_MAIL}{label}</a></li>')
     return f"""
   <section class="rq-entry" id="entry" aria-labelledby="h-entry">
@@ -171,7 +181,7 @@ def entry_block(prefix, job=""):
         <p class="rq-tel-note"><span class="s">カットハウスひかり本部　採用係</span><span class="s">（株式会社エイチ・エス・ケイ）</span><span class="s rq-tel-time">9:00〜18:00受付（土日祝OK）</span></p>
       </div>
       <ul class="rq-entries">{''.join(items)}</ul>
-      <p class="rq-privacy">ご記入いただいた個人情報は、お問い合わせ（応募）への対応および確認のためのみに利用します。また、この目的のためにお問い合わせ（応募）の記録を残すことがあります。（<a href="{prefix}privacy.html">プライバシーポリシー</a>）</p>
+      <p class="rq-privacy"><span class="s"><span class="ph">ご記入いただいた個人情報は、</span><span class="ph">お問い合わせ（応募）への対応</span><span class="ph">および確認のためのみに利用します。</span></span><span class="s"><span class="ph">また、この目的のために</span><span class="ph">お問い合わせ（応募）の記録を</span><span class="ph">残すことがあります。</span></span><span class="s"><a href="{prefix}privacy.html">プライバシーポリシーを見る ›</a></span></p>
     </div>
   </section>"""
 
