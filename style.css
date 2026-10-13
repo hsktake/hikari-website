@@ -1203,3 +1203,20 @@ img { display: block; max-width: 100%; height: auto; }
 .flow p .ph { display: inline-block; }
 /* 1文ずつ改行して、2行目の頭をそろえる */
 .flow p .s { display: block; }
+
+/* Instagram：添削（文を短く・1文ずつ改行、Xは小さなリンク1つ、アカウント名を左寄せ、ハートは投稿にかぶらない右上へ） */
+.sns-lead .s { display: block; }
+.sns-lead strong { color: #C1358A; font-weight: 800; }
+.sns-others { display: block; margin-top: 16px; }
+.sns-others a { display: inline-block; font-size: 13px; font-weight: 700; color: var(--brown-soft); text-decoration: underline; text-underline-offset: 3px; }
+.sns-others a:hover { color: var(--brown); }
+.ig-top { text-align: left; }
+.ig-top > span { line-height: 1.35; min-width: 0; }
+.ig-top small { display: block; }
+.ig-heart { top: -16px; right: -16px; }
+@media (max-width: 600px) {
+  .sns-lead { font-size: 13px !important; }
+  .sns-others { margin-top: 8px; }
+  .sns-others a { font-size: 12px; }
+  .ig-heart { width: 40px; height: 40px; font-size: 19px; top: -12px; right: -12px; }
+}
