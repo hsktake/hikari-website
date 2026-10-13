@@ -65,7 +65,7 @@
     var li = el("li", "shop");
 
     var photo = el("div", "shop-photo");
-    photo.appendChild(el("span", "ph", "Hikari"));
+    photo.appendChild(el("span", "ph", "準備中"));
     if (s.img) {
       var img = document.createElement("img");
       img.loading = "lazy";
