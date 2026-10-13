@@ -133,9 +133,10 @@ FOOTER = """
       <a href="https://www.cut-hikari-app.com/" rel="noopener">公式アプリ</a>
       <a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a>
       <a href="https://recruit.cut-hikari.com/" rel="noopener">採用情報</a>
-      <a href="https://www.cut-hikari.com/QandA.html" rel="noopener">よくあるご質問</a>
-      <a href="https://www.cut-hikari.com/otoiawase.html" rel="noopener">お問い合わせ</a>
-      <a href="https://www.cut-hikari.com/privacypolicy.html" rel="noopener">プライバシーポリシー</a>
+      <a href="../faq.html">よくあるご質問</a>
+      <a href="../contact.html">お問い合わせ</a>
+      <a href="../privacy.html">プライバシーポリシー</a>
+      <a href="../tokushoho.html">特定商取引法に基づく表記</a>
     </nav>
     <p class="copy">© 1997 H.S.K</p>
   </div>
