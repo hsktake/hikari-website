@@ -1168,3 +1168,21 @@ img { display: block; max-width: 100%; height: auto; }
   #app .phone-mini { right: 2px; width: 42px; top: 36px; }
 }
 @media (max-width: 600px) { #app .app-name strong { font-size: 28px; } #app .phone-mini { width: 40px; right: 4px; } }
+
+/* 添削：アプリ名まわりを「看板」としてオレンジの帯にまとめ、左ぞろえで差別化 */
+#app .app-head { position: relative; background: var(--orange); color: var(--white); border-radius: 20px; padding: 18px 22px 20px; text-align: left; }
+#app .app-head .app-kicker { color: var(--white); justify-content: flex-start; }
+#app .app-head .app-kicker em { background: var(--brown); color: var(--sun); }
+#app .app-head .app-title { justify-content: flex-start; }
+#app .app-head .app-icon { background: var(--white); border: 0; box-shadow: 0 4px 0 var(--orange-deep); }
+#app .app-head .app-name small { color: var(--white); opacity: .9; }
+#app .app-head .app-name strong { color: var(--white); text-shadow: 0 4px 0 var(--orange-deep); }
+#app .app-copy h2 { margin-top: 22px; }
+@media (max-width: 920px) { #app .app-head .phone-mini { top: auto; bottom: -18px; right: 16px; width: 92px; } }
+@media (max-width: 600px) {
+  #app .app-head { padding: 12px 14px 14px; border-radius: 16px; }
+  #app .app-head .app-kicker, #app .app-head .app-title { display: flex; justify-content: flex-start; }
+  #app .app-head .app-name strong { font-size: 30px; }
+  #app .app-head .phone-mini { width: 62px; right: 12px; top: auto; bottom: -18px; }
+  #app .app-copy h2 { margin-top: 16px; }
+}
