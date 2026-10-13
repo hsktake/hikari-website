@@ -455,6 +455,12 @@ img { display: block; max-width: 100%; height: auto; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .js .reveal { opacity: 1; transform: none; }
+  /* ハサミ・クシの小さな動きだけは、ゆっくり続ける（オーナー指示） */
+  .hero-scissors .blade-a { animation: snipA 3.2s ease-in-out infinite !important; }
+  .hero-scissors .blade-b { animation: snipB 3.2s ease-in-out infinite !important; }
+  .hero-kind .blade-a { animation: snipS-a 2.4s ease-in-out infinite !important; }
+  .hero-kind .blade-b { animation: snipS-b 2.4s ease-in-out infinite !important; }
+  .hero-comb { animation: comb 9s ease-in-out infinite !important; }
 }
 
 /* ======================================================

@@ -46,7 +46,7 @@
     document.querySelectorAll(".style-marquee").forEach(function (box) {
       var track = box.querySelector(".style-track");
       if (!track) return;
-      var pos = 0, paused = false, resumeTimer = null, speed = 0.5;
+      var pos = 0, paused = false, resumeTimer = null, speed = reduce ? 0.3 : 0.5;
       function half() { return track.scrollWidth / 2; }
       function pause() { paused = true; clearTimeout(resumeTimer); }
       function resume(delay) {
@@ -55,6 +55,7 @@
       }
       box.addEventListener("touchstart", pause, { passive: true });
       box.addEventListener("touchend", function () { resume(2500); }, { passive: true });
+      box.addEventListener("touchcancel", function () { resume(2500); }, { passive: true });
       box.addEventListener("mouseenter", pause);
       box.addEventListener("mouseleave", function () { resume(600); });
       box.addEventListener("scroll", function () {
@@ -68,9 +69,10 @@
       box.addEventListener("mousedown", function (e) { dragging = true; startX = e.pageX; startLeft = box.scrollLeft; box.style.cursor = "grabbing"; e.preventDefault(); });
       window.addEventListener("mouseup", function () { if (dragging) { dragging = false; box.style.cursor = ""; } });
       window.addEventListener("mousemove", function (e) { if (dragging) box.scrollLeft = startLeft - (e.pageX - startX); });
-      if (reduce) return;
+      // 「動きを減らす」設定の端末でも、ゆっくり流す（オーナー指示）
       function tick() {
         if (!paused && !document.hidden) {
+          if (Math.abs(box.scrollLeft - pos) > 2) pos = box.scrollLeft;
           pos += speed;
           if (pos >= half()) pos -= half();
           box.scrollLeft = pos;
