@@ -1107,3 +1107,32 @@ img { display: block; max-width: 100%; height: auto; }
   #app .app-lead { display: none; }
 }
 @media (max-width: 600px) { #app .app-grid { padding-top: 24px; } #app .wait-fun { margin-top: 8px; } }
+
+/* 待ち時間：いろいろな人のシチュエーションを帯で流す */
+#app .wf-track { padding-bottom: 4px; }
+#app .wf-track li { background: var(--cream); border: 2px solid var(--line); box-shadow: none; padding: 6px 16px 6px 10px; }
+.wf-txt { display: flex; flex-direction: column; line-height: 1.25; text-align: left; }
+.wf-txt small { font-size: 10.5px; font-weight: 800; color: var(--orange-deep); letter-spacing: .04em; }
+#app .wf-track .em { font-size: 24px; }
+
+/* アプリのメリット：押さなくても全部見えるチェックリスト */
+.app-merits { margin-top: 20px; background: var(--cream); border-radius: 18px; padding: 14px 18px; }
+.am-title { font-size: 16px; font-weight: 800; color: var(--brown); }
+.app-merits ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; }
+.app-merits li { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: var(--brown); }
+.app-merits li:last-child { grid-column: 1 / -1; }
+.app-merits svg { flex: none; width: 22px; height: 22px; }
+.app-merits svg circle { fill: var(--orange); }
+.app-merits svg path { fill: none; stroke: var(--white); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.app-merits strong { color: var(--orange-deep); }
+@media (max-width: 600px) {
+  #app .wf-track li { padding: 4px 12px 4px 8px; font-size: 12.5px; }
+  #app .wf-track .em { font-size: 20px; }
+  .wf-txt small { font-size: 9.5px; }
+  .app-merits { margin-top: 12px; padding: 10px 12px; border-radius: 14px; }
+  .am-title { font-size: 14px; }
+  .app-merits ul { grid-template-columns: 1fr; gap: 5px; margin-top: 6px; }
+  .app-merits li { font-size: 13.5px; }
+  .app-merits li:last-child { grid-column: auto; }
+  .app-merits svg { width: 18px; height: 18px; }
+}
