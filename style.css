@@ -144,10 +144,10 @@ img { display: block; max-width: 100%; }
   width: 100%; height: 100%; object-fit: cover; object-position: 65% center;
 }
 .hero-frame::before {           /* 左から白くかすませて文字を読みやすく */
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(90deg, rgba(246,244,241,.96) 0%, rgba(246,244,241,.85) 38%, rgba(246,244,241,0) 70%);
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(90deg, rgba(246,244,241,.97) 0%, rgba(246,244,241,.9) 40%, rgba(246,244,241,0) 72%);
 }
-.hero-copy { position: relative; padding: 56px 56px; max-width: 620px; }
+.hero-copy { position: relative; z-index: 2; padding: 56px 56px; max-width: 620px; }
 .hero-script { font-family: var(--script); font-size: 34px; color: var(--sage-deep); line-height: 1; margin-bottom: 18px; }
 .hero h1 { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.65; letter-spacing: .1em; }
 .hero h1 span { display: block; white-space: nowrap; }
