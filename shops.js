@@ -5,11 +5,6 @@
   var SHOPS = window.SHOPS || [];
   var PREFS = ["茨城", "栃木", "千葉", "福島"];
   var BRAND = "カットハウスひかり";
-  var IMG_BASE = "https://www.cut-hikari.com/image/";
-  var SHOP_PAGE = "https://www.cut-hikari.info/HO0010?shop_code=";
-  // 試作用にサイト内へ取り込んだ店舗写真（他は本番ドメインで表示される）
-  var LOCAL_PHOTOS = ["p07","p20","p29","p48","p51","p60","p69","p71","p76","p78","p86","p88","p90","p91","p95"];
-
   var state = { pref: "すべて", q: "", care: false, open: false };
 
   var $q = document.getElementById("q");
@@ -32,8 +27,6 @@
   }
 
   SHOPS.forEach(function (s) {
-    s.hasCare = s.note.indexOf("脱毛") >= 0;
-    s.isOther = s.note.indexOf("別業態") >= 0;
     s.noHoliday = s.holiday === "無休";
     s.key = norm(s.name + s.city + s.address);
   });
@@ -65,15 +58,18 @@
   // ---- 店舗カード ----
   function card(s) {
     var li = el("li", "shop");
+    var page = "shop/" + s.code + ".html";
 
-    var photo = el("div", "shop-photo");
+    var photo = el("a", "shop-photo" + (s.logo ? " is-logo" : ""));
+    photo.href = page;
+    photo.setAttribute("aria-hidden", "true");
+    photo.tabIndex = -1;
     photo.appendChild(el("span", "ph", "準備中"));
     if (s.img) {
       var img = document.createElement("img");
       img.loading = "lazy";
       img.alt = "";
-      var local = LOCAL_PHOTOS.indexOf(s.img.replace(".png", "")) >= 0;
-      img.src = local ? "assets/shops/" + s.img.replace(".png", ".jpg") : IMG_BASE + s.img;
+      img.src = s.img;
       img.addEventListener("error", function () { img.remove(); });
       photo.appendChild(img);
     }
@@ -82,12 +78,15 @@
 
     var body = el("div", "shop-body");
     var h3 = el("h3");
+    var link = el("a");
+    link.href = page;
     if (s.name.indexOf(BRAND) === 0) {
-      h3.appendChild(el("span", "brand-small", BRAND));
-      h3.appendChild(document.createTextNode(s.name.slice(BRAND.length)));
+      link.appendChild(el("span", "brand-small", BRAND));
+      link.appendChild(document.createTextNode(s.name.slice(BRAND.length)));
     } else {
-      h3.textContent = s.name;
+      link.textContent = s.name;
     }
+    h3.appendChild(link);
     body.appendChild(h3);
 
     var dl = el("dl");
@@ -100,18 +99,17 @@
     body.appendChild(dl);
 
     var tags = el("div", "tags");
-    if (s.hasCare) tags.appendChild(el("span", "tag tag-care", "ヒゲ脱毛・光フェイシャル"));
-    if (s.isOther) tags.appendChild(el("span", "tag tag-other", s.note.indexOf("男性専用") >= 0 ? "別ブランド・男性専用" : "別ブランド"));
-    if (s.note.indexOf("駅チカ") >= 0) tags.appendChild(el("span", "tag", "駅チカ"));
-    if (s.note.indexOf("Wi-Fiなし") < 0) tags.appendChild(el("span", "tag", "フリーWi-Fi"));
+    if (s.care) tags.appendChild(el("span", "tag tag-care", "ヒゲ脱毛・光フェイシャル"));
+    if (s.other) tags.appendChild(el("span", "tag tag-other", s.men ? "別ブランド・男性専用" : "別ブランド"));
+    if (s.station) tags.appendChild(el("span", "tag", "駅チカ"));
+    if (s.wifi) tags.appendChild(el("span", "tag", "フリーWi-Fi"));
     body.appendChild(tags);
 
     var act = el("div", "shop-actions");
-    var a1 = el("a", "primary", "店舗ページ");
-    a1.href = SHOP_PAGE + s.code;
-    a1.rel = "noopener";
-    var a2 = el("a", "secondary", "地図を開く");
-    a2.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(s.name + " " + s.address);
+    var a1 = el("a", "primary", "店舗ページを見る");
+    a1.href = page;
+    var a2 = el("a", "secondary", "地図");
+    a2.href = s.map;
     a2.rel = "noopener";
     a2.target = "_blank";
     act.appendChild(a1);
@@ -127,7 +125,7 @@
     var q = norm(state.q);
     var hits = SHOPS.filter(function (s) {
       if (state.pref !== "すべて" && s.p !== state.pref) return false;
-      if (state.care && !s.hasCare) return false;
+      if (state.care && !s.care) return false;
       if (state.open && !s.noHoliday) return false;
       if (q && s.key.indexOf(q) < 0) return false;
       return true;

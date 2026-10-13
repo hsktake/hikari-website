@@ -1,0 +1,3732 @@
+[
+ {
+  "code": "00059",
+  "pref": "茨城",
+  "city": "阿見町",
+  "name": "カットハウスひかり荒川本郷店",
+  "short": "荒川本郷店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "稲敷郡阿見町本郷3丁目1-1 ピアシティ荒川本郷 カスミ敷地内",
+  "hours": "9:00〜18:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が18時以降となるチケットは購入できません。",
+   "混雑状況によって18時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/BqrXBuSWWfqjsBMD6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00059",
+  "photo": "assets/shops/00059.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00097",
+  "pref": "茨城",
+  "city": "石岡市",
+  "name": "カットハウスひかり石岡中央店",
+  "short": "石岡中央店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "石岡市石岡2丁目1-10 三和開発ビル1F",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/rsmtDNXyc39wfxJi6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00097",
+  "photo": "assets/shops/00097.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00032",
+  "pref": "茨城",
+  "city": "稲敷市",
+  "name": "カットハウスひかり稲敷パルナ店",
+  "short": "稲敷パルナ店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "稲敷市西代1495 パルナショッピングセンター MEGAドン・キホーテ隣り",
+  "hours": "10:00〜20:00（19:30受付終了）",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時30分以降となるチケットは購入できません。",
+   "20時閉館のため、19時30分より早く受付を終了する場合があります。"
+  ],
+  "holiday": "火曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ],
+     [
+      "スキンフェードカット",
+      "3,400円"
+     ],
+     [
+      "スキンフェードメンテナンス",
+      "2,500円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/NKaxkvBCbSx39v7E8",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00032",
+  "photo": "assets/shops/00032.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00053",
+  "pref": "茨城",
+  "city": "稲敷市",
+  "name": "カットハウスひかり稲敷パンプ店",
+  "short": "稲敷パンプ店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "稲敷市江戸崎甲4836 稲敷パンプ2F ダイソーさん前",
+  "hours": "10:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "19時閉館のため、19時より早く受付を終了いたします。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "光フェイシャル",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/bnSzMK42S9ipt1MP7",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00053",
+  "photo": "assets/shops/00053.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00029",
+  "pref": "茨城",
+  "city": "小美玉市",
+  "name": "カットハウスひかり羽鳥店",
+  "short": "羽鳥店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "小美玉市羽鳥2908-1 TAIRAYA美野里店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/3er4ohtgmUWGCBYJ9",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00029",
+  "photo": "assets/shops/00029.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00004",
+  "pref": "茨城",
+  "city": "笠間市",
+  "name": "カットハウスひかり友部店",
+  "short": "友部店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "笠間市旭町229-1",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "日曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/tqjhyY9jvxUKR1tz6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00004",
+  "photo": "assets/shops/00004.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00091",
+  "pref": "茨城",
+  "city": "鹿嶋市",
+  "name": "カットハウスひかり鹿嶋東店",
+  "short": "鹿嶋東店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "鹿嶋市宮中2016-1 セイミヤ鹿島東店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "月曜・水曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/eNCpV7B1aQQvJumw8",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00091",
+  "photo": "assets/shops/00091.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00090",
+  "pref": "茨城",
+  "city": "北茨城市",
+  "name": "カットハウスひかり大津港店",
+  "short": "大津港店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "北茨城市大津町北町2471 サンユーストアー大津店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "金曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/rAt8B7aibS8NnziSA",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00090",
+  "photo": "assets/shops/00090.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00018",
+  "pref": "茨城",
+  "city": "桜川市",
+  "name": "カットハウスひかり真壁店",
+  "short": "真壁店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "桜川市真壁町飯塚505-6 エコスTAIRAYA真壁店さん隣り",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "火曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/HvTp5x6mgEitn5gg9",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00018",
+  "photo": "assets/shops/00018.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00055",
+  "pref": "茨城",
+  "city": "下妻市",
+  "name": "カットハウスひかり下妻店",
+  "short": "下妻店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "下妻市長塚24-1 カスミ下妻店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "火曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/c4jnK4xzQSdprvGY6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00055",
+  "photo": "assets/shops/00055.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00058",
+  "pref": "茨城",
+  "city": "常総市",
+  "name": "カットハウスひかり石下店",
+  "short": "石下店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "常総市新石下926 石下セントラル歯科クリニックさん隣り",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "火曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/C1BhvsRQDC59kbj76",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00058",
+  "photo": "assets/shops/00058.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00079",
+  "pref": "茨城",
+  "city": "常総市",
+  "name": "カットハウスひかり水海道淵頭店",
+  "short": "水海道淵頭店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "常総市水海道淵頭町4566-1 TAIRAYAファインズ淵頭店内",
+  "hours": "9:30〜19:00（日曜のみ9:00〜）",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "木曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "光フェイシャル",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/fmXRVT7ot1gFWTBi7",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00079",
+  "photo": "assets/shops/00079.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00048",
+  "pref": "茨城",
+  "city": "大子町",
+  "name": "カットハウスひかり大子店",
+  "short": "大子店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "久慈郡大子町池田572-1 ケーズデンキ大子店さん隣り",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/F5UyaASKWZsDsS1J9",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00048",
+  "photo": "assets/shops/00048.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00020",
+  "pref": "茨城",
+  "city": "高萩市",
+  "name": "カットハウスひかり高萩店",
+  "short": "高萩店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "高萩市安良川181 カスミ高萩店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ],
+     [
+      "うなじ",
+      "2,000円/回"
+     ],
+     [
+      "耳毛",
+      "2,000円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "顔全体",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/xKV2sbfzkbRkgJsx7",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00020",
+  "photo": "assets/shops/00020.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00046",
+  "pref": "茨城",
+  "city": "つくば市",
+  "name": "カットハウスひかりつくば梅園店",
+  "short": "つくば梅園店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "つくば市下原380-5 レプサモールつくば内 カスミ梅園店内",
+  "hours": "9:00〜18:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が18時以降となるチケットは購入できません。",
+   "混雑状況によって18時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "光フェイシャル",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/fserHorj81hVqJ3z7",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00046",
+  "photo": "assets/shops/00046.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00026",
+  "pref": "茨城",
+  "city": "つくば市",
+  "name": "カットハウスひかりつくば高見原店",
+  "short": "つくば高見原店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "つくば市高見原1丁目1-182 TAIRAYA茎崎店駐車場",
+  "hours": "9:00〜18:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が18時以降となるチケットは購入できません。",
+   "混雑状況によって18時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/HKfRsjkF8vPUgU9f8",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00026",
+  "photo": "assets/shops/00026.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00076",
+  "pref": "茨城",
+  "city": "つくばみらい市",
+  "name": "カットハウスひかりみらい平店",
+  "short": "みらい平店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "つくばみらい市紫峰ヶ丘1丁目2-5 とりせんみらい平店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "金曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/K2KAivXKRspqYHxB6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00076",
+  "photo": "assets/shops/00076.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00031",
+  "pref": "茨城",
+  "city": "取手市",
+  "name": "カットハウスひかり藤代駅南口店",
+  "short": "藤代駅南口店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "取手市藤代南1丁目11-3",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "火曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/R5wCAa4uvY2tJyGd7",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00031",
+  "photo": "assets/shops/00031.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00038",
+  "pref": "茨城",
+  "city": "行方市",
+  "name": "カットハウスひかり麻生店",
+  "short": "麻生店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "行方市麻生3288-50 セイミヤモール麻生店テナント",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/iXWYSw7zytsVQEet5",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00038",
+  "photo": "assets/shops/00038.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00011",
+  "pref": "茨城",
+  "city": "坂東市",
+  "name": "カットハウスひかり岩井店",
+  "short": "岩井店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "坂東市辺田1517 グリーンショッピングセンター駐車場",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "火曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/vidESS5DjAYsmkQHA",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00011",
+  "photo": "assets/shops/00011.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00051",
+  "pref": "茨城",
+  "city": "日立市",
+  "name": "カットハウスひかり鮎川店",
+  "short": "鮎川店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "日立市鮎川町4丁目1-8 カスミ鮎川店敷地内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ],
+     [
+      "ひじ下",
+      "3,000円/回"
+     ],
+     [
+      "手先",
+      "2,000円/回"
+     ],
+     [
+      "うなじ",
+      "2,000円/回"
+     ],
+     [
+      "耳毛",
+      "2,000円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "顔全体",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/mLswYjPVYhtbV8BJA",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00051",
+  "photo": "assets/shops/00051.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00071",
+  "pref": "茨城",
+  "city": "日立市",
+  "name": "カットハウスひかり川尻店",
+  "short": "川尻店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "日立市川尻町5丁目56-1 プラスパビル102 カワチ薬品川尻店さん隣り",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "木曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "光フェイシャル",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/And18Mqzfyqu5rTX6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00071",
+  "photo": "assets/shops/00071.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00095",
+  "pref": "茨城",
+  "city": "常陸太田市",
+  "name": "カットハウスひかり常陸太田店",
+  "short": "常陸太田店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "常陸太田市塙町2926-6",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/oTqLEUwctUn7N7sQ9",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00095",
+  "photo": "assets/shops/00095.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00007",
+  "pref": "茨城",
+  "city": "ひたちなか市",
+  "name": "カットハウスひかり青葉店",
+  "short": "青葉店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "ひたちなか市青葉町3-12 ツルハドラッグ勝田店駐車場",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "日曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/TYp1QVGYgXmB2cu9A",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00007",
+  "photo": "assets/shops/00007.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00087",
+  "pref": "茨城",
+  "city": "ひたちなか市",
+  "name": "カットハウスひかり高場店",
+  "short": "高場店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "ひたちなか市高場1166-1 マクドナルドひたちなか高場店さん向かい",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/orsGw3vRkmm3geok9",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00087",
+  "photo": "assets/shops/00087.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00201",
+  "pref": "茨城",
+  "city": "ひたちなか市",
+  "name": "カットスペースPLUS",
+  "short": "カットスペースPLUS",
+  "brand": "other",
+  "menOnly": false,
+  "formerly": "",
+  "official": "https://www.cutspace-plus.com/",
+  "address": "ひたちなか市新光町34-1 ジョイフル本田ニューポートひたちなか店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,500円"
+     ],
+     [
+      "女性",
+      "1,500円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ],
+     [
+      "ひじ下",
+      "3,000円/回"
+     ],
+     [
+      "手先",
+      "2,000円/回"
+     ],
+     [
+      "うなじ",
+      "2,000円/回"
+     ],
+     [
+      "耳毛",
+      "2,000円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "顔全体",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [],
+  "pay": [
+   "クレジットカード決済・電子マネー"
+  ],
+  "map": "https://maps.app.goo.gl/2YT2KLk2yTPPwRsZ8",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00201",
+  "photo": "",
+  "logo": "assets/shops/brand-plus.png",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00083",
+  "pref": "茨城",
+  "city": "鉾田市",
+  "name": "カットハウスひかり鉾田SC店",
+  "short": "鉾田SC店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "鉾田市塔ケ崎1017-1 ショッピングガーデンアクロス カスミ敷地内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "木曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/C7m8EyHQ3zXrF9mS8",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00083",
+  "photo": "assets/shops/00083.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00086",
+  "pref": "茨城",
+  "city": "水戸市",
+  "name": "カットハウスひかり上水戸店",
+  "short": "上水戸店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "水戸市上水戸2丁目9-10 MEGAドン・キホーテ上水戸店内1F",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/sEdtnLjVg6Pdjdfq7",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00086",
+  "photo": "assets/shops/00086.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00060",
+  "pref": "茨城",
+  "city": "水戸市",
+  "name": "カットハウスひかり水戸赤塚店",
+  "short": "水戸赤塚店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "水戸市河和田1丁目1 フレスポ赤塚 カスミ敷地内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/BcToxBfWoVwGALjU6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00060",
+  "photo": "assets/shops/00060.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00096",
+  "pref": "茨城",
+  "city": "水戸市",
+  "name": "カットハウスひかり水戸エクセル店",
+  "short": "水戸エクセル店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "水戸市宮町1丁目1-1 水戸駅北口エクセル本館1F タクシー乗り場前",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ],
+     [
+      "うなじ",
+      "2,000円/回"
+     ],
+     [
+      "耳毛",
+      "2,000円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "顔全体",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/8nFu68thZgw4YX5S6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00096",
+  "photo": "assets/shops/00096.webp",
+  "logo": "",
+  "parking": "",
+  "station": true,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00070",
+  "pref": "茨城",
+  "city": "守谷市",
+  "name": "カットハウスひかりアクロスモール守谷店",
+  "short": "アクロスモール守谷店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "守谷市松ケ丘6丁目6-1 アクロスモール守谷内 カスミさんレジ前",
+  "hours": "9:30〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "月曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "光フェイシャル",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/yFMY7MzfkPouMzgs6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00070",
+  "photo": "assets/shops/00070.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00098",
+  "pref": "茨城",
+  "city": "龍ケ崎市",
+  "name": "カットハウスひかりサプラ龍ヶ崎店",
+  "short": "サプラ龍ヶ崎店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "龍ケ崎市小柴5丁目1-2 サプラスクエア2F（マクドナルドさんの上）",
+  "hours": "10:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "光フェイシャル",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://maps.app.goo.gl/J9eghtyTnAreg6RS6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00098",
+  "photo": "assets/shops/00098.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00003",
+  "pref": "栃木",
+  "city": "宇都宮市",
+  "name": "カットハウスひかり鶴田店",
+  "short": "鶴田店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "宇都宮市鶴田町513-4 スーパーオータニ鶴田店2F",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/B8HGTe31Vjvw4jZw9",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00003",
+  "photo": "assets/shops/00003.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00021",
+  "pref": "栃木",
+  "city": "宇都宮市",
+  "name": "カットハウスひかり野沢店",
+  "short": "野沢店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "宇都宮市野沢町40-1 スーパーオータニ野沢店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/rYmuPLAAUhqETCRW7",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00021",
+  "photo": "assets/shops/00021.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00078",
+  "pref": "栃木",
+  "city": "宇都宮市",
+  "name": "カットハウスひかり御幸ヶ原店",
+  "short": "御幸ヶ原店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "宇都宮市御幸ケ原町91-4 スーパーオータニ御幸ヶ原店敷地内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,500円"
+     ],
+     [
+      "女性",
+      "1,700円"
+     ],
+     [
+      "前髪カット",
+      "500円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ],
+     [
+      "ひじ下",
+      "3,000円/回"
+     ],
+     [
+      "ひざ下",
+      "4,500円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "顔全体",
+      "4,500円/回"
+     ]
+    ]
+   },
+   {
+    "label": "その他",
+    "items": [
+     [
+      "ブロー",
+      "500円"
+     ],
+     [
+      "ショートリラックス(頭首肩)",
+      "500円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/as87yg9ZUqgWJizv6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00078",
+  "photo": "assets/shops/00078.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00207",
+  "pref": "栃木",
+  "city": "宇都宮市",
+  "name": "Men's Cut and Self DELIGHT",
+  "short": "Men's Cut and Self DELIGHT",
+  "brand": "other",
+  "menOnly": true,
+  "formerly": "旧 カットハウスひかり清原テクノ店",
+  "official": "http://promo-lp.net/delight/",
+  "address": "宇都宮市ゆいの杜4丁目1-50 ファミリーマート清原テクノ店さん向かい",
+  "hours": "9:00〜19:00（土日祝は18:30閉店）",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時(土日祝は18時30分)以降となるチケットは購入できません。",
+   "混雑状況によって19時(土日祝は18時30分)より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "カット",
+      "1,300円〜1,400円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://maps.app.goo.gl/iD8EZErZ1C9mZLSf9",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00207",
+  "photo": "",
+  "logo": "assets/shops/brand-delight.png",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00080",
+  "pref": "栃木",
+  "city": "小山市",
+  "name": "カットハウスひかり小山城東店",
+  "short": "小山城東店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "小山市城東6丁目1-30 ヤオハン城東店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "火曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ],
+     [
+      "ひじ下",
+      "3,000円/回"
+     ],
+     [
+      "ひざ下",
+      "4,500円/回"
+     ],
+     [
+      "手先",
+      "2,000円/回"
+     ],
+     [
+      "足先",
+      "2,500円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "顔全体",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/4MNqeD3miqs2dcKh6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00080",
+  "photo": "assets/shops/00080.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00036",
+  "pref": "栃木",
+  "city": "上三川町",
+  "name": "カットハウスひかり上三川店",
+  "short": "上三川店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "河内郡上三川町西汗1742-6 スーパーオータニ上三川店内",
+  "hours": "9:30〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ],
+     [
+      "ひじ下",
+      "3,000円/回"
+     ],
+     [
+      "ひざ下",
+      "4,500円/回"
+     ],
+     [
+      "手先",
+      "2,000円/回"
+     ],
+     [
+      "足先",
+      "2,500円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "顔全体",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/KX7ChzHCgkom7SaD6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00036",
+  "photo": "assets/shops/00036.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00084",
+  "pref": "栃木",
+  "city": "鹿沼市",
+  "name": "カットハウスひかり鹿沼栄町店",
+  "short": "鹿沼栄町店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "鹿沼市栄町2丁目15-1 カスミ鹿沼店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/TBVq5fgNHh9hUTZVA",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00084",
+  "photo": "assets/shops/00084.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00002",
+  "pref": "栃木",
+  "city": "さくら市",
+  "name": "カットハウスひかり氏家オータニ店",
+  "short": "氏家オータニ店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "さくら市北草川1丁目8-3 スーパーオータニ氏家店テナント棟2F",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/TZthUf8AvJaQc69P8",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00002",
+  "photo": "assets/shops/00002.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00054",
+  "pref": "栃木",
+  "city": "さくら市",
+  "name": "カットハウスひかりさくらベイシア店",
+  "short": "さくらベイシア店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "さくら市氏家725 ベイシアさくら氏家店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/Jhzs9UV35iLb2awm9",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00054",
+  "photo": "assets/shops/00054.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00082",
+  "pref": "栃木",
+  "city": "下野市",
+  "name": "カットハウスひかり自治医大店",
+  "short": "自治医大店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "下野市柴833-110 スーパーオータニ自治医大店内",
+  "hours": "9:30〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "火曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ],
+     [
+      "ひじ下",
+      "3,000円/回"
+     ],
+     [
+      "ひざ下",
+      "4,500円/回"
+     ],
+     [
+      "手先",
+      "2,000円/回"
+     ],
+     [
+      "足先",
+      "2,500円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "顔全体",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/E9JoFcm5qjkwG5Ue9",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00082",
+  "photo": "assets/shops/00082.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00006",
+  "pref": "栃木",
+  "city": "栃木市",
+  "name": "カットハウスひかり西方店",
+  "short": "西方店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "栃木市西方町金井352 スーパーオータニ西方店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/ybWbhCHHmfLGUeMg7",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00006",
+  "photo": "assets/shops/00006.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00205",
+  "pref": "栃木",
+  "city": "那須町",
+  "name": "HAIR STUDIO MR.COOL",
+  "short": "HAIR STUDIO MR.COOL",
+  "brand": "other",
+  "menOnly": false,
+  "formerly": "旧 カットハウスひかりイオンタウン那須店",
+  "official": "https://hairstudio-mrcool.com/",
+  "address": "那須郡那須町高久甲484-1 ザ・ビッグ那須店敷地内",
+  "hours": "9:00〜18:45",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって18時45分より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,500円"
+     ],
+     [
+      "女性",
+      "2,000円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/Ww3Mkr7p6YsEESFB7",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00205",
+  "photo": "",
+  "logo": "assets/shops/brand-mrcool.png",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00045",
+  "pref": "栃木",
+  "city": "那須烏山市",
+  "name": "カットハウスひかり大金店",
+  "short": "大金店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "那須烏山市田野倉172-1 かましん大金店敷地内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "水曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/nVbKRdLsr6Q14Cci9",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00045",
+  "photo": "assets/shops/00045.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00017",
+  "pref": "栃木",
+  "city": "日光市",
+  "name": "カットハウスひかり今市店",
+  "short": "今市店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "日光市芹沼1460-3 スーパーオータニ今市店内テナント",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/7Nf12z697GSH1cpE9",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00017",
+  "photo": "assets/shops/00017.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00099",
+  "pref": "栃木",
+  "city": "壬生町",
+  "name": "カットハウスひかりベイシア壬生店",
+  "short": "ベイシア壬生店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "下都賀郡壬生町おもちゃのまち1丁目2-22 ベイシア壬生店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ],
+     [
+      "ひじ下",
+      "3,000円/回"
+     ],
+     [
+      "ひざ下",
+      "4,500円/回"
+     ],
+     [
+      "手先",
+      "2,000円/回"
+     ],
+     [
+      "足先",
+      "2,500円/回"
+     ],
+     [
+      "うなじ",
+      "2,000円/回"
+     ],
+     [
+      "耳毛",
+      "2,000円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "顔全体",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://maps.app.goo.gl/nhaTJXw72PhQRcgB8",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00099",
+  "photo": "",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00015",
+  "pref": "栃木",
+  "city": "真岡市",
+  "name": "カットハウスひかり二宮店",
+  "short": "二宮店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "真岡市久下田西2丁目12 エコス二宮店テナント",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "火曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/ULcL31ni8yrLrocn8",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00015",
+  "photo": "assets/shops/00015.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00052",
+  "pref": "栃木",
+  "city": "真岡市",
+  "name": "カットハウスひかり真岡荒町店",
+  "short": "真岡荒町店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "真岡市荒町3丁目46-1 TAIRAYA真岡荒町店敷地内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "水曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ],
+     [
+      "ひじ下",
+      "3,000円/回"
+     ],
+     [
+      "ひざ下",
+      "4,500円/回"
+     ],
+     [
+      "手先",
+      "2,000円/回"
+     ],
+     [
+      "足先",
+      "2,500円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "顔全体",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/J5UHAQgPmpzqpEnK6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00052",
+  "photo": "assets/shops/00052.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00064",
+  "pref": "千葉",
+  "city": "旭市",
+  "name": "カットハウスひかり旭店",
+  "short": "旭店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "旭市イ2676-1 サンモール旭ショッピングセンター2F",
+  "hours": "10:00〜19:30",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時30分以降となるチケットは購入できません。",
+   "混雑状況によって19時30分より早く受付を終了する場合があります。"
+  ],
+  "holiday": "木曜・日曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "au Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/peAiQHkqQktyyUXf9",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00064",
+  "photo": "assets/shops/00064.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00035",
+  "pref": "千葉",
+  "city": "我孫子市",
+  "name": "カットハウスひかり天王台店",
+  "short": "天王台店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "我孫子市泉1-17 エルム歯科さん前",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "月曜・水曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi",
+   "au Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/ksmAfUC8KKA1Jrks5",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00035",
+  "photo": "assets/shops/00035.webp",
+  "logo": "",
+  "parking": "assets/shops/parking-00035.webp",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00089",
+  "pref": "千葉",
+  "city": "市原市",
+  "name": "カットハウスひかりちはら台店",
+  "short": "ちはら台店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "市原市ちはら台南3丁目21 スーパービバホームちはら台店テナント",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "木曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "光フェイシャル",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/JocoQFqUmFZC7e8j7",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00089",
+  "photo": "assets/shops/00089.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": {
+   "text": "2025年7月1日より、土日・祝日ご利用分の日時指定チケットの販売を中止しています。",
+   "url": "https://www.cut-hikari.com/sp-info-app20250701.html"
+  },
+  "care": true
+ },
+ {
+  "code": "00030",
+  "pref": "千葉",
+  "city": "香取市",
+  "name": "カットハウスひかり小見川店",
+  "short": "小見川店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "香取市分郷218-1 小見川ショッピングプラザアピオ トライアル敷地内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "木曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "au Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/Qf7CoqmvDGns8oUt7",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00030",
+  "photo": "assets/shops/00030.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00028",
+  "pref": "千葉",
+  "city": "酒々井町",
+  "name": "カットハウスひかり酒々井店",
+  "short": "酒々井店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "印旛郡酒々井町本佐倉457-2 スーパーセンタートライアル酒々井店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "水曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ],
+     [
+      "ひじ下",
+      "3,000円/回"
+     ],
+     [
+      "手先",
+      "2,000円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "顔全体",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/q2eeE7q5Po18ESFF6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00028",
+  "photo": "assets/shops/00028.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00044",
+  "pref": "千葉",
+  "city": "銚子市",
+  "name": "カットハウスひかり芦崎店",
+  "short": "芦崎店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "銚子市芦崎町831 カインズホーム銚子店さん前",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "水曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "au Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/kTjSYUZxoX6BQqtx7",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00044",
+  "photo": "assets/shops/00044.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00067",
+  "pref": "千葉",
+  "city": "八街市",
+  "name": "カットハウスひかりPIACITY八街店",
+  "short": "PIACITY八街店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "八街市八街に252-6 PIA CITY Yachimata Asahi カスミ敷地内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "木曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi",
+   "au Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/tqoiRA5ic3LxeAt57",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00067",
+  "photo": "assets/shops/00067.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00202",
+  "pref": "千葉",
+  "city": "八千代市",
+  "name": "シャンプーカット アルファ",
+  "short": "シャンプーカット アルファ",
+  "brand": "other",
+  "menOnly": false,
+  "formerly": "",
+  "official": "https://www.shampoo-cut-alpha.com/",
+  "address": "八千代市村上2723-1 ジョイフル本田八千代店敷地内",
+  "hours": "9:00〜18:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が18時以降となるチケットは購入できません。",
+   "混雑状況によって18時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "火曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "2,000円"
+     ],
+     [
+      "女性",
+      "2,000円"
+     ],
+     [
+      "スキンフェードカット",
+      "4,000円"
+     ],
+     [
+      "スキンフェードメンテナンス",
+      "3,100円"
+     ],
+     [
+      "カット+マシンシャンプー",
+      "3,400円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ],
+     [
+      "ひじ下",
+      "3,000円/回"
+     ],
+     [
+      "手先",
+      "2,000円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "顔全体",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [],
+  "pay": [
+   "クレジットカード決済・電子マネー"
+  ],
+  "map": "https://maps.app.goo.gl/PKFRko6sHAvtSkUs7",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00202",
+  "photo": "",
+  "logo": "assets/shops/brand-alpha.png",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00088",
+  "pref": "千葉",
+  "city": "四街道市",
+  "name": "カットハウスひかり四街道店",
+  "short": "四街道店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "四街道市めいわ2丁目1-1 MEGAドン・キホーテ四街道店内2F",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi",
+   "au Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/RJ9jLZYko34RxEQg6",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00088",
+  "photo": "assets/shops/00088.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00056",
+  "pref": "福島",
+  "city": "いわき市",
+  "name": "カットハウスひかりいわき泉店",
+  "short": "いわき泉店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "いわき市泉滝尻3丁目12-26 ヨークベニマルいわき泉店内",
+  "hours": "9:00〜19:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって19時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "月曜",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   },
+   {
+    "label": "脱毛（都度払い）",
+    "items": [
+     [
+      "ヒゲ",
+      "3,500円/回"
+     ],
+     [
+      "うなじ",
+      "2,000円/回"
+     ],
+     [
+      "耳毛",
+      "2,000円/回"
+     ]
+    ]
+   },
+   {
+    "label": "光フェイシャル（都度払い）",
+    "items": [
+     [
+      "光フェイシャル",
+      "4,500円/回"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/H6H2sXmsMRWnxdP5A",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00056",
+  "photo": "assets/shops/00056.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": true
+ },
+ {
+  "code": "00075",
+  "pref": "福島",
+  "city": "いわき市",
+  "name": "カットハウスひかりいわき錦町店",
+  "short": "いわき錦町店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "いわき市錦町江栗3丁目63-1",
+  "hours": "9:00〜17:00",
+  "hoursNotes": [
+   "ご案内の目安の時刻が17時以降となるチケットは購入できません。",
+   "混雑状況によって17時より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi",
+   "SoftBank Wi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/Ti9eUfM3NZVsqaij8",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00075",
+  "photo": "assets/shops/00075.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00063",
+  "pref": "福島",
+  "city": "白河市",
+  "name": "カットハウスひかりベイシアモール白河店",
+  "short": "ベイシアモール白河店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "白河市老久保28 ベイシア白河モール店内",
+  "hours": "9:00〜18:45",
+  "hoursNotes": [
+   "ご案内の目安の時刻が19時以降となるチケットは購入できません。",
+   "混雑状況によって18時45分より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/YJ4WkYb3G6vBmguN8",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00063",
+  "photo": "assets/shops/00063.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ },
+ {
+  "code": "00069",
+  "pref": "福島",
+  "city": "矢吹町",
+  "name": "カットハウスひかり矢吹店",
+  "short": "矢吹店",
+  "brand": "hikari",
+  "menOnly": false,
+  "formerly": "",
+  "official": "",
+  "address": "西白河郡矢吹町八幡町425-1 メガステージ矢吹隣り",
+  "hours": "8:30〜18:15",
+  "hoursNotes": [
+   "ご案内の目安の時刻が18時15分以降となるチケットは購入できません。",
+   "混雑状況によって18時15分より早く受付を終了する場合があります。"
+  ],
+  "holiday": "無休",
+  "prices": [
+   {
+    "label": "カット",
+    "items": [
+     [
+      "男性",
+      "1,400円"
+     ],
+     [
+      "女性",
+      "1,600円"
+     ]
+    ]
+   }
+  ],
+  "wifi": [
+   "フリーWi-Fi"
+  ],
+  "pay": [
+   "PayPay",
+   "メルペイ",
+   "au PAY",
+   "d払い",
+   "楽天ペイ"
+  ],
+  "map": "https://goo.gl/maps/A14yyR7sAcLfwUxf9",
+  "mis": "https://www.cut-hikari.info/HO0010?shop_code=00069",
+  "photo": "assets/shops/00069.webp",
+  "logo": "",
+  "parking": "",
+  "station": false,
+  "notice": null,
+  "care": false
+ }
+]
