@@ -119,7 +119,7 @@ img { display: block; max-width: 100%; }
 .brand-mark { width: 44px; height: 44px; flex: none; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
 .brand-text small { font-size: 11px; font-weight: 700; color: var(--brown-soft); letter-spacing: .1em; }
-.brand-name { font-size: 22px; font-weight: 800; color: var(--orange); letter-spacing: .12em; }
+.brand-name { font-size: 22px; font-weight: 800; color: var(--orange); letter-spacing: .12em; white-space: nowrap; }
 .nav { display: flex; gap: 6px; }
 .nav a {
   text-decoration: none; font-weight: 700; font-size: 15px;
@@ -131,8 +131,9 @@ img { display: block; max-width: 100%; }
 .header-cta::after { display: none; }
 @media (max-width: 980px) { .nav { display: none; } }
 @media (max-width: 480px) {
-  .brand-mark { width: 38px; height: 38px; }
-  .brand-name { font-size: 19px; }
+  .header-inner { gap: 12px; }
+  .brand-mark { width: 36px; height: 36px; }
+  .brand-name { font-size: 17px; letter-spacing: .06em; }
   .header-cta { padding: 0 14px; font-size: 13px; }
 }
 
@@ -154,7 +155,7 @@ img { display: block; max-width: 100%; }
   background: var(--white); border: 2px solid var(--orange); border-radius: 999px;
   padding: 2px 16px; margin-bottom: 18px;
 }
-.hero h1 { font-size: clamp(32px, 4.6vw, 52px); line-height: 1.45; letter-spacing: .06em; }
+.hero h1 { font-size: clamp(27px, 4.6vw, 52px); line-height: 1.45; letter-spacing: .06em; }
 .hero h1 span { display: block; white-space: nowrap; }
 .hero h1 .hl {                       /* 黄色いマーカー */
   display: inline; background: linear-gradient(transparent 62%, var(--sun) 62% 92%, transparent 92%);
