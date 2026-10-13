@@ -191,9 +191,17 @@ img { display: block; max-width: 100%; height: auto; }
 
 .hero-visual { position: relative; }
 .hero-photo { width: 100%; height: auto; aspect-ratio: 1158 / 756; object-fit: cover; border-radius: 32px; border: 6px solid var(--orange); box-shadow: 0 12px 0 var(--orange-soft); background: var(--white); }
-.spark { position: absolute; pointer-events: none; animation: twinkle 2.6s ease-in-out infinite; }
-.spark-1 { left: 44%; top: -40px; width: 46px; }
-.spark-2 { left: 52%; bottom: -50px; width: 30px; animation-delay: .8s; }
+/* キャッチのまわりのキラキラ */
+.catch { position: relative; display: inline-block; }
+.kira { position: absolute; inset: 0; pointer-events: none; }
+.k { position: absolute; display: block; height: auto; opacity: 0; animation: kira 2.8s ease-in-out infinite; }
+.k1 { width: 30px; left: -26px; top: -14px; }
+.k2 { width: 18px; left: 46%; top: -22px; animation-delay: .5s; }
+.k3 { width: 34px; right: -38px; top: 2px; animation-delay: 1s; }
+.k4 { width: 20px; right: -18px; bottom: -6px; animation-delay: 1.6s; }
+.k5 { width: 16px; left: -14px; bottom: 18px; animation-delay: 2.1s; }
+.k6 { width: 14px; left: 30%; bottom: -12px; animation-delay: 1.3s; }
+@keyframes kira { 0%, 100% { opacity: 0; transform: scale(.3) rotate(0); } 40% { opacity: 1; transform: scale(1) rotate(20deg); } 70% { opacity: .2; transform: scale(.6) rotate(45deg); } }
 @keyframes twinkle { 0%, 100% { transform: scale(1) rotate(0); opacity: 1; } 50% { transform: scale(.6) rotate(25deg); opacity: .6; } }
 
 /* 吹き出し：3つを写真のまわりに散らす（顔にかからない位置） */
@@ -233,8 +241,8 @@ img { display: block; max-width: 100%; height: auto; }
   .b2::after { left: auto; right: 28px; top: auto; bottom: -7px; transform: rotate(45deg); }
   .b3 { left: auto; right: 10%; bottom: -46px; }
   .b3::after { top: -7px; right: 30px; }
-  .spark-1 { left: 52%; top: -30px; width: 30px; }
-  .spark-2 { display: none; }
+  .k1 { width: 24px; left: -20px; }
+  .k3 { width: 26px; right: -26px; }
 }
 @media (max-width: 380px) { .bubble { font-size: 11.5px; padding: 4px 10px; } }
 
@@ -439,6 +447,7 @@ img { display: block; max-width: 100%; height: auto; }
   .hero-kind .blade-a { animation: snipS-a 2.4s ease-in-out infinite !important; }
   .hero-kind .blade-b { animation: snipS-b 2.4s ease-in-out infinite !important; }
   .hero-comb { animation: comb 9s ease-in-out infinite !important; }
+  .k { opacity: 1; }
 }
 
 /* ======================================================
