@@ -1158,3 +1158,12 @@ img { display: block; max-width: 100%; height: auto; }
   .app-merits ul { margin-top: 6px; }
   .app-merits li { text-align: left; }
 }
+
+/* 添削：ダウンロード欄は箱をやめてボタンを大きく／スマホ画像は枠の内側に */
+#app .install { background: none; padding: 0; margin-top: 18px; }
+#app .stores img { height: 52px; width: auto; }
+@media (max-width: 600px) {
+  #app .install { margin-top: 12px; padding: 0; }
+  #app .stores .store img { height: 46px; }
+  #app .phone-mini { right: 2px; width: 42px; top: 36px; }
+}
