@@ -1001,3 +1001,4 @@ img { display: block; max-width: 100%; height: auto; }
   .app-points li { padding: 0; }
   .rc-stats li { padding: 4px 2px; }
 }
+.app-points strong { word-break: keep-all; }
