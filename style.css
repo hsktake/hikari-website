@@ -171,7 +171,8 @@ img { display: block; max-width: 100%; height: auto; }
 .hero h1 { font-size: clamp(30px, 4.4vw, 52px); line-height: 1.45; letter-spacing: .05em; }
 .hero h1 span { display: block; white-space: nowrap; }
 .hero h1 .hl { display: inline; background: linear-gradient(transparent 62%, var(--sun) 62% 92%, transparent 92%); }
-.hero-en { font-family: var(--en); font-weight: 600; font-size: clamp(20px, 2.2vw, 26px); letter-spacing: .05em; color: var(--orange-deep); margin-top: 6px; }
+.hero-en { font-family: var(--en); font-weight: 600; font-size: clamp(20px, 2.2vw, 26px); letter-spacing: .05em; color: var(--brown); margin-top: 6px; }
+.hero-en .cap { color: var(--orange); }
 .hero-kind .blade-a { animation: snipS-a 1.6s ease-in-out infinite; }
 .hero-kind .blade-b { animation: snipS-b 1.6s ease-in-out infinite; }
 @keyframes snipS-a { 0%, 50%, 100% { transform: rotate(0); } 70% { transform: rotate(16deg); } 85% { transform: rotate(0); } }
