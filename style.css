@@ -269,10 +269,6 @@ img { display: block; max-width: 100%; height: auto; }
   .hero-actions { margin-top: 14px; }
   .hero-actions .btn { min-height: 52px; }
 }
-/* 画面の縦が短いスマホでは写真を少し小さく */
-@media (max-width: 600px) and (max-height: 720px) {
-  .hero-visual { max-width: 300px; }
-}
 
 /* ---------- ヘアカタログの帯 ---------- */
 .style-band { background: var(--brown); color: var(--white); padding: 22px 0 28px; overflow: hidden; }
