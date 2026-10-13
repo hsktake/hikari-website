@@ -1186,3 +1186,4 @@ img { display: block; max-width: 100%; height: auto; }
   #app .app-head .phone-mini { width: 62px; right: 12px; top: auto; bottom: -18px; }
   #app .app-copy h2 { margin-top: 16px; }
 }
+@media (max-width: 600px) { #app .app-head { padding: 10px 12px 12px; } #app .app-head .app-kicker { font-size: 13px; } #app .app-head .phone-mini { width: 48px; right: 8px; bottom: -16px; } #app .app-copy h2 { margin-top: 12px; } }
