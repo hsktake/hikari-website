@@ -1915,3 +1915,21 @@ a.shop-photo { display: grid; }
 .rq-e-txt .ph, .rq-privacy .ph { display: inline-block; }
 .rq-privacy .s + .s { margin-top: 2px; }
 .rq-privacy a { display: inline-block; margin-top: 6px; font-weight: 800; }
+
+/* 採用ページ：カードの中身は中央寄せで統一 */
+.rq-e { align-items: center; text-align: center; }
+.rq-e-tag { align-self: center; }
+.rq-e .btn { align-self: stretch; }
+.rq-merits li, .rq-promises > li, .rq-bn, .rq-v-who, .rq-v-q { text-align: center; }
+.rq-promises > li .rq-no { left: 50%; transform: translateX(-50%); }
+.rq-promises ul, .rq-bn ul { list-style: none; padding-left: 0; }
+.rq-promises ul li + li, .rq-bn ul li + li { margin-top: 4px; }
+.rq-promises ul li::before, .rq-bn > ul li::before { content: "✓ "; color: var(--orange); font-weight: 800; }
+.rq-bn-list { text-align: center; }
+.rq-bn-list li::before { content: none !important; }
+.rq-job-body { align-items: center; text-align: center; }
+.rq-about-txt { text-align: center; }
+.rq-jlead, .rq-badges li { text-align: center; }
+.rq-co-grid > div { text-align: center; }
+.rq-co-motto small { display: block; font-size: 13px; color: var(--brown-soft); }
+.rq-co-table { max-width: 420px; margin-left: auto !important; margin-right: auto !important; text-align: left; }
