@@ -910,5 +910,5 @@ img { display: block; max-width: 100%; height: auto; }
   .app-name small { font-size: 11.5px; }
   .app-name strong { font-size: 30px; text-shadow: 0 4px 0 var(--orange-deep); }
   .app-copy h2 { font-size: 21px; margin-top: 10px; }
-  .phone-mini { top: 58px; width: 60px; right: 4px; }
+  .phone-mini { top: 56px; width: 54px; right: 6px; }
 }
