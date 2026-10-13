@@ -120,6 +120,7 @@ def page(prefix, title, desc, body, v):
       <a href="{p}./#menu">メニュー</a>
       <a href="{p}./#sns">Instagram</a>
       <a href="{p}./#company">会社案内</a>
+      <a href="{p}news.html">お知らせ</a>
       <a class="nav-recruit" href="{p}recruit.html" aria-current="page">採用情報</a>
     </nav>
   </div>
@@ -133,6 +134,8 @@ def page(prefix, title, desc, body, v):
     <p class="footer-name">ヘアカット専門店</p>
     <nav class="footer-nav" aria-label="フッターメニュー">
       <a href="{p}./">ホーム</a>
+      <a href="{p}shops.html">店舗一覧</a>
+      <a href="{p}./#app">公式アプリ</a>
       <a href="{p}recruit.html">採用情報</a>
       <a href="{p}news.html">お知らせ・休業情報</a>
       <a href="{p}member.html">HiCARD会員</a>
@@ -140,6 +143,7 @@ def page(prefix, title, desc, body, v):
       <a href="{p}contact.html">お問い合わせ</a>
       <a href="{p}privacy.html">プライバシーポリシー</a>
       <a href="{p}tokushoho.html">特定商取引法に基づく表記</a>
+      <a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a>
     </nav>
     <p class="copy">© 1997 H.S.K</p>
   </div>
