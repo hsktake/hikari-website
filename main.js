@@ -10,7 +10,20 @@
   }
 
   ready(function () {
-    var targets = document.querySelectorAll(".reveal, .compare");
+    // 中身を1つずつ順番にポンッと出す（リストの子要素に番号をふる）
+    var groups = ".pref-grid > li, .flow > li, .app-points > li, .rc-stats > li, .rc-jobs > li, .rc-tags > li, .videos > div, .stores > a";
+    document.querySelectorAll(groups).forEach(function (el) {
+      var i = Array.prototype.indexOf.call(el.parentNode.children, el);
+      el.classList.add("rv");
+      el.style.setProperty("--i", i);
+    });
+    // 横に並んだ .reveal 同士（メニューのカードなど）も少しずつずらす
+    document.querySelectorAll(".reveal").forEach(function (el) {
+      var sib = Array.prototype.filter.call(el.parentNode.children, function (c) { return c.classList.contains("reveal"); });
+      if (sib.length > 1 && el.parentNode.classList.contains("menu-cards")) el.style.setProperty("--i", sib.indexOf(el));
+    });
+
+    var targets = document.querySelectorAll(".reveal");
     if ("IntersectionObserver" in window) {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
