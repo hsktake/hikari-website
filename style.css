@@ -1573,3 +1573,90 @@ a.shop-photo { display: grid; }
   .rx-stats b { font-size: 22px; }
   .rx-stats li:last-child b { font-size: 19px; }
 }
+
+/* ===== 公式アプリ（作り替え：アプリ紹介サイトのテイスト） ===== */
+#app.ax { background: linear-gradient(180deg, #D6EEF9 0%, #EEF8FD 55%, var(--cream) 100%); overflow: hidden; }
+#app .ax-hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 30px; align-items: center; max-width: 1000px; margin: 0 auto; }
+#app .ax-kicker { display: inline-flex; align-items: center; gap: 4px; background: var(--white); border-radius: 999px; padding: 4px 16px; font-weight: 800; font-size: 16px; box-shadow: 0 3px 0 rgba(74,46,26,.1); }
+#app .ax-kicker em { font-style: normal; background: var(--orange); color: var(--white); border-radius: 8px; padding: 0 8px; transform: rotate(-4deg); display: inline-block; }
+#app .ax-copy h2 { font-size: clamp(32px, 4.6vw, 54px); line-height: 1.3; margin-top: 14px; letter-spacing: .04em; }
+#app .ax-copy h2 .mark { color: var(--orange); background: linear-gradient(transparent 68%, var(--sun) 68%); padding: 0 2px; }
+#app .ax-lead { margin-top: 10px; font-size: 17px; font-weight: 700; }
+#app .ax-app { display: inline-flex; align-items: center; gap: 12px; margin-top: 18px; background: var(--white); border-radius: 20px; padding: 10px 20px 10px 10px; box-shadow: 0 5px 0 rgba(74,46,26,.1); }
+#app .ax-icon { width: 64px; height: 64px; border-radius: 16px; background: var(--orange); display: grid; place-items: center; box-shadow: 0 3px 0 var(--orange-deep); }
+#app .ax-icon img { width: 50px; height: auto; }
+#app .ax-name small { display: block; font-size: 12px; font-weight: 800; color: var(--brown-soft); }
+#app .ax-name strong { display: block; font-size: 26px; line-height: 1.2; letter-spacing: .06em; }
+#app .ax-visual { position: relative; display: grid; place-items: center; min-height: 420px; }
+#app .ax-halo { position: absolute; width: 360px; height: 360px; border-radius: 50%; background: radial-gradient(circle, var(--white) 0 55%, rgba(255,255,255,0) 72%); }
+#app .ax-phone { position: relative; width: 210px; height: auto; transform: rotate(6deg); filter: drop-shadow(0 16px 20px rgba(74,46,26,.22)); }
+#app .ax-visual .ticket-card { position: absolute; left: 4%; top: 18%; transform: rotate(-6deg); }
+
+#app .ax-sub { display: flex; align-items: center; gap: 14px; justify-content: center; font-weight: 800; font-size: 18px; text-align: center; }
+#app .ax-sub::before, #app .ax-sub::after { content: ""; flex: 0 1 60px; height: 3px; border-radius: 3px; background: var(--orange); opacity: .5; }
+#app .ax-sub em { font-style: normal; color: var(--orange-deep); }
+#app .ax-wait { margin-top: 30px; }
+#app .ax-feats { margin-top: 30px; }
+#app .ax-feats ul { list-style: none; margin: 14px auto 0; padding: 0; max-width: 1000px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+#app .ax-feats li { position: relative; background: var(--white); border-radius: 18px; padding: 22px 10px 16px; text-align: center; box-shadow: 0 5px 0 rgba(74,46,26,.1); }
+#app .ax-no { position: absolute; left: 10px; top: 8px; font-family: var(--en); font-weight: 600; font-size: 15px; color: var(--orange); }
+#app .ax-ic { width: 54px; height: 54px; padding: 12px; border-radius: 50%; background: var(--orange-soft); color: var(--orange-deep); fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; margin: 0 auto; display: block; }
+#app .ax-ft { display: block; margin-top: 8px; font-size: 13px; font-weight: 700; line-height: 1.45; }
+#app .ax-ft strong { display: block; font-size: 16px; color: var(--brown); }
+
+#app .ax-install { margin: 30px auto 0; max-width: 760px; background: var(--white); border-radius: 22px; padding: 20px 24px 18px; box-shadow: 0 5px 0 rgba(74,46,26,.1); display: grid; grid-template-columns: auto auto; justify-content: center; align-items: center; gap: 10px 28px; }
+#app .ax-install .stores { margin: 0; flex-direction: column; align-items: stretch; }
+#app .ax-install .stores img { height: 52px; }
+#app .ax-install .qrs { display: flex; gap: 14px; margin: 0; }
+#app .ax-install .qrs figure { margin: 0; text-align: center; }
+#app .ax-install .qrs img { width: 92px; height: 92px; }
+#app .ax-os, #app .ax-note { grid-column: 1 / -1; text-align: center; font-size: 12.5px; font-weight: 700; color: var(--brown-soft); }
+#app .ax-note { margin-top: -4px; }
+
+@media (max-width: 860px) {
+  #app .ax-visual { min-height: 0; }
+}
+@media (max-width: 600px) {
+  #app .ax-hero { grid-template-columns: minmax(0, 1fr) 112px; gap: 4px; }
+  #app .ax-kicker { font-size: 12.5px; padding: 3px 12px; }
+  #app .ax-copy h2 { font-size: 27px; margin-top: 8px; }
+  #app .ax-lead { font-size: 13px; margin-top: 6px; line-height: 1.6; }
+  #app .ax-app { margin-top: 10px; padding: 6px 14px 6px 6px; gap: 8px; border-radius: 14px; }
+  #app .ax-icon { width: 40px; height: 40px; border-radius: 10px; }
+  #app .ax-icon img { width: 32px; }
+  #app .ax-name small { font-size: 9.5px; }
+  #app .ax-name strong { font-size: 17px; }
+  #app .ax-halo { width: 150px; height: 150px; }
+  #app .ax-phone { width: 96px; }
+  #app .ax-visual .ticket-card { display: none; }
+  #app .ax-sub { font-size: 14.5px; gap: 10px; }
+  #app .ax-sub::before, #app .ax-sub::after { flex-basis: 28px; }
+  #app .ax-wait { margin-top: 14px; }
+  #app .ax-feats { margin-top: 14px; }
+  #app .ax-feats ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; }
+  #app .ax-feats li { width: calc((100% - 16px) / 3); padding: 12px 4px 9px; border-radius: 14px; box-shadow: 0 3px 0 rgba(74,46,26,.1); }
+  #app .ax-no { font-size: 11px; left: 7px; top: 4px; }
+  #app .ax-ic { width: 36px; height: 36px; padding: 7px; }
+  #app .ax-ft { font-size: 10px; margin-top: 4px; line-height: 1.35; }
+  #app .ax-ft strong { font-size: 12px; }
+  #app .ax-install { margin-top: 14px; grid-template-columns: 1fr; padding: 12px 12px 10px; border-radius: 16px; gap: 6px; }
+  #app .ax-install .stores { flex-direction: row; justify-content: center; gap: 10px; }
+  #app .ax-install .stores img { height: 42px; }
+  #app .ax-install .qrs { display: none; }
+  #app .ax-os { font-size: 10.5px; }
+  #app .ax-note { font-size: 10.5px; margin-top: -2px; }
+}
+#app .ax-ft .s { display: none; }
+@media (max-width: 600px) {
+  #app .ax-ft .l { display: none; }
+  #app .ax-ft .s { display: block; }
+  #app .ax-feats ul { flex-wrap: nowrap; gap: 5px; }
+  #app .ax-feats li { width: auto; flex: 1 1 0; min-width: 0; padding: 8px 2px 7px; border-radius: 12px; }
+  #app .ax-no { display: none; }
+  #app .ax-ic { width: 32px; height: 32px; padding: 6px; }
+  #app .ax-ft { font-size: 9px; margin-top: 3px; }
+  #app .ax-ft strong { font-size: 11px; }
+  #app .ax-install { padding: 10px 10px 8px; gap: 4px; }
+  #app .ax-install .stores img { height: 38px; }
+  #app .ax-note { font-size: 10px; letter-spacing: 0; }
+}
