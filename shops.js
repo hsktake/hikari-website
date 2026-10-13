@@ -7,6 +7,8 @@
   var BRAND = "カットハウスひかり";
   var IMG_BASE = "https://www.cut-hikari.com/image/";
   var SHOP_PAGE = "https://www.cut-hikari.info/HO0010?shop_code=";
+  // 試作用にサイト内へ取り込んだ店舗写真（他は本番ドメインで表示される）
+  var LOCAL_PHOTOS = ["p07","p20","p29","p48","p51","p60","p69","p71","p76","p78","p86","p88","p90","p91","p95"];
 
   var state = { pref: "すべて", q: "", care: false, open: false };
 
@@ -70,7 +72,8 @@
       var img = document.createElement("img");
       img.loading = "lazy";
       img.alt = "";
-      img.src = IMG_BASE + s.img;
+      var local = LOCAL_PHOTOS.indexOf(s.img.replace(".png", "")) >= 0;
+      img.src = local ? "assets/shops/" + s.img.replace(".png", ".jpg") : IMG_BASE + s.img;
       img.addEventListener("error", function () { img.remove(); });
       photo.appendChild(img);
     }

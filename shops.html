@@ -6,16 +6,17 @@
 <title>店舗一覧｜カットハウスひかり</title>
 <meta name="description" content="カットハウスひかりの店舗一覧。茨城・栃木・千葉・福島の62店舗から、地域や店名で探せます。">
 <meta name="robots" content="noindex, nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://www.cut-hikari.com; script-src 'self'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.cut-hikari.com; script-src 'self'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#EF7A00">
-<link rel="icon" href="assets/house.svg" type="image/svg+xml">
+<link rel="icon" href="assets/scissors.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=9">
-<script src="shops-data.js?v=9" defer></script>
-<script src="shops.js?v=9" defer></script>
+<link rel="stylesheet" href="style.css?v=10">
+<script src="main.js?v=10"></script>
+<script src="shops-data.js?v=10" defer></script>
+<script src="shops.js?v=10" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
@@ -23,22 +24,27 @@
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="./" aria-label="カットハウスひかり トップへ">
-      <img class="brand-mark" src="assets/house.svg" alt="">
-      <span class="brand-text"><small>ヘアカット専門店</small><span class="brand-name">カットハウスひかり</span></span>
+      <img class="brand-logo" src="assets/logo.png" alt="カットハウスひかり" width="356" height="218">
+      <span class="brand-label">ヘアカット専門店</span>
     </a>
     <nav class="nav" aria-label="メインメニュー">
       <a href="./">ホーム</a>
+      <a href="./#app">アプリで予約</a>
       <a href="shops.html" aria-current="page">店舗一覧</a>
       <a href="./#menu">メニュー</a>
       <a href="./#flow">ご利用方法</a>
       <a href="./#company">会社案内</a>
     </nav>
-    <a class="btn btn-main header-cta" href="https://www.cut-hikari.com/list-mis.html" rel="noopener">待ち状況</a>
+    <a class="btn btn-main header-cta" href="./#app">アプリで予約</a>
   </div>
 </header>
 
 <main id="main">
   <section class="page-hero">
+    <svg class="hero-scissors" viewBox="0 0 200 200" aria-hidden="true">
+      <g class="blade-a" fill="currentColor"><path d="M95 103 178 8q12-4 12 8l-85 91Z"/><path d="M100 100 72 136" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><circle cx="56" cy="156" r="24" fill="none" stroke="currentColor" stroke-width="14"/></g>
+      <g class="blade-b" fill="currentColor"><path d="M105 103 22 8Q10 4 10 16l85 91Z"/><path d="M100 100l28 36" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><circle cx="144" cy="156" r="24" fill="none" stroke="currentColor" stroke-width="14"/></g>
+    </svg>
     <div class="wrap">
       <p class="en">Shop</p>
       <h1>店舗一覧</h1>
@@ -46,7 +52,7 @@
     </div>
   </section>
 
-  <section class="wrap" aria-label="店舗検索">
+  <section class="wrap finder-wrap" aria-label="店舗検索">
     <div class="finder">
       <label class="search">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
@@ -62,14 +68,14 @@
     <p class="result-count" aria-live="polite" id="count"></p>
     <div id="list"></div>
 
-    <p class="test-note">※試作版のため、店舗情報は現行サイトから読み込んだものです。最新の営業状況は各店舗ページでご確認ください。</p>
+    <p class="test-note">※試作版のため、店舗情報は現行サイトから読み込んだものです。最新の営業状況は各店舗ページでご確認ください。<br>アプリで予約すれば、待ち時間はほとんどなし。<a href="./#app">アプリについて</a></p>
   </section>
 </main>
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <p class="footer-script">カットハウスひかり</p>
-    <p class="footer-name">お客様の笑顔と共に…</p>
+    <img class="footer-logo" src="assets/logo.png" alt="カットハウスひかり" width="356" height="218" loading="lazy">
+    <p class="footer-name">ヘアカット専門店</p>
     <nav class="footer-nav" aria-label="フッターメニュー">
       <a href="./">ホーム</a>
       <a href="https://www.cut-hikari.com/QandA.html" rel="noopener">よくあるご質問</a>
