@@ -11,7 +11,7 @@
 
   ready(function () {
     // 中身を1つずつ順番にポンッと出す（リストの子要素に番号をふる）
-    var groups = ".pref-grid > li, .flow > li, .app-points > li, .rc-stats > li, .rc-jobs > li, .rc-tags > li, .videos > div, .stores > a";
+    var groups = ".pref-grid > li, .flow > li, .rc-stats > li, .rc-jobs > li, .rc-tags > li, .videos > div, .stores > a";
     document.querySelectorAll(groups).forEach(function (el) {
       var i = Array.prototype.indexOf.call(el.parentNode.children, el);
       el.classList.add("rv");
@@ -93,6 +93,34 @@
         requestAnimationFrame(tick);
       }
       requestAnimationFrame(tick);
+    });
+
+    // 公式アプリ：できることのタブ（自動で切り替わり、さわったら止まる）
+    document.querySelectorAll(".app-tabs").forEach(function (box) {
+      var tabs = Array.prototype.slice.call(box.querySelectorAll('[role="tab"]'));
+      var cur = 0, timer = null;
+      function show(i) {
+        cur = i;
+        tabs.forEach(function (t, j) {
+          var on = j === i;
+          t.setAttribute("aria-selected", on ? "true" : "false");
+          t.tabIndex = on ? 0 : -1;
+          var panel = document.getElementById(t.getAttribute("aria-controls"));
+          if (panel) panel.hidden = !on;
+        });
+      }
+      function stop() { clearInterval(timer); timer = null; }
+      tabs.forEach(function (t, i) {
+        t.addEventListener("click", function () { stop(); show(i); });
+        t.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+            stop();
+            var n = (i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length;
+            show(n); tabs[n].focus(); e.preventDefault();
+          }
+        });
+      });
+      timer = setInterval(function () { show((cur + 1) % tabs.length); }, 4000);
     });
 
     // 動画はクリックしたときだけ読み込む（ページを軽く保つため）

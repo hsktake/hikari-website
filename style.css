@@ -1056,3 +1056,28 @@ img { display: block; max-width: 100%; height: auto; }
   #app .app-lead { font-size: 12.5px; text-wrap: balance; }
   #app .app-note { text-wrap: balance; }
 }
+
+/* 公式アプリ：できることをタブで */
+.app-tabs { margin-top: 22px; }
+.at-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: var(--cream); padding: 5px; border-radius: 16px; }
+.at-list button { display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: var(--round); font-size: 13px; font-weight: 800; color: var(--brown-soft); background: transparent; border: 0; border-radius: 12px; padding: 8px 4px 7px; cursor: pointer; transition: background .2s, color .2s; }
+.at-list button .ic { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--white); }
+.at-list button svg { width: 22px; height: 22px; fill: none; stroke: var(--brown-soft); stroke-width: 3.6; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.at-list button[aria-selected="true"] { background: var(--white); color: var(--orange-deep); box-shadow: 0 3px 0 var(--orange-soft); }
+.at-list button[aria-selected="true"] .ic { background: var(--orange-soft); }
+.at-list button[aria-selected="true"] svg { stroke: var(--orange-deep); }
+.ic-heart svg { fill: none; }
+.at-list button[aria-selected="true"] .ic-heart svg { fill: #FFD3C2; }
+.at-panel { margin-top: 10px; padding: 12px 16px; border-left: 4px solid var(--orange); background: var(--white); animation: panelIn .35s ease both !important; }
+.at-panel strong { display: block; font-size: 17px; color: var(--brown); }
+.at-panel p { margin-top: 4px; font-size: 14px; color: var(--brown-soft); line-height: 1.7; }
+@keyframes panelIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (max-width: 600px) {
+  .app-tabs { margin-top: 14px; }
+  .at-list button { font-size: 11.5px; padding: 6px 2px; }
+  .at-list button .ic { width: 28px; height: 28px; }
+  .at-list button svg { width: 18px; height: 18px; }
+  .at-panel { margin-top: 8px; padding: 8px 12px; min-height: 76px; }
+  .at-panel strong { font-size: 14.5px; }
+  .at-panel p { font-size: 12px; line-height: 1.6; }
+}

@@ -14,8 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=70">
-<script src="main.js?v=70"></script>
+<link rel="stylesheet" href="style.css?v=71">
+<script src="main.js?v=71"></script>
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
@@ -190,20 +190,12 @@
             <div class="wf-marquee"><ul class="wf-track"><li><span class="em">☕</span>カフェでひと息</li><li><span class="em">🛒</span>夕飯のお買い物</li><li><span class="em">🏠</span>おうちでのんびり</li><li><span class="em">📺</span>ドラマを1話</li><li><span class="em">🍙</span>ゆっくりランチ</li><li aria-hidden="true"><span class="em">☕</span>カフェでひと息</li><li aria-hidden="true"><span class="em">🛒</span>夕飯のお買い物</li><li aria-hidden="true"><span class="em">🏠</span>おうちでのんびり</li><li aria-hidden="true"><span class="em">📺</span>ドラマを1話</li><li aria-hidden="true"><span class="em">🍙</span>ゆっくりランチ</li></ul></div>
             <div class="wf-marquee wf-rev"><ul class="wf-track"><li><span class="em">🧸</span>子どもと公園へ</li><li><span class="em">🐕</span>犬のお散歩</li><li><span class="em">📚</span>読書タイム</li><li><span class="em">🧺</span>洗たく物をたたむ</li><li><span class="em">💻</span>ちょっとお仕事</li><li aria-hidden="true"><span class="em">🧸</span>子どもと公園へ</li><li aria-hidden="true"><span class="em">🐕</span>犬のお散歩</li><li aria-hidden="true"><span class="em">📚</span>読書タイム</li><li aria-hidden="true"><span class="em">🧺</span>洗たく物をたたむ</li><li aria-hidden="true"><span class="em">💻</span>ちょっとお仕事</li></ul></div>
           </div>
-          <ul class="app-points">
-            <li>
-              <span class="ic ic-clock"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16"/><path class="hand-l" d="M24 24V13"/><path class="hand-s" d="M24 24l7 5"/></svg></span>
-              <span><strong>案内時刻が<wbr>わかる</strong>それまでおうちやお買い物で</span>
-            </li>
-            <li>
-              <span class="ic ic-bars"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 38h32"/><path class="bar bar1" d="M14 38V24"/><path class="bar bar2" d="M24 38V12"/><path class="bar bar3" d="M34 38V20"/></svg></span>
-              <span><strong>混雑が<wbr>すぐわかる</strong>すいているお店を選んで行ける</span>
-            </li>
-            <li>
-              <span class="ic ic-heart"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 40s-14-8-14-19a8 8 0 0 1 14-5 8 8 0 0 1 14 5c0 11-14 19-14 19Z"/></svg></span>
-              <span><strong>髪型を<wbr>登録できる</strong>毎回の説明いらずでラクラク</span>
-            </li>
-          </ul>
+          <div class="app-tabs">
+            <div class="at-list" role="tablist" aria-label="アプリでできること"><button type="button" role="tab" id="tab-time" aria-controls="panel-time" aria-selected="true"><span class="ic ic-clock"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16"/><path class="hand-l" d="M24 24V13"/><path class="hand-s" d="M24 24l7 5"/></svg></span>案内時刻</button><button type="button" role="tab" id="tab-crowd" aria-controls="panel-crowd" aria-selected="false" tabindex="-1"><span class="ic ic-bars"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 38h32"/><path class="bar bar1" d="M14 38V24"/><path class="bar bar2" d="M24 38V12"/><path class="bar bar3" d="M34 38V20"/></svg></span>混雑状況</button><button type="button" role="tab" id="tab-style" aria-controls="panel-style" aria-selected="false" tabindex="-1"><span class="ic ic-heart"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 40s-14-8-14-19a8 8 0 0 1 14-5 8 8 0 0 1 14 5c0 11-14 19-14 19Z"/></svg></span>髪型登録</button></div>
+            <div class="at-panel" role="tabpanel" id="panel-time" aria-labelledby="tab-time"><strong>案内時刻がわかる</strong><p>チケットを買うと、案内の目安時刻がアプリに出ます。それまでおうちやお買い物でどうぞ。</p></div>
+            <div class="at-panel" role="tabpanel" id="panel-crowd" aria-labelledby="tab-crowd" hidden><strong>混雑がすぐわかる</strong><p>各店舗の今の混み具合をアプリでチェック。すいているお店を選んで行けます。</p></div>
+            <div class="at-panel" role="tabpanel" id="panel-style" aria-labelledby="tab-style" hidden><strong>髪型を登録できる</strong><p>いつもの髪型やスタッフを登録しておけば、毎回の説明いらずでラクラク。</p></div>
+          </div>
           <div class="install">
             <div class="stores">
               <a class="store" href="https://apple.co/3tl829o" rel="noopener"><img src="assets/app/appstore.png" alt="App Storeからダウンロード" width="480" height="176"></a>
