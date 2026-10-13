@@ -399,7 +399,7 @@ img { display: block; max-width: 100%; height: auto; }
 /* フェイスケア：元画像の端が切れているので、顔を丸く切り抜いて見せる */
 .face-media { position: relative; height: 240px; background: var(--sky); display: grid; place-items: center; overflow: hidden; }
 .face-ring { position: relative; width: 200px; height: 200px; border-radius: 50%; overflow: hidden; background: #CFE9F6; border: 6px solid var(--white); box-shadow: 0 0 0 5px var(--orange), 0 10px 0 5px rgba(239,122,0,.25); }
-.face-ring img { position: absolute; width: 211px; max-width: none; height: auto; left: -11px; top: -68px; }
+.face-ring img { position: absolute; width: 191px; max-width: none; height: auto; left: -3px; top: -103px; }
 .fk { position: absolute; height: auto; animation: twinkle 2.6s ease-in-out infinite; }
 .fk1 { width: 30px; left: 18%; top: 22px; }
 .fk2 { width: 20px; right: 20%; top: 40px; animation-delay: .8s; }
