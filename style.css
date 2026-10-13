@@ -691,3 +691,51 @@ img { display: block; max-width: 100%; height: auto; }
   .rc-cta { flex-direction: column; align-items: stretch; }
   .rc-cta .btn { min-width: 0; width: 100%; }
 }
+
+/* ======================================================
+   公式アプリ：ワクワク演出（オーナー指示で、動きを減らす設定でもゆっくり動かす）
+   ====================================================== */
+.app-copy h2 .mark { display: inline-block; background: var(--sun); color: var(--brown); text-shadow: none; padding: 0 .18em; border-radius: 12px; rotate: -3deg; box-shadow: 0 5px 0 var(--orange-deep); animation: markPop 2.6s ease-in-out infinite !important; }
+@keyframes markPop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+
+.wait-fun { margin-top: 22px; background: rgba(74,46,26,.16); border-radius: 22px; padding: 14px 0 12px; overflow: hidden; }
+.wf-title { padding: 0 16px; font-size: 17px; font-weight: 800; }
+.wf-title span { color: var(--sun); }
+.wf-marquee { overflow: hidden; margin-top: 10px; -webkit-mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.wf-track { display: flex; gap: 10px; width: max-content; list-style: none; margin: 0; padding: 0 0 6px; animation: wfMove 26s linear infinite !important; }
+.wf-rev .wf-track { animation: wfMove 30s linear infinite reverse !important; }
+.wf-track li { display: inline-flex; align-items: center; gap: 6px; background: var(--white); color: var(--brown); font-weight: 800; font-size: 14.5px; padding: 7px 16px 7px 10px; border-radius: 999px; box-shadow: 0 4px 0 rgba(0,0,0,.14); white-space: nowrap; }
+.wf-track li:nth-child(3n+2) { background: var(--sun); }
+.wf-track li:nth-child(3n) { background: var(--sky); }
+.wf-track .em { font-size: 20px; line-height: 1; }
+@keyframes wfMove { to { transform: translateX(-50%); } }
+
+/* ポイントは色ちがいのカードにして、アイコンを動かす */
+.app-points { counter-reset: pt; gap: 14px; margin-top: 26px; }
+.app-points li { counter-increment: pt; position: relative; padding: 16px 16px 14px; border-radius: 22px; }
+.app-points li::before { content: "POINT " counter(pt); position: absolute; top: -11px; left: 18px; font-family: var(--en); font-weight: 600; font-size: 12px; letter-spacing: .08em; background: var(--brown); color: var(--sun); padding: 1px 10px; border-radius: 999px; }
+.app-points li:nth-child(1) { rotate: -1.2deg; }
+.app-points li:nth-child(2) { rotate: 1.2deg; background: var(--sun); }
+.app-points li:nth-child(3) { rotate: -.8deg; background: var(--sky); }
+.app-points li:nth-child(2) .ic, .app-points li:nth-child(3) .ic { background: var(--white); }
+.app-points li:nth-child(2) > span:last-child, .app-points li:nth-child(3) > span:last-child { color: var(--brown); }
+.app-points .ic { width: 54px; height: 54px; }
+.app-points svg { width: 32px; height: 32px; overflow: visible; }
+.ic-clock .hand-l { transform-origin: 24px 24px; animation: handSpin 6s linear infinite !important; }
+.ic-clock .hand-s { transform-origin: 24px 24px; animation: handSpin 24s linear infinite !important; }
+@keyframes handSpin { to { transform: rotate(360deg); } }
+.ic-bars .bar { transform-box: fill-box; transform-origin: 50% 100%; animation: barUp 1.8s ease-in-out infinite !important; }
+.ic-bars .bar2 { animation-delay: .3s !important; }
+.ic-bars .bar3 { animation-delay: .6s !important; }
+@keyframes barUp { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(.45); } }
+.ic-heart svg { animation: beat 1.4s ease-in-out infinite !important; fill: #FFD3C2; }
+@keyframes beat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.18); } 30% { transform: scale(1); } 45% { transform: scale(1.12); } }
+.install-title::after { animation: nudgeDown 1.2s ease-in-out infinite !important; }
+.phone-mini { animation: floatMini 5s ease-in-out infinite !important; }
+@media (min-width: 921px) { .phone-mini { animation: none !important; } }
+
+@media (max-width: 600px) {
+  .wait-fun { margin-left: -4px; margin-right: -4px; }
+  .wf-title { font-size: 15.5px; }
+  .wf-track li { font-size: 13.5px; padding: 6px 14px 6px 9px; }
+}
