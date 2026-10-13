@@ -927,3 +927,20 @@ img { display: block; max-width: 100%; height: auto; }
   .footer-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 18px 0; }
   .footer-nav a { padding: 9px 6px; font-size: 12px; letter-spacing: 0; text-align: center; line-height: 1.35; }
 }
+
+/* 公式アプリ：オレンジ一色にならないよう、メリハリをつける */
+.app-kicker { background: var(--brown); color: var(--sun); text-shadow: none; padding: 6px 16px; border-radius: 14px; box-shadow: 0 5px 0 rgba(0,0,0,.22); }
+.app-kicker em { background: var(--orange); color: var(--white); box-shadow: 0 3px 0 var(--orange-deep); }
+.app-title { display: inline-flex; background: var(--white); color: var(--brown); border-radius: 24px; padding: 10px 22px 10px 10px; box-shadow: 0 6px 0 var(--orange-deep); }
+.app-title .app-icon { background: var(--cream); box-shadow: none; border: 3px solid var(--orange-soft); }
+.app-name small { color: var(--brown-soft); }
+.app-name strong { color: var(--orange); text-shadow: none; }
+.wait-fun { background: var(--brown); }
+.install { background: var(--white); color: var(--brown); border-color: var(--white); box-shadow: 0 6px 0 var(--orange-deep); }
+.install-title::after { border-top-color: var(--orange); }
+.os { color: var(--brown-soft); }
+@media (max-width: 600px) {
+  .app-kicker { padding: 4px 10px; border-radius: 10px; }
+  .app-title { padding: 6px 14px 6px 6px; border-radius: 18px; box-shadow: 0 4px 0 var(--orange-deep); }
+  .app-name strong { text-shadow: none; }
+}
