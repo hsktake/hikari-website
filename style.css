@@ -1262,3 +1262,10 @@ html.modal-open { overflow: hidden; }
 
 /* 動画のサムネイル：下の字幕が見えないよう、上側を拡大して下を切る */
 .video button img { transform: scale(1.2); transform-origin: 50% 0; }
+
+/* 採用：下のボタンの間隔を広げる */
+.rc-cta { gap: 18px; }
+@media (max-width: 600px) {
+  .rc-cta { gap: 16px 12px; margin-top: 18px; }
+  .rc-cta .rc-btn-main { margin-bottom: 4px; }
+}
