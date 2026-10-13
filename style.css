@@ -1167,3 +1167,4 @@ img { display: block; max-width: 100%; height: auto; }
   #app .stores .store img { height: 46px; }
   #app .phone-mini { right: 2px; width: 42px; top: 36px; }
 }
+@media (max-width: 600px) { #app .app-name strong { font-size: 28px; } #app .phone-mini { width: 40px; right: 4px; } }
