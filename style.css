@@ -1049,3 +1049,10 @@ img { display: block; max-width: 100%; height: auto; }
   #app .phone-mini { right: -2px; }
   #app .install { margin-top: 12px; padding: 12px 10px 10px; }
 }
+@media (max-width: 600px) {
+  #app .app-name strong { font-size: 30px; }
+  #app .app-icon { width: 48px; height: 48px; border-radius: 14px; }
+  #app .phone-mini { width: 58px; top: 22px; }
+  #app .app-lead { font-size: 12.5px; text-wrap: balance; }
+  #app .app-note { text-wrap: balance; }
+}
