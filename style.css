@@ -190,7 +190,7 @@ img { display: block; max-width: 100%; height: auto; }
   .b1::after { bottom: -7px; left: 26px; }
   .b2 { left: -6px; bottom: -22px; }
   .b2::after { top: -7px; left: 26px; }
-  .b3 { right: -6px; bottom: -60px; }
+  .b3 { right: -6px; bottom: -68px; }
   .b3::after { top: -7px; right: 26px; }
   .spark-1 { left: 52%; top: -30px; width: 30px; }
   .spark-2 { display: none; }
