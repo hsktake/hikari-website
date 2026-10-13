@@ -346,24 +346,9 @@ img { display: block; max-width: 100%; height: auto; }
 @keyframes voices { 0% { opacity: 0; transform: translateY(6px); } 4%, 30% { opacity: 1; transform: none; } 34%, 100% { opacity: 0; } }
 .voice-card figcaption { font-size: 11px; color: var(--brown-soft); font-weight: 700; margin-top: 6px; }
 
-.compare2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 44px; }
-.cmp { border-radius: var(--radius-m); padding: 16px 20px; }
-.cmp-before { background: rgba(255,255,255,.18); border: 2px dashed rgba(255,255,255,.7); }
-.cmp-after { background: var(--white); color: var(--brown); box-shadow: 0 6px 0 rgba(0,0,0,.14); }
-.cmp-tag { font-weight: 800; font-size: 15px; margin-bottom: 8px; }
-.cmp-after .cmp-tag { color: var(--orange-deep); }
-.cmp ol { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
-.cmp li { font-weight: 800; font-size: 14px; border-radius: 999px; padding: 4px 12px; display: inline-flex; align-items: center; }
-.cmp-before li { background: rgba(255,255,255,.2); }
-.cmp-before li:nth-child(2) { background: rgba(74,46,26,.35); }
-.cmp-after li { background: var(--orange-soft); }
-.cmp-after li:last-child { background: var(--orange); color: var(--white); }
-.cmp li + li::before { content: "›"; margin: 0 8px 0 -4px; font-size: 18px; opacity: .7; }
-
 @media (max-width: 920px) {
   .app-grid { grid-template-columns: 1fr; gap: 30px; }
   .app-visual { min-height: 480px; max-width: 440px; width: 100%; margin: 0 auto; }
-  .compare2 { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
   .app-visual { min-height: 430px; }
