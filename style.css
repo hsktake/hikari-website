@@ -1002,3 +1002,19 @@ img { display: block; max-width: 100%; height: auto; }
   .rc-stats li { padding: 4px 2px; }
 }
 .app-points strong { word-break: keep-all; }
+
+/* 公式アプリ：文字を減らしてメリハリ（主役＝公式アプリ／見出し、他は小さく控えめに） */
+.app-lead { font-size: 15px; }
+.wf-title { font-size: 13px; opacity: .85; font-weight: 700; }
+.app-points strong { font-size: 15px; }
+.install { padding-top: 14px; }
+.os { margin-top: 8px; }
+.app-note { opacity: .8; }
+@media (max-width: 600px) {
+  .app-copy h2 { font-size: 22px; }
+  .app-lead { font-size: 13px; margin-top: 6px; }
+  .wf-title { font-size: 11.5px; }
+  .app-points strong { font-size: 12.5px; }
+  .os { font-size: 10px; }
+  .app-note { font-size: 10px; }
+}
