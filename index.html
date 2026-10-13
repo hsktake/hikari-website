@@ -14,8 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=19">
-<script src="main.js?v=19"></script>
+<link rel="stylesheet" href="style.css?v=20">
+<script src="main.js?v=20"></script>
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
@@ -24,7 +24,7 @@
   <div class="wrap header-inner">
     <a class="brand" href="./" aria-label="カットハウスひかり トップへ">
       <img class="brand-logo" src="assets/logo.png" alt="カットハウスひかり" width="356" height="218">
-      <span class="brand-label">ヘアカット専門店</span>
+      <span class="brand-area"><span class="area-sub">茨城・栃木・千葉・福島</span><span class="area-main">北関東に<strong>62</strong>店舗</span></span>
     </a>
     <nav class="nav" aria-label="メインメニュー">
       <a href="#shops">店舗を探す</a>
@@ -74,8 +74,9 @@
           <img class="spark spark-2" src="assets/sparkle.svg" alt="">
           <ul class="bubbles">
             <li class="bubble b1">待ち時間は<strong>おうちで</strong>のんびり</li>
+            <li class="bubble b4">眉毛も<strong>一緒に</strong>整う</li>
             <li class="bubble b2">お買い物ついでに<strong>サクッと</strong></li>
-            <li class="bubble b3">家族で通える<strong>62店舗</strong></li>
+            <li class="bubble b3">気になったら<strong>2週間お直し無料</strong></li>
           </ul>
         </div>
       </div>
@@ -142,81 +143,56 @@
   <!-- ④ 公式アプリ（当社の強み） -->
   <section id="app" class="section app wave-top">
     <div class="wrap">
-      <div class="heading heading-light reveal">
-        <span class="en">Official App</span>
-        <h2>ヘアカットの常識が変わる！</h2>
-        <p class="lead">公式アプリなら、待ち時間はおうちやお買い物で。<br>案内時刻に来るだけで、お店ではほとんど待ちません。</p>
-      </div>
-
-      <div class="app-stage">
-        <div class="pain reveal">
-          <p class="pain-title">こんな“あるある”、<br>ありませんか？</p>
-          <img src="assets/app/aruaru.webp" alt="困った顔の男女のイラスト" width="600" height="455" loading="lazy">
-          <ul class="pain-list">
-            <li>いつも混んでいて、待ち時間が長い</li>
-            <li>お店で順番を待っていないといけない</li>
-            <li>行ってみないと混雑がわからない</li>
-            <li>毎回、髪型を説明するのが面倒</li>
+      <div class="app-grid">
+        <div class="app-copy reveal">
+          <span class="app-pill">公式アプリ</span>
+          <h2>待ち時間は、<br>おうちで過ごそう。</h2>
+          <p class="app-lead">アプリでチケットを買えば、案内時刻まで自由に過ごせます。時間になったら来るだけで、お店ではほとんど待ちません。</p>
+          <ul class="app-points">
+            <li>
+              <span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16"/><path d="M24 14v10l7 5"/></svg></span>
+              <span><strong>案内時刻の目安がわかる</strong>それまでおうちやお買い物で</span>
+            </li>
+            <li>
+              <span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 38h32M14 38V24M24 38V12M34 38V20"/></svg></span>
+              <span><strong>混雑がリアルタイムでわかる</strong>すいているお店を選んで行ける</span>
+            </li>
+            <li>
+              <span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 40s-14-8-14-19a8 8 0 0 1 14-5 8 8 0 0 1 14 5c0 11-14 19-14 19Z"/></svg></span>
+              <span><strong>髪型やスタッフを登録できる</strong>毎回の説明いらずでラクラク</span>
+            </li>
           </ul>
+          <div class="app-cta">
+            <a class="btn btn-white" href="https://apple.co/3tl829o" rel="noopener">App Store</a>
+            <a class="btn btn-white" href="https://play.google.com/store/apps/details?id=hsk.hims_app&amp;hl=ja" rel="noopener">Google Play</a>
+          </div>
+          <p class="app-note">日時指定の予約手数料は無料（アプリからのご購入）。指定時刻の1時間前を過ぎてのキャンセルは300円かかります。</p>
         </div>
 
-        <div class="solve reveal" aria-hidden="true">
-          <span>アプリで</span><strong>まるっと<br>解決！</strong>
-        </div>
-
-        <div class="phone-stage reveal">
+        <div class="app-visual reveal">
+          <div class="halo" aria-hidden="true"></div>
           <img class="phone-img" src="assets/app/phone.webp" alt="カットハウスひかり公式アプリのホーム画面" width="540" height="1121" loading="lazy">
-          <span class="chip c1">おうちから予約</span>
-          <span class="chip c2">案内時刻がわかる</span>
-          <span class="chip c3">混雑がリアルタイムで</span>
-          <span class="chip c4">髪型を事前に登録</span>
-          <span class="chip c5">お気に入りスタッフ</span>
+          <div class="ticket-card" aria-hidden="true"><small>ご案内の目安</small><strong>14:30</strong><span>それまでお買い物へ♪</span></div>
+          <figure class="voice-card">
+            <blockquote>
+              <p class="v v1">案内の目安時刻がわかるので、自分の時間を有効に使えるようになりました</p>
+              <p class="v v2">お店に行かなくても予約ができて便利！</p>
+              <p class="v v3">一度使ったらやみつきです。もう手放せません！</p>
+            </blockquote>
+            <figcaption>アプリを使っているお客様の声</figcaption>
+          </figure>
         </div>
       </div>
 
-      <ul class="benefits">
-        <li class="reveal">
-          <span class="b-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 22 24 8l16 14v18H8Z"/><path d="M19 40V28h10v12"/></svg></span>
-          <h3>待ち時間は、<br>おうちやお買い物で</h3>
-          <p>案内時刻の目安がわかるから、それまで自由に過ごせます。時間になったら来るだけ。</p>
-        </li>
-        <li class="reveal">
-          <span class="b-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16"/><path d="M24 14v10l7 5"/></svg></span>
-          <h3>行く前に、<br>混雑がわかる</h3>
-          <p>店舗ごとの混雑状況をリアルタイムで確認。すいているお店を選んで行けます。</p>
-        </li>
-        <li class="reveal">
-          <span class="b-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 40s-14-8-14-19a8 8 0 0 1 14-5 8 8 0 0 1 14 5c0 11-14 19-14 19Z"/></svg></span>
-          <h3>注文は、<br>登録しておけばラクラク</h3>
-          <p>カットのご要望やお気に入りスタイルを事前に登録。お気に入りのスタッフも探せます。</p>
-        </li>
-      </ul>
-
-      <div class="voices reveal">
-        <img src="assets/app/voice.webp" alt="笑顔でグッドサインをする男女のイラスト" width="600" height="417" loading="lazy">
-        <div>
-          <p class="voices-title">アプリを使っているお客様の声</p>
-          <ul class="voice-list">
-            <li>お店に行かなくても予約ができて便利！</li>
-            <li>案内の目安時刻がわかるので、自分の時間を有効に使えるようになりました</li>
-            <li>一度使ったらやみつきです。もう手放せません！</li>
-            <li>スマホが苦手ですが、思ったよりも簡単に使えるようになりました</li>
-          </ul>
+      <div class="compare2 reveal">
+        <div class="cmp cmp-before">
+          <p class="cmp-tag">いつもは…</p>
+          <ol><li>お店へ行く</li><li>店内で順番待ち</li><li>やっとカット</li></ol>
         </div>
-      </div>
-
-      <div class="download reveal">
-        <p class="dl-title">かんたん3ステップではじめられます</p>
-        <ol class="dl-steps">
-          <li>アプリをダウンロード</li>
-          <li>会員登録・ログイン</li>
-          <li>店舗とメニューを選んで予約</li>
-        </ol>
-        <div class="app-cta">
-          <a class="btn btn-main" href="https://apple.co/3tl829o" rel="noopener">App Store でダウンロード</a>
-          <a class="btn btn-main" href="https://play.google.com/store/apps/details?id=hsk.hims_app&amp;hl=ja" rel="noopener">Google Play でダウンロード</a>
+        <div class="cmp cmp-after">
+          <p class="cmp-tag">アプリなら！</p>
+          <ol><li>家でチケット購入</li><li>おうちで待つ</li><li>来店してすぐカット</li></ol>
         </div>
-        <p class="app-note">日時指定の予約手数料は無料（アプリからのご購入）。指定時刻の1時間前を過ぎてのキャンセルは300円のキャンセル料がかかります。</p>
       </div>
     </div>
   </section>
@@ -304,8 +280,17 @@
           <img src="assets/styles/u35-03.jpg" alt="ショートヘアのスタイル例" width="340" height="400" loading="lazy">
           <div class="menu-body">
             <h3>カット</h3>
-            <p>丸刈りからロングまで。大人もお子さまも、男性も女性も。はじめてのお子さまは、保護者の方の膝の上でのカットもできます。</p>
-            <a class="more" href="https://www.cut-hikari.com/price.html" rel="noopener">料金を見る（店舗ごとに異なります）</a>
+            <p>丸刈りからロングまで。大人もお子さまも、男性も女性も。</p>
+            <a class="more" href="https://www.cut-hikari.com/price.html" rel="noopener">料金を見る</a>
+          </div>
+        </article>
+        <article class="menu-card reveal">
+          <img src="assets/eyebrow.jpg" alt="眉毛を整えている様子" width="301" height="211" loading="lazy">
+          <div class="menu-body">
+            <h3>眉毛カット</h3>
+            <ul class="menu-tags"><li>スペシャル</li><li>全体</li><li>部分</li></ul>
+            <p>カットと一緒に注文できます。髪型と眉を同時にすっきり。</p>
+            <a class="more" href="https://beauty-wellness-hub.com/mfc-top/eyebrows/" rel="noopener">眉毛カットについて</a>
           </div>
         </article>
         <article class="menu-card reveal">
@@ -313,11 +298,12 @@
           <div class="menu-body">
             <h3>フェイスケア</h3>
             <ul class="menu-tags"><li>ヒゲ脱毛</li><li>光フェイシャル</li></ul>
-            <p>カットのついでに、ヒゲと肌のお悩みも。いつもと同じ店舗で受けられます。</p>
+            <p>カットのついでに、ヒゲと肌のお悩みも。</p>
             <a class="more" href="https://beauty-wellness-hub.com/" rel="noopener">フェイスケアについて</a>
           </div>
         </article>
       </div>
+      <p class="menu-note">料金は店舗ごとに異なります。</p>
     </div>
   </section>
 
