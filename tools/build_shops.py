@@ -115,7 +115,7 @@ def head(title, desc, v, canonical_path):
       <a href="../#menu">メニュー</a>
       <a href="../#sns">Instagram</a>
       <a href="../#company">会社案内</a>
-      <a class="nav-recruit" href="../#recruit">採用情報</a>
+      <a class="nav-recruit" href="../recruit.html">採用情報</a>
     </nav>
   </div>
 </header>
@@ -132,7 +132,7 @@ FOOTER = """
       <a href="../shops.html">店舗一覧</a>
       <a href="https://www.cut-hikari-app.com/" rel="noopener">公式アプリ</a>
       <a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a>
-      <a href="https://recruit.cut-hikari.com/" rel="noopener">採用情報</a>
+      <a href="../recruit.html">採用情報</a>
       <a href="../news.html">お知らせ・休業情報</a>
       <a href="../member.html">HiCARD会員</a>
       <a href="../faq.html">よくあるご質問</a>
