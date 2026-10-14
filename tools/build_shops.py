@@ -116,7 +116,7 @@ def head(title, desc, v, canonical_path):
       <a href="../facecare.html">フェイスケア</a>
       <a href="../app.html">公式アプリ</a>
       <a class="nav-recruit" href="../recruit.html">採用情報</a>
-      <div class="nav-sub"><a href="../app-guide.html">アプリの使い方</a><a href="../member.html">HiCARD会員</a><a href="../faq.html">よくあるご質問</a><a href="../contact.html">お問い合わせ</a><a href=".././#company">会社案内</a><a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a><a href="../privacy.html">プライバシーポリシー</a><a href="../tokushoho.html">特定商取引法に基づく表記</a></div>
+      <div class="nav-sub"><a href="../app-guide.html">アプリの使い方</a><a href="../member.html">HiCARD会員</a><a href="../faq.html">よくあるご質問</a><a href="../contact.html">お問い合わせ</a><a href=".././#company">会社案内</a><a href="../community.html">地域とともに</a><a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a><a href="../privacy.html">プライバシーポリシー</a><a href="../tokushoho.html">特定商取引法に基づく表記</a></div>
     </nav>
   </div>
 </header>
@@ -142,6 +142,7 @@ FOOTER = """
       <a href="../faq.html">よくあるご質問</a>
       <a href="../contact.html">お問い合わせ</a>
       <a href=".././#company">会社案内</a>
+      <a href="../community.html">地域とともに</a>
       <a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a>
       <a href="../privacy.html">プライバシーポリシー</a>
       <a href="../tokushoho.html">特定商取引法に基づく表記</a>

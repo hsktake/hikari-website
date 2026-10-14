@@ -121,7 +121,7 @@ def page(prefix, title, desc, body, v):
       <a href="{p}facecare.html">フェイスケア</a>
       <a href="{p}app.html">公式アプリ</a>
       <a class="nav-recruit" href="{p}recruit.html" aria-current="page">採用情報</a>
-      <div class="nav-sub"><a href="{p}app-guide.html">アプリの使い方</a><a href="{p}member.html">HiCARD会員</a><a href="{p}faq.html">よくあるご質問</a><a href="{p}contact.html">お問い合わせ</a><a href="{p}./#company">会社案内</a><a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a><a href="{p}privacy.html">プライバシーポリシー</a><a href="{p}tokushoho.html">特定商取引法に基づく表記</a></div>
+      <div class="nav-sub"><a href="{p}app-guide.html">アプリの使い方</a><a href="{p}member.html">HiCARD会員</a><a href="{p}faq.html">よくあるご質問</a><a href="{p}contact.html">お問い合わせ</a><a href="{p}./#company">会社案内</a><a href="{p}community.html">地域とともに</a><a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a><a href="{p}privacy.html">プライバシーポリシー</a><a href="{p}tokushoho.html">特定商取引法に基づく表記</a></div>
     </nav>
   </div>
 </header>
@@ -146,6 +146,7 @@ def page(prefix, title, desc, body, v):
       <a href="{p}faq.html">よくあるご質問</a>
       <a href="{p}contact.html">お問い合わせ</a>
       <a href="{p}./#company">会社案内</a>
+      <a href="{p}community.html">地域とともに</a>
       <a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a>
       <a href="{p}privacy.html">プライバシーポリシー</a>
       <a href="{p}tokushoho.html">特定商取引法に基づく表記</a>

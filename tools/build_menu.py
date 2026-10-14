@@ -49,7 +49,7 @@ def shell(title, desc):
 
 MENUS = [
     ("haircut.html", "ヘアカット", "男性1,400円", '<img src="assets/scissors.svg" alt="" width="28" height="28">'),
-    ("brow.html", "眉毛カット", "＋無料〜200円", '<svg viewBox="0 0 40 28" width="30" height="21" aria-hidden="true"><path d="M3 18c8-10 22-12 34-5" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'),
+    ("brow.html", "眉毛カット", "＋100円・200円", '<svg viewBox="0 0 40 28" width="30" height="21" aria-hidden="true"><path d="M3 18c8-10 22-12 34-5" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'),
     ("facecare.html", "フェイスケア", "初回1,000円〜", '<img src="assets/sparkle.svg" alt="" width="26" height="26">'),
 ]
 
@@ -411,7 +411,7 @@ def build_haircut():
 # ---------- 眉毛カット ----------
 def build_brow():
     head, foot = shell("眉毛カット｜カットハウスひかり",
-                       "カットハウスひかりの眉毛カット。ヘアカットと一緒にご注文いただけるオプションです。スペシャルコース200円・全体コース100円・部分コース無料。公式アプリからもご注文いただけます。")
+                       "カットハウスひかりの眉毛カット。ヘアカットと一緒にご注文いただけるオプションです。スペシャルコース200円・全体コース100円。公式アプリからもご注文いただけます。")
     body = f"""<main id="main">
   <section class="fc-hero bw-hero">
     <div class="wrap fc-hero-grid">
@@ -419,7 +419,7 @@ def build_brow():
         <p class="fc-en">EYEBROW</p>
         <h1>眉毛カット<br><span>眉毛も髪もプロにおまかせ</span></h1>
         <p class="fc-lead">{ph("ヘアカットと一緒に|注文できるオプション")}</p>
-        {price_board("ヘアカットに追加で", [("スペシャル", "200", "#bw-course"), ("全体", "100", "#bw-course"), ("部分", "無料", "#bw-course")], "※料金は税込です。")}
+        {price_board("ヘアカットに追加で", [("スペシャル", "200", "#bw-course"), ("全体", "100", "#bw-course")], "※料金は税込です。")}
       </div>
       <div class="fc-brow-ba bw-hero-ba">
         <figure><img src="assets/menu/brow-before.webp" alt="眉毛カット前" width="300" height="131"><figcaption>BEFORE</figcaption></figure>
@@ -446,11 +446,10 @@ def build_brow():
 
   <section class="fc-sec fc-alt" id="bw-course" aria-labelledby="h-bwcourse">
     <div class="wrap">
-      {head_block("COURSE", "h-bwcourse", "選べる3つのコース")}
+      {head_block("COURSE", "h-bwcourse", "選べる2つのコース")}
       <ul class="bw-prices">
         <li class="is-main"><span class="bw-name">スペシャル</span><b>200<small>円</small></b><span class="bw-desc">{ph("全体の長さ|＋眉周り")}</span></li>
         <li><span class="bw-name">全体</span><b>100<small>円</small></b><span class="bw-desc">{ph("全体の|長さ")}</span></li>
-        <li><span class="bw-name">部分</span><b class="is-free">無料</b><span class="bw-desc">{ph("長い毛を|1〜2本")}</span></li>
       </ul>
       <p class="fc-note center-t">※料金は税込です。</p>
     </div>
@@ -707,9 +706,87 @@ def build_app_guide():
     print(f"アプリの使い方ガイドを作成しました（{len(G)}項目）")
 
 
+# ---------- 地域とともに（旧サイトのスポンサー・認定・バナー） ----------
+TEAMS = [
+    ("水戸ホーリーホック", "https://www.mito-hollyhock.net/", "assets/community/mito-holly-hock.webp", 503, 143),
+    ("茨城アストロプラネッツ", "https://www.ibaraki-planets.jp/", "assets/community/astroplanets.webp", 374, 355),
+    ("茨城セイバーズ", "https://www.ibaraki-svs.com/", "assets/community/saviors.webp", 331, 142),
+]
+
+
+def build_community():
+    head, foot = shell("地域とともに｜カットハウスひかり",
+                       "カットハウスひかりの地域への取り組み。地域のスポーツチームの応援、茨城エコ事業所の認定（シャンプーをしないため、お客様に水を使いません）、日本SDGs協会の認定など。")
+    teams = "".join(
+        f'<li><a href="{url}" target="_blank" rel="noopener"><span class="cm-logo"><img src="{img}" alt="" width="{w}" height="{h}" loading="lazy"></span>'
+        f'<span class="cm-tx"><b>{esc(name)}</b><span class="cm-go">公式サイト ›</span></span></a></li>'
+        for name, url, img, w, h in TEAMS)
+    body = f"""<main id="main">
+  <section class="fc-hero cm-hero">
+    <div class="wrap">
+      <div class="fc-hero-copy">
+        <p class="fc-en">COMMUNITY</p>
+        <h1>地域とともに</h1>
+        <p class="fc-lead">{ph("地域の応援と、|環境への取り組み")}</p>
+      </div>
+      <ul class="cm-jump">
+        <li><a href="#cm-sports">{ic("medal")}<b>スポーツ応援</b></a></li>
+        <li><a href="#cm-eco">{ic("drop")}<b>節水</b></a></li>
+        <li><a href="#cm-sdgs">{ic("leaf")}<b>SDGs</b></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="fc-sec" id="cm-sports" aria-labelledby="h-sports">
+    <div class="wrap">
+      {head_block("SPORTS", "h-sports", "地域のスポーツチームを|応援しています！")}
+      <ul class="cm-teams">{teams}</ul>
+    </div>
+  </section>
+
+  <section class="fc-sec fc-alt" id="cm-eco" aria-labelledby="h-eco">
+    <div class="wrap">
+      {head_block("ECO", "h-eco", "茨城エコ事業所に|認定・登録されました")}
+      <div class="cm-eco">
+        <img class="cm-eco-mark" src="assets/community/eco.webp" alt="茨城エコ事業所" width="85" height="101" loading="lazy">
+        <p>{ph("シャンプーを行わないため、|お客様に対しては|水を一切使用しません。")}</p>
+      </div>
+      <div class="cm-nums">{nums([("1年間の節水", "約", "2,000", "万L以上"), ("25mプール", "約", "44", "杯分"), ("家庭のお風呂", "約", "80,000", "杯分")])}</div>
+      <p class="fc-note center-t">{ph("※通常の理容・美容店は、|お客様1人あたり|20リットル以上の水を使用します。")}</p>
+    </div>
+  </section>
+
+  <section class="fc-sec" id="cm-sdgs" aria-labelledby="h-sdgs">
+    <div class="wrap">
+      {head_block("SDGs", "h-sdgs", "日本SDGs協会の|認定を受けています")}
+      <a class="cm-sdgs" href="http://www.japansdgs.net/" target="_blank" rel="noopener">
+        <img src="assets/community/jsa-certified-3-8.webp" alt="SDGs 目標3 すべての人に健康と福祉を・目標8 働きがいも経済成長も" width="1400" height="195" loading="lazy">
+        <img src="assets/community/jsa-certified-11-12-14-15.webp" alt="SDGs 目標11 住み続けられるまちづくりを・目標12 つくる責任つかう責任・目標14 海の豊かさを守ろう・目標15 陸の豊かさも守ろう" width="1400" height="141" loading="lazy">
+        <img class="cm-jsa" src="assets/community/jsa-02.webp" alt="一般社団法人 日本SDGs協会" width="1400" height="271" loading="lazy">
+      </a>
+    </div>
+  </section>
+
+  <section class="fc-sec fc-alt" id="cm-space" aria-labelledby="h-space">
+    <div class="wrap">
+      {head_block("RENTAL SPACE", "h-space", "水戸市のレンタルスペース")}
+      <a class="cm-banner" href="https://delighthall.com/" target="_blank" rel="noopener">
+        <img src="assets/community/delighthall.webp" alt="水戸市のレンタルスペース ディライトホール" width="570" height="160" loading="lazy">
+        <span class="cm-banner-t"><b>ディライトホール</b>{ph("広い無料駐車場併設。|1名〜40名程度の|ご利用に。")}<small>{ph("教室・会議・会合・|ワークショップ・ヨガ他")}</small><span class="cm-go">公式サイト ›</span></span>
+      </a>
+    </div>
+  </section>
+</main>
+
+"""
+    write("community.html", head, body, foot)
+    print("地域とともに（community.html）を作成しました")
+
+
 if __name__ == "__main__":
     build_haircut()
     build_brow()
     build_facecare()
     build_app()
     build_app_guide()
+    build_community()
