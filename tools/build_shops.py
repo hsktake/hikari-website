@@ -112,8 +112,8 @@ def head(title, desc, v, canonical_path):
       <a href="../news.html">お知らせ</a>
       <a href="../shops.html" aria-current="page">店舗を探す</a>
       <a href="../#app">公式アプリ</a>
-      <a href="../#flow">予約の流れ</a>
       <a href="../#menu">メニュー</a>
+      <a href="../#flow">予約の流れ</a>
       <a href="../#sns">Instagram</a>
       <a href="../#company">会社案内</a>
       <a class="nav-recruit" href="../recruit.html">採用情報</a>

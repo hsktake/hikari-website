@@ -117,8 +117,8 @@ def page(prefix, title, desc, body, v):
       <a href="{p}news.html">お知らせ</a>
       <a href="{p}shops.html">店舗を探す</a>
       <a href="{p}./#app">公式アプリ</a>
-      <a href="{p}./#flow">予約の流れ</a>
       <a href="{p}./#menu">メニュー</a>
+      <a href="{p}./#flow">予約の流れ</a>
       <a href="{p}./#sns">Instagram</a>
       <a href="{p}./#company">会社案内</a>
       <a class="nav-recruit" href="{p}recruit.html" aria-current="page">採用情報</a>

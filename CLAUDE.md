@@ -11,7 +11,7 @@
 - 写真は日本人・実店舗のものを使う（外国人のストック写真は使わない）。動き（アニメーション）は main.js と CSS。prefers-reduced-motion では止める（ただしハサミ・クシ・ヘアカタログ・キャッチのキラキラ・公式アプリ欄の演出・スクロール時に1回ポンッと出る演出・ヒーローの登場演出はオーナー指示で続ける）。
 - 店舗データの元は data/shops.json（現行サイト list-*.html の掲載事実から作成）。直したら `python3 tools/build_shops.py` で shops-data.js と各店舗ページ shop/*.html を作り直す（直接編集しない）。店舗写真は全店 assets/shops/店舗コード.webp に取り込み済み（ベイシア壬生店は現行サイトにも写真なし）。臨時休業・営業時間変更は news.html へリンク。CSP で外部読み込み先を限定しているので、新しい外部サービスを使うときは各HTMLの CSP も更新する（店舗ページは build_shops.py 内の CSP）。
 - CSS/JS を変更したら、index.html・shops.html の `?v=数字` を1つ上げ、build_shops.py を実行して店舗ページにも反映する（ブラウザの古いキャッシュ対策）。
-- トップの並び順（お客様の動線）：ヒーロー → ヘアカタログ帯 → 店舗を探す → 公式アプリ → 予約からカットまで（イラスト）→ メニュー（カット／フェイスケア）→ Instagram → 動画・会社案内 → 採用情報（採用は大切なので目立たせる。内容は recruit.cut-hikari.com の掲載事実のみ）。同じ内容をくり返さない。
+- トップの並び順（お客様の動線。どんなメニューがあるか分かってから予約の流れへ）：ヒーロー → ヘアカタログ帯 → 店舗を探す → 公式アプリ → メニュー（カット／フェイスケア）→ 予約からカットまで（イラスト）→ Instagram → 動画・会社案内 → 採用情報（採用は大切なので目立たせる。内容は recruit.cut-hikari.com の掲載事実のみ）。同じ内容をくり返さない。
 - アプリ素材は assets/app/（アプリ紹介サイトの画面・イラスト）。お客様の声はアプリ紹介サイトの掲載文。
 - 公式Instagramは @cut_hikari（https://www.instagram.com/cut_hikari/）。
 - サイト内ページ：privacy.html（プライバシーポリシー）・tokushoho.html（特定商取引法に基づく表記）・contact.html（お問い合わせ）・faq.html（よくあるご質問）。内容は現行サイト（sp-privacypolicy / sp-tokushoho / お問い合わせ受付 / sp-qanda）の掲載文そのまま。CSS/JS を変えたらこれらの `?v=` も上げる。
