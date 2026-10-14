@@ -117,6 +117,7 @@ def head(title, desc, v, canonical_path):
       <a href="../#sns">Instagram</a>
       <a href="../#company">会社案内</a>
       <a class="nav-recruit" href="../recruit.html">採用情報</a>
+      <div class="nav-sub"><a href="../member.html">HiCARD会員</a><a href="../faq.html">よくあるご質問</a><a href="../contact.html">お問い合わせ</a><a href="../privacy.html">プライバシーポリシー</a><a href="../tokushoho.html">特定商取引法に基づく表記</a></div>
     </nav>
   </div>
 </header>

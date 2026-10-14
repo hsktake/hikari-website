@@ -1933,3 +1933,12 @@ a.shop-photo { display: grid; }
 .rq-co-grid > div { text-align: center; }
 .rq-co-motto small { display: block; font-size: 13px; color: var(--brown-soft); }
 .rq-co-table { max-width: 420px; margin-left: auto !important; margin-right: auto !important; text-align: left; }
+
+/* スマホのメニュー：ほかのページへのリンクも小さく並べる（PCでは非表示・フッターにあり） */
+.nav-sub { display: none; }
+@media (max-width: 1060px) {
+  .site-header.is-open .nav { max-height: calc(100vh - 72px); overflow-y: auto; }
+  .nav-sub { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 2px dotted var(--line); }
+  .nav .nav-sub a { font-size: 12.5px; font-weight: 700; padding: 8px 6px; border: 1.5px solid var(--line); border-radius: 999px; text-align: center; white-space: nowrap; color: var(--brown-soft); }
+  .nav .nav-sub a:last-child { border-bottom: 1.5px solid var(--line); }
+}

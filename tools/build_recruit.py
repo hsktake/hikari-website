@@ -122,6 +122,7 @@ def page(prefix, title, desc, body, v):
       <a href="{p}./#sns">Instagram</a>
       <a href="{p}./#company">会社案内</a>
       <a class="nav-recruit" href="{p}recruit.html" aria-current="page">採用情報</a>
+      <div class="nav-sub"><a href="{p}member.html">HiCARD会員</a><a href="{p}faq.html">よくあるご質問</a><a href="{p}contact.html">お問い合わせ</a><a href="{p}privacy.html">プライバシーポリシー</a><a href="{p}tokushoho.html">特定商取引法に基づく表記</a></div>
     </nav>
   </div>
 </header>
