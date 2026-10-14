@@ -191,12 +191,11 @@ img { display: block; max-width: 100%; height: auto; }
 .hero h1 { font-size: clamp(30px, 4.4vw, 52px); line-height: 1.45; letter-spacing: .05em; }
 .hero h1 span { display: block; white-space: nowrap; }
 .hero h1 .hl { display: inline; background: linear-gradient(transparent 62%, var(--sun) 62% 92%, transparent 92%); }
-/* 「ひかり」＝カットハウスひかり＋お客様の暮らしを輝かせる光。文字に光が走り、うしろがやさしく光る（キャッチのキラキラとして動きを減らす設定でも続ける） */
-.hero h1 .hikari { display: inline-block; position: relative; font-size: 1.28em; line-height: 1; padding: 0 .04em; color: var(--orange); background: linear-gradient(110deg, #EF7A00 0%, #F58A00 38%, #FFF4C2 50%, #F58A00 62%, #EF7A00 100%); background-size: 260% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 0 rgba(74,46,26,.18)) drop-shadow(0 0 12px rgba(255,201,77,.75)); animation: hikariShine 3.6s ease-in-out 1.2s infinite !important; }
-.hero h1 .hikari::before { content: ""; position: absolute; z-index: -1; left: 50%; top: 52%; width: 150%; height: 190%; transform: translate(-50%, -50%); background: radial-gradient(closest-side, rgba(255,214,102,.75), rgba(255,214,102,0)); animation: hikariGlow 3.6s ease-in-out 1.2s infinite !important; pointer-events: none; }
-.hero h1 .hikari::after { content: ""; position: absolute; right: -.32em; top: -.3em; width: .42em; height: .42em; background: url("assets/sparkle.svg") center / contain no-repeat; animation: hikariTwinkle 1.8s ease-in-out infinite !important; }
-@keyframes hikariShine { 0%, 35% { background-position: 100% 0; } 75%, 100% { background-position: 0 0; } }
-@keyframes hikariGlow { 0%, 100% { opacity: .55; transform: translate(-50%, -50%) scale(.92); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); } }
+/* 「ひかり」＝カットハウスひかり＋お客様の暮らしを輝かせる光。くっきりしたオレンジの大きな文字に、下の黄色い線と小さなキラッ（キャッチのキラキラとして動きを減らす設定でも続ける） */
+.hero h1 .hl { background: none; }
+.hero h1 .hikari { display: inline-block; position: relative; font-size: 1.24em; line-height: 1.1; color: var(--orange); text-shadow: 0 3px 0 rgba(74,46,26,.14); }
+.hero h1 .hikari::before { content: ""; position: absolute; z-index: -1; left: -.06em; right: -.06em; bottom: -.02em; height: .2em; border-radius: 999px; background: var(--sun); }
+.hero h1 .hikari::after { content: ""; position: absolute; right: -.34em; top: -.22em; width: .4em; height: .4em; background: url("assets/sparkle.svg") center / contain no-repeat; animation: hikariTwinkle 1.8s ease-in-out infinite !important; }
 @keyframes hikariTwinkle { 0%, 100% { transform: scale(.6) rotate(0deg); opacity: .6; } 50% { transform: scale(1.1) rotate(20deg); opacity: 1; } }
 .hero-en { font-family: var(--en); font-weight: 600; font-size: clamp(20px, 2.2vw, 26px); letter-spacing: .05em; color: var(--brown); margin-top: 6px; }
 .hero-en .cap { color: var(--orange); }
