@@ -122,7 +122,7 @@ def page(prefix, title, desc, body, v):
       <a href="{p}./#sns">Instagram</a>
       <a href="{p}./#company">会社案内</a>
       <a class="nav-recruit" href="{p}recruit.html" aria-current="page">採用情報</a>
-      <div class="nav-sub"><a href="{p}facecare.html">フェイスケア</a><a href="{p}member.html">HiCARD会員</a><a href="{p}faq.html">よくあるご質問</a><a href="{p}contact.html">お問い合わせ</a><a href="{p}privacy.html">プライバシーポリシー</a><a href="{p}tokushoho.html">特定商取引法に基づく表記</a></div>
+      <div class="nav-sub"><a href="{p}haircut.html">ヘアカット</a><a href="{p}brow.html">眉毛カット</a><a href="{p}facecare.html">フェイスケア</a><a href="{p}member.html">HiCARD会員</a><a href="{p}faq.html">よくあるご質問</a><a href="{p}contact.html">お問い合わせ</a><a href="{p}privacy.html">プライバシーポリシー</a><a href="{p}tokushoho.html">特定商取引法に基づく表記</a></div>
     </nav>
   </div>
 </header>
@@ -139,6 +139,8 @@ def page(prefix, title, desc, body, v):
       <a href="{p}./#app">公式アプリ</a>
       <a href="{p}recruit.html">採用情報</a>
       <a href="{p}news.html">お知らせ・休業情報</a>
+      <a href="{p}haircut.html">ヘアカット</a>
+      <a href="{p}brow.html">眉毛カット</a>
       <a href="{p}facecare.html">フェイスケア</a>
       <a href="{p}member.html">HiCARD会員</a>
       <a href="{p}faq.html">よくあるご質問</a>

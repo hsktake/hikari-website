@@ -8,14 +8,15 @@
 - 本番切り替え（noindex 削除・CNAME 追加）はオーナーの指示があるまで行わない。
 - デザイン：ブランドカラー基調のポップでファミリー向け（オレンジ #EF7A00、こげ茶 #4A2E1A、黄 #FFC94D、クリーム #FFFAF2、店舗サインの水色 #CDEBF7）。書体：M PLUS Rounded 1c（和文）、Fredoka（英字・数字）。ロゴは公式ロゴ assets/logo.png を使う。ハサミ・クシのモチーフで「ヘアカット専門店」と一目でわかるように。「お客様の笑顔と共に」は使わない。
 - 一番の強みは公式アプリでの予約（待ち時間を大幅短縮）。アプリの訴求は目立たせる。具体的な待ち時間の数字は書かない。
-- 写真は日本人・実店舗のものを使う（外国人のストック写真は使わない）。動き（アニメーション）は main.js と CSS。prefers-reduced-motion では止める（ただしハサミ・クシ・ヘアカタログ・キャッチのキラキラ・公式アプリ欄の演出・スクロール時に1回ポンッと出る演出・ヒーローの登場演出はオーナー指示で続ける）。
+- 写真は日本人・実店舗のものを使う（外国人のストック写真は使わない）。動き（アニメーション）は main.js と CSS。prefers-reduced-motion では止める（ただしハサミ・クシ・ヘアカタログ・キャッチのキラキラ・公式アプリ欄の演出・スクロール時に1回ポンッと出る演出・ヒーローの登場演出・ヒーロー写真の切り替えはオーナー指示で続ける）。
 - 店舗データの元は data/shops.json（現行サイト list-*.html の掲載事実から作成）。直したら `python3 tools/build_shops.py` で shops-data.js と各店舗ページ shop/*.html を作り直す（直接編集しない）。店舗写真は全店 assets/shops/店舗コード.webp に取り込み済み（ベイシア壬生店は現行サイトにも写真なし）。臨時休業・営業時間変更は news.html へリンク。CSP で外部読み込み先を限定しているので、新しい外部サービスを使うときは各HTMLの CSP も更新する（店舗ページは build_shops.py 内の CSP）。
 - CSS/JS を変更したら、index.html・shops.html の `?v=数字` を1つ上げ、build_shops.py を実行して店舗ページにも反映する（ブラウザの古いキャッシュ対策）。
 - トップの並び順（お客様の動線。どんなメニューがあるか分かってから予約の流れへ）：ヒーロー → ヘアカタログ帯 → 店舗を探す → 公式アプリ → メニュー（カット／フェイスケア）→ 予約からカットまで（イラスト）→ Instagram → 動画・会社案内 → 採用情報（採用は大切なので目立たせる。内容は recruit.cut-hikari.com の掲載事実のみ）。同じ内容をくり返さない。
 - アプリ素材は assets/app/（アプリ紹介サイトの画面・イラスト）。お客様の声はアプリ紹介サイトの掲載文。
 - 公式Instagramは @cut_hikari（https://www.instagram.com/cut_hikari/）。
-- サイト内ページ：privacy.html（プライバシーポリシー）・tokushoho.html（特定商取引法に基づく表記）・contact.html（お問い合わせ）・faq.html（よくあるご質問）。内容は現行サイト（sp-privacypolicy / sp-tokushoho / お問い合わせ受付 / sp-qanda）の掲載文そのまま。CSS/JS を変えたらこれらの `?v=` も上げる。
+- サイト内ページ：privacy.html（プライバシーポリシー）・tokushoho.html（特定商取引法に基づく表記）・contact.html（お問い合わせ）・faq.html（よくあるご質問）。内容は現行サイト（sp-privacypolicy / sp-tokushoho / お問い合わせ受付 / sp-qanda）の掲載文そのまま。CSS/JS を変えたらこれらの `?v=` も上げる（全ページの *.html を一括で置き換え → build_shops.py・build_recruit.py・build_menu.py を実行）。
 - news.html（お知らせ・休業情報）と member.html（HiCARD会員：メリット・会員ポイント・会員マイページ）も現行サイトの掲載文から作成。休業・営業時間変更は日付ごとに変わるので、オーナーから連絡があれば news.html の該当欄と「更新」日付を直す。リンクは原則サイト内ページへ（現行サイト cut-hikari.com へのリンクは使わない。採用サイト・アプリ紹介サイト・待ち状況システムは別サイトなのでそのまま）。
 - 採用ページ：recruit.html（採用トップ）と recruit/職種.html（stylist・stylist-part・assistant・reception）。元データは data/recruit.json（旧採用サイト recruit.cut-hikari.com の掲載文）、`python3 tools/build_recruit.py` で作る。旧採用サイトへのリンクは使わない。相談・見学・応募は今はフリーダイヤル（0120-877-100）とメール（info@cut-hikari.com）で受付。Googleフォームができたら build_recruit.py の ENTRY_FORM_URL に入れて作り直す。先輩インタビューは個人名を出さない。
 - 店舗数は62店舗が正しい（旧採用サイト・Instagramの「63店舗」は誤り。オーナー確認済み）。
-- フェイスケアページ：facecare.html（ヒゲ脱毛・光フェイシャル・眉毛カット・対応店舗）。内容は旧フェイスケアサイト beauty-wellness-hub.com の掲載事実をもとに再構成、画像は assets/facecare/。`python3 tools/build_facecare.py` で作る（対応店舗は data/shops.json の care から自動）。文章は「|」で区切ると、その位置でだけ折り返す。
+- メニューのページ：haircut.html（ヘアカット・ヘアカタログ・こだわり・チケットの買い方）、brow.html（眉毛カット）、facecare.html（ヒゲ脱毛・光フェイシャル・対応店舗）の3つ。上部の切り替えボタンで行き来できる。内容は旧サイト（cut-hikari.com のコンセプト・料金案内、beauty-wellness-hub.com のヘアカタログ・眉毛オプション・フェイスケア）の掲載事実をもとに再構成。`python3 tools/build_menu.py` で3ページを作る（対応店舗は data/shops.json の care から自動）。文章は「|」で区切ると、その位置でだけ折り返す。ヘアカタログの「いろいろなスタイル」は AI のイメージ画像（assets/catalog、※イメージ表記あり）。
+- トップのヒーロー写真は assets/hero-family.jpg と assets/hero/family-0*.webp（オーナー提供）を4.5秒ごとにフェードで切り替える（main.js）。ゆっくりのフェードなので prefers-reduced-motion でも続ける（オーナー指示）。

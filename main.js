@@ -186,4 +186,18 @@
       btn.addEventListener("click", function () { lastBtn = btn; openVideo(box.dataset.id, title); });
     });
   });
+  /* トップの家族写真を数秒ずつ切り替える */
+  ready(function () {
+    var box = document.querySelector("[data-slides]");
+    if (!box) return;
+    var imgs = box.querySelectorAll(".hero-photo");
+    if (imgs.length < 2) return;
+    var i = 0;
+    setInterval(function () {
+      if (document.hidden) return;
+      imgs[i].classList.remove("is-on");
+      i = (i + 1) % imgs.length;
+      imgs[i].classList.add("is-on");
+    }, 4500);
+  });
 })();
