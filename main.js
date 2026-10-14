@@ -213,4 +213,13 @@
       if (ios || android) a.rel = "noopener";
     });
   });
+  /* 「画面で手順を見る」：閉じている説明を開いてそこへ移動 */
+  ready(function () {
+    document.querySelectorAll("[data-open-details]").forEach(function (a) {
+      a.addEventListener("click", function () {
+        var d = document.querySelector(a.getAttribute("href"));
+        if (d && d.tagName === "DETAILS") d.open = true;
+      });
+    });
+  });
 })();

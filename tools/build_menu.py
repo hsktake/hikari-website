@@ -133,6 +133,10 @@ def ic(name):
 
 
 ICONS["check"] = '<path d="m12 25 8 8 16-17"/>'
+ICONS["card"] = '<rect x="5" y="11" width="38" height="26" rx="4"/><path d="M5 19h38M11 29h10"/>'
+ICONS["key"] = '<circle cx="15" cy="24" r="8"/><path d="M23 24h19M36 24v7M42 24v5"/>'
+ICONS["lock"] = '<rect x="10" y="21" width="28" height="21" rx="4"/><path d="M16 21v-6a8 8 0 0 1 16 0v6M24 29v5"/>'
+ICONS["wallet"] = '<path d="M8 14h30a3 3 0 0 1 3 3v21a3 3 0 0 1-3 3H8z"/><path d="M8 14l24-7v7M41 23h-9a4 4 0 0 0 0 8h9"/><path d="M33 27h.01"/>'
 
 
 IOS_URL = "https://apple.co/3tl829o"
@@ -621,12 +625,30 @@ def build_app_guide():
         after = []
         ex = g.get("extra")
         if ex and ex.get("good"):
-            goods = "".join(f'<li>{ic("check")}<span>{ph(x)}</span></li>' for x in ex["good"])
-            st = ""
-            if ex.get("steps"):
-                st = '<ol class="gd-mini">' + "".join(f"<li>{esc(x)}</li>" for x in ex["steps"]) + "</ol>"
+            icons = ex.get("good_icons") or ["check"] * len(ex["good"])
+            goods = "".join(f'<li>{ic(i)}<span>{ph(x)}</span></li>' for i, x in zip(icons, ex["good"]))
+            flow = ""
+            if ex.get("stages"):
+                n = 0
+                stages = []
+                for st in ex["stages"]:
+                    lis = []
+                    for x in st["steps"]:
+                        n += 1
+                        sub = f'<small>{esc(x["sub"])}</small>' if x.get("sub") else ""
+                        lis.append(f'<li><span class="gd-fl-ic">{ic(x["icon"])}<b>{n}</b></span><span class="gd-fl-t">{ph(x["text"])}{sub}</span></li>')
+                    stages.append(f'<div class="gd-stage"><p class="gd-stage-h">{ic(st["icon"])}{esc(st["where"])}</p><ol>{"".join(lis)}</ol></div>')
+                see = ""
+                if ex.get("see"):
+                    see = f'<a class="gd-see" href="{ex["see"]["href"]}" data-open-details>{esc(ex["see"]["text"])}<span aria-hidden="true">›</span></a>'
+                arrow = '<div class="gd-stage-arrow" aria-hidden="true"></div>'
+                flow = f'<p class="gd-ex-sub">移行は{n}ステップ</p><div class="gd-flow">{arrow.join(stages)}</div>{see}'
             note = f'<p class="fc-note">{esc(ex["note"])}</p>' if ex.get("note") else ""
-            extra_html = (f'<div class="gd-extra"><h3>{ph(ex["title"])}</h3><ul class="gd-good">{goods}</ul>{st}{note}</div>')
+            move = ""
+            if ex.get("stages"):
+                move = (f'<div class="gd-move" aria-hidden="true"><span class="gd-move-card">{ic("card")}<b>HiCARD</b></span>'
+                        f'<span class="gd-move-arrow"></span><span class="gd-move-app">{ic("phone")}<b>アプリ</b></span></div>')
+            extra_html = (f'<div class="gd-extra">{move}<h3>{ph(ex["title"])}</h3><ul class="gd-good">{goods}</ul>{flow}{note}</div>')
             if ex.get("after"):
                 after.append(extra_html)
             else:
@@ -645,7 +667,8 @@ def build_app_guide():
                 cards.append(f'<li><span class="gd-shot">{shot}</span><span class="gd-step">STEP<b>{esc(s["n"])}</b></span><p>{jclean(s["text"])}</p></li>')
             lead = f'<p class="gd-lead">{jclean(it["lead"])}</p>' if it.get("lead") else ""
             note = f'<p class="fc-note">{esc(it["note"])}</p>' if it.get("note") else ""
-            parts.append(f'<details class="gd-item"><summary><span>{tbrk(it["title"])}</span><small>{len(it["steps"])}ステップ</small></summary><div class="gd-body">{lead}<ol class="gd-steps">{"".join(cards)}</ol>{note}</div></details>')
+            did = ' id="g-hicard-login"' if "HiCARDをお持ち" in it["title"] else ""
+            parts.append(f'<details class="gd-item"{did}><summary><span>{tbrk(it["title"])}</span><small>{len(it["steps"])}ステップ</small></summary><div class="gd-body">{lead}<ol class="gd-steps">{"".join(cards)}</ol>{note}</div></details>')
         parts += after
         alt = " fc-alt" if gi % 2 else ""
         secs.append(f"""  <section class="fc-sec gd-sec{alt}" id="{g['id']}" aria-labelledby="h-{g['id']}">

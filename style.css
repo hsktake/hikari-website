@@ -2459,17 +2459,52 @@ main .fc-hero { padding-bottom: 46px; }
 .gd-sec { scroll-margin-top: 84px; }
 .gd-h { display: flex; align-items: center; justify-content: center; gap: 12px; }
 .gd-h .ic { width: 56px; height: 56px; background: var(--orange); color: var(--white); }
-.gd-extra { margin-top: 18px; background: var(--white); border: 3px solid var(--orange); border-radius: 20px; padding: 16px 18px; text-align: center; }
-.fc-alt .gd-extra { background: var(--cream); }
-.gd-extra h3 { font-size: 18px; color: var(--orange-deep); }
-.gd-good { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.gd-good li { display: flex; align-items: center; gap: 6px; background: var(--sun-soft); border-radius: 999px; padding: 4px 14px 4px 4px; font-weight: 800; font-size: 14px; }
-.gd-good .ic { width: 28px; height: 28px; background: var(--orange); color: var(--white); }
-.gd-good .ic svg { width: 18px; height: 18px; stroke-width: 4; }
+.gd-extra { margin-top: 18px; background: var(--white); border: 3px solid var(--orange); border-radius: 22px; padding: 20px 16px 22px; text-align: center; }
+.fc-alt .gd-extra { background: var(--white); }
+.gd-extra h3 { font-size: 19px; color: var(--orange-deep); margin-top: 6px; }
+/* HiCARD → アプリ の絵 */
+.gd-move { display: flex; justify-content: center; align-items: center; gap: 10px; }
+.gd-move > span:not(.gd-move-arrow) { display: flex; flex-direction: column; align-items: center; gap: 2px; font-family: var(--en); font-size: 13px; font-weight: 700; }
+.gd-move .ic { width: 58px; height: 58px; }
+.gd-move-app .ic { background: var(--orange); color: var(--white); }
+.gd-move-arrow { position: relative; width: 46px; height: 4px; margin-bottom: 18px; background: repeating-linear-gradient(90deg, var(--orange) 0 7px, transparent 7px 11px); }
+.gd-move-arrow::after { content: ""; position: absolute; right: -4px; top: -6px; border: 8px solid transparent; border-left: 11px solid var(--orange); border-right: 0; }
+/* うれしいこと（大きなアイコン3つ） */
+.gd-good { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.gd-good li { display: flex; flex-direction: column; align-items: center; gap: 8px; background: var(--sun-soft); border-radius: 18px; padding: 16px 8px; font-weight: 800; font-size: 14px; line-height: 1.5; }
+.gd-good .ic { width: 56px; height: 56px; background: var(--white); color: var(--orange-deep); }
+.gd-good .ic svg { width: 32px; height: 32px; }
 .gd-good .ph { display: inline-block; }
-.gd-mini { margin: 14px auto 0; padding: 0; list-style: none; counter-reset: gm; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; max-width: 640px; }
-.gd-mini li { counter-increment: gm; text-align: left; font-size: 13px; font-weight: 700; background: var(--cream); border: 2px solid var(--line); border-radius: 999px; padding: 3px 12px 3px 4px; }
-.gd-mini li::before { content: counter(gm); display: inline-grid; place-items: center; width: 20px; height: 20px; margin-right: 4px; border-radius: 50%; background: var(--brown); color: var(--white); font-family: var(--en); font-size: 12px; }
+/* 移行の流れ：お店で → アプリで */
+.gd-ex-sub { display: inline-block; margin: 22px 0 10px; background: var(--brown); color: var(--white); border-radius: 999px; padding: 4px 16px; font-size: 14px; font-weight: 800; }
+.gd-flow { display: flex; align-items: stretch; gap: 10px; text-align: left; }
+.gd-stage { flex: 2; background: var(--cream); border: 2px solid var(--line); border-radius: 18px; padding: 12px 16px 10px; }
+.gd-stage:last-child { flex: 3; background: #FFF6DF; border-color: var(--sun); }
+.gd-stage-h { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 17px; font-weight: 800; color: var(--orange-deep); padding-bottom: 8px; border-bottom: 2px dotted var(--line); }
+.gd-stage-h .ic { width: 38px; height: 38px; background: var(--white); }
+.gd-stage-h .ic svg { width: 24px; height: 24px; }
+.gd-stage ol { list-style: none; margin: 6px 0 0; padding: 0; }
+.gd-stage li { position: relative; display: flex; align-items: flex-start; gap: 12px; padding: 7px 0; }
+.gd-stage li:not(:last-child)::after { content: ""; position: absolute; left: 23px; top: 55px; bottom: -7px; border-left: 3px dotted var(--orange); }
+.gd-fl-ic { position: relative; flex: none; }
+.gd-fl-ic .ic { width: 48px; height: 48px; background: var(--white); border: 2px solid var(--orange-soft); }
+.gd-fl-ic .ic svg { width: 26px; height: 26px; }
+.gd-fl-ic b { position: absolute; left: -5px; top: -5px; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--brown); color: var(--white); font-family: var(--en); font-size: 12px; }
+.gd-fl-t { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; min-height: 48px; font-size: 15px; font-weight: 800; line-height: 1.45; }
+.gd-fl-t .ph { display: inline-block; }
+.gd-fl-t small { margin-top: 3px; background: var(--orange); color: var(--white); border-radius: 999px; padding: 1px 10px; font-size: 12px; font-weight: 700; }
+.gd-stage-arrow { flex: none; align-self: center; width: 0; height: 0; border: 12px solid transparent; border-left: 16px solid var(--orange); border-right: 0; }
+.gd-see { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; background: var(--orange); color: var(--white); text-decoration: none; border-radius: 999px; padding: 12px 24px; font-size: 15px; font-weight: 800; box-shadow: 0 4px 0 var(--orange-deep); }
+.gd-see span { font-size: 20px; line-height: 1; }
+.gd-see:hover { background: var(--orange-deep); }
+@media (max-width: 700px) {
+  .gd-good { grid-template-columns: 1fr; gap: 8px; }
+  .gd-good li { flex-direction: row; text-align: left; padding: 10px 14px; gap: 12px; }
+  .gd-good .ic { width: 48px; height: 48px; }
+  .gd-good .ic svg { width: 28px; height: 28px; }
+  .gd-flow { flex-direction: column; gap: 6px; }
+  .gd-stage-arrow { border: 12px solid transparent; border-top: 16px solid var(--orange); border-bottom: 0; }
+}
 .gd-item { margin-top: 12px; background: var(--white); border-radius: 18px; box-shadow: var(--pop-shadow); overflow: hidden; }
 .fc-alt .gd-item { background: var(--white); }
 .gd-item summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 16px 18px; font-weight: 800; font-size: 16px; }
