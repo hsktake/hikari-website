@@ -18,3 +18,4 @@
 - news.html（お知らせ・休業情報）と member.html（HiCARD会員：メリット・会員ポイント・会員マイページ）も現行サイトの掲載文から作成。休業・営業時間変更は日付ごとに変わるので、オーナーから連絡があれば news.html の該当欄と「更新」日付を直す。リンクは原則サイト内ページへ（現行サイト cut-hikari.com へのリンクは使わない。採用サイト・アプリ紹介サイト・待ち状況システムは別サイトなのでそのまま）。
 - 採用ページ：recruit.html（採用トップ）と recruit/職種.html（stylist・stylist-part・assistant・reception）。元データは data/recruit.json（旧採用サイト recruit.cut-hikari.com の掲載文）、`python3 tools/build_recruit.py` で作る。旧採用サイトへのリンクは使わない。相談・見学・応募は今はフリーダイヤル（0120-877-100）とメール（info@cut-hikari.com）で受付。Googleフォームができたら build_recruit.py の ENTRY_FORM_URL に入れて作り直す。先輩インタビューは個人名を出さない。
 - 店舗数は62店舗が正しい（旧採用サイト・Instagramの「63店舗」は誤り。オーナー確認済み）。
+- フェイスケアページ：facecare.html（ヒゲ脱毛・光フェイシャル・眉毛カット・対応店舗）。内容は旧フェイスケアサイト beauty-wellness-hub.com の掲載事実をもとに再構成、画像は assets/facecare/。`python3 tools/build_facecare.py` で作る（対応店舗は data/shops.json の care から自動）。文章は「|」で区切ると、その位置でだけ折り返す。
