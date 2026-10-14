@@ -2366,7 +2366,8 @@ main .fc-hero { padding-bottom: 46px; }
 }
 /* ---------- 公式アプリのページ ---------- */
 .ax-more { text-align: center; margin-top: 16px; }
-.ax-more .btn { white-space: normal; text-align: center; line-height: 1.4; }
+.ax-more .btn { white-space: nowrap; text-align: center; line-height: 1.4; max-width: 100%; }
+@media (max-width: 420px) { .ax-more .btn { font-size: clamp(14px, 4.2vw, 17px); padding-left: 18px; padding-right: 18px; } }
 .ap-hero { background: var(--orange); background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.07) 0 22px, transparent 22px 44px); color: var(--white); padding: 40px 0 0; overflow: hidden; }
 .ap-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 30px; align-items: end; max-width: 900px; }
 .ap-hero-copy { text-align: center; padding-bottom: 48px; }
