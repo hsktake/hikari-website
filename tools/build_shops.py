@@ -104,7 +104,7 @@ def head(title, desc, v, canonical_path):
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="../" aria-label="カットハウスひかり トップへ">
-      <img class="brand-logo" src="../assets/logo.png" alt="カットハウスひかり" width="356" height="218">
+      <img class="brand-logo" src="../assets/logo-hikari.webp" alt="カットハウスひかり" width="356" height="218">
       <span class="brand-area"><span class="area-sub">茨城・栃木・千葉・福島</span><span class="area-main">北関東に<strong>62</strong>店舗</span></span>
     </a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="bars" aria-hidden="true"></span><span class="menu-label">メニュー</span></button>
@@ -127,7 +127,7 @@ def head(title, desc, v, canonical_path):
 FOOTER = """
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <img class="footer-logo" src="../assets/logo.png" alt="カットハウスひかり" width="356" height="218" loading="lazy">
+    <img class="footer-logo" src="../assets/logo-hikari.webp" alt="カットハウスひかり" width="356" height="218" loading="lazy">
     <p class="footer-name">ヘアカット専門店</p>
     <nav class="footer-nav" aria-label="フッターメニュー">
       <a href=".././">ホーム</a>

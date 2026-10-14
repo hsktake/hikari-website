@@ -580,7 +580,7 @@ img { display: block; max-width: 100%; height: auto; }
 .shop { background: var(--white); border-radius: var(--radius-m); overflow: hidden; display: flex; flex-direction: column; box-shadow: var(--pop-shadow); }
 .shop-photo { position: relative; aspect-ratio: 16 / 9; background: var(--orange-soft); display: grid; place-items: center; overflow: hidden; }
 .shop-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.shop-photo .ph { width: 120px; height: 74px; font-size: 0; background: url("assets/logo.png") center / contain no-repeat; opacity: .45; }
+.shop-photo .ph { width: 120px; height: 74px; font-size: 0; background: url("assets/logo-hikari.webp") center / contain no-repeat; opacity: .45; }
 .shop:nth-child(4n+2) .shop-photo { background: var(--sun-soft); }
 .shop:nth-child(4n+3) .shop-photo { background: var(--sky); }
 .shop:nth-child(4n+4) .shop-photo { background: var(--mint); }
