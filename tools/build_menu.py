@@ -66,7 +66,7 @@ def menu_switch(current):
 OTHER = {
     "haircut.html": ('<img src="assets/styles/u35-03.jpg" alt="" width="340" height="400" loading="lazy">', "丸刈りからロングまで。|大人もお子さまも、|男性も女性も。"),
     "brow.html": ('<img src="assets/facecare/brow-cut.webp" alt="" width="301" height="211" loading="lazy">', "ヘアカットと一緒に|ご注文いただける|オプションです。"),
-    "facecare.html": ('<img src="assets/menu/facecare.jpg" alt="" width="420" height="420" loading="lazy">', "カットのついでに、|ヒゲと肌のお悩みも。"),
+    "facecare.html": ('<img src="assets/menu/facecare-smile.webp" alt="" width="600" height="600" loading="lazy">', "カットのついでに、|ヒゲと肌のお悩みも。"),
 }
 
 
@@ -119,7 +119,7 @@ def build_facecare():
           <li><a href="#fc-shops"><b>対応店舗</b><small>{n}店舗で受付中</small></a></li>
         </ul>
       </div>
-      <div class="fc-hero-photo"><img src="assets/facecare/hero.webp" alt="" width="900" height="696"></div>
+      <div class="fc-hero-photo"><img src="assets/facecare/hero-smile.webp" alt="あごに手を当てて笑う男性" width="900" height="696"></div>
     </div>
     <p class="wrap fc-caution"><span class="s">{ph("※ご来店前の|「シェービング・|ファンデーションの除去」を|お願いいたします。")}</span><span class="s">※効果には個人差がございます。</span></p>
   </section>
