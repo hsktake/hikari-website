@@ -1527,8 +1527,17 @@ a.shop-photo { display: grid; }
 .rx-apply:hover { background: #FFD46B; }
 .rx-sub { background: var(--white); color: var(--brown); box-shadow: 0 5px 0 rgba(74,46,26,.35); font-size: 15px; }
 .rx-sub:hover { background: var(--sun-soft); }
-.rx-more { text-align: center; margin-top: 16px; font-size: 14px; font-weight: 800; }
-.rx-more a { color: var(--white); }
+.rx-more { text-align: center; margin-top: 22px; }
+.rx-more-btn { display: flex; align-items: center; justify-content: center; gap: 16px; max-width: 560px; margin: 0 auto; padding: 14px 16px 14px 26px; border-radius: 999px; background: var(--brown); color: var(--white); text-decoration: none; box-shadow: 0 6px 0 rgba(0,0,0,.3); border: 3px solid var(--white); transition: transform .12s, box-shadow .12s; }
+.rx-more-btn:hover { transform: translateY(-2px); }
+.rx-more-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.3); }
+.rx-more-txt { text-align: center; }
+.rx-more-txt b { display: block; font-size: 19px; font-weight: 800; letter-spacing: .04em; }
+.rx-more-txt small { display: block; font-size: 13px; font-weight: 700; color: var(--sun); margin-top: 2px; }
+.rx-more-txt .ph { display: inline-block; }
+.rx-more-arrow { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--sun); color: var(--brown); }
+.rx-more-arrow svg { width: 24px; height: 24px; animation: rxNudge 1.4s ease-in-out infinite; }
+@keyframes rxNudge { 0%, 100% { transform: translateX(-2px); } 50% { transform: translateX(3px); } }
 
 @media (max-width: 600px) {
   .rx-pill { font-size: 11px; padding: 2px 14px; }
@@ -1550,7 +1559,11 @@ a.shop-photo { display: grid; }
   .rx-cta { grid-template-columns: 1fr 1fr; gap: 12px 10px; margin-top: 16px; }
   .rx-apply { grid-column: 1 / -1; min-height: 52px !important; font-size: 18px; }
   .rx-sub { min-height: 46px !important; font-size: 14px; }
-  .rx-more { font-size: 12px; margin-top: 12px; }
+  .rx-more { margin-top: 16px; }
+  .rx-more-btn { gap: 10px; padding: 12px 10px 12px 18px; }
+  .rx-more-txt b { font-size: 16px; }
+  .rx-more-txt small { font-size: 11.5px; }
+  .rx-more-arrow { width: 38px; height: 38px; }
 }
 .rx-v small { display: block; margin-right: .15em; }
 @media (max-width: 600px) {
