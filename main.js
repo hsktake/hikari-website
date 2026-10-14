@@ -200,4 +200,15 @@
       imgs[i].classList.add("is-on");
     }, 4500);
   });
+  /* 「アプリで予約する」：スマホではその機種のダウンロードページへ */
+  ready(function () {
+    var ua = navigator.userAgent || "";
+    var ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && "ontouchend" in document);
+    var android = /Android/.test(ua);
+    document.querySelectorAll("[data-app-link]").forEach(function (a) {
+      if (ios) a.href = a.getAttribute("data-ios");
+      else if (android) a.href = a.getAttribute("data-android");
+      if (ios || android) a.rel = "noopener";
+    });
+  });
 })();

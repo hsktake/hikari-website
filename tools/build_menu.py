@@ -135,6 +135,28 @@ def ic(name):
 ICONS["check"] = '<path d="m12 25 8 8 16-17"/>'
 
 
+IOS_URL = "https://apple.co/3tl829o"
+ANDROID_URL = "https://play.google.com/store/apps/details?id=hsk.hims_app&amp;hl=ja"
+
+
+def book_cta(note=""):
+    """アプリで予約する大きなボタン。スマホではその機種のダウンロードページへ（main.js の data-app-link）"""
+    n = f'<p class="bk-note">{ph(note)}</p>' if note else ""
+    return f"""  <section class="bk" aria-labelledby="h-bk">
+    <div class="wrap bk-in">
+      <img class="bk-phone" src="assets/app/phone.webp" alt="" width="540" height="1121" loading="lazy">
+      <div class="bk-body">
+        <h2 id="h-bk">{ph("ご予約は|公式アプリで")}</h2>
+        <p class="bk-lead">{ph("おうちから予約して、|待たずにさっぱり。")}</p>
+        <a class="btn bk-btn" href="./#app" data-app-link data-ios="{IOS_URL}" data-android="{ANDROID_URL}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>アプリで予約する</a>
+        <p class="bk-stores"><a href="{IOS_URL}" rel="noopener"><img src="assets/app/appstore.png" alt="App Storeからダウンロード" width="480" height="176" loading="lazy"></a><a href="{ANDROID_URL}" rel="noopener"><img src="assets/app/gplay.png" alt="Google Playで手に入れよう" width="480" height="143" loading="lazy"></a></p>
+        {n}
+      </div>
+    </div>
+  </section>
+"""
+
+
 # ---------- 見せ方の部品（セクションごとに形を変えて、単調にしない） ----------
 def checks(items):
     """写真の横に置くチェックリスト。items = [(アイコン, 見出し, 補足), ...]"""
@@ -295,7 +317,7 @@ def build_facecare():
       <p class="center"><a class="btn btn-main" href="shops.html">すべての店舗を探す</a></p>
     </div>
   </section>
-{other_menus("facecare.html")}</main>
+{book_cta("※一部店舗は|店舗受付のみです。")}{other_menus("facecare.html")}</main>
 
 """
     write("facecare.html", head, body, foot)
@@ -363,18 +385,7 @@ def build_haircut():
     </div>
   </section>
 
-  <section class="fc-sec" id="hc-ticket" aria-labelledby="h-hcticket">
-    <div class="wrap">
-      {head_block("TICKET", "h-hcticket", "チケットの買い方")}
-      {ways([("phone", "公式アプリ", "日時指定もOK"), ("qr", "店頭で|QR決済"), ("machine", "店頭の|券売機", "現金")])}
-      <p class="fc-note center-t">{ph("日時指定の予約は手数料無料。|指定時刻の1時間前を過ぎた|キャンセルは300円です。")}</p>
-      <div class="hc-price">
-        <p class="hc-price-h">{ph("料金は|店舗ごとに|異なります")}</p>
-        <p class="hc-btns"><a class="btn btn-main" href="shops.html">店舗を探す</a><a class="btn btn-ghost" href="./#app">公式アプリについて</a></p>
-      </div>
-    </div>
-  </section>
-{other_menus("haircut.html")}</main>
+{book_cta("日時指定の予約は手数料無料。|料金は店舗ごとに異なります。")}{other_menus("haircut.html")}</main>
 
 """
     write("haircut.html", head, body, foot)
@@ -436,7 +447,7 @@ def build_brow():
       {bubbles([("顔の印象が|明るくなり|お願いして|良かったです！", "つくば梅園店のお客様"), ("眉毛ケアのオーダーが|さっそくアプリで|できるようになった。", "鮎川店のお客様")])}
     </div>
   </section>
-{other_menus("brow.html")}</main>
+{book_cta("眉毛カットも|アプリから注文できます。")}{other_menus("brow.html")}</main>
 
 """
     write("brow.html", head, body, foot)
