@@ -2239,6 +2239,98 @@ main .fc-hero { padding-bottom: 46px; }
   .bw-desc { font-size: 12px; }
   .mx-consult { flex-direction: column; text-align: center; }
 }
+/* ---------- メニューのページ：セクションごとに形を変える部品 ---------- */
+/* 写真＋チェックリスト */
+.mx-split { align-items: center; }
+.mx-split > img { border-radius: 24px; }
+.mx-checks { list-style: none; margin: 0; padding: 0; }
+.mx-checks li { display: flex; align-items: center; gap: 16px; padding: 14px 4px; border-bottom: 2px dashed var(--line); text-align: left; }
+.mx-checks li:last-child { border-bottom: 0; }
+.mx-checks .ic { width: 56px; height: 56px; background: var(--orange); color: var(--white); box-shadow: 0 4px 0 var(--orange-deep); }
+.mx-checks .ic svg { width: 30px; height: 30px; }
+.mx-checks b { display: block; font-size: 19px; line-height: 1.4; color: var(--brown); }
+.fc-intro .mx-checks p { text-align: left; margin: 0; font-size: inherit; }
+.mx-checks small { display: block; font-size: 13px; font-weight: 700; color: var(--brown-soft); margin-top: 2px; }
+/* 大きな数字の帯 */
+.mx-nums { list-style: none; margin: 22px auto 0; padding: 18px 8px; max-width: 760px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: var(--orange); border-radius: 22px; color: var(--white); box-shadow: 0 6px 0 var(--orange-deep); }
+.mx-nums li { text-align: center; border-left: 2px dotted rgba(255,255,255,.5); }
+.mx-nums li:first-child { border-left: 0; }
+.mx-nums small { display: block; font-size: 13px; font-weight: 800; color: #FFF3D1; }
+.mx-num { display: block; font-weight: 800; font-size: 15px; white-space: nowrap; }
+.mx-num b { font-family: var(--en); font-weight: 600; font-size: 46px; line-height: 1.15; color: var(--sun); margin: 0 2px; }
+/* 線でつながった流れ */
+.mx-timeline { list-style: none; margin: 26px auto 0; padding: 0; max-width: 720px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); position: relative; }
+.mx-timeline::before { content: ""; position: absolute; left: 16.6%; right: 16.6%; top: 40px; border-top: 4px dotted var(--orange); }
+.mx-timeline li { position: relative; text-align: center; }
+.mx-tl-ic { position: relative; display: inline-block; }
+.mx-tl-ic .ic { width: 80px; height: 80px; background: var(--white); border: 4px solid var(--orange); color: var(--orange-deep); }
+.mx-tl-ic .ic svg { width: 40px; height: 40px; }
+.fc-alt .mx-tl-ic .ic { background: var(--cream); }
+.mx-tl-ic i { position: absolute; right: -4px; top: -4px; width: 28px; height: 28px; border-radius: 50%; background: var(--brown); color: var(--white); font-style: normal; font-family: var(--en); font-weight: 600; font-size: 15px; display: grid; place-items: center; }
+.mx-timeline b { display: block; margin-top: 8px; font-size: 17px; }
+.mx-timeline small { display: block; font-size: 12.5px; font-weight: 700; color: var(--orange-deep); }
+/* 「または」で並ぶ選択肢 */
+.mx-ways { list-style: none; margin: 24px auto 0; padding: 0; display: flex; justify-content: center; align-items: flex-start; gap: 6px; }
+.mx-ways li { text-align: center; width: 150px; }
+.mx-ways .ic { width: 84px; height: 84px; background: var(--sky); color: var(--brown); }
+.mx-ways .ic svg { width: 44px; height: 44px; }
+.mx-ways b { display: block; margin-top: 8px; font-size: 16px; line-height: 1.4; }
+.mx-ways small { display: block; font-size: 12px; font-weight: 700; color: var(--orange-deep); }
+.mx-ways .mx-or { width: auto; align-self: center; margin-top: -40px; font-family: var(--en); font-weight: 600; color: var(--brown-soft); font-size: 15px; }
+/* 吹き出しのお客様の声 */
+.mx-bubbles { list-style: none; margin: 28px auto 0; padding: 0; max-width: 620px; display: grid; gap: 16px; }
+.mx-bubbles li { display: flex; align-items: flex-end; gap: 10px; }
+.mx-bubbles li:nth-child(even) { flex-direction: row-reverse; }
+.mx-face .ic { width: 50px; height: 50px; background: var(--sun); color: var(--brown); }
+.mx-face .ic svg { width: 30px; height: 30px; }
+.mx-bubble { position: relative; flex: 1; background: var(--white); border: 3px solid var(--brown); border-radius: 22px; padding: 12px 16px; text-align: center; }
+.fc-alt .mx-bubble { background: var(--cream); }
+.mx-bubbles li:nth-child(odd) .mx-bubble { border-bottom-left-radius: 4px; }
+.mx-bubbles li:nth-child(even) .mx-bubble { border-bottom-right-radius: 4px; }
+.mx-bubble p { font-weight: 800; font-size: 16px; line-height: 1.6; }
+.mx-bubble small { display: block; font-size: 11.5px; font-weight: 700; color: var(--brown-soft); margin-top: 2px; }
+.mx-stars { display: block; color: var(--sun); font-size: 15px; letter-spacing: 2px; }
+/* ヘアカタログ：横にスワイプ */
+.hc-swipe { text-align: center; font-size: 13px; font-weight: 800; color: var(--orange-deep); margin-top: 6px; }
+.hc-swipe::after { content: " →"; }
+.hc-row { list-style: none; margin: 12px calc(var(--gutter) * -1) 0; padding: 4px var(--gutter) 10px; display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
+.hc-row li { flex: 0 0 168px; scroll-snap-align: start; }
+.hc-row figure { margin: 0; background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 0 rgba(74,46,26,.1); }
+.fc-alt .hc-row figure { background: var(--cream); }
+.hc-row img { width: 100%; aspect-ratio: 340 / 400; object-fit: cover; }
+.hc-row figcaption { text-align: center; font-size: 12.5px; font-weight: 800; padding: 6px 4px 8px; line-height: 1.4; min-height: 3.6em; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; }
+.hc-row .ph { display: inline-block; }
+@media (max-width: 860px) {
+  .mx-split > img { max-width: 420px; margin: 0 auto; }
+  .mx-checks { max-width: 420px; margin: 0 auto; width: 100%; }
+}
+@media (max-width: 600px) {
+  .mx-split > img { max-width: 300px; }
+  .mx-checks li { gap: 12px; padding: 12px 2px; }
+  .mx-checks .ic { width: 46px; height: 46px; }
+  .mx-checks .ic svg { width: 26px; height: 26px; }
+  .mx-checks b { font-size: 16.5px; }
+  .mx-checks small { font-size: 12px; }
+  .mx-nums { padding: 14px 2px; border-radius: 18px; }
+  .mx-nums small { font-size: 11px; }
+  .mx-num { font-size: 12px; }
+  .mx-num b { font-size: 32px; margin: 0 1px; }
+  .mx-timeline::before { top: 31px; }
+  .mx-tl-ic .ic { width: 62px; height: 62px; border-width: 3px; }
+  .mx-tl-ic .ic svg { width: 32px; height: 32px; }
+  .mx-tl-ic i { width: 22px; height: 22px; font-size: 12px; }
+  .mx-timeline b { font-size: 14px; }
+  .mx-timeline small { font-size: 11px; }
+  .mx-ways { gap: 2px; }
+  .mx-ways li { width: 96px; }
+  .mx-ways .ic { width: 64px; height: 64px; }
+  .mx-ways .ic svg { width: 34px; height: 34px; }
+  .mx-ways b { font-size: 13.5px; }
+  .mx-ways .mx-or { font-size: 12px; margin-top: -36px; }
+  .mx-bubble p { font-size: 14.5px; }
+  .mx-face .ic { width: 42px; height: 42px; }
+  .hc-row li { flex-basis: 136px; }
+}
 @media (max-width: 860px) {
   .fc-hero-grid, .fc-intro, .fc-brow { grid-template-columns: 1fr; }
   .fc-hero .fc-en, .fc-hero-copy { text-align: center; }

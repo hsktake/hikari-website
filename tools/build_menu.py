@@ -132,26 +132,56 @@ def ic(name):
     return f'<span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true">{ICONS[name]}</svg></span>'
 
 
-def tiles(items, cls):
-    """アイコン＋短い見出し（＋小さな補足）のタイル。items = [(アイコン, 見出し, 補足), ...]"""
-    lis = []
-    for i, it in enumerate(items, 1):
-        name, title = it[0], it[1]
-        sub = f'<small>{ph(it[2])}</small>' if len(it) > 2 and it[2] else ""
-        num = f'<span class="ix-num">{i}</span>' if "ix-steps" in cls else ""
-        lis.append(f'<li>{num}{ic(name)}<b>{ph(title)}</b>{sub}</li>')
-    return f'<ul class="ix-grid {cls}">' + "".join(lis) + "</ul>"
+ICONS["check"] = '<path d="m12 25 8 8 16-17"/>'
+
+
+# ---------- 見せ方の部品（セクションごとに形を変えて、単調にしない） ----------
+def checks(items):
+    """写真の横に置くチェックリスト。items = [(アイコン, 見出し, 補足), ...]"""
+    lis = "".join(
+        f'<li>{ic(it[0])}<p><b>{ph(it[1])}</b>' + (f'<small>{ph(it[2])}</small>' if len(it) > 2 else "") + "</p></li>"
+        for it in items)
+    return f'<ul class="mx-checks">{lis}</ul>'
+
+
+def nums(items):
+    """オレンジの帯に大きな数字。items = [(上の小さな文字, 前, 数字, 後), ...]"""
+    lis = "".join(
+        f'<li><small>{esc(label)}</small><span class="mx-num">{esc(pre)}<b>{esc(num)}</b>{esc(post)}</span></li>'
+        for label, pre, num, post in items)
+    return f'<ul class="mx-nums">{lis}</ul>'
+
+
+def timeline(items):
+    """線でつながった流れ。items = [(アイコン, 見出し, 補足), ...]"""
+    lis = "".join(
+        f'<li><span class="mx-tl-ic">{ic(it[0])}<i>{n}</i></span><b>{ph(it[1])}</b>' + (f'<small>{ph(it[2])}</small>' if len(it) > 2 else "") + "</li>"
+        for n, it in enumerate(items, 1))
+    return f'<ol class="mx-timeline">{lis}</ol>'
+
+
+def ways(items):
+    """「または」で並ぶ選択肢。items = [(アイコン, 見出し, 補足), ...]"""
+    out = []
+    for i, it in enumerate(items):
+        if i:
+            out.append('<li class="mx-or" aria-hidden="true">or</li>')
+        out.append(f'<li>{ic(it[0])}<b>{ph(it[1])}</b>' + (f'<small>{ph(it[2])}</small>' if len(it) > 2 else "") + "</li>")
+    return f'<ul class="mx-ways">{"".join(out)}</ul>'
+
+
+def bubbles(items, stars=False):
+    """お客様の声を吹き出しで。items = [(ことば, 店名), ...]"""
+    star = '<span class="mx-stars" aria-label="星5つ">★★★★★</span>' if stars else ""
+    lis = "".join(
+        f'<li><span class="mx-face">{ic("smile")}</span><div class="mx-bubble">{star}<p>{ph(q)}</p><small>{esc(shop)}</small></div></li>'
+        for q, shop in items)
+    return f'<ul class="mx-bubbles">{lis}</ul>'
 
 
 def info(items):
     """アイコン付きの1行のお知らせ（丸いラベル）"""
     return '<ul class="mx-info">' + "".join(f'<li>{ic(n)}<span>{ph(txt)}</span></li>' for n, txt in items) + "</ul>"
-
-
-def quotes(items, stars=False):
-    """お客様の声（短い抜粋）。items = [(ことば, 店名), ...]"""
-    cls = "mx-quotes is-star" if stars else "mx-quotes"
-    return f'<ul class="{cls}">' + "".join(f'<li><p>{ph(q)}</p><small>{esc(shop)}</small></li>' for q, shop in items) + "</ul>"
 
 
 def head_block(en, hid, title, sub=""):
@@ -212,19 +242,14 @@ def build_facecare():
   <section class="fc-sec" id="beard" aria-labelledby="h-beard">
     <div class="wrap">
       {head_block("BEARD", "h-beard", "ヒゲ脱毛")}
-      <div class="fc-price"><p><small>初回お試し</small><b>1,000</b>円</p><p class="fc-price-sub">{ph("通常 1回 3,500円（税込）・|都度払い")}</p></div>
-      <div class="fc-intro">
+      <div class="fc-price"><p><small>初回お試し</small><b>1,000</b>円</p><p class="fc-price-sub">{ph("通常 1回 3,500円（税込）")}</p></div>
+      {nums([("施術時間", "最短約", "20", "分"), ("次の照射まで", "最短", "2", "週間"), ("回数契約", "", "なし", "")])}
+      <div class="fc-intro mx-split">
         <img src="assets/facecare/beard-ba.webp" alt="ヒゲ脱毛のイメージ" width="560" height="620" loading="lazy">
-        <div>
-          <h3 class="fc-h3">いいこと色々</h3>
-          {tiles([("beard", "ヒゲの悩みを|解消"), ("sparkle", "清潔感|アップ"), ("coin", "シェービング代を|節約"), ("sun", "毎朝の身支度が|ラクに")], "ix-4 ix-2col")}
-        </div>
+        {checks([("sun", "毎朝の身支度が|ラクに", "シェービングの手間から解放"), ("sparkle", "清潔感|アップ", "若々しい印象に"), ("leaf", "肌にやさしい|LPL脱毛", "低刺激・うぶ毛もOK")])}
       </div>
-      <h3 class="fc-h3 center-t">おすすめポイント</h3>
-      {tiles([("clock", "最短|約20分"), ("yen", "契約なしの|都度払い"), ("target", "部位を|選べる"), ("bolt", "最新機器の|LPL脱毛"), ("leaf", "肌にやさしい|低刺激"), ("feather", "うぶ毛も|照射OK"), ("calendar", "最短2週間で|次の照射"), ("staff", "専門スタッフが|担当")], "ix-8")}
       <p class="fc-note center-t">{ph("※光脱毛は永久脱毛ではなく、|抑毛・減毛効果が期待できる|脱毛方法です。")}</p>
-      <h3 class="fc-h3 center-t">お客様の声<small>（Google口コミより）</small></h3>
-      {quotes([("2・3回目で|目に見える効果が|出ました。", "鮎川店"), ("都度払いが|OKなのも|助かります！", "カットスペースPLUS"), ("ヘアカットと合わせて|利用させて|もらっています。", "ちはら台店")], stars=True)}
+      {bubbles([("2・3回目で|目に見える効果が|出ました。", "Google口コミ・鮎川店"), ("都度払いが|OKなのも|助かります！", "Google口コミ・カットスペースPLUS")], stars=True)}
     </div>
   </section>
 
@@ -232,21 +257,15 @@ def build_facecare():
     <div class="wrap">
       {head_block("LIGHT FACIAL", "h-facial", "光フェイシャル")}
       <div class="fc-price"><p><small>初回お試し</small><b>2,000</b>円</p><p class="fc-price-sub">{ph("通常 1回 4,500円（税込）・|約25分")}</p></div>
-      <ul class="fc-worry"><li>肌の衰え</li><li>シワ・たるみ</li><li>対処法がわからない</li></ul>
-      <div class="fc-intro">
+      <div class="fc-intro mx-split">
         <img src="assets/facecare/facial.webp" alt="光フェイシャルの施術のようす" width="718" height="546" loading="lazy">
-        <div>
-          <h3 class="fc-h3">光フェイシャルとは？</h3>
-          <p class="mx-lead">{ph("特殊な光（IPL）をあてて、|肌の悩みに|アプローチします。")}</p>
-          {tiles([("lift", "リフト|アップ"), ("sparkle", "肌のトーン|アップ"), ("drop", "肌荒れ・|赤みに"), ("wave", "シワに")], "ix-4 ix-2col")}
-        </div>
+        {checks([("lift", "リフトアップ", "肌のハリ・毛穴に"), ("sparkle", "肌のトーンアップ", "くすみ・黒ずみに"), ("wave", "シワ・肌荒れに", "赤みにも")])}
       </div>
       <div class="fc-ba">
         <figure><img src="assets/facecare/facial-before.webp" alt="光フェイシャル照射前" width="440" height="640" loading="lazy"><figcaption>BEFORE</figcaption></figure>
         <figure><img src="assets/facecare/facial-after.webp" alt="光フェイシャル照射後（4回目）" width="440" height="640" loading="lazy"><figcaption class="is-after">AFTER</figcaption></figure>
         <p class="fc-ba-note">40代 男性（照射4回目）<br><small>{ph("※肌質により、|効果には個人差がございます。")}</small></p>
       </div>
-      {tiles([("smile", "カットの|ついでに気軽に"), ("yen", "初回お試し|2,000円"), ("coin", "回数契約なしの|都度払い")], "ix-3")}
       <p class="mx-badge">女性の方もご利用いただけます</p>
     </div>
   </section>
@@ -254,7 +273,7 @@ def build_facecare():
   <section class="fc-sec" id="fc-flow" aria-labelledby="h-fcflow">
     <div class="wrap">
       {head_block("FLOW", "h-fcflow", "ご利用の流れ")}
-      {tiles([("store", "受付", "アプリ or 店舗"), ("chat", "カウンセリング", "部位を選べます"), ("chair", "施術", "座ったまま")], "ix-3 ix-steps")}
+      {timeline([("store", "受付", "アプリ or 店舗"), ("chat", "カウンセリング", "部位を選べます"), ("chair", "施術", "座ったまま")])}
       {info([("calendar", "次回は2〜3週間後がおすすめ"), ("cash", "都度払い（現金・QR決済）")])}
       <p class="fc-note center-t"><span class="s">{ph("※ご来店前の|「シェービング・|ファンデーションの除去」を|お願いいたします。")}</span><span class="s">{ph("※一部店舗は|店舗受付のみです。")}</span><span class="s"><span class="ph">※カットと同じ日にご希望の場合は、</span><span class="ph"><a href="news.html#n20250530">こちらのお知らせ</a>を</span><span class="ph">ご確認ください。</span></span></p>
     </div>
@@ -294,8 +313,9 @@ MORE = [("ai02", "レイヤーボブ"), ("ai04", "前下がりボブ"), ("ai23",
         ("ai05", "ナチュラルショート"), ("ai21", "スタンダード")]
 
 
-def style_grid(items):
-    return '<ul class="hc-grid">' + "".join(
+def style_row(items):
+    """ヘアカタログを横にスワイプして見る列"""
+    return '<ul class="hc-row">' + "".join(
         f'<li><figure><img src="{src}" alt="ヘアスタイル例：{esc(name.replace("|", ""))}" width="340" height="400" loading="lazy"><figcaption>{ph(name)}</figcaption></figure></li>'
         for src, name in items) + "</ul>"
 
@@ -303,9 +323,9 @@ def style_grid(items):
 def build_haircut():
     head, foot = shell("ヘアカット・ヘアカタログ｜カットハウスひかり",
                        "カットハウスひかりのヘアカット。丸刈りからロングまで、大人もお子さまも、男性も女性も。ヘアカタログ（UNDER35・OVER35・いろいろなスタイル）とチケットの買い方をご案内します。")
-    u35 = style_grid([(f"assets/styles/u35-0{i+1}.jpg", nm) for i, nm in enumerate(U35)])
-    o35 = style_grid([(f"assets/styles/o35-0{i+1}.jpg", nm) for i, nm in enumerate(O35)])
-    more = style_grid([(f"assets/catalog/{k}.jpg", nm) for k, nm in MORE])
+    u35 = style_row([(f"assets/styles/u35-0{i+1}.jpg", nm) for i, nm in enumerate(U35)])
+    o35 = style_row([(f"assets/styles/o35-0{i+1}.jpg", nm) for i, nm in enumerate(O35)])
+    more = style_row([(f"assets/catalog/{k}.jpg", nm) for k, nm in MORE])
     body = f"""<main id="main">
   <section class="fc-hero hc-hero">
     <div class="wrap fc-hero-grid">
@@ -322,19 +342,17 @@ def build_haircut():
   <section class="fc-sec" id="hc-point" aria-labelledby="h-hcpoint">
     <div class="wrap">
       {head_block("POINT", "h-hcpoint", "ひかりのヘアカット")}
-      <p class="mx-catch">{ph("「速い」だけじゃない。|お客様と一緒に|ヘアスタイルを創ります。")}</p>
-      {tiles([("clock", "カットだけで|スピーディー"), ("sparkle", "トレンドも|おまかせ"), ("person", "年齢に合わせて|ご提案"), ("phone", "アプリで|予約・決済"), ("shield", "清潔・|安心"), ("eyebrow", "眉毛カットも|いっしょに")], "ix-6")}
+      <div class="fc-intro mx-split">
+        <img src="assets/recruit/stylist-sub.webp" alt="お客様の髪をカットするスタッフ" width="340" height="210" loading="lazy">
+        {checks([("clock", "カットだけで|スピーディー", "シャンプーなしでサクッと"), ("sparkle", "トレンドも|定番もおまかせ", "ツーブロック・センターパートも"), ("phone", "アプリで|予約・決済", "待ち状況も見られます")])}
+      </div>
     </div>
   </section>
 
   <section class="fc-sec fc-alt" id="catalog" aria-labelledby="h-catalog">
     <div class="wrap">
       {head_block("HAIR CATALOG", "h-catalog", "ヘアカタログ")}
-      <ul class="hc-chips">
-        <li><a href="#cat-u35">UNDER 35</a></li>
-        <li><a href="#cat-o35">OVER 35</a></li>
-        <li><a href="#cat-more">いろいろなスタイル</a></li>
-      </ul>
+      <p class="hc-swipe">横にスワイプして見られます</p>
       <h3 class="hc-cat-h" id="cat-u35"><span>UNDER 35</span>メンズ</h3>
       {u35}
       <h3 class="hc-cat-h" id="cat-o35"><span>OVER 35</span>メンズ</h3>
@@ -345,21 +363,12 @@ def build_haircut():
     </div>
   </section>
 
-  <section class="fc-sec" id="hc-family" aria-labelledby="h-hcfamily">
-    <div class="wrap">
-      {head_block("FOR EVERYONE", "h-hcfamily", "どなたでもOK")}
-      {tiles([("family", "大人も|子どもも"), ("pair", "女性も|男性も"), ("kid", "初めての|お子さまも", "ひざの上でOK")], "ix-3")}
-    </div>
-  </section>
-
-  <section class="fc-sec fc-alt" id="hc-ticket" aria-labelledby="h-hcticket">
+  <section class="fc-sec" id="hc-ticket" aria-labelledby="h-hcticket">
     <div class="wrap">
       {head_block("TICKET", "h-hcticket", "チケットの買い方")}
-      {tiles([("phone", "公式アプリ", "日時指定もOK"), ("qr", "店頭で|QR決済"), ("machine", "店頭の|券売機", "現金")], "ix-3")}
-      {info([("calendar", "日時指定の予約は手数料無料")])}
-      <p class="fc-note center-t">{ph("※アプリで購入の場合。|指定時刻の1時間前を過ぎた|キャンセルは300円です。")}</p>
+      {ways([("phone", "公式アプリ", "日時指定もOK"), ("qr", "店頭で|QR決済"), ("machine", "店頭の|券売機", "現金")])}
+      <p class="fc-note center-t">{ph("日時指定の予約は手数料無料。|指定時刻の1時間前を過ぎた|キャンセルは300円です。")}</p>
       <div class="hc-price">
-        {ic("yen")}
         <p class="hc-price-h">{ph("料金は|店舗ごとに|異なります")}</p>
         <p class="hc-btns"><a class="btn btn-main" href="shops.html">店舗を探す</a><a class="btn btn-ghost" href="./#app">公式アプリについて</a></p>
       </div>
@@ -383,7 +392,6 @@ def build_brow():
         <p class="fc-en">EYEBROW</p>
         <h1>眉毛カット<br><span>眉毛も髪もプロにおまかせ</span></h1>
         <p class="fc-lead">{ph("ヘアカットと一緒に|注文できるオプション")}</p>
-        <div class="fc-price"><p><small>スペシャルコース</small><b>200</b>円</p><p class="fc-price-sub">税込</p></div>
       </div>
       <div class="fc-brow-ba bw-hero-ba">
         <figure><img src="assets/menu/brow-before.webp" alt="眉毛カット前" width="300" height="131"><figcaption>BEFORE</figcaption></figure>
@@ -392,14 +400,7 @@ def build_brow():
     </div>
   </section>
 {menu_switch("brow.html")}
-  <section class="fc-sec" id="bw-recommend" aria-labelledby="h-bwrec">
-    <div class="wrap">
-      {head_block("RECOMMEND", "h-bwrec", "こんな方におすすめ")}
-      {tiles([("smile", "清潔感のある|印象に"), ("scissors", "カットの|ついでに"), ("medal", "プロに|おまかせ")], "ix-3")}
-    </div>
-  </section>
-
-  <section class="fc-sec fc-alt" id="bw-survey" aria-labelledby="h-bwsurvey">
+  <section class="fc-sec" id="bw-survey" aria-labelledby="h-bwsurvey">
     <div class="wrap">
       {head_block("SURVEY", "h-bwsurvey", "第一印象は|眉毛で変わる！")}
       <div class="bw-survey">
@@ -415,7 +416,7 @@ def build_brow():
     </div>
   </section>
 
-  <section class="fc-sec" id="bw-course" aria-labelledby="h-bwcourse">
+  <section class="fc-sec fc-alt" id="bw-course" aria-labelledby="h-bwcourse">
     <div class="wrap">
       {head_block("COURSE", "h-bwcourse", "選べる3つのコース")}
       <ul class="bw-prices">
@@ -427,18 +428,12 @@ def build_brow():
     </div>
   </section>
 
-  <section class="fc-sec fc-alt" id="bw-flow" aria-labelledby="h-bwflow">
+  <section class="fc-sec" id="bw-flow" aria-labelledby="h-bwflow">
     <div class="wrap">
       {head_block("FLOW", "h-bwflow", "施術の流れ", "スペシャルコース")}
-      {tiles([("scissors", "長さを|整える"), ("razor", "ムダ毛を|処理"), ("outline", "輪郭を|整える")], "ix-3 ix-steps")}
+      {timeline([("scissors", "長さを|整える"), ("razor", "ムダ毛を|処理"), ("outline", "輪郭を|整える")])}
       {info([("phone", "アプリからも注文できます")])}
-    </div>
-  </section>
-
-  <section class="fc-sec" id="bw-voice" aria-labelledby="h-bwvoice">
-    <div class="wrap">
-      {head_block("VOICE", "h-bwvoice", "お客様の声")}
-      {quotes([("顔の印象が|明るくなり|お願いして|良かったです！", "つくば梅園店"), ("眉カットメニューも|大変嬉しく|思っております！", "矢吹店"), ("眉毛ケアのオーダーが|さっそくアプリで|できるようになった。", "鮎川店")])}
+      {bubbles([("顔の印象が|明るくなり|お願いして|良かったです！", "つくば梅園店のお客様"), ("眉毛ケアのオーダーが|さっそくアプリで|できるようになった。", "鮎川店のお客様")])}
     </div>
   </section>
 {other_menus("brow.html")}</main>
