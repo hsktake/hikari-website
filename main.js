@@ -45,11 +45,13 @@
       menuBtn.addEventListener("click", function () {
         var open = header.classList.toggle("is-open");
         menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        document.documentElement.classList.toggle("nav-lock", open); // メニューを開いている間は後ろのページを動かさない
       });
       header.querySelectorAll(".nav a").forEach(function (a) {
         a.addEventListener("click", function () {
           header.classList.remove("is-open");
           menuBtn.setAttribute("aria-expanded", "false");
+          document.documentElement.classList.remove("nav-lock");
         });
       });
     }
