@@ -1512,9 +1512,11 @@ a.shop-photo { display: grid; }
 .rx-band { background: #241509; color: var(--white); text-align: center; font-weight: 800; font-size: clamp(22px, 3vw, 34px); letter-spacing: .14em; padding: 8px 10px 10px; line-height: 1.3; }
 .rx-band small { display: block; font-size: 12px; letter-spacing: .04em; font-weight: 700; opacity: .7; margin-top: 2px; }
 
-.rx-stats { list-style: none; margin: 26px auto 0; padding: 0; max-width: 980px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.rx-stats { list-style: none; margin: 26px auto 0; padding: 0; max-width: 980px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 10px; }
 .rx-stats li { text-align: center; border-left: 1px solid rgba(255,255,255,.35); padding: 2px 6px; }
-.rx-stats li:first-child { border-left: 0; }
+.rx-stats li:nth-child(3n+1) { border-left: 0; }
+.rx-stats li:nth-child(n+4) { border-top: 1px dashed var(--line); padding-top: 10px; }
+.rx-stats b.is-sm { font-size: 36px; }
 .rx-stats small { display: block; font-size: 13px; font-weight: 800; opacity: .9; }
 .rx-stats strong { display: block; font-size: 16px; font-weight: 800; line-height: 1.2; }
 .rx-stats b { font-family: var(--en); font-weight: 600; font-size: 44px; color: var(--sun); margin: 0 2px; text-shadow: 0 3px 0 rgba(74,46,26,.25); }
@@ -1541,9 +1543,10 @@ a.shop-photo { display: grid; }
   .rx-band small { font-size: 10px; }
   .rx-stats { margin-top: 14px; }
   .rx-stats li { padding: 0 2px; }
-  .rx-stats small { font-size: 9.5px; }
-  .rx-stats strong { font-size: 11px; }
+  .rx-stats small { font-size: 11px; }
+  .rx-stats strong { font-size: 12px; }
   .rx-stats b { font-size: 24px; margin: 0; }
+  .rx-stats b.is-sm { font-size: 20px; }
   .rx-cta { grid-template-columns: 1fr 1fr; gap: 12px 10px; margin-top: 16px; }
   .rx-apply { grid-column: 1 / -1; min-height: 52px !important; font-size: 18px; }
   .rx-sub { min-height: 46px !important; font-size: 14px; }
@@ -1575,8 +1578,8 @@ a.shop-photo { display: grid; }
   .rx-l em { font-size: 9px; padding: 0 6px; }
   .rx-staff img { transform: none; }
   .rx-staff a:hover img { transform: none; }
-  .rx-stats b { font-size: 22px; }
-  .rx-stats li:last-child b { font-size: 19px; }
+  .rx-stats b { font-size: 27px; }
+  .rx-stats b.is-sm { font-size: 21px; }
 }
 
 /* ===== 公式アプリ（作り替え：アプリ紹介サイトのテイスト） ===== */
