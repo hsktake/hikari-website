@@ -65,7 +65,7 @@ def menu_switch(current):
 
 OTHER = {
     "haircut.html": ('<img src="assets/menu/haircut-main.webp" alt="" width="600" height="600" loading="lazy">', "丸刈りからロングまで。|大人もお子さまも、|男性も女性も。"),
-    "brow.html": ('<img src="assets/facecare/brow-cut.webp" alt="" width="301" height="211" loading="lazy">', "ヘアカットと一緒に|ご注文いただける|オプションです。"),
+    "brow.html": ('<img src="assets/menu/brow-trim.webp" alt="" width="305" height="305" loading="lazy">', "ヘアカットと一緒に|ご注文いただける|オプションです。"),
     "facecare.html": ('<img src="assets/menu/facecare-smile.webp" alt="" width="600" height="600" loading="lazy">', "カットのついでに、|ヒゲと肌のお悩みも。"),
 }
 
