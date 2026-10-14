@@ -22,3 +22,4 @@
 - トップのヒーロー写真は assets/hero-family.jpg と assets/hero/family-0*.webp（オーナー提供）を4.5秒ごとにフェードで切り替える（main.js）。ゆっくりのフェードなので prefers-reduced-motion でも続ける（オーナー指示）。
 - キャッチの「ひかり」は、カットハウスひかり＋お客様の暮らしを輝かせる光、の2つの意味（オーナー説明）。くっきりしたオレンジの大きな文字＋下の黄色い線＋小さなキラッで強調（style.css の .hikari）。光のぼかしや文字に光が走る演出は見にくいとのことで不採用。
 - メニュー3ページの下には「ご予約は公式アプリで」の大きなボタン（build_menu.py の book_cta）。スマホでは iPhone→App Store・Android→Google Play に直接飛ぶ（main.js の data-app-link）。PCではトップの公式アプリ欄（QRコードあり）へ。
+- 公式アプリのページ：app.html（お悩み→解決・3ステップ・予約は2通り・できること・お客様の声・ダウンロード（QR）・よくあるご質問・クレジット決済のお知らせ）。内容はアプリ紹介サイト cut-hikari-app.com の掲載事実。build_menu.py の build_app() で作る。ナビ・フッターの「公式アプリ」は app.html へ（トップのナビだけはトップの公式アプリ欄 #app へスクロール、欄の下に app.html へのボタン）。予約ボタン（data-app-link）はPCでは app.html#dl へ。

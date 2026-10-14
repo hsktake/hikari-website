@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""メニューのページ（haircut.html・brow.html・facecare.html）を作る。
+"""メニューのページ（haircut.html・brow.html・facecare.html）と公式アプリのページ（app.html）を作る。
 
 使い方（リポジトリのいちばん上で）:  python3 tools/build_menu.py
 内容は旧サイト（cut-hikari.com のコンセプト・料金案内、beauty-wellness-hub.com のヘアカタログ・眉毛オプション・
@@ -148,7 +148,7 @@ def book_cta(note=""):
       <div class="bk-body">
         <h2 id="h-bk">{ph("ご予約は|公式アプリで")}</h2>
         <p class="bk-lead">{ph("おうちから予約して、|待たずにさっぱり。")}</p>
-        <a class="btn bk-btn" href="./#app" data-app-link data-ios="{IOS_URL}" data-android="{ANDROID_URL}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>アプリで予約する</a>
+        <a class="btn bk-btn" href="app.html#dl" data-app-link data-ios="{IOS_URL}" data-android="{ANDROID_URL}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>アプリで予約する</a>
         <p class="bk-stores"><a href="{IOS_URL}" rel="noopener"><img src="assets/app/appstore.png" alt="App Storeからダウンロード" width="480" height="176" loading="lazy"></a><a href="{ANDROID_URL}" rel="noopener"><img src="assets/app/gplay.png" alt="Google Playで手に入れよう" width="480" height="143" loading="lazy"></a></p>
         {n}
       </div>
@@ -454,7 +454,136 @@ def build_brow():
     print("眉毛カットのページを作成しました")
 
 
+# ---------- 公式アプリ ----------
+ICONS.update({
+    "home": '<path d="M7 22 24 8l17 14"/><path d="M11 19v21h26V19"/><path d="M20 40V29h8v11"/>',
+    "heart": '<path d="M24 40S8 30 8 18a8 8 0 0 1 16-2 8 8 0 0 1 16 2c0 12-16 22-16 22Z"/>',
+    "note": '<rect x="10" y="6" width="28" height="36" rx="3"/><path d="M16 15h16M16 22h16M16 29h10"/><circle cx="33" cy="34" r="5"/><path d="m31 34 1.5 1.5 3-3"/>',
+    "bars": '<path d="M8 40h32"/><rect x="11" y="26" width="6" height="14" rx="1"/><rect x="21" y="16" width="6" height="24" rx="1"/><rect x="31" y="9" width="6" height="31" rx="1"/>',
+    "bell": '<path d="M13 33V21a11 11 0 0 1 22 0v12l3 4H10Z"/><path d="M20 41a4 4 0 0 0 8 0"/>',
+    "download": '<path d="M24 6v24M15 21l9 9 9-9"/><path d="M8 32v8h32v-8"/>',
+    "login": '<circle cx="24" cy="16" r="7"/><path d="M10 41c1-8 7-12 14-12s13 4 14 12"/>',
+    "wait": '<circle cx="24" cy="24" r="17"/><path d="M24 14v10l6 4"/><path d="M15 6 9 11M33 6l6 5"/>',
+})
+
+
+def worries(items):
+    """お悩み → アプリで解決 の対応表。items = [(お悩み, アイコン, 解決), ...]"""
+    lis = "".join(
+        f'<li><p class="ap-w">{ph(w)}</p><span class="ap-arrow" aria-hidden="true"></span><p class="ap-s">{ic(i)}<b>{ph(s)}</b></p></li>'
+        for w, i, s in items)
+    return f'<ul class="ap-worries">{lis}</ul>'
+
+
+def chips(items):
+    return '<ul class="ap-chips">' + "".join(f'<li>{ic(n)}<span>{ph(t_)}</span></li>' for n, t_ in items) + "</ul>"
+
+
+def build_app():
+    head, foot = shell("公式アプリ｜カットハウスひかり",
+                       "カットハウスひかり公式アプリ。おうちからオンライン予約、ご案内の目安時刻やリアルタイムの混雑状況の確認、事前カウンセリング、お気に入りスタッフ検索など便利な機能が満載。iPhone・Androidで無料ダウンロード。")
+    faq = [
+        ("会員IDを忘れました", "会員IDのかわりに、|登録済みのメールアドレスでも|ログインできます。"),
+        ("パスワードを忘れました", "パスワード入力画面の|「パスワードをお忘れの場合」から、|登録されているメールアドレスを使って|変更できます。"),
+        ("紙の会員カードを持っています。|アプリで新規登録は必要ですか？", "すでにHiCARD会員の方は、|新規会員登録は必要ありません。今までの会員IDとパスワードで|ログインできます。同じ会員IDとバーコードが|アプリに表示されるので、|会員カードは破棄しても構いません。"),
+        ("スマホを機種変更したら、|引継ぎは必要ですか？", "引継ぎは必要ありません。新しいスマートフォンに|アプリをインストールして、|ログインするだけでご利用いただけます。"),
+    ]
+    faq_html = "\n".join(
+        f'      <details class="qa"><summary><span class="q-mark" aria-hidden="true">Q</span><span class="q-text">{ph(q)}</span></summary><div class="a-body"><span class="a-mark" aria-hidden="true">A</span><div><p>{t(a)}</p></div></div></details>'
+        for q, a in faq)
+    body = f"""<main id="main">
+  <section class="ap-hero">
+    <div class="wrap ap-hero-grid">
+      <div class="ap-hero-copy">
+        <p class="fc-en">OFFICIAL APP</p>
+        <h1>{ph("ヘアカットの|常識が変わる！")}</h1>
+        <p class="ap-hero-lead">{ph("カットハウスひかり|公式アプリ")}</p>
+        <a class="btn bk-btn" href="#dl" data-app-link data-ios="{IOS_URL}" data-android="{ANDROID_URL}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>無料でダウンロード</a>
+        <p class="ap-free">{ph("ダウンロード・会員登録は無料|日時指定の予約も手数料無料")}</p>
+      </div>
+      <div class="ap-hero-phone"><img src="assets/app/phone.webp" alt="公式アプリのホーム画面" width="540" height="1121"></div>
+    </div>
+  </section>
+
+  <section class="fc-sec" id="ap-solve" aria-labelledby="h-apsolve">
+    <div class="wrap">
+      {head_block("BEFORE / AFTER", "h-apsolve", "こんなお悩み、|アプリでまるっと解決！")}
+      {worries([
+        ("いつも混んでいて|待ち時間が長い", "home", "おうちから|かんたん予約"),
+        ("お店で待って|いないといけない", "wait", "ご案内の|目安時刻がわかる"),
+        ("お店に行かないと|混雑がわからない", "bars", "混雑状況が|すぐわかる"),
+        ("毎回スタイルを|注文するのが面倒", "note", "髪型を登録して|注文ラクラク"),
+        ("お気に入りの|スタッフに|会えない", "heart", "スタッフの|出勤日がわかる"),
+      ])}
+    </div>
+  </section>
+
+  <section class="fc-sec fc-alt" id="ap-step" aria-labelledby="h-apstep">
+    <div class="wrap">
+      {head_block("HOW TO", "h-apstep", "かんたん3ステップ")}
+      {timeline([("download", "アプリを|ダウンロード"), ("login", "会員登録|またはログイン"), ("store", "店舗・メニュー|を選んで予約")])}
+      <p class="fc-note center-t">{ph("すでにHiCARD会員の方は、|今までの会員IDでログインできます。")}</p>
+    </div>
+  </section>
+
+  <section class="fc-sec" id="ap-book" aria-labelledby="h-apbook">
+    <div class="wrap">
+      {head_block("RESERVE", "h-apbook", "予約は2通り")}
+      <div class="ap-two">
+        <div class="ap-card">{ic("calendar")}<h3>日時指定予約</h3><p>{ph("ご希望の日付と|時間帯で予約")}</p><span class="ap-tag">手数料無料</span></div>
+        <span class="mx-or ap-or" aria-hidden="true">or</span>
+        <div class="ap-card">{ic("clock")}<h3>当日順番予約</h3><p>{ph("今日の最短の|ご案内時間で予約")}</p><span class="ap-tag">今すぐカットしたい方に</span></div>
+      </div>
+      {info([("yen", "お支払いはPayPay・クレジットカード")])}
+      <p class="fc-note center-t">{ph("※指定時刻の1時間前を過ぎた|キャンセルは300円です。")}<br>{ph("※ヘアスタイルやスタッフの技量によって、|時間通りにご案内できない場合もございます。")}</p>
+    </div>
+  </section>
+
+  <section class="fc-sec fc-alt" id="ap-more" aria-labelledby="h-apmore">
+    <div class="wrap">
+      {head_block("MORE", "h-apmore", "こんなこともできます")}
+      {chips([("family", "家族の分も|まとめて予約"), ("smile", "お気に入りスタイルを|写真で登録"), ("coin", "ポイントが|貯まる・使える"), ("bell", "カットのタイミングを|お知らせ"), ("store", "お気に入り店舗の|シフトを確認"), ("qr", "会員証は|アプリのバーコードで")])}
+    </div>
+  </section>
+
+  <section class="fc-sec" id="ap-voice" aria-labelledby="h-apvoice">
+    <div class="wrap">
+      {head_block("VOICE", "h-apvoice", "お客様の声")}
+      {bubbles([("お店に行かなくても|予約ができて便利！", "アプリをご利用のお客様"), ("案内目安時刻がわかるので、|自分の時間を|有効に使えるように|なりました", "アプリをご利用のお客様"), ("スマホが苦手ですが、|思ったよりも簡単に|使えるようになりました", "アプリをご利用のお客様")])}
+    </div>
+  </section>
+
+  <section class="fc-sec fc-alt" id="dl" aria-labelledby="h-dl">
+    <div class="wrap">
+      {head_block("DOWNLOAD", "h-dl", "今すぐダウンロード")}
+      <div class="ap-dl">
+        <figure><a href="{IOS_URL}" rel="noopener"><img src="assets/app/appstore.png" alt="App Storeからダウンロード" width="480" height="176" loading="lazy"></a><img class="ap-qr" src="assets/app/qr_ios.png" alt="iPhone用アプリのQRコード" width="240" height="240" loading="lazy"><figcaption>iPhone<small>iOS 9.0以上</small></figcaption></figure>
+        <figure><a href="{ANDROID_URL}" rel="noopener"><img src="assets/app/gplay.png" alt="Google Playで手に入れよう" width="480" height="143" loading="lazy"></a><img class="ap-qr" src="assets/app/qr_android.png" alt="Android用アプリのQRコード" width="240" height="240" loading="lazy"><figcaption>Android<small>Android 5.0以上</small></figcaption></figure>
+      </div>
+      <p class="fc-note center-t">{ph("カットハウスひかり・HairStudio Mr.COOL・|Men’s Cut＆Self DELIGHT・|カットスペースPLUS・|シャンプーカットアルファの|会員様向けアプリです。")}</p>
+    </div>
+  </section>
+
+  <section class="fc-sec" id="ap-faq" aria-labelledby="h-apfaq">
+    <div class="wrap fc-narrow">
+      {head_block("Q&amp;A", "h-apfaq", "よくあるご質問")}
+{faq_html}
+      <p class="center"><a class="btn btn-ghost" href="faq.html#faq4">アプリのご質問をもっと見る</a></p>
+      <div class="ap-notice">
+        <p><b>クレジット決済に関するお知らせ</b>{ph("2025年4月1日より、|オンライン決済のセキュリティ強化（3Dセキュア2.0）のため、|アプリ予約時のクレジット決済の手順が|一部変わりました。オンライン決済の前に、|各カード会社の会員サイトで|3Dセキュアの登録をお願いいたします。")}</p>
+        <p class="ap-notice-tel">{ph("お困りの際は、|店舗スタッフまたは本社まで。|TEL 050-1720-5983")}</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+"""
+    write("app.html", head, body, foot)
+    print("公式アプリのページを作成しました")
+
+
 if __name__ == "__main__":
     build_haircut()
     build_brow()
     build_facecare()
+    build_app()

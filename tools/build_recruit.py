@@ -116,7 +116,7 @@ def page(prefix, title, desc, body, v):
     <nav class="nav" id="site-nav" aria-label="メインメニュー">
       <a href="{p}news.html">お知らせ</a>
       <a href="{p}shops.html">店舗を探す</a>
-      <a href="{p}./#app">公式アプリ</a>
+      <a href="{p}app.html">公式アプリ</a>
       <a href="{p}./#menu">メニュー</a>
       <a href="{p}./#flow">予約の流れ</a>
       <a href="{p}./#sns">Instagram</a>
@@ -136,7 +136,7 @@ def page(prefix, title, desc, body, v):
     <nav class="footer-nav" aria-label="フッターメニュー">
       <a href="{p}./">ホーム</a>
       <a href="{p}shops.html">店舗一覧</a>
-      <a href="{p}./#app">公式アプリ</a>
+      <a href="{p}app.html">公式アプリ</a>
       <a href="{p}recruit.html">採用情報</a>
       <a href="{p}news.html">お知らせ・休業情報</a>
       <a href="{p}haircut.html">ヘアカット</a>
