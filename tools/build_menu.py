@@ -40,7 +40,7 @@ def ph(text):
 def shell(title, desc):
     with open(os.path.join(ROOT, "privacy.html"), encoding="utf-8") as f:
         src = f.read()
-    head = src[: src.index('<main id="main">')]
+    head = src[: src.index('<main id="main">')].replace(' aria-current="page"', "")
     foot = src[src.index('<footer class="site-footer">'):]
     head = re.sub(r"<title>.*?</title>", lambda m: f"<title>{esc(title)}</title>", head)
     head = re.sub(r'<meta name="description" content="[^"]*">', lambda m: f'<meta name="description" content="{esc(desc)}">', head)
@@ -225,6 +225,7 @@ def store_list():
 
 
 def write(name, head, body, foot):
+    head = head.replace(f'<a href="{name}">', f'<a href="{name}" aria-current="page">', 1)  # メニューの今いるページに印
     with open(os.path.join(ROOT, name), "w", encoding="utf-8") as f:
         f.write(head + body + foot)
 
