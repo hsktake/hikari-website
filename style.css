@@ -31,6 +31,8 @@ body {
   font-family: var(--round); font-size: 16px; line-height: 1.9; letter-spacing: .03em;
   -webkit-font-smoothing: antialiased; text-size-adjust: 100%; overflow-x: hidden;
 }
+/* 横はみ出し防止は clip で（hidden だとメニューを開いて後ろを止めたとき、上の帯がページ先頭に戻ってしまう） */
+@supports (overflow-x: clip) { body { overflow-x: clip; } }
 h1, h2, h3, p { margin: 0; }
 h1, h2, h3 { font-weight: 800; line-height: 1.45; }
 a { color: inherit; }
@@ -1971,7 +1973,7 @@ a.shop-photo { display: grid; }
   .site-header.is-open .nav > a.nav-recruit { border-color: var(--sun); grid-column: 1 / -1; }
   .site-header.is-open .nav-sub { grid-column: 1 / -1; margin-top: 6px; padding-top: 10px; }
   .nav-sub a:last-child:nth-child(odd) { grid-column: 1 / -1; }
-  html.nav-lock, html.nav-lock body { overflow: hidden; }
+  html.nav-lock { overflow: hidden; } /* body まで止めると上の帯が先頭へ戻り、スクロール中に開いたメニューが画面外に出るため html だけ */
   .nav-sub { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 2px dotted var(--line); }
   .nav .nav-sub a { font-size: 12.5px; font-weight: 700; padding: 7px 6px; border: 1.5px solid var(--line); border-radius: 999px; text-align: center; white-space: nowrap; color: var(--brown-soft); }
   .nav .nav-sub a:last-child { border-bottom: 1.5px solid var(--line); }
