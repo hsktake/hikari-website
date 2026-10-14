@@ -2475,9 +2475,10 @@ main .fc-hero { padding-bottom: 46px; }
 .gd-lead { padding: 0 18px; font-size: 14px; font-weight: 700; text-align: center; }
 .gd-body > .fc-note { padding: 0 18px; text-align: center; }
 .gd-steps { list-style: none; margin: 12px 0 0; padding: 4px 18px 10px; display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; }
-.gd-steps li { flex: 0 0 168px; scroll-snap-align: start; text-align: center; }
-.gd-shot { display: block; position: relative; border: 6px solid var(--brown); border-radius: 20px; overflow: hidden; background: var(--cream); aspect-ratio: 300 / 533; }
-.gd-shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.gd-steps li { flex: 0 0 214px; scroll-snap-align: start; text-align: center; }
+.gd-steps p { max-width: 190px; margin-left: auto !important; margin-right: auto !important; }
+.gd-shot { display: flex; justify-content: center; align-items: flex-end; height: 300px; }
+.gd-shot img { height: 100%; width: auto; max-width: none; }
 .gd-noimg { position: absolute; inset: 0; display: grid; place-items: center; }
 .gd-noimg .ic { width: 70px; height: 70px; background: var(--orange); color: var(--white); }
 .gd-step { display: inline-flex; align-items: baseline; gap: 3px; margin-top: 8px; background: var(--orange); color: var(--white); font-family: var(--en); font-weight: 600; font-size: 12px; border-radius: 999px; padding: 1px 12px; }
@@ -2503,7 +2504,9 @@ main .fc-hero { padding-bottom: 46px; }
   .gd-h .ic { width: 46px; height: 46px; }
   .gd-item summary { padding: 14px 14px; font-size: 15px; }
   .gd-steps { padding: 4px 14px 10px; gap: 10px; }
-  .gd-steps li { flex-basis: 140px; }
+  .gd-steps li { flex-basis: 176px; }
+  .gd-shot { height: 245px; }
+  .gd-steps p { max-width: 160px; }
   .gd-steps p { font-size: 12.5px; }
   .gd-pay { gap: 8px; }
 }

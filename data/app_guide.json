@@ -11,22 +11,22 @@
      {
       "n": "1",
       "text": "Androidの方は →playストア iphoneの方は →Appストア をタッチ",
-      "img": "assets/app/guide/5b266ea9127c.webp"
+      "img": "assets/app/guide2/s000.webp"
      },
      {
       "n": "2",
       "text": "『カットハウスひかり』 と検索",
-      "img": "assets/app/guide/637692ec597f.webp"
+      "img": "assets/app/guide2/s002.webp"
      },
      {
       "n": "3",
       "text": "Androidの方は インストール→ 開く iphoneの方は 入手→開く",
-      "img": "assets/app/guide/5c17a65c4a08.webp"
+      "img": "assets/app/guide2/s001.webp"
      },
      {
       "n": "4",
       "text": "アプリの ダウンロード完了",
-      "img": "assets/app/guide/b884192f6bd7.webp"
+      "img": "assets/app/guide2/s003.webp"
      }
     ]
    },
@@ -37,12 +37,12 @@
      {
       "n": "1",
       "text": "はじめに『ID』 を入力",
-      "img": "assets/app/guide/e1f6a6ef9c89.webp"
+      "img": "assets/app/guide2/s004.webp"
      },
      {
       "n": "2",
       "text": "次にパスワードを 入力してログイン",
-      "img": "assets/app/guide/9f5c59c29de6.webp"
+      "img": "assets/app/guide2/s005.webp"
      }
     ]
    },
@@ -53,42 +53,42 @@
      {
       "n": "1",
       "text": "『カットハウス ひかりアプリ』 をタッチ",
-      "img": "assets/app/guide/c2decd0a1dfd.webp"
+      "img": "assets/app/guide2/s006.webp"
      },
      {
       "n": "2",
       "text": "『新規会員登録』 をタッチ",
-      "img": "assets/app/guide/e1f6a6ef9c89.webp"
+      "img": "assets/app/guide2/s010.webp"
      },
      {
       "n": "3",
       "text": "メールアドレスを 入れて『送信』をタッチ 入力したメールアドレスに 新規会員登録用番号が送信されます。 @cut-hikari.comより送信）（受信許可設定(迷惑メール設定)を確認して頂き、受信できるよう設定をお願いいたします）",
-      "img": "assets/app/guide/02f5b3d90b7a.webp"
+      "img": "assets/app/guide2/s007.webp"
      },
      {
       "n": "4",
       "text": "受信したメールに記載されている 『新規会員登録用番号』を入力 →送信",
-      "img": "assets/app/guide/4470cbee698b.webp"
+      "img": "assets/app/guide2/s011.webp"
      },
      {
       "n": "5",
       "text": "パスワード 半角英数字が混在した8文字以上を入力 →『設定する』 をタッチ",
-      "img": "assets/app/guide/5a058d373080.webp"
+      "img": "assets/app/guide2/s008.webp"
      },
      {
       "n": "6",
       "text": "登録に必要な情報を 入力 →『登録する』 をタッチ",
-      "img": "assets/app/guide/2257beccb8a6.webp"
+      "img": "assets/app/guide2/s012.webp"
      },
      {
       "n": "7",
       "text": "登録内容を確認し、 OKの場合には『戻る』 をタッチ",
-      "img": "assets/app/guide/a840d5aa00b3.webp"
+      "img": "assets/app/guide2/s009.webp"
      },
      {
       "n": "8",
       "text": "トップページに戻る / メールアドレスはIDとしてお使いいただけます。 パスワードは、 お忘れにならないよう、保存をお願いします。",
-      "img": "assets/app/guide/ee33b732fef7.webp"
+      "img": "assets/app/guide2/s013.webp"
      }
     ]
    },
@@ -99,37 +99,37 @@
      {
       "n": "1",
       "text": "『カットハウス ひかりアプリ』 をタッチ",
-      "img": "assets/app/guide/c2decd0a1dfd.webp"
+      "img": "assets/app/guide2/s014.webp"
      },
      {
       "n": "2",
       "text": "Hiカードをお持ちの方は、IDを入力 （カード裏のバーコードの下の数字0から始まる場合は０を除いて） →『次へ』をタッチ ＊IDをお忘れの場合は店舗にお越しいただくか、本部までお電話でお問い合わせください。 050-1720-5983 ㈱エイチ・エス・ケイ",
-      "img": "assets/app/guide/59c844554888.webp"
+      "img": "assets/app/guide2/s017.webp"
      },
      {
       "n": "3",
       "text": "Hiカード会員でパスワードをご存知の方はパスワード （初期設定のままの方は８ケタの数字）を入力 →『ログイン』をタッチ 店舗で仮パスワードを発行された方は発行されたパスワードを入力 →『ログイン』をタッチ",
-      "img": "assets/app/guide/9f5c59c29de6.webp"
+      "img": "assets/app/guide2/s015.webp"
      },
      {
       "n": "4",
       "text": "新しいパスワードの設定 半角英数字を交えて 8文字以上の新しいパスワードを入力 安心してお使いいただく為、英数字まじりのパスワードを ご登録ください",
-      "img": "assets/app/guide/72e8d58d1e06.webp"
+      "img": "assets/app/guide2/s018.webp"
      },
      {
       "n": "5",
       "text": "登録に必要な情報を入力 →『登録する』をタッチ ＊すでに会員情報が登録されている場合には内容をご確認の上、変更が必要な場合にはご変更ください。",
-      "img": "assets/app/guide/89f8e061ac98.webp"
+      "img": "assets/app/guide2/s016.webp"
      },
      {
       "n": "6",
       "text": "登録内容を確認し、 OKの場合には『戻る』 をタッチ",
-      "img": "assets/app/guide/a840d5aa00b3.webp"
+      "img": "assets/app/guide2/s009.webp"
      },
      {
       "n": "7",
       "text": "トップページに戻る",
-      "img": "assets/app/guide/ee33b732fef7.webp"
+      "img": "assets/app/guide2/s013.webp"
      }
     ]
    }
@@ -166,17 +166,17 @@
      {
       "n": "1",
       "text": "左上のメニュー アイコンを 選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s019.webp"
      },
      {
       "n": "2",
       "text": "ポイント実績 を選択",
-      "img": "assets/app/guide/5668fc8ff555.webp"
+      "img": "assets/app/guide2/s021.webp"
      },
      {
       "n": "3",
       "text": "ポイントの実績や履歴が確認できます",
-      "img": "assets/app/guide/a7fa72bb5b4c.webp"
+      "img": "assets/app/guide2/s020.webp"
      }
     ]
    }
@@ -204,47 +204,47 @@
      {
       "n": "1",
       "text": "『カットハウス ひかりアプリ』 をタッチ",
-      "img": "assets/app/guide/c2decd0a1dfd.webp"
+      "img": "assets/app/guide2/s006.webp"
      },
      {
       "n": "2",
       "text": "ホーム画面 『チケットを買う』 をタッチ",
-      "img": "assets/app/guide/637692ec597f.webp"
+      "img": "assets/app/guide2/s026.webp"
      },
      {
       "n": "3",
       "text": "『店舗名』 例:上水戸店 をタッチ",
-      "img": "assets/app/guide/5c17a65c4a08.webp"
+      "img": "assets/app/guide2/s022.webp"
      },
      {
       "n": "4",
       "text": "『日時を指定してチケットを購入』 をタッチ",
-      "img": "assets/app/guide/a16d6056d88f.webp"
+      "img": "assets/app/guide2/s027.webp"
      },
      {
       "n": "5",
       "text": "『ご希望のメニュー』 『オプションサービス』 をタッチ",
-      "img": "assets/app/guide/b9608a4be4e0.webp"
+      "img": "assets/app/guide2/s023.webp"
      },
      {
       "n": "6",
       "text": "『ご希望の日にち』 をタッチ",
-      "img": "assets/app/guide/a8e60ea0bf85.webp"
+      "img": "assets/app/guide2/s028.webp"
      },
      {
       "n": "7",
       "text": "『ご希望の時間』 をタッチ",
-      "img": "assets/app/guide/166e86e5140f.webp"
+      "img": "assets/app/guide2/s024.webp"
      },
      {
       "n": "8",
       "text": "『PayPay』or 『クレジットカード』 をタッチ",
-      "img": "assets/app/guide/411ddb64c774.webp"
+      "img": "assets/app/guide2/s029.webp"
      },
      {
       "n": "9",
       "text": "『PayPay』 iPhoneのお客様は開く をタッチ 『クレジットカード』 カード情報をご入力",
-      "img": "assets/app/guide/dd1b43917859.webp"
+      "img": "assets/app/guide2/s025.webp"
      }
     ]
    },
@@ -255,52 +255,52 @@
      {
       "n": "1",
       "text": "『カットハウス ひかりアプリ』 をタッチ",
-      "img": "assets/app/guide/c2decd0a1dfd.webp"
+      "img": "assets/app/guide2/s006.webp"
      },
      {
       "n": "2",
       "text": "ホーム画面 『チケットを買う』 をタッチ",
-      "img": "assets/app/guide/637692ec597f.webp"
+      "img": "assets/app/guide2/s026.webp"
      },
      {
       "n": "3",
       "text": "『店舗名』 例:上水戸店 をタッチ",
-      "img": "assets/app/guide/5c17a65c4a08.webp"
+      "img": "assets/app/guide2/s030.webp"
      },
      {
       "n": "4",
       "text": "『本日の順番のチケット購入』 をタッチ",
-      "img": "assets/app/guide/a16d6056d88f.webp"
+      "img": "assets/app/guide2/s033.webp"
      },
      {
       "n": "5",
       "text": "『ご希望のメニュー』 『オプションサービス』 をタッチ",
-      "img": "assets/app/guide/b9608a4be4e0.webp"
+      "img": "assets/app/guide2/s023.webp"
      },
      {
       "n": "6",
       "text": "『クレジットカード』 をタッチ",
-      "img": "assets/app/guide/411ddb64c774.webp"
+      "img": "assets/app/guide2/s034.webp"
      },
      {
       "n": "7",
       "text": "チケット購入決済に必要な項目を全て入力 / POINT：数字は半角 名義はカード記載通りに！ （例：HANAKO HIKARI）",
-      "img": "assets/app/guide/93bf950ebf76.webp"
+      "img": "assets/app/guide2/s031.webp"
      },
      {
       "n": "8",
       "text": "続いて電話番号・メールアドレスを入力 『次へ』をタッチ",
-      "img": "assets/app/guide/2257beccb8a6.webp"
+      "img": "assets/app/guide2/s035.webp"
      },
      {
       "n": "9",
       "text": "私はロボットではありませんにチェック 『次へ』をタッチ",
-      "img": "assets/app/guide/24be80d6c96b.webp"
+      "img": "assets/app/guide2/s032.webp"
      },
      {
       "n": "10",
       "text": "指示に従って 『画像』をタッチ",
-      "img": "assets/app/guide/8357d3aeea53.webp"
+      "img": "assets/app/guide2/s036.webp"
      }
     ]
    },
@@ -311,12 +311,12 @@
      {
       "n": "1",
       "text": "チケット購入画面でメインサービスを選択",
-      "img": "assets/app/guide/0c09b3af7f9a.webp"
+      "img": "assets/app/guide2/s037.webp"
      },
      {
       "n": "2",
       "text": "オプションサービスも購入いただけます",
-      "img": "assets/app/guide/6b2c3dc69b94.webp"
+      "img": "assets/app/guide2/s038.webp"
      }
     ]
    },
@@ -327,17 +327,17 @@
      {
       "n": "1",
       "text": "購入後、『会員証・チケット』 を選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s039.webp"
      },
      {
       "n": "2",
       "text": "『キャンセル』 を選択",
-      "img": "assets/app/guide/e25a14b33926.webp"
+      "img": "assets/app/guide2/s041.webp"
      },
      {
       "n": "3",
       "text": "注意事項を確認後、 『はい』を選択 （予約時間帯から60分を過ぎてのキャンセルは300円の手数料が発生します）",
-      "img": "assets/app/guide/739ba4b6b873.webp"
+      "img": "assets/app/guide2/s040.webp"
      }
     ]
    },
@@ -348,27 +348,27 @@
      {
       "n": "1",
       "text": "購入後、会員証・チケット を選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s042.webp"
      },
      {
       "n": "2",
       "text": "『変更する』 を選択",
-      "img": "assets/app/guide/e25a14b33926.webp"
+      "img": "assets/app/guide2/s045.webp"
      },
      {
       "n": "3",
       "text": "変更したい部分を 変更する",
-      "img": "assets/app/guide/f6673d8b497a.webp"
+      "img": "assets/app/guide2/s043.webp"
      },
      {
       "n": "4",
       "text": "『変更する』 を選択",
-      "img": "assets/app/guide/af8c32884b70.webp"
+      "img": "assets/app/guide2/s046.webp"
      },
      {
       "n": "5",
       "text": "注意事項を確認後、 『はい』を選択 （予約時間帯から60分を過ぎての変更は300円の手数料が発生します）",
-      "img": "assets/app/guide/748594e91282.webp"
+      "img": "assets/app/guide2/s044.webp"
      }
     ]
    },
@@ -379,12 +379,12 @@
      {
       "n": "1",
       "text": "履歴を確認",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s047.webp"
      },
      {
       "n": "2",
       "text": "来店履歴を確認 （ここから予約もできます）",
-      "img": "assets/app/guide/0abf4129c606.webp"
+      "img": "assets/app/guide2/s048.webp"
      }
     ]
    }
@@ -402,27 +402,27 @@
      {
       "n": "1",
       "text": "『チケットを買う』 を選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s049.webp"
      },
      {
       "n": "2",
       "text": "『店舗』 を選択",
-      "img": "assets/app/guide/5c17a65c4a08.webp"
+      "img": "assets/app/guide2/s052.webp"
      },
      {
       "n": "3",
       "text": "本日の順番のチケット購入および日時を指定してチケットを購入 を選択",
-      "img": "assets/app/guide/a16d6056d88f.webp"
+      "img": "assets/app/guide2/s050.webp"
      },
      {
       "n": "4",
       "text": "画像やコメントの登録。施術中の会話を控えたい場合はチェックを入れてください。",
-      "img": "assets/app/guide/a8beef4f8b36.webp"
+      "img": "assets/app/guide2/s053.webp"
      },
      {
       "n": "5",
       "text": "コメントと画像を アップロードできます",
-      "img": "assets/app/guide/2559ec2d4929.webp"
+      "img": "assets/app/guide2/s051.webp"
      }
     ]
    },
@@ -433,22 +433,22 @@
      {
       "n": "1",
       "text": "左上のメニュー アイコンを 選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s019.webp"
      },
      {
       "n": "2",
       "text": "カットのご要望 を選択",
-      "img": "assets/app/guide/5668fc8ff555.webp"
+      "img": "assets/app/guide2/s055.webp"
      },
      {
       "n": "3",
       "text": "カットのご要望の追加を選択",
-      "img": "assets/app/guide/59158630fcc0.webp"
+      "img": "assets/app/guide2/s054.webp"
      },
      {
       "n": "4",
       "text": "要望を入力後、 登録する",
-      "img": "assets/app/guide/841327b33d8b.webp"
+      "img": "assets/app/guide2/s056.webp"
      }
     ]
    },
@@ -459,27 +459,27 @@
      {
       "n": "1",
       "text": "左上のメニュー アイコンを 選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s019.webp"
      },
      {
       "n": "2",
       "text": "カットのご要望 を選択",
-      "img": "assets/app/guide/5668fc8ff555.webp"
+      "img": "assets/app/guide2/s059.webp"
      },
      {
       "n": "3",
       "text": "お気に入りスタイルの追加",
-      "img": "assets/app/guide/a86f95a9803d.webp"
+      "img": "assets/app/guide2/s057.webp"
      },
      {
       "n": "4",
       "text": "カットメニュー画像かスマートフォン内の画像をアップロードできます",
-      "img": "assets/app/guide/4da9512630e3.webp"
+      "img": "assets/app/guide2/s060.webp"
      },
      {
       "n": "5",
       "text": "こだわりポイントや タイトルも登録が できます",
-      "img": "assets/app/guide/df71e1fba8f5.webp"
+      "img": "assets/app/guide2/s058.webp"
      }
     ]
    }
@@ -498,22 +498,22 @@
      {
       "n": "1",
       "text": "左上のメニュー アイコンを 選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s019.webp"
      },
      {
       "n": "2",
       "text": "ファミリー会員管理を選択",
-      "img": "assets/app/guide/5668fc8ff555.webp"
+      "img": "assets/app/guide2/s062.webp"
      },
      {
       "n": "3",
       "text": "ファミリー会員の追加を選択",
-      "img": "assets/app/guide/a8c550e9c964.webp"
+      "img": "assets/app/guide2/s061.webp"
      },
      {
       "n": "4",
       "text": "「新規に追加」もしくは「既存会員を追加」を選択し、情報を入力後、登録する",
-      "img": "assets/app/guide/2be002acab0c.webp"
+      "img": "assets/app/guide2/s063.webp"
      }
     ],
     "note": "未登録のご家族は【新規に追加】→情報を入力→【登録する】。すでに会員のご家族は【既存会員を追加】→会員番号（会員カード裏のバーコード下の数字）とパスワード（例：1972年1月1日生まれの場合 19720101）を入力→【登録する】。"
@@ -525,17 +525,17 @@
      {
       "n": "1",
       "text": "チケット購入画面のご利用会員名の変更を選択",
-      "img": "assets/app/guide/69a8e56dc4b2.webp"
+      "img": "assets/app/guide2/s064.webp"
      },
      {
       "n": "2",
       "text": "ご家族の名前 を選択",
-      "img": "assets/app/guide/85277d6246ae.webp"
+      "img": "assets/app/guide2/s066.webp"
      },
      {
       "n": "3",
       "text": "ご家族の名前で チケットを購入",
-      "img": "assets/app/guide/9171cafd4f68.webp"
+      "img": "assets/app/guide2/s065.webp"
      }
     ]
    }
@@ -554,22 +554,22 @@
      {
       "n": "1",
       "text": "スタッフを探す を選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s067.webp"
      },
      {
       "n": "2",
       "text": "検索バーにスタッフの名前を入力",
-      "img": "assets/app/guide/17ba4863e793.webp"
+      "img": "assets/app/guide2/s069.webp"
      },
      {
       "n": "3",
       "text": "★マークを押す",
-      "img": "assets/app/guide/17c27e7d52fe.webp"
+      "img": "assets/app/guide2/s068.webp"
      },
      {
       "n": "4",
       "text": "お気に入りスタッフの登録が完了",
-      "img": "assets/app/guide/42968e514cc7.webp"
+      "img": "assets/app/guide2/s070.webp"
      }
     ]
    },
@@ -580,22 +580,22 @@
      {
       "n": "1",
       "text": "スタッフを探す を選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s067.webp"
      },
      {
       "n": "2",
       "text": "スケジュール を押す",
-      "img": "assets/app/guide/ffd2dff24424.webp"
+      "img": "assets/app/guide2/s072.webp"
      },
      {
       "n": "3",
       "text": "スケジュールを確認 （店舗名を押すと予約が可能）",
-      "img": "assets/app/guide/76d77d252610.webp"
+      "img": "assets/app/guide2/s071.webp"
      },
      {
       "n": "4",
       "text": "メニューを選び 予約する",
-      "img": "assets/app/guide/5fdeee294aad.webp"
+      "img": "assets/app/guide2/s073.webp"
      }
     ]
    },
@@ -606,17 +606,17 @@
      {
       "n": "1",
       "text": "お知らせ を選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s074.webp"
      },
      {
       "n": "2",
       "text": "確認する を選択",
-      "img": "assets/app/guide/55b7f9dd751b.webp"
+      "img": "assets/app/guide2/s076.webp"
      },
      {
       "n": "3",
       "text": "変更日を確認できます",
-      "img": "assets/app/guide/4c14963e5d6d.webp"
+      "img": "assets/app/guide2/s075.webp"
      }
     ]
    }
@@ -635,17 +635,17 @@
      {
       "n": "1",
       "text": "店舗を探す を選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s077.webp"
      },
      {
       "n": "2",
       "text": "検索バーに 店舗名か地域名を入力する",
-      "img": "assets/app/guide/3109c9e2550e.webp"
+      "img": "assets/app/guide2/s079.webp"
      },
      {
       "n": "3",
       "text": "関連する店舗が 表示されます",
-      "img": "assets/app/guide/e8171a252cdc.webp"
+      "img": "assets/app/guide2/s078.webp"
      }
     ]
    },
@@ -656,17 +656,17 @@
      {
       "n": "1",
       "text": "店舗を探す を選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s077.webp"
      },
      {
       "n": "2",
       "text": "お気に入りの店舗 を探す",
-      "img": "assets/app/guide/81b9a123b2f3.webp"
+      "img": "assets/app/guide2/s081.webp"
      },
      {
       "n": "3",
       "text": "右上の★マークを押す（お気に入り）",
-      "img": "assets/app/guide/459c32622311.webp"
+      "img": "assets/app/guide2/s080.webp"
      }
     ]
    },
@@ -677,22 +677,22 @@
      {
       "n": "1",
       "text": "店舗を探す を選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s077.webp"
      },
      {
       "n": "2",
       "text": "店舗 を選択",
-      "img": "assets/app/guide/81b9a123b2f3.webp"
+      "img": "assets/app/guide2/s081.webp"
      },
      {
       "n": "3",
       "text": "シフト を選択",
-      "img": "assets/app/guide/6ef5acb0af65.webp"
+      "img": "assets/app/guide2/s082.webp"
      },
      {
       "n": "4",
       "text": "店舗のシフトが 確認できます",
-      "img": "assets/app/guide/8366fa90f5ca.webp"
+      "img": "assets/app/guide2/s083.webp"
      }
     ]
    }
@@ -721,17 +721,17 @@
      {
       "n": "1",
       "text": "左上のメニュー アイコン を選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s084.webp"
      },
      {
       "n": "2",
       "text": "通知設定 を選択",
-      "img": "assets/app/guide/96e97f4ccb31.webp"
+      "img": "assets/app/guide2/s086.webp"
      },
      {
       "n": "3",
       "text": "様々な通知の受け取りをON、OFFできます",
-      "img": "assets/app/guide/f4b7e187fb4a.webp"
+      "img": "assets/app/guide2/s085.webp"
      }
     ]
    },
@@ -742,22 +742,22 @@
      {
       "n": "1",
       "text": "左上のメニュー アイコン を選択",
-      "img": "assets/app/guide/75dccec825b7.webp"
+      "img": "assets/app/guide2/s087.webp"
      },
      {
       "n": "2",
       "text": "会員情報管理 を選択",
-      "img": "assets/app/guide/96e97f4ccb31.webp"
+      "img": "assets/app/guide2/s089.webp"
      },
      {
       "n": "3",
       "text": "変更 を選択",
-      "img": "assets/app/guide/4f1e65a546d4.webp"
+      "img": "assets/app/guide2/s088.webp"
      },
      {
       "n": "4",
       "text": "来店サイクル設定で 来店したい周期 を選択",
-      "img": "assets/app/guide/2257beccb8a6.webp"
+      "img": "assets/app/guide2/s090.webp"
      }
     ]
    }
