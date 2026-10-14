@@ -109,13 +109,13 @@ def head(title, desc, v, canonical_path):
     </a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="bars" aria-hidden="true"></span><span class="menu-label">メニュー</span></button>
     <nav class="nav" id="site-nav" aria-label="メインメニュー">
+      <a href="../news.html">お知らせ</a>
       <a href="../shops.html" aria-current="page">店舗を探す</a>
       <a href="../#app">公式アプリ</a>
       <a href="../#flow">予約の流れ</a>
       <a href="../#menu">メニュー</a>
       <a href="../#sns">Instagram</a>
       <a href="../#company">会社案内</a>
-      <a href="../news.html">お知らせ</a>
       <a class="nav-recruit" href="../recruit.html">採用情報</a>
     </nav>
   </div>

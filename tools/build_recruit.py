@@ -114,13 +114,13 @@ def page(prefix, title, desc, body, v):
     </a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="bars" aria-hidden="true"></span><span class="menu-label">メニュー</span></button>
     <nav class="nav" id="site-nav" aria-label="メインメニュー">
+      <a href="{p}news.html">お知らせ</a>
       <a href="{p}shops.html">店舗を探す</a>
       <a href="{p}./#app">公式アプリ</a>
       <a href="{p}./#flow">予約の流れ</a>
       <a href="{p}./#menu">メニュー</a>
       <a href="{p}./#sns">Instagram</a>
       <a href="{p}./#company">会社案内</a>
-      <a href="{p}news.html">お知らせ</a>
       <a class="nav-recruit" href="{p}recruit.html" aria-current="page">採用情報</a>
     </nav>
   </div>
