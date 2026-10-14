@@ -48,10 +48,23 @@ def shell(title, desc):
 
 
 MENUS = [
-    ("haircut.html", "ヘアカット", "丸刈りからロングまで", '<img src="assets/scissors.svg" alt="" width="28" height="28">'),
-    ("brow.html", "眉毛カット", "カットと一緒に", '<svg viewBox="0 0 40 28" width="30" height="21" aria-hidden="true"><path d="M3 18c8-10 22-12 34-5" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'),
-    ("facecare.html", "フェイスケア", "ヒゲ・肌のケア", '<img src="assets/sparkle.svg" alt="" width="26" height="26">'),
+    ("haircut.html", "ヘアカット", "男性1,400円", '<img src="assets/scissors.svg" alt="" width="28" height="28">'),
+    ("brow.html", "眉毛カット", "＋無料〜200円", '<svg viewBox="0 0 40 28" width="30" height="21" aria-hidden="true"><path d="M3 18c8-10 22-12 34-5" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'),
+    ("facecare.html", "フェイスケア", "初回1,000円〜", '<img src="assets/sparkle.svg" alt="" width="26" height="26">'),
 ]
+
+
+def price_board(title, items, note=""):
+    """料金がひと目で分かる値札（items: (名前, 金額, リンク)）"""
+    lis = []
+    for it in items:
+        name, val = it[0], it[1]
+        href = it[2] if len(it) > 2 else ""
+        num = f'<b class="is-word">{esc(val)}</b>' if not val[0].isdigit() else f'<b>{esc(val)}</b><i>円</i>'
+        inner = f'<small>{esc(name)}</small><span class="pz-v">{num}</span>'
+        lis.append(f'<li><a href="{href}">{inner}</a></li>' if href else f'<li>{inner}</li>')
+    nt = f'<p class="pz-note">{ph(note)}</p>' if note else ""
+    return f'<div class="pz"><p class="pz-h">{esc(title)}</p><ul>{"".join(lis)}</ul>{nt}</div>'
 
 
 def menu_switch(current):
@@ -256,11 +269,8 @@ def build_facecare():
         <p class="fc-en">FACE CARE</p>
         <h1>髪も、肌も、髭も。<br><span>首から上のトータルケア</span></h1>
         <p class="fc-lead">{ph("カットのついでに、|ヒゲと肌のケアも。")}</p>
-        <ul class="fc-tabs">
-          <li><a href="#beard"><b>ヒゲ脱毛</b><small>初回1,000円</small></a></li>
-          <li><a href="#facial"><b>光フェイシャル</b><small>初回2,000円</small></a></li>
-          <li><a href="#fc-shops"><b>対応店舗</b><small>{n}店舗</small></a></li>
-        </ul>
+        {price_board("初回お試し", [("ヒゲ脱毛", "1,000", "#beard"), ("光フェイシャル", "2,000", "#facial")], "通常 ヒゲ脱毛3,500円・|光フェイシャル4,500円|（1回・税込）")}
+        <p class="pz-link"><a href="#fc-shops">対応店舗（{n}店舗）を見る ›</a></p>
       </div>
       <div class="fc-hero-photo"><img src="assets/facecare/hero-smile.webp" alt="あごに手を当てて笑う男性" width="900" height="696"></div>
     </div>
@@ -360,6 +370,7 @@ def build_haircut():
         <p class="fc-en">HAIR CUT</p>
         <h1>ヘアカット<br><span>丸刈りからロングまで</span></h1>
         <p class="fc-lead">{ph("大人もお子さまも、|男性も女性も。")}</p>
+        {price_board("カット料金", [("男性", "1,400"), ("女性", "1,600")], "※一部の店舗は|料金が異なります。")}
         <p class="mx-hero-btn"><a class="btn btn-main" href="#catalog">ヘアカタログを見る</a></p>
       </div>
       <div class="fc-hero-photo"><img src="assets/styles/haircut-main.webp" alt="メガネの男性のツーブロックスタイル" width="900" height="696"></div>
@@ -408,6 +419,7 @@ def build_brow():
         <p class="fc-en">EYEBROW</p>
         <h1>眉毛カット<br><span>眉毛も髪もプロにおまかせ</span></h1>
         <p class="fc-lead">{ph("ヘアカットと一緒に|注文できるオプション")}</p>
+        {price_board("ヘアカットに追加で", [("スペシャル", "200", "#bw-course"), ("全体", "100", "#bw-course"), ("部分", "無料", "#bw-course")], "※料金は税込です。")}
       </div>
       <div class="fc-brow-ba bw-hero-ba">
         <figure><img src="assets/menu/brow-before.webp" alt="眉毛カット前" width="300" height="131"><figcaption>BEFORE</figcaption></figure>

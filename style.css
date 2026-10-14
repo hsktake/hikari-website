@@ -2583,3 +2583,51 @@ main .fc-hero { padding-bottom: 46px; }
   .fc-course { font-size: 13.5px; }
   .fc-course th, .fc-course td { padding: 10px 10px; }
 }
+
+/* 料金がひと目で分かる値札（メニュー3ページ） */
+.pz { margin: 18px auto 0; max-width: 420px; background: var(--white); border: 3px solid var(--orange); border-radius: 20px; padding: 0 12px 10px; text-align: center; box-shadow: 0 5px 0 rgba(239,122,0,.18); }
+.pz-h { display: inline-block; transform: translateY(-50%); background: var(--orange); color: var(--white); font-size: 14px; font-weight: 800; border-radius: 999px; padding: 3px 16px; margin-bottom: -6px; }
+.pz ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; }
+.pz li { flex: 1; min-width: 0; }
+.pz li + li { border-left: 2px dotted var(--line); }
+.pz li > a, .pz li > small { text-decoration: none; color: inherit; }
+.pz li > a { display: block; border-radius: 12px; transition: background .15s; }
+.pz li > a:hover { background: var(--sun-soft); }
+.pz small { display: block; font-size: 13px; font-weight: 800; color: var(--brown-soft); white-space: nowrap; }
+.pz-v { display: block; color: var(--orange-deep); white-space: nowrap; line-height: 1.1; padding-bottom: 2px; }
+.pz-v b { font-family: var(--en); font-size: 36px; font-weight: 600; letter-spacing: .01em; }
+.pz-v b.is-word { font-family: inherit; font-size: 26px; font-weight: 800; }
+.pz-v i { font-style: normal; font-size: 15px; font-weight: 800; margin-left: 2px; }
+.pz-note { margin-top: 6px; font-size: 12px; color: var(--brown-soft); line-height: 1.5; }
+.pz-note .ph { display: inline-block; }
+.pz-link { margin-top: 12px; font-size: 14px; font-weight: 800; }
+.pz-link a { color: var(--orange-deep); }
+@media (max-width: 420px) {
+  .pz-v b { font-size: 31px; }
+  .pz small { font-size: 12px; }
+}
+/* トップのメニューカードの料金 */
+.menu-body .menu-price { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 6px 14px; margin: 4px 0 8px; color: var(--orange-deep); font-weight: 800; font-size: 14px; }
+.menu-price span { white-space: nowrap; }
+.menu-price small { font-size: 12px; color: var(--brown-soft); margin-right: 4px; }
+.menu-price b { font-family: var(--en); font-size: 26px; font-weight: 600; margin-right: 1px; }
+.menu-price b.is-word { font-family: inherit; font-size: 20px; font-weight: 800; }
+@media (max-width: 600px) {
+  .menu-body .menu-price { flex-direction: column; gap: 0; margin: 0; font-size: 12px; }
+  .menu-price b { font-size: 21px; }
+  .menu-price b.is-word { font-size: 16px; }
+  .menu-price small { font-size: 11px; display: block; margin: 0; }
+  .menu-price span + span small { margin-top: 2px; }
+}
+.menu-body p .ph { display: inline-block; }
+@media (max-width: 600px) {
+  .menu-body h3 { white-space: nowrap; }
+  .menu-body .menu-price { line-height: 1.15; }
+  .menu-price b { font-size: 18px; }
+  .menu-price b.is-word { font-size: 13px; }
+  .menu-price small { font-size: 10.5px; }
+  .menu-price span + span { margin-top: 4px; }
+}
+@media (max-width: 380px) { .menu-price b { font-size: 16px; } }
+.menu-price small { font-size: 13px; }
+@media (max-width: 600px) { .menu-price small { font-size: 10.5px; } }
