@@ -546,14 +546,22 @@ def build_app():
     </div>
   </section>
 
-  <section class="fc-sec" id="ap-voice" aria-labelledby="h-apvoice">
+  <section class="fc-sec" id="ap-guide" aria-labelledby="h-apguide">
+    <div class="wrap">
+      {head_block("HOW TO USE", "h-apguide", "アプリの使い方ガイド")}
+      <p class="fc-sec-lead">{ph("押すと、操作の手順を|画面つきで見られます。")}</p>
+      {guide_circles("app-guide.html")}
+    </div>
+  </section>
+
+  <section class="fc-sec fc-alt" id="ap-voice" aria-labelledby="h-apvoice">
     <div class="wrap">
       {head_block("VOICE", "h-apvoice", "お客様の声")}
       {bubbles([("お店に行かなくても|予約ができて便利！", "アプリをご利用のお客様"), ("案内目安時刻がわかるので、|自分の時間を|有効に使えるように|なりました", "アプリをご利用のお客様"), ("スマホが苦手ですが、|思ったよりも簡単に|使えるようになりました", "アプリをご利用のお客様")])}
     </div>
   </section>
 
-  <section class="fc-sec fc-alt" id="dl" aria-labelledby="h-dl">
+  <section class="fc-sec" id="dl" aria-labelledby="h-dl">
     <div class="wrap">
       {head_block("DOWNLOAD", "h-dl", "今すぐダウンロード")}
       <div class="ap-dl">
@@ -564,7 +572,7 @@ def build_app():
     </div>
   </section>
 
-  <section class="fc-sec" id="ap-faq" aria-labelledby="h-apfaq">
+  <section class="fc-sec fc-alt" id="ap-faq" aria-labelledby="h-apfaq">
     <div class="wrap fc-narrow">
       {head_block("Q&amp;A", "h-apfaq", "よくあるご質問")}
 {faq_html}
@@ -582,8 +590,90 @@ def build_app():
     print("公式アプリのページを作成しました")
 
 
+# ---------- アプリの使い方ガイド ----------
+def jclean(s):
+    """元サイトの改行位置（日本語どうしの間の空白）を「|」に変え、そこでだけ折り返す"""
+    s = re.sub(r"(?<=[^\x00-\x7F]) (?=[^\x00-\x7F])", "|", s.strip())
+    return "".join(f'<span class="s">{ph(x)}</span>' if "。" in s else ph(x) for x in re.split(r"(?<=。)\|?", s) if x)
+
+
+def tbrk(title):
+    """見出しは「の」「（」の位置でだけ折り返す"""
+    return ph(re.sub(r"(の)(?!$)", r"\1|", title).replace("（", "|（"))
+
+
+def guide_circles(prefix=""):
+    with open(os.path.join(ROOT, "data", "app_guide.json"), encoding="utf-8") as f:
+        G = json.load(f)
+    lis = "".join(f'<li><a href="{prefix}#{g["id"]}">{ic(g["icon"])}<b>{ph(g.get("circle", g["name"]))}</b></a></li>' for g in G)
+    return f'<ul class="gd-circles">{lis}</ul>'
+
+
+def build_app_guide():
+    head, foot = shell("アプリの使い方ガイド｜カットハウスひかり",
+                       "カットハウスひかり公式アプリの使い方ガイド。会員登録・ログイン、ご予約、事前カウンセリング、ファミリー会員、お気に入りスタッフ・店舗、お支払い、お知らせ機能の操作方法を画面つきでご紹介します。")
+    with open(os.path.join(ROOT, "data", "app_guide.json"), encoding="utf-8") as f:
+        G = json.load(f)
+    secs = []
+    for gi, g in enumerate(G):
+        parts = []
+        after = []
+        ex = g.get("extra")
+        if ex and ex.get("good"):
+            goods = "".join(f'<li>{ic("check")}<span>{ph(x)}</span></li>' for x in ex["good"])
+            st = ""
+            if ex.get("steps"):
+                st = '<ol class="gd-mini">' + "".join(f"<li>{esc(x)}</li>" for x in ex["steps"]) + "</ol>"
+            note = f'<p class="fc-note">{esc(ex["note"])}</p>' if ex.get("note") else ""
+            extra_html = (f'<div class="gd-extra"><h3>{ph(ex["title"])}</h3><ul class="gd-good">{goods}</ul>{st}{note}</div>')
+            if ex.get("after"):
+                after.append(extra_html)
+            else:
+                parts.append(extra_html)
+        if ex and ex.get("pay"):
+            parts.append(f"""<div class="gd-pay">
+          <div class="gd-pay-card is-app">{ic("phone")}<h3>アプリで</h3><p><b>クレジットカード</b><b>PayPay</b></p></div>
+          <div class="gd-pay-card">{ic("store")}<h3>店頭で</h3><p><b>PayPay</b><b>d払い</b><b>au PAY</b><b>メルペイ</b><b>楽天ペイ</b></p></div>
+        </div>
+        <p class="fc-note center-t">{ph("アプリでの決済は|クレジットカードかPayPayの2種類です。|それ以外は店頭受付のみとなります。")}<br>{ph("カットスペースPLUS・|シャンプーカットアルファは、|各種クレジットカード・電子マネーも|ご利用いただけます。")}</p>""")
+        for it in g["items"]:
+            cards = []
+            for s in it["steps"]:
+                shot = (f'<img src="{s["img"]}" alt="" width="300" height="533" loading="lazy">' if s["img"]
+                        else f'<span class="gd-noimg">{ic("phone")}</span>')
+                cards.append(f'<li><span class="gd-shot">{shot}</span><span class="gd-step">STEP<b>{esc(s["n"])}</b></span><p>{jclean(s["text"])}</p></li>')
+            lead = f'<p class="gd-lead">{jclean(it["lead"])}</p>' if it.get("lead") else ""
+            note = f'<p class="fc-note">{esc(it["note"])}</p>' if it.get("note") else ""
+            parts.append(f'<details class="gd-item"><summary><span>{tbrk(it["title"])}</span><small>{len(it["steps"])}ステップ</small></summary><div class="gd-body">{lead}<ol class="gd-steps">{"".join(cards)}</ol>{note}</div></details>')
+        parts += after
+        alt = " fc-alt" if gi % 2 else ""
+        secs.append(f"""  <section class="fc-sec gd-sec{alt}" id="{g['id']}" aria-labelledby="h-{g['id']}">
+    <div class="wrap fc-narrow">
+      <h2 id="h-{g['id']}" class="gd-h">{ic(g['icon'])}<span>{esc(g['name'])}</span></h2>
+      {"".join(parts)}
+      <p class="gd-top"><a href="#gd-menu">項目の一覧へ戻る</a></p>
+    </div>
+  </section>""")
+    body = f"""<main id="main">
+  <section class="ap-hero gd-hero" id="gd-menu">
+    <div class="wrap">
+      <p class="fc-en">HOW TO USE</p>
+      <h1>{ph("アプリの|使い方ガイド")}</h1>
+      <p class="ap-hero-lead">{ph("知りたい項目を押すと、|画面つきで説明します。")}</p>
+      {guide_circles()}
+    </div>
+  </section>
+{chr(10).join(secs)}
+{book_cta("操作でお困りの際は、|店舗スタッフまたは本社|（050-1720-5983）まで。")}</main>
+
+"""
+    write("app-guide.html", head, body, foot)
+    print(f"アプリの使い方ガイドを作成しました（{len(G)}項目）")
+
+
 if __name__ == "__main__":
     build_haircut()
     build_brow()
     build_facecare()
     build_app()
+    build_app_guide()
