@@ -2857,7 +2857,7 @@ html.nav-lock .to-top { display: none; }
 .gp2-plus { --gc: #1d3170; } .gp2-delight { --gc: #111111; } .gp2-mrcool { --gc: #e37100; } .gp2-alpha { --gc: #8a6a3a; } .gp2-laladream { --gc: #1c4fa3; }
 .gp2 a { box-shadow: 0 8px 0 rgba(74,46,26,.12), 0 14px 30px rgba(74,46,26,.08); }
 
-/* お知らせ帯（管理シートの「お知らせ帯」タブ） */
+/* 全ページ上の帯（管理シート「店舗の予定」の全店舗休業から自動） */
 .site-notice { background: var(--brown); color: var(--white); font-size: 14px; font-weight: 700; line-height: 1.5; }
 .site-notice a, .site-notice p { display: flex; align-items: center; justify-content: center; gap: 8px; max-width: var(--wrap); margin: 0 auto; padding: 9px var(--gutter); color: inherit; text-decoration: none; }
 .site-notice a:hover span:nth-child(2) { text-decoration: underline; }

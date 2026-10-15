@@ -280,12 +280,13 @@
   });
 })();
 
-/* ===== ホームページ管理シート（Googleスプレッドシート）から、お知らせ・休業・料金などを読み込む =====
+/* ===== ホームページ管理シート（Googleスプレッドシート）から、店舗の予定・料金・採用を読み込む =====
    シートが読めないときは、HTML に書いてある内容をそのまま表示する。 */
 (function () {
   "use strict";
   var SHEET_ID = "1RBR08sNvthcwJHfssDh8RFLwtZ-17URXR149_jYetzw";
   var CACHE_MIN = 0; // 同じタブを何分おきに読み直すか
+  var BAR_DAYS = 14; // 「全店舗」の休業を、何日前から全ページの上の帯に出すか
   var script = document.currentScript;
   var BASE = script ? script.src.replace(/[^/]*$/, "") : location.href.replace(/[^/]*$/, "");
 
@@ -316,24 +317,29 @@
     if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
     return rows;
   }
-  function load(tab) {
+  // need：1行目（見出し）にあるはずの文字。違うタブが返ってきたときは使わない
+  var loading = {};
+  function load(tab, need) {
+    if (loading[tab]) return loading[tab];
     var key = "hk-sheet:" + tab;
     try {
       var c = JSON.parse(sessionStorage.getItem(key) || "null");
       if (c && Date.now() - c.t < CACHE_MIN * 60000) return Promise.resolve(c.rows);
     } catch (e) {}
     var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:csv&headers=1&sheet=" + encodeURIComponent(tab) + "&_=" + Date.now();
-    return fetch(url, { credentials: "omit" }).then(function (r) {
+    return (loading[tab] = fetch(url, { credentials: "omit" }).then(function (r) {
       if (!r.ok) throw new Error(r.status);
       return r.text();
     }).then(function (t) {
       if (/^\s*</.test(t)) throw new Error("not csv"); // ログイン画面などが返ってきたとき
-      var rows = parseCSV(t).slice(1).filter(function (r) {
+      var all = parseCSV(t);
+      if (need && !need.test((all[0] || []).join(","))) throw new Error("wrong tab");
+      var rows = all.slice(1).filter(function (r) {
         return r.some(function (v) { return v.trim() !== ""; });
       });
       try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), rows: rows })); } catch (e) {}
       return rows;
-    });
+    }));
   }
   function toDate(s) {
     var m = String(s || "").match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);
@@ -355,7 +361,7 @@
   function prices() {
     var els = document.querySelectorAll("[data-price]");
     if (!els.length) return;
-    load("料金").then(function (rows) {
+    load("料金", /金額/).then(function (rows) {
       var map = {};
       rows.forEach(function (r) { var v = money(r[2]); if (r[0] && v) map[r[0].trim()] = v; });
       els.forEach(function (el) {
@@ -365,56 +371,48 @@
     }).catch(function () {});
   }
 
-  // お知らせ帯：全ページのいちばん上
-  function notice() {
-    var header = document.querySelector(".site-header");
-    if (!header) return;
-    load("お知らせ帯").then(function (rows) {
-      var r = rows.filter(function (r) { return isOn(r[0]) && (r[1] || "").trim(); })[0];
-      if (!r) return;
-      var bar = document.createElement("div");
-      bar.className = "site-notice";
-      var text = '<span class="sn-ic" aria-hidden="true">!</span><span>' + esc(r[1].trim()) + "</span>";
-      var link = (r[2] || "").trim();
-      link = { "お知らせページ": "news.html", "休業情報": "news.html#eigyo", "営業時間変更情報": "news.html#jikan", "店舗を探す": "shops.html",
-        "公式アプリ": "app.html", "ヘアカット": "haircut.html", "眉毛カット": "brow.html", "フェイスケア": "facecare.html",
-        "採用情報": "recruit.html", "HiCARD会員": "member.html" }[link] || link;
-      bar.innerHTML = link ? '<a href="' + esc(href(link)) + '">' + text + '<span class="sn-go" aria-hidden="true">›</span></a>' : "<p>" + text + "</p>";
-      header.parentNode.insertBefore(bar, header);
-    }).catch(function () {});
+  // 「店舗の予定」タブ（日付・店舗・内容・時刻・理由）。休業も営業時間の変更もここ。1日1行
+  function plan() {
+    return load("店舗の予定", /内容/).then(planItems);
   }
-
-  function isOn(v) { v = String(v || ""); return /表示する|[○◯〇]/.test(v) && !/しない/.test(v); }
-
-  // 休業・営業時間変更の行を { s:開始日, e:終了日, shop:店舗, html:表示する文 } に。過ぎた日は除く
-  function dayItems(tab, rows) {
+  // 行を { s:開始日, e:終了日, shop, kind:"休業"|"変更", why, html:お知らせページ用, own:店舗ページ用 } に。
+  // 過ぎた日は除く。同じ店舗の休業が続く日は「10/17〜10/18」のように1つにまとめる
+  function planItems(rows) {
     var today = new Date(); today.setHours(0, 0, 0, 0);
-    var out = [], own;
+    var list = [];
     rows.forEach(function (r) {
-      var s = toDate(r[0]), e = null, shop, html;
-      if (!s) return;
-      if (tab === "休業") {
-        e = toDate(r[1]); shop = (r[2] || "").trim();
-        var why = (r[3] || "").trim();
-        if (!shop) return;
-        html = shop === "全店舗" ? "<strong>全店舗休業</strong>" : esc(shop);
-        var own = shop === "全店舗" ? "<strong>全店舗休業</strong>" : "<strong>休業</strong>";
+      var s = toDate(r[0]), shop = (r[1] || "").trim(), naiyo = (r[2] || "").trim();
+      var tm = String(r[3] || "").match(/(\d{1,2}):(\d{2})/), why = (r[4] || "").trim();
+      if (!s || !shop || s < today) return;
+      var all = shop === "全店舗", html, own, kind;
+      if (!naiyo || /休業|休み/.test(naiyo)) {
+        kind = "休業";
+        html = all ? "<strong>全店舗休業</strong>" : esc(shop);
+        own = all ? "<strong>全店舗休業</strong>" : "<strong>休業</strong>";
         if (why) { html += "（" + esc(why) + "）"; own += "（" + esc(why) + "）"; }
       } else {
-        shop = (r[1] || "").trim();
-        var kind = (r[2] || "").trim(), tm = (String(r[3] || "").match(/(\d{1,2}):(\d{2})/) || []), why2 = (r[4] || "").trim();
-        if (!shop || !kind) return;
-        var t = tm[0] ? +tm[1] + ":" + tm[2] : "";
-        var body = kind === "定休日ですが営業" ? WD[s.getDay()] + "曜ですが営業いたします。"
-          : kind === "早めに営業終了" && t ? t + "営業終了"
-          : kind === "遅めに営業開始" && t ? t + "から営業"
-          : kind;
-        if (why2 && kind !== "定休日ですが営業") body += "（" + why2 + "）";
-        html = (shop === "全店舗" ? "<strong>全店舗</strong>" : esc(shop)) + "　" + esc(body);
-        own = (shop === "全店舗" ? "全店舗　" : "") + esc(body);
+        kind = "変更";
+        var t = tm ? +tm[1] + ":" + tm[2] : "";
+        var body = /定休日/.test(naiyo) ? WD[s.getDay()] + "曜ですが営業いたします。"
+          : /終了/.test(naiyo) && t ? t + "営業終了"
+          : /開始/.test(naiyo) && t ? t + "から営業"
+          : naiyo;
+        if (why && !/定休日/.test(naiyo)) body += "（" + why + "）";
+        html = (all ? "<strong>全店舗</strong>" : esc(shop)) + "　" + esc(body);
+        own = (all ? "全店舗　" : "") + esc(body);
       }
-      if ((e || s) < today) return;
-      out.push({ s: s, e: e, shop: shop, html: html, own: own });
+      list.push({ s: s, e: null, shop: shop, kind: kind, why: why, html: html, own: own });
+    });
+    list.sort(function (a, b) { return a.s - b.s; });
+    var out = [], last = {};
+    list.forEach(function (it) {
+      var k = it.shop + "|" + it.kind + "|" + it.html, p = last[k];
+      if (p) {
+        var gap = Math.round((it.s - (p.e || p.s)) / 86400000);
+        if (gap === 0) return; // 同じ行が2つあるとき
+        if (gap === 1 && it.kind === "休業") { p.e = it.s; return; }
+      }
+      last[k] = it; out.push(it);
     });
     return out;
   }
@@ -437,37 +435,59 @@
     }).join("");
   }
 
-  // お知らせページの「休業情報」「営業時間変更情報」
-  function days(box, tab) {
-    load(tab).then(function (rows) {
-      var groups = groupDays(dayItems(tab, rows));
+  // お知らせページの「休業情報」（data-sheet="休業"）と「営業時間変更情報」（data-sheet="営業時間変更"）
+  function days(box, which) {
+    var kind = which === "休業" ? "休業" : "変更";
+    plan().then(function (items) {
+      var groups = groupDays(items.filter(function (it) { return it.kind === kind; }));
       box.innerHTML = groups.length ? renderDays(groups) : '<p class="nw-none">現在、予定はありません。</p>';
       var upd = box.parentNode.querySelector(".nw-upd");
       if (upd) upd.hidden = true;
     }).catch(function () {});
   }
 
-  // 店舗ページ：その店舗（と全店舗）の休業・営業時間変更だけを出す
+  // 店舗ページ：その店舗（と全店舗）の予定だけを出す
   function shopDays(box) {
     var name = box.getAttribute("data-shop");
-    Promise.all([load("休業").catch(function () { return []; }), load("営業時間変更").catch(function () { return []; })]).then(function (res) {
-      var mine = function (it) { return it.shop === name || it.shop === "全店舗"; };
-      var all = dayItems("休業", res[0]).filter(mine).concat(dayItems("営業時間変更", res[1]).filter(mine))
-        .sort(function (a, b) { return a.s - b.s; });
-      if (!all.length) return;
+    plan().then(function (items) {
+      var mine = items.filter(function (it) { return it.shop === name || it.shop === "全店舗"; });
+      if (!mine.length) return;
       box.innerHTML = '<p class="sps-h"><span aria-hidden="true">!</span>臨時休業・営業時間の変更</p><ul class="sps-list">' +
-        all.map(function (it) { return "<li><b>" + dayLabel(it).replace(/^\d{4}\//, "") + "</b><span>" + it.own + "</span></li>"; }).join("") + "</ul>" +
+        mine.map(function (it) { return "<li><b>" + dayLabel(it).replace(/^\d{4}\//, "") + "</b><span>" + it.own + "</span></li>"; }).join("") + "</ul>" +
         '<a class="sps-more" href="' + esc(href("news.html#eigyo")) + '">ほかの店舗の情報も見る ›</a>';
       box.hidden = false;
-    });
+    }).catch(function () {});
   }
 
-  // 採用：募集停止の職種に印。応募フォームのURLがあればボタンをフォームへ
+  // 全ページのいちばん上の帯（自動）：近づいた「全店舗」の休業
+  function notice() {
+    var header = document.querySelector(".site-header");
+    if (!header) return;
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var limit = new Date(today.getTime() + BAR_DAYS * 86400000);
+    plan().then(function (items) {
+      items.filter(function (it) { return it.shop === "全店舗" && it.kind === "休業" && it.s <= limit; }).slice(0, 2).forEach(function (it) {
+        var when = it.s <= today && !it.e ? "本日" : fmtDay(it.s, false) + (it.e ? "〜" + fmtDay(it.e, false) : "");
+        var why = it.why.replace(/のため$/, "");
+        var bar = document.createElement("div");
+        bar.className = "site-notice";
+        bar.innerHTML = '<a href="' + esc(href("news.html#eigyo")) + '"><span class="sn-ic" aria-hidden="true">!</span><span>' +
+          esc(when + "は" + (why ? why + "のため" : "") + "全店舗休業です") + '</span><span class="sn-go" aria-hidden="true">›</span></a>';
+        header.parentNode.insertBefore(bar, header);
+      });
+    }).catch(function () {});
+  }
+
+  // 採用：募集停止の職種に印。「応募フォームのURL」の行にURLがあれば、相談・見学・応募のボタンをフォームへ
   function recruit() {
     var jobs = document.querySelectorAll("[data-job]"), entries = document.querySelectorAll("[data-entry]");
-    if (jobs.length) load("採用").then(function (rows) {
-      var closed = {};
-      rows.forEach(function (r) { if (/停止/.test(r[2] || "")) closed[(r[0] || "").trim()] = true; });
+    if (!jobs.length && !entries.length) return;
+    load("採用", /職種/).then(function (rows) {
+      var closed = {}, url = "";
+      rows.forEach(function (r) {
+        if (/応募フォーム/.test(r[1] || "")) { if (/^https:\/\//.test((r[2] || "").trim())) url = r[2].trim(); }
+        else if (/停止/.test(r[2] || "")) closed[(r[0] || "").trim()] = true;
+      });
       jobs.forEach(function (el) {
         if (!closed[el.getAttribute("data-job")]) return;
         el.classList.add("is-closed");
@@ -478,49 +498,11 @@
         if (at && at.tagName === "H1") at.parentNode.insertBefore(tag, at.nextSibling);
         else if (at) at.insertBefore(tag, at.firstChild);
       });
-    }).catch(function () {});
-    if (entries.length) load("設定").then(function (rows) {
-      var url = "";
-      rows.forEach(function (r) { if (/応募フォーム/.test(r[0] || "") && /^https:\/\//.test((r[1] || "").trim())) url = r[1].trim(); });
-      if (!url) return;
-      entries.forEach(function (a) {
+      if (url) entries.forEach(function (a) {
         a.href = url; a.target = "_blank"; a.rel = "noopener";
         var sp = a.querySelector("span");
         if (sp) sp.textContent = a.getAttribute("data-entry") + "フォームへ";
       });
-    }).catch(function () {});
-  }
-
-  // お知らせ：表示に○の行を新しい順に
-  function infos(box) {
-    load("お知らせ").then(function (rows) {
-      var list = rows.filter(function (r) { return toDate(r[0]) && (r[1] || "").trim() && isOn(r[3]); })
-        .sort(function (a, b) { return toDate(b[0]) - toDate(a[0]); });
-      if (!list.length) return;
-      // シートのお知らせを、今までのお知らせ（HTML）の上に足す。同じIDがあればシートの方に置きかえる
-      var html = list.map(function (r) {
-        var d = toDate(r[0]);
-        var id = (r[4] || "").trim() || "n" + d.getFullYear() + ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2);
-        var paras = String(r[2] || "").replace(/\r/g, "").split(/\n\s*\n/).map(function (p) {
-          var lines = p.trim().split("\n").map(esc);
-          if (!lines[0]) return "";
-          if (/^[■【]/.test(lines[0])) lines[0] = "<strong>" + lines[0] + "</strong>";
-          var sign = /本部\s*$/.test(p.trim()) && /株式会社/.test(p);
-          return "<p" + (sign ? ' class="legal-sign"' : "") + ">" + lines.join("<br>") + "</p>";
-        }).join("");
-        return '<details class="qa nw-info" id="' + esc(id) + '"><summary><span class="q-text">' + esc(r[1].trim()) +
-          "<small>" + d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate() + "</small></span></summary>" +
-          '<div class="a-body"><div>' + paras + "</div></div></details>";
-      }).join("");
-      var tmp = document.createElement("div");
-      tmp.innerHTML = html;
-      Array.prototype.slice.call(tmp.children).reverse().forEach(function (d) {
-        var old = d.id && box.querySelector("#" + d.id);
-        if (old) old.remove();
-        box.insertBefore(d, box.firstChild);
-      });
-      var t = location.hash && document.getElementById(location.hash.slice(1));
-      if (t && t.tagName === "DETAILS") { t.open = true; t.scrollIntoView(); }
     }).catch(function () {});
   }
 
@@ -530,10 +512,6 @@
     prices();
     recruit();
     document.querySelectorAll("[data-shop]").forEach(shopDays);
-    document.querySelectorAll("[data-sheet]").forEach(function (box) {
-      var tab = box.getAttribute("data-sheet");
-      if (tab === "お知らせ") infos(box);
-      else days(box, tab);
-    });
+    document.querySelectorAll("[data-sheet]").forEach(function (box) { days(box, box.getAttribute("data-sheet")); });
   });
 })();
