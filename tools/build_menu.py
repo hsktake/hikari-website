@@ -49,7 +49,7 @@ def shell(title, desc):
 
 MENUS = [
     ("haircut.html", "ヘアカット", "男性1,400円", '<img src="assets/scissors.svg" alt="" width="28" height="28">'),
-    ("brow.html", "眉毛カット", "＋100円・200円", '<svg viewBox="0 0 40 28" width="30" height="21" aria-hidden="true"><path d="M3 18c8-10 22-12 34-5" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'),
+    ("brow.html", "眉毛カット", "＋200円", '<svg viewBox="0 0 40 28" width="30" height="21" aria-hidden="true"><path d="M3 18c8-10 22-12 34-5" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'),
     ("facecare.html", "フェイスケア", "初回1,000円〜", '<img src="assets/sparkle.svg" alt="" width="26" height="26">'),
 ]
 
