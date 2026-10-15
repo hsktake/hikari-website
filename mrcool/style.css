@@ -23,12 +23,14 @@ h1,h2,h3,p{margin:0}
 .gnav{display:flex;gap:4px}
 .gnav a{text-decoration:none;font-weight:700;font-size:14px;padding:8px 12px;white-space:nowrap}
 /* ヒーロー */
-.hero{position:relative;overflow:hidden;color:var(--hero-ink)}
-.hero-bg{position:absolute;inset:0}
+.hero{position:relative;overflow:hidden;color:var(--hero-ink);background:var(--hero-solid)}
+/* 写真は暗くせず右側にそのまま見せ、文字は左の無地の上に置く（スマホは写真が上・文字が下） */
+.hero-bg{position:absolute;top:0;bottom:0;right:0;left:42%}
 .hero-bg img{width:100%;height:100%;object-fit:cover}
-.hero-bg::after{content:"";position:absolute;inset:0;background:var(--hero-shade)}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--hero-solid) 0%,var(--hero-fade) 14%,transparent 40%)}
 .hero-in{position:relative;padding:90px 20px 80px;min-height:560px;display:flex;flex-direction:column;justify-content:center}
-.hero h1{font-size:clamp(32px,5.2vw,58px);line-height:1.3;margin-top:10px}
+.hero-in>*{max-width:560px}
+.hero h1{font-size:clamp(30px,3.9vw,46px);line-height:1.35;margin-top:10px}
 .hero-sub{font-size:clamp(16px,2vw,19px);margin-top:14px;font-weight:700}
 .hero-en{color:var(--hero-en)}
 .hero-badge{display:inline-flex;align-items:baseline;gap:6px;margin-top:22px;padding:10px 20px;align-self:flex-start}
@@ -123,7 +125,9 @@ h1,h2,h3,p{margin:0}
   .sec{padding:60px 0}
   .head-in{min-height:60px}
   .logo{height:44px}
-  .hero-in{min-height:520px;padding:64px 20px 56px}
+  .hero-in{min-height:0;padding:250px 20px 48px}
+  .hero-bg{left:0;bottom:auto;height:300px}
+  .hero-bg::after{background:linear-gradient(0deg,var(--hero-solid) 0%,var(--hero-fade) 22%,transparent 50%)}
   .hero h1{font-size:clamp(26px,7.4vw,32px)}
   .btns{flex-direction:column}
   .btn{width:100%}
@@ -143,11 +147,10 @@ h1,h2,h3,p{margin:0}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}.to-top{transition:none}}
 /* ---- このブランドの見た目 ---- */
 :root{--totop:#e37100;--jp:"M PLUS 1p",sans-serif;--en:"Bebas Neue",sans-serif;--num:"Bebas Neue",sans-serif;--ink:#1c1a17;--bg:#faf7f2;--orange:#e37100;--wood:#9a6a3a;--accent:#e37100;--line:#e1d8cb;
---head-bg:#111;--head-border:0;--hero-ink:#fff;--hero-en:#ffb35c;--hero-shade:linear-gradient(0deg,rgba(17,14,10,.85) 0%,rgba(17,14,10,.45) 60%,rgba(17,14,10,.25) 100%)}
+--head-bg:#111;--head-border:0;--hero-ink:#fff;--hero-en:#ffb35c;--hero-shade:linear-gradient(0deg,rgba(17,14,10,.85) 0%,rgba(17,14,10,.45) 60%,rgba(17,14,10,.25) 100%);--hero-solid:#16120d;--hero-fade:rgba(22,18,13,.5)}
 .head .logo{background:#fff;padding:6px 10px;height:56px}
 .gnav a{color:#fff} .gnav a:hover{color:var(--orange)}
 .en{font-size:18px;letter-spacing:.16em}
-.hero-in{justify-content:flex-end}
 .hero h1{font-weight:800}
 .hero-badge{background:var(--orange);color:#fff;border-radius:4px}
 .hero-badge b{font-size:48px}

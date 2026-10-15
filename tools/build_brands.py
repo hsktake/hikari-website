@@ -345,7 +345,7 @@ BRANDS = [
                 ("washer", "乾燥・洗濯|別々でもOK", "洗濯のみ・乾燥のみも|ご利用いただけます。"),
                 ("shoe", "くつも洗える", "くつも洗える|機種があります。"),
                 ("scissors", "となりは|ヘアカット専門店", "Men's Cut & Self DELIGHTを|併設。お洗濯の間に|カットもどうぞ。")]}),
-            ("gallery", {"title": "店内のようす", "imgs": [("machines.webp", "洗濯乾燥機が並ぶ店内"), ("delight.webp", "となりのヘアカット専門店DELIGHT")]}),
+            ("gallery", {"title": "店内のようす", "imgs": [("machines.webp", "洗濯乾燥機が並ぶ店内"), ("dryers.webp", "乾燥機が並ぶ店内")]}),
         ],
         "info": {"zip": "321-3226", "address": "栃木県宇都宮市ゆいの杜4丁目1-49", "near": "",
                  "hours": "AM5:00〜AM0:00", "notes": [], "holiday": "年中無休", "tel": "", "pay": "",
@@ -426,7 +426,7 @@ def page(b):
 """
 
 
-VERSION = 3
+VERSION = 4
 
 TOTOP_JS = r"""/* 下までスクロールしたら「ページの一番上へ」ボタンを出す */
 (function () {
@@ -476,12 +476,14 @@ h1,h2,h3,p{margin:0}
 .gnav{display:flex;gap:4px}
 .gnav a{text-decoration:none;font-weight:700;font-size:14px;padding:8px 12px;white-space:nowrap}
 /* ヒーロー */
-.hero{position:relative;overflow:hidden;color:var(--hero-ink)}
-.hero-bg{position:absolute;inset:0}
+.hero{position:relative;overflow:hidden;color:var(--hero-ink);background:var(--hero-solid)}
+/* 写真は暗くせず右側にそのまま見せ、文字は左の無地の上に置く（スマホは写真が上・文字が下） */
+.hero-bg{position:absolute;top:0;bottom:0;right:0;left:42%}
 .hero-bg img{width:100%;height:100%;object-fit:cover}
-.hero-bg::after{content:"";position:absolute;inset:0;background:var(--hero-shade)}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--hero-solid) 0%,var(--hero-fade) 14%,transparent 40%)}
 .hero-in{position:relative;padding:90px 20px 80px;min-height:560px;display:flex;flex-direction:column;justify-content:center}
-.hero h1{font-size:clamp(32px,5.2vw,58px);line-height:1.3;margin-top:10px}
+.hero-in>*{max-width:560px}
+.hero h1{font-size:clamp(30px,3.9vw,46px);line-height:1.35;margin-top:10px}
 .hero-sub{font-size:clamp(16px,2vw,19px);margin-top:14px;font-weight:700}
 .hero-en{color:var(--hero-en)}
 .hero-badge{display:inline-flex;align-items:baseline;gap:6px;margin-top:22px;padding:10px 20px;align-self:flex-start}
@@ -576,7 +578,9 @@ h1,h2,h3,p{margin:0}
   .sec{padding:60px 0}
   .head-in{min-height:60px}
   .logo{height:44px}
-  .hero-in{min-height:520px;padding:64px 20px 56px}
+  .hero-in{min-height:0;padding:250px 20px 48px}
+  .hero-bg{left:0;bottom:auto;height:300px}
+  .hero-bg::after{background:linear-gradient(0deg,var(--hero-solid) 0%,var(--hero-fade) 22%,transparent 50%)}
   .hero h1{font-size:clamp(26px,7.4vw,32px)}
   .btns{flex-direction:column}
   .btn{width:100%}
@@ -601,7 +605,7 @@ THEMES = {
     # 理容のサインポール（紺・赤・白）
     "plus": r"""
 :root{--totop:#1d3170;--jp:"Noto Sans JP",sans-serif;--en:"Oswald",sans-serif;--num:"Oswald",sans-serif;--ink:#1d2433;--bg:#fff;--navy:#1d3170;--red:#c8202f;--accent:#c8202f;--line:#d9dde8;
---head-bg:#fff;--head-border:0;--hero-ink:#fff;--hero-en:#fff;--hero-shade:linear-gradient(90deg,rgba(18,30,70,.88) 0%,rgba(18,30,70,.55) 55%,rgba(18,30,70,.15) 100%)}
+--head-bg:#fff;--head-border:0;--hero-ink:#fff;--hero-en:#fff;--hero-shade:linear-gradient(90deg,rgba(18,30,70,.88) 0%,rgba(18,30,70,.55) 55%,rgba(18,30,70,.15) 100%);--hero-solid:#121e46;--hero-fade:rgba(18,30,70,.5)}
 .head{box-shadow:0 2px 0 var(--line)}
 .head::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:6px;background:repeating-linear-gradient(-45deg,var(--red) 0 12px,#fff 12px 24px,var(--navy) 24px 36px,#fff 36px 48px)}
 .gnav a{color:var(--navy)} .gnav a:hover{color:var(--red)}
@@ -626,7 +630,7 @@ THEMES = {
     # 黒・白＋赤と紫のストライプ（現行サイトの配色）
     "delight": r"""
 :root{--totop:#111;--jp:"Noto Sans JP",sans-serif;--en:"Playfair Display",serif;--num:"Playfair Display",serif;--ink:#111;--bg:#fff;--red:#b22222;--purple:#4b0082;--accent:#b22222;--line:#d6d6d6;
---head-bg:#fff;--head-border:0;--hero-ink:#fff;--hero-en:#fff;--hero-shade:linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.7) 55%,rgba(0,0,0,.25) 100%)}
+--head-bg:#fff;--head-border:0;--hero-ink:#fff;--hero-en:#fff;--hero-shade:linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.7) 55%,rgba(0,0,0,.25) 100%);--hero-solid:#000;--hero-fade:rgba(0,0,0,.5)}
 .stripe,.head::after,.foot::before{background:repeating-linear-gradient(90deg,#fff 0 10px,#000 10px 20px,var(--red) 20px 30px,#000 30px 40px,#fff 40px 50px,#000 50px 60px,var(--purple) 60px 70px,#000 70px 80px)}
 .head{border-bottom:1px solid #000}
 .head::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:6px}
@@ -664,11 +668,10 @@ THEMES = {
     # 黒×白＋木のぬくもりとオレンジ（店内のイス・現行サイトの配色）
     "mrcool": r"""
 :root{--totop:#e37100;--jp:"M PLUS 1p",sans-serif;--en:"Bebas Neue",sans-serif;--num:"Bebas Neue",sans-serif;--ink:#1c1a17;--bg:#faf7f2;--orange:#e37100;--wood:#9a6a3a;--accent:#e37100;--line:#e1d8cb;
---head-bg:#111;--head-border:0;--hero-ink:#fff;--hero-en:#ffb35c;--hero-shade:linear-gradient(0deg,rgba(17,14,10,.85) 0%,rgba(17,14,10,.45) 60%,rgba(17,14,10,.25) 100%)}
+--head-bg:#111;--head-border:0;--hero-ink:#fff;--hero-en:#ffb35c;--hero-shade:linear-gradient(0deg,rgba(17,14,10,.85) 0%,rgba(17,14,10,.45) 60%,rgba(17,14,10,.25) 100%);--hero-solid:#16120d;--hero-fade:rgba(22,18,13,.5)}
 .head .logo{background:#fff;padding:6px 10px;height:56px}
 .gnav a{color:#fff} .gnav a:hover{color:var(--orange)}
 .en{font-size:18px;letter-spacing:.16em}
-.hero-in{justify-content:flex-end}
 .hero h1{font-weight:800}
 .hero-badge{background:var(--orange);color:#fff;border-radius:4px}
 .hero-badge b{font-size:48px}
@@ -690,7 +693,7 @@ THEMES = {
     # ヴィンテージの理容室（こげ茶・クリーム・エンブレム）
     "alpha": r"""
 :root{--totop:#3a2a1f;--jp:"Noto Sans JP",sans-serif;--en:"Playfair Display",serif;--num:"Playfair Display",serif;--mincho:"Zen Old Mincho",serif;--ink:#2b2119;--bg:#f6f0e6;--brown:#3a2a1f;--gold:#b0844a;--accent:#b0844a;--line:#d8c9b3;
---head-bg:#3a2a1f;--head-border:0;--hero-ink:#fff;--hero-en:#e6c58f;--hero-shade:linear-gradient(90deg,rgba(40,28,20,.9) 0%,rgba(40,28,20,.6) 55%,rgba(40,28,20,.2) 100%)}
+--head-bg:#3a2a1f;--head-border:0;--hero-ink:#fff;--hero-en:#e6c58f;--hero-shade:linear-gradient(90deg,rgba(40,28,20,.9) 0%,rgba(40,28,20,.6) 55%,rgba(40,28,20,.2) 100%);--hero-solid:#281c14;--hero-fade:rgba(40,28,20,.5)}
 .head .logo{background:#fff;padding:4px;height:60px}
 .gnav a{color:#f3e6cf} .gnav a:hover{color:var(--gold)}
 .hero h1,.sec h2{font-family:var(--mincho);font-weight:700}
@@ -716,12 +719,11 @@ THEMES = {
     # コインランドリー：青・赤・白で清潔に
     "laladream": r"""
 :root{--totop:#1c4fa3;--jp:"M PLUS Rounded 1c",sans-serif;--en:"Nunito",sans-serif;--num:"Nunito",sans-serif;--ink:#16243d;--bg:#fff;--blue:#1c4fa3;--red:#e2363c;--sky:#eaf3ff;--accent:#e2363c;--line:#d5e2f4;
---head-bg:#fff;--head-border:4px solid var(--blue);--hero-ink:#fff;--hero-en:#fff;--hero-shade:linear-gradient(0deg,rgba(15,45,100,.85) 0%,rgba(15,45,100,.45) 60%,rgba(15,45,100,.1) 100%)}
+--head-bg:#fff;--head-border:4px solid var(--blue);--hero-ink:#fff;--hero-en:#fff;--hero-shade:linear-gradient(0deg,rgba(15,45,100,.85) 0%,rgba(15,45,100,.45) 60%,rgba(15,45,100,.1) 100%);--hero-solid:#0f2d64;--hero-fade:rgba(15,45,100,.5)}
 .wordmark{display:flex;flex-direction:column;line-height:1.2;font-weight:800;color:var(--blue);font-size:20px}
 .wordmark small{font-size:12px;color:var(--red);letter-spacing:.2em}
 .gnav a{color:var(--blue);border-radius:999px} .gnav a:hover{background:var(--sky)}
 .en{font-weight:900}
-.hero-in{justify-content:flex-end}
 .hero h1{font-weight:800}
 .hero-badge{background:#fff;color:var(--blue);border-radius:999px;padding:10px 24px}
 .hero-badge b{font-size:32px;font-weight:900} .hero-badge span{color:var(--red)}

@@ -23,12 +23,14 @@ h1,h2,h3,p{margin:0}
 .gnav{display:flex;gap:4px}
 .gnav a{text-decoration:none;font-weight:700;font-size:14px;padding:8px 12px;white-space:nowrap}
 /* ヒーロー */
-.hero{position:relative;overflow:hidden;color:var(--hero-ink)}
-.hero-bg{position:absolute;inset:0}
+.hero{position:relative;overflow:hidden;color:var(--hero-ink);background:var(--hero-solid)}
+/* 写真は暗くせず右側にそのまま見せ、文字は左の無地の上に置く（スマホは写真が上・文字が下） */
+.hero-bg{position:absolute;top:0;bottom:0;right:0;left:42%}
 .hero-bg img{width:100%;height:100%;object-fit:cover}
-.hero-bg::after{content:"";position:absolute;inset:0;background:var(--hero-shade)}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--hero-solid) 0%,var(--hero-fade) 14%,transparent 40%)}
 .hero-in{position:relative;padding:90px 20px 80px;min-height:560px;display:flex;flex-direction:column;justify-content:center}
-.hero h1{font-size:clamp(32px,5.2vw,58px);line-height:1.3;margin-top:10px}
+.hero-in>*{max-width:560px}
+.hero h1{font-size:clamp(30px,3.9vw,46px);line-height:1.35;margin-top:10px}
 .hero-sub{font-size:clamp(16px,2vw,19px);margin-top:14px;font-weight:700}
 .hero-en{color:var(--hero-en)}
 .hero-badge{display:inline-flex;align-items:baseline;gap:6px;margin-top:22px;padding:10px 20px;align-self:flex-start}
@@ -123,7 +125,9 @@ h1,h2,h3,p{margin:0}
   .sec{padding:60px 0}
   .head-in{min-height:60px}
   .logo{height:44px}
-  .hero-in{min-height:520px;padding:64px 20px 56px}
+  .hero-in{min-height:0;padding:250px 20px 48px}
+  .hero-bg{left:0;bottom:auto;height:300px}
+  .hero-bg::after{background:linear-gradient(0deg,var(--hero-solid) 0%,var(--hero-fade) 22%,transparent 50%)}
   .hero h1{font-size:clamp(26px,7.4vw,32px)}
   .btns{flex-direction:column}
   .btn{width:100%}
@@ -143,12 +147,11 @@ h1,h2,h3,p{margin:0}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}.to-top{transition:none}}
 /* ---- このブランドの見た目 ---- */
 :root{--totop:#1c4fa3;--jp:"M PLUS Rounded 1c",sans-serif;--en:"Nunito",sans-serif;--num:"Nunito",sans-serif;--ink:#16243d;--bg:#fff;--blue:#1c4fa3;--red:#e2363c;--sky:#eaf3ff;--accent:#e2363c;--line:#d5e2f4;
---head-bg:#fff;--head-border:4px solid var(--blue);--hero-ink:#fff;--hero-en:#fff;--hero-shade:linear-gradient(0deg,rgba(15,45,100,.85) 0%,rgba(15,45,100,.45) 60%,rgba(15,45,100,.1) 100%)}
+--head-bg:#fff;--head-border:4px solid var(--blue);--hero-ink:#fff;--hero-en:#fff;--hero-shade:linear-gradient(0deg,rgba(15,45,100,.85) 0%,rgba(15,45,100,.45) 60%,rgba(15,45,100,.1) 100%);--hero-solid:#0f2d64;--hero-fade:rgba(15,45,100,.5)}
 .wordmark{display:flex;flex-direction:column;line-height:1.2;font-weight:800;color:var(--blue);font-size:20px}
 .wordmark small{font-size:12px;color:var(--red);letter-spacing:.2em}
 .gnav a{color:var(--blue);border-radius:999px} .gnav a:hover{background:var(--sky)}
 .en{font-weight:900}
-.hero-in{justify-content:flex-end}
 .hero h1{font-weight:800}
 .hero-badge{background:#fff;color:var(--blue);border-radius:999px;padding:10px 24px}
 .hero-badge b{font-size:32px;font-weight:900} .hero-badge span{color:var(--red)}
