@@ -285,7 +285,7 @@
 (function () {
   "use strict";
   var SHEET_ID = "1RBR08sNvthcwJHfssDh8RFLwtZ-17URXR149_jYetzw";
-  var CACHE_MIN = 3; // 同じタブを何分おきに読み直すか
+  var CACHE_MIN = 0; // 同じタブを何分おきに読み直すか
   var script = document.currentScript;
   var BASE = script ? script.src.replace(/[^/]*$/, "") : location.href.replace(/[^/]*$/, "");
 
@@ -322,7 +322,7 @@
       var c = JSON.parse(sessionStorage.getItem(key) || "null");
       if (c && Date.now() - c.t < CACHE_MIN * 60000) return Promise.resolve(c.rows);
     } catch (e) {}
-    var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:csv&headers=1&sheet=" + encodeURIComponent(tab);
+    var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:csv&headers=1&sheet=" + encodeURIComponent(tab) + "&_=" + Date.now();
     return fetch(url, { credentials: "omit" }).then(function (r) {
       if (!r.ok) throw new Error(r.status);
       return r.text();
