@@ -168,7 +168,7 @@ def entry_block(prefix, job=""):
             href, label, ext = mailto(kind, job), f"メールで{kind}する", ""
         cls = "rq-e is-main" if kind == "応募" else "rq-e"
         items.append(f'<li class="{cls}"><p class="rq-e-tag">{kind}</p><h3>{head}</h3><p class="rq-e-txt">{phr(text)}</p>'
-                     f'<a class="btn" href="{esc(href)}"{ext}>{ICON_MAIL}{label}</a></li>')
+                     f'<a class="btn" data-entry="{kind}" href="{esc(href)}"{ext}>{ICON_MAIL}<span>{label}</span></a></li>')
     return f"""
   <section class="rq-entry" id="entry" aria-labelledby="h-entry">
     <div class="wrap">
@@ -189,7 +189,7 @@ def entry_block(prefix, job=""):
 def job_card(x, prefix):
     tag_cls = "rq-type is-full" if x["type"] == "正社員" else "rq-type"
     info = "".join(f"<li>{esc(c)}</li>" for c in x["card"])
-    return (f'<li><a href="{prefix}recruit/{x["slug"]}.html">'
+    return (f'<li data-job="{x["slug"]}"><a href="{prefix}recruit/{x["slug"]}.html">'
             f'<span class="rq-job-photo"><img src="{prefix}assets/recruit/{x["photo"]}" alt="" width="400" height="565" loading="lazy"></span>'
             f'<span class="rq-job-body"><span class="{tag_cls}">{esc(x["type"])}</span><strong>{esc(x["title"])}</strong>'
             f'<ul>{info}</ul><span class="rq-more">募集要項を見る ›</span></span></a></li>')
@@ -336,7 +336,7 @@ def build_job(x, data, v):
     body = f"""<main id="main">
   <nav class="crumbs wrap" aria-label="現在地"><a href="{p}./">ホーム</a><span aria-hidden="true">›</span><a href="{p}recruit.html">採用情報</a><span aria-hidden="true">›</span><span aria-current="page">{esc(x["title"])}（{esc(x["type"])}）</span></nav>
 
-  <section class="rq-jhero">
+  <section class="rq-jhero" data-job="{x["slug"]}">
     <div class="wrap rq-jhero-grid">
       <div class="rq-jhero-photo"><img src="{p}assets/recruit/{x["photo"]}" alt="{esc(x["title"])}として働くスタッフ" width="400" height="565"></div>
       <div class="rq-jhero-copy">

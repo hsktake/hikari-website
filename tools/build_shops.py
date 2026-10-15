@@ -281,6 +281,7 @@ def shop_page(s, shops, v):
 
   <div class="wrap sp-body">
     {other_note}{notice}
+    <div class="sp-sheet" data-shop="{esc(s["short"])}" hidden></div>
     <section class="sp-block reveal" aria-labelledby="h-info">
       <h2 class="sp-h" id="h-info">店舗情報</h2>
       <dl class="sp-info">

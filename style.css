@@ -2865,3 +2865,19 @@ html.nav-lock .to-top { display: none; }
 .sn-go { font-size: 18px; line-height: 1; }
 .nw-none { font-weight: 700; color: var(--brown-soft); }
 @media (max-width: 600px) { .site-notice { font-size: 13px; } .site-notice a, .site-notice p { justify-content: flex-start; } }
+
+/* 店舗ページ：管理シートの休業・営業時間変更のうち、その店舗のもの */
+.sp-sheet { background: #FFF4E0; border: 3px solid var(--sun); border-radius: 20px; padding: 18px 20px; margin-bottom: 22px; }
+.sps-h { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 17px; color: var(--brown); }
+.sps-h span { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--orange); color: var(--white); font-family: var(--en); font-size: 15px; }
+.sps-ttl { margin-top: 12px; font-weight: 800; font-size: 14px; color: var(--orange-deep); }
+.sp-sheet .nw-list { margin-top: 6px; }
+.sps-more { display: inline-block; margin-top: 12px; font-size: 13.5px; font-weight: 800; color: var(--orange-deep); }
+/* 採用：募集停止 */
+.rq-closed { display: inline-block; align-self: flex-start; background: var(--brown); color: var(--white); font-size: 12.5px; font-weight: 800; border-radius: 999px; padding: 3px 12px; margin: 0 0 6px; }
+p.rq-closed { margin: 10px 0 0; font-size: 14px; }
+.is-closed .rq-job-photo img { filter: grayscale(.7); opacity: .8; }
+.sps-list { list-style: none; margin: 10px 0 0 !important; padding: 0 !important; display: grid; gap: 6px; }
+.sps-list li { display: flex; flex-wrap: wrap; gap: 2px 12px; margin: 0 !important; background: var(--white); border-radius: 12px; padding: 8px 12px; font-size: 14.5px; line-height: 1.6; }
+.sps-list b { font-family: var(--en); font-weight: 600; min-width: 10.5em; }
+.sps-list strong { color: #D8432C; }
