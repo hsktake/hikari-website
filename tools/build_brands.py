@@ -407,6 +407,7 @@ def page(b):
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 {fonts}
 <link rel="stylesheet" href="style.css?v={VERSION}">
+<script src="to-top.js?v={VERSION}" defer></script>
 </head>
 <body class="b-{b["dir"]}">
 <header class="head"><div class="wrap head-in">
@@ -425,7 +426,29 @@ def page(b):
 """
 
 
-VERSION = 1
+VERSION = 2
+
+TOTOP_JS = r"""/* 下までスクロールしたら「ページの一番上へ」ボタンを出す */
+(function () {
+  function init() {
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "to-top";
+    btn.setAttribute("aria-label", "ページの一番上へ戻る");
+    btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 14l6-6 6 6"/></svg><span>TOP</span>';
+    document.body.appendChild(btn);
+    var shown = false;
+    function check() {
+      var on = window.scrollY > 600;
+      if (on !== shown) { shown = on; btn.classList.toggle("is-on", on); }
+    }
+    window.addEventListener("scroll", check, { passive: true });
+    check();
+    btn.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
+})();
+"""
 
 BASE_CSS = r"""
 *,*::before,*::after{box-sizing:border-box}
@@ -564,14 +587,20 @@ h1,h2,h3,p{margin:0}
   .st-list li{padding:14px 10px}
   .gl-list{grid-template-columns:1fr 1fr;gap:8px}
 }
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+/* ページの一番上へ戻るボタン（色は各ブランドの --totop） */
+.to-top{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:40;width:56px;height:56px;border-radius:50%;border:2px solid #fff;background:var(--totop,var(--accent));color:#fff;display:grid;place-items:center;align-content:center;cursor:pointer;padding:0;box-shadow:0 6px 16px rgba(0,0,0,.25);opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .25s,transform .25s,visibility .25s}
+.to-top.is-on{opacity:1;visibility:visible;transform:none}
+.to-top svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;margin-bottom:-4px}
+.to-top span{font-family:var(--en);font-size:12px;font-weight:700;letter-spacing:.06em;line-height:1}
+@media (max-width:600px){.to-top{width:50px;height:50px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom))}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}.to-top{transition:none}}
 """
 
 # 各ブランドの見た目（ロゴ・現行サイトの色に合わせる）
 THEMES = {
     # 理容のサインポール（紺・赤・白）
     "plus": r"""
-:root{--jp:"Noto Sans JP",sans-serif;--en:"Oswald",sans-serif;--num:"Oswald",sans-serif;--ink:#1d2433;--bg:#fff;--navy:#1d3170;--red:#c8202f;--accent:#c8202f;--line:#d9dde8;
+:root{--totop:#1d3170;--jp:"Noto Sans JP",sans-serif;--en:"Oswald",sans-serif;--num:"Oswald",sans-serif;--ink:#1d2433;--bg:#fff;--navy:#1d3170;--red:#c8202f;--accent:#c8202f;--line:#d9dde8;
 --head-bg:#fff;--head-border:0;--hero-ink:#fff;--hero-en:#fff;--hero-shade:linear-gradient(90deg,rgba(18,30,70,.88) 0%,rgba(18,30,70,.55) 55%,rgba(18,30,70,.15) 100%)}
 .head{box-shadow:0 2px 0 var(--line)}
 .head::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:6px;background:repeating-linear-gradient(-45deg,var(--red) 0 12px,#fff 12px 24px,var(--navy) 24px 36px,#fff 36px 48px)}
@@ -596,7 +625,7 @@ THEMES = {
 """,
     # 黒・白＋赤と紫のストライプ（現行サイトの配色）
     "delight": r"""
-:root{--jp:"Noto Sans JP",sans-serif;--en:"Playfair Display",serif;--num:"Playfair Display",serif;--ink:#111;--bg:#fff;--red:#b22222;--purple:#4b0082;--accent:#b22222;--line:#d6d6d6;
+:root{--totop:#111;--jp:"Noto Sans JP",sans-serif;--en:"Playfair Display",serif;--num:"Playfair Display",serif;--ink:#111;--bg:#fff;--red:#b22222;--purple:#4b0082;--accent:#b22222;--line:#d6d6d6;
 --head-bg:#fff;--head-border:0;--hero-ink:#fff;--hero-en:#fff;--hero-shade:linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.7) 55%,rgba(0,0,0,.25) 100%)}
 .stripe,.head::after,.foot::before{background:repeating-linear-gradient(90deg,#fff 0 10px,#000 10px 20px,var(--red) 20px 30px,#000 30px 40px,#fff 40px 50px,#000 50px 60px,var(--purple) 60px 70px,#000 70px 80px)}
 .head{border-bottom:1px solid #000}
@@ -625,7 +654,7 @@ THEMES = {
 """,
     # 黒×白＋木のぬくもりとオレンジ（店内のイス・現行サイトの配色）
     "mrcool": r"""
-:root{--jp:"M PLUS 1p",sans-serif;--en:"Bebas Neue",sans-serif;--num:"Bebas Neue",sans-serif;--ink:#1c1a17;--bg:#faf7f2;--orange:#e37100;--wood:#9a6a3a;--accent:#e37100;--line:#e1d8cb;
+:root{--totop:#e37100;--jp:"M PLUS 1p",sans-serif;--en:"Bebas Neue",sans-serif;--num:"Bebas Neue",sans-serif;--ink:#1c1a17;--bg:#faf7f2;--orange:#e37100;--wood:#9a6a3a;--accent:#e37100;--line:#e1d8cb;
 --head-bg:#111;--head-border:0;--hero-ink:#fff;--hero-en:#ffb35c;--hero-shade:linear-gradient(0deg,rgba(17,14,10,.85) 0%,rgba(17,14,10,.45) 60%,rgba(17,14,10,.25) 100%)}
 .head .logo{background:#fff;padding:6px 10px;height:56px}
 .gnav a{color:#fff} .gnav a:hover{color:var(--orange)}
@@ -651,7 +680,7 @@ THEMES = {
 """,
     # ヴィンテージの理容室（こげ茶・クリーム・エンブレム）
     "alpha": r"""
-:root{--jp:"Noto Sans JP",sans-serif;--en:"Playfair Display",serif;--num:"Playfair Display",serif;--mincho:"Zen Old Mincho",serif;--ink:#2b2119;--bg:#f6f0e6;--brown:#3a2a1f;--gold:#b0844a;--accent:#b0844a;--line:#d8c9b3;
+:root{--totop:#3a2a1f;--jp:"Noto Sans JP",sans-serif;--en:"Playfair Display",serif;--num:"Playfair Display",serif;--mincho:"Zen Old Mincho",serif;--ink:#2b2119;--bg:#f6f0e6;--brown:#3a2a1f;--gold:#b0844a;--accent:#b0844a;--line:#d8c9b3;
 --head-bg:#3a2a1f;--head-border:0;--hero-ink:#fff;--hero-en:#e6c58f;--hero-shade:linear-gradient(90deg,rgba(40,28,20,.9) 0%,rgba(40,28,20,.6) 55%,rgba(40,28,20,.2) 100%)}
 .head .logo{background:#fff;padding:4px;height:60px}
 .gnav a{color:#f3e6cf} .gnav a:hover{color:var(--gold)}
@@ -677,7 +706,7 @@ THEMES = {
 """,
     # コインランドリー：青・赤・白で清潔に
     "laladream": r"""
-:root{--jp:"M PLUS Rounded 1c",sans-serif;--en:"Nunito",sans-serif;--num:"Nunito",sans-serif;--ink:#16243d;--bg:#fff;--blue:#1c4fa3;--red:#e2363c;--sky:#eaf3ff;--accent:#e2363c;--line:#d5e2f4;
+:root{--totop:#1c4fa3;--jp:"M PLUS Rounded 1c",sans-serif;--en:"Nunito",sans-serif;--num:"Nunito",sans-serif;--ink:#16243d;--bg:#fff;--blue:#1c4fa3;--red:#e2363c;--sky:#eaf3ff;--accent:#e2363c;--line:#d5e2f4;
 --head-bg:#fff;--head-border:4px solid var(--blue);--hero-ink:#fff;--hero-en:#fff;--hero-shade:linear-gradient(0deg,rgba(15,45,100,.85) 0%,rgba(15,45,100,.45) 60%,rgba(15,45,100,.1) 100%)}
 .wordmark{display:flex;flex-direction:column;line-height:1.2;font-weight:800;color:var(--blue);font-size:20px}
 .wordmark small{font-size:12px;color:var(--red);letter-spacing:.2em}
@@ -710,6 +739,8 @@ def main():
         os.makedirs(d, exist_ok=True)
         with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
             f.write(page(b))
+        with open(os.path.join(d, "to-top.js"), "w", encoding="utf-8") as f:
+            f.write(TOTOP_JS)
         with open(os.path.join(d, "style.css"), "w", encoding="utf-8") as f:
             f.write(BASE_CSS.strip() + "\n/* ---- このブランドの見た目 ---- */\n" + THEMES[b["dir"]].strip() + "\n")
         print(f"{b['dir']}/ を作成しました（{b['name']}）")

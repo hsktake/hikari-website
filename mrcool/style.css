@@ -134,9 +134,15 @@ h1,h2,h3,p{margin:0}
   .st-list li{padding:14px 10px}
   .gl-list{grid-template-columns:1fr 1fr;gap:8px}
 }
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+/* ページの一番上へ戻るボタン（色は各ブランドの --totop） */
+.to-top{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:40;width:56px;height:56px;border-radius:50%;border:2px solid #fff;background:var(--totop,var(--accent));color:#fff;display:grid;place-items:center;align-content:center;cursor:pointer;padding:0;box-shadow:0 6px 16px rgba(0,0,0,.25);opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .25s,transform .25s,visibility .25s}
+.to-top.is-on{opacity:1;visibility:visible;transform:none}
+.to-top svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;margin-bottom:-4px}
+.to-top span{font-family:var(--en);font-size:12px;font-weight:700;letter-spacing:.06em;line-height:1}
+@media (max-width:600px){.to-top{width:50px;height:50px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom))}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}.to-top{transition:none}}
 /* ---- このブランドの見た目 ---- */
-:root{--jp:"M PLUS 1p",sans-serif;--en:"Bebas Neue",sans-serif;--num:"Bebas Neue",sans-serif;--ink:#1c1a17;--bg:#faf7f2;--orange:#e37100;--wood:#9a6a3a;--accent:#e37100;--line:#e1d8cb;
+:root{--totop:#e37100;--jp:"M PLUS 1p",sans-serif;--en:"Bebas Neue",sans-serif;--num:"Bebas Neue",sans-serif;--ink:#1c1a17;--bg:#faf7f2;--orange:#e37100;--wood:#9a6a3a;--accent:#e37100;--line:#e1d8cb;
 --head-bg:#111;--head-border:0;--hero-ink:#fff;--hero-en:#ffb35c;--hero-shade:linear-gradient(0deg,rgba(17,14,10,.85) 0%,rgba(17,14,10,.45) 60%,rgba(17,14,10,.25) 100%)}
 .head .logo{background:#fff;padding:6px 10px;height:56px}
 .gnav a{color:#fff} .gnav a:hover{color:var(--orange)}
