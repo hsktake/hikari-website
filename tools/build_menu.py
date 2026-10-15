@@ -409,7 +409,7 @@ def build_haircut():
       {ladies}
       <h3 class="hc-cat-h" id="cat-kids"><span>キッズ</span>KIDS</h3>
       {kids}
-      <p class="fc-note center-t">{ph("※メンズ・レディース・キッズの|画像の多くはイメージです。")}</p>
+      <p class="fc-note center-t">※画像はイメージです。</p>
     </div>
   </section>
 
