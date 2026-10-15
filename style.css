@@ -1433,11 +1433,11 @@ a.shop-photo { display: grid; }
 
 /* ===== お問い合わせ ===== */
 .contact-ways { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
-.cw { background: var(--cream); border-radius: 16px; padding: 16px 18px 18px; display: flex; flex-direction: column; }
+.cw { background: var(--cream); border: 2px solid var(--line); border-radius: 18px; padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 4px; }
 .cw-ttl { font-weight: 800; font-size: 16px; }
 .cw-sub { font-size: 13px; color: var(--brown-soft); line-height: 1.7; margin-top: 2px !important; }
 .cw-btn { margin-top: auto; align-self: stretch; min-height: 54px; padding: 0 14px; background: var(--orange); color: var(--white) !important; box-shadow: 0 5px 0 var(--orange-deep); font-family: var(--en); font-size: 20px; letter-spacing: .02em; }
-.cw .cw-sub + .cw-btn, .cw .cw-ttl + .cw-btn { margin-top: 12px; }
+.cw-btn { margin-top: auto; } .cw-sub { margin-bottom: 14px !important; }
 .cw-btn:hover { background: #F78A12; }
 .cw-btn svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
 .cw-mail { font-size: 17px; }
