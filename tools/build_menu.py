@@ -795,6 +795,47 @@ def build_community():
     print("地域とともに（community.html）を作成しました")
 
 
+# ---------- グループのお店（姉妹ブランド・関連店舗のサイトへの入口） ----------
+GROUP = [
+    ("plus/", "plus/img/logo.webp", 200, 168, "カットスペースPLUS", "ヘアカット専門店", "茨城県ひたちなか市", "次世代型ヘアカット専門店。|髪と顔のトータルケアはお任せ。", "ヘアカット 1,500円（税込）"),
+    ("delight/", "delight/img/logo.webp", 283, 180, "Men's Cut & Self|DELIGHT", "メンズヘアカット専門店", "栃木県宇都宮市", "カット以外をセルフ化し、|低価格・高品質・ハイスピード。", "セルフコース 1,300円"),
+    ("mrcool/", "mrcool/img/logo.webp", 391, 113, "HAIR STUDIO|MR.COOL", "ヘアカット専門店", "栃木県那須町", "ヘアカット専門店|×コミュニケーション。", "男性 1,500円・女性 2,000円"),
+    ("alpha/", "alpha/img/logo.webp", 164, 255, "シャンプーカット|アルファ", "メンズヘアサロン", "千葉県八千代市", "お買い物ついでにサッとカット。|美容師によるメンズヘアサロン。", "カット 2,000円（税込）"),
+    ("laladream/", "", 0, 0, "ララ・ドリーム|清原テクノ店", "コインランドリー", "栃木県宇都宮市", "リーズナブルな価格で洗濯乾燥を！|となりはDELIGHT。", "AM5:00〜AM0:00 年中無休"),
+]
+
+
+def build_group():
+    head, foot = shell("グループのお店｜カットハウスひかり",
+                       "株式会社エイチ・エス・ケイが運営するカットハウスひかり以外のお店。カットスペースPLUS、Men's Cut & Self DELIGHT、HAIR STUDIO MR.COOL、シャンプーカット アルファ、コインランドリー ララ・ドリーム清原テクノ店。")
+    cards = []
+    for href, logo, w, h, name, kind, area, catch, price in GROUP:
+        vis = (f'<img src="{logo}" alt="" width="{w}" height="{h}" loading="lazy">' if logo
+               else '<span class="gp-word"><small>COIN LAUNDRY</small>ララ・ドリーム</span>')
+        cards.append(f'<li><a href="{href}"><span class="gp-logo">{vis}</span>'
+                     f'<span class="gp-kind"><span class="ph">{esc(kind)}</span>｜<span class="ph">{esc(area)}</span></span><b>{" ".join(ph(x) for x in name.split("|"))}</b>'
+                     f'<span class="gp-catch">{ph(catch)}</span><span class="gp-price">{esc(price)}</span>'
+                     f'<span class="gp-go">ホームページを見る ›</span></a></li>')
+    body = f"""<main id="main">
+  <section class="page-hero legal-hero">
+    <div class="wrap">
+      <p class="en">Group</p>
+      <h1>グループのお店</h1>
+    </div>
+  </section>
+  <section class="fc-sec">
+    <div class="wrap">
+      <p class="gp-lead">{ph("株式会社エイチ・エス・ケイは、|カットハウスひかりのほかにも|これらのお店を運営しています。")}</p>
+      <ul class="gp-list gp-page">{"".join(cards)}</ul>
+    </div>
+  </section>
+</main>
+
+"""
+    write("group.html", head, body, foot)
+    print("グループのお店（group.html）を作成しました")
+
+
 if __name__ == "__main__":
     build_haircut()
     build_brow()
@@ -802,3 +843,4 @@ if __name__ == "__main__":
     build_app()
     build_app_guide()
     build_community()
+    build_group()

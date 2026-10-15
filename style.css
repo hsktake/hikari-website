@@ -2728,3 +2728,21 @@ main .fc-hero { padding-bottom: 46px; }
 .gp-list small{font-size:11.5px;color:var(--brown-soft);line-height:1.4}
 @media (max-width:860px){.gp-list{grid-template-columns:repeat(2,minmax(0,1fr))}.gp-list li:last-child{grid-column:1/-1}}
 .gp-list b .ph{display:inline-block}
+.gp-lead{text-align:center;font-weight:700;line-height:1.9}
+.gp-lead .ph{display:inline-block}
+.gp-page{grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:26px}
+.gp-page a{padding:22px 16px 18px;gap:8px}
+.gp-page .gp-logo{height:96px}
+.gp-page .gp-logo img{max-height:96px}
+.gp-page b{font-size:17px}
+.gp-page b .ph,.gp-catch .ph{display:inline-block}
+.gp-kind{font-size:12px;font-weight:700;color:var(--brown-soft)}
+.gp-catch{font-size:13.5px;line-height:1.7}
+.gp-price{font-size:13px;font-weight:800;color:var(--orange-deep);background:var(--sun-soft);border-radius:999px;padding:2px 12px}
+.gp-go{margin-top:auto;padding-top:6px;font-size:13px;font-weight:800;color:var(--orange-deep)}
+@media (max-width:860px){.gp-page{grid-template-columns:1fr}.gp-page li:last-child{grid-column:auto}}
+.gp-page{grid-template-columns:repeat(3,minmax(0,1fr))}
+.gp-page a{text-align:center}
+.gp-kind .ph{display:inline-block}
+.gp-price{white-space:nowrap}
+@media (max-width:860px){.gp-page{grid-template-columns:1fr}}

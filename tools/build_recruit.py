@@ -121,7 +121,7 @@ def page(prefix, title, desc, body, v):
       <a href="{p}facecare.html">フェイスケア</a>
       <a href="{p}app.html">公式アプリ</a>
       <a class="nav-recruit" href="{p}recruit.html" aria-current="page">採用情報</a>
-      <div class="nav-sub"><a href="{p}app-guide.html">アプリの使い方</a><a href="{p}member.html">HiCARD会員</a><a href="{p}faq.html">よくあるご質問</a><a href="{p}contact.html">お問い合わせ</a><a href="{p}./#company">会社案内</a><a href="{p}community.html">地域とともに</a><a href="{p}./#group">グループのお店</a><a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a><a href="{p}privacy.html">プライバシーポリシー</a><a href="{p}tokushoho.html">特定商取引法に基づく表記</a></div>
+      <div class="nav-sub"><a href="{p}app-guide.html">アプリの使い方</a><a href="{p}member.html">HiCARD会員</a><a href="{p}faq.html">よくあるご質問</a><a href="{p}contact.html">お問い合わせ</a><a href="{p}./#company">会社案内</a><a href="{p}community.html">地域とともに</a><a href="{p}group.html">グループのお店</a><a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a><a href="{p}privacy.html">プライバシーポリシー</a><a href="{p}tokushoho.html">特定商取引法に基づく表記</a></div>
     </nav>
   </div>
 </header>
@@ -136,7 +136,7 @@ def page(prefix, title, desc, body, v):
       <div class="fn-col"><p class="fn-h">お店・メニュー</p><ul><li><a href="{p}shops.html">店舗を探す</a></li><li><a href="{p}haircut.html">ヘアカット</a></li><li><a href="{p}brow.html">眉毛カット</a></li><li><a href="{p}facecare.html">フェイスケア</a></li></ul></div>
       <div class="fn-col"><p class="fn-h">公式アプリ・会員</p><ul><li><a href="{p}app.html">公式アプリ</a></li><li><a href="{p}app-guide.html">アプリの使い方</a></li><li><a href="{p}member.html">HiCARD会員</a></li></ul></div>
       <div class="fn-col"><p class="fn-h">ご案内</p><ul><li><a href="{p}news.html">お知らせ</a></li><li><a href="{p}faq.html">よくあるご質問</a></li><li><a href="{p}contact.html">お問い合わせ</a></li></ul></div>
-      <div class="fn-col"><p class="fn-h">会社</p><ul><li><a href="{p}./#company">会社案内</a></li><li><a href="{p}./#group">グループのお店</a></li><li><a href="{p}community.html">地域とともに</a></li><li><a href="{p}recruit.html">採用情報</a></li><li><a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a></li></ul></div>
+      <div class="fn-col"><p class="fn-h">会社</p><ul><li><a href="{p}./#company">会社案内</a></li><li><a href="{p}group.html">グループのお店</a></li><li><a href="{p}community.html">地域とともに</a></li><li><a href="{p}recruit.html">採用情報</a></li><li><a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a></li></ul></div>
       <p class="fn-legal"><a href="{p}./">トップページ</a><a href="{p}privacy.html">プライバシーポリシー</a><a href="{p}tokushoho.html">特定商取引法に基づく表記</a></p>
     </nav>
     <p class="copy">© 1997 H.S.K</p>
