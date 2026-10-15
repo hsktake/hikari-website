@@ -343,12 +343,12 @@ def build_facecare():
 U35 = ["サイド|ツーブロック", "ショート|ツーブロック", "ツンツン系|ツーブロック", "韓流系|ショートレイヤー", "軽め|ショートマッシュ", "無造作|ショートスタンダード"]
 O35 = ["インテリ風|ツーブロック", "オールバック|ツーブロ", "ナチュラル|スタンダード", "カジュアル風|ソフトモヒカン", "ワイルドショート|刈上げ", "ワイルド風|ツーブロ"]
 # いろいろなスタイル（新アプリのスタイル画像＝AIのイメージ。ドライブ「ヘアカット/新アプリスタイル画像」）：レディース → メンズ
-MORE = [("a17", "レイヤーボブ"), ("a22", "グラボブ"), ("a09", "ワンレン"), ("a21", "ショートレイヤー"),
-        ("a03", "ショート|スタンダード"), ("a07", "刈上げ|ショート"), ("a02", "襟足刈上げ|ショート"),
-        ("a12", "ミディアム|レイヤー"), ("a13", "ロング|レイヤー"), ("a20", "コンケーブ"),
-        ("a08", "丸刈り"), ("a00", "スポーツ刈り"), ("a16", "ナチュラル|スポーツ"), ("a15", "角刈り"),
-        ("a18", "スタンダード|刈上げ"), ("a04", "スタンダード"), ("a01", "襟足刈上げ"), ("a06", "サイド刈上げ"),
-        ("a19", "マッシュ"), ("a05", "メンズ|ショートレイヤー"), ("a10", "ツーブロック"), ("a11", "ソフトモヒカン"), ("a14", "ツンツン")]
+LADIES = [("a17", "レイヤーボブ"), ("a22", "グラボブ"), ("a09", "ワンレン"), ("a21", "ショートレイヤー"),
+          ("a03", "ショート|スタンダード"), ("a07", "刈上げ|ショート"), ("a02", "襟足刈上げ|ショート"),
+          ("a12", "ミディアム|レイヤー"), ("a13", "ロング|レイヤー"), ("a20", "コンケーブ")]
+MENS = [("a10", "ツーブロック"), ("a19", "マッシュ"), ("a11", "ソフトモヒカン"), ("a14", "ツンツン"),
+        ("a04", "スタンダード"), ("a18", "スタンダード|刈上げ"), ("a05", "メンズ|ショートレイヤー"), ("a01", "襟足刈上げ"),
+        ("a06", "サイド刈上げ"), ("a00", "スポーツ刈り"), ("a16", "ナチュラル|スポーツ"), ("a15", "角刈り"), ("a08", "丸刈り")]
 # キッズ（AIのイメージ。ドライブ「ヘアカット/AI画像/キッズ」）
 KIDS = [("k00", "ショートボブ"), ("k02", "ボブ"), ("k01", "ロング"), ("k05", "マッシュ"), ("k04", "ナチュラル|ショート"), ("k03", "さっぱり|ショート")]
 
@@ -362,10 +362,10 @@ def style_row(items):
 
 def build_haircut():
     head, foot = shell("ヘアカット・ヘアカタログ｜カットハウスひかり",
-                       "カットハウスひかりのヘアカット。丸刈りからロングまで、大人もお子さまも、男性も女性も。ヘアカタログ（UNDER35・OVER35・キッズ・いろいろなスタイル）とチケットの買い方をご案内します。")
+                       "カットハウスひかりのヘアカット。丸刈りからロングまで、大人もお子さまも、男性も女性も。ヘアカタログ（人気スタイル・メンズ・レディース・キッズ）とチケットの買い方をご案内します。")
     u35 = style_row([(f"assets/styles/u35-0{i+1}.jpg", nm) for i, nm in enumerate(U35)])
-    o35 = style_row([(f"assets/styles/o35-0{i+1}.jpg", nm) for i, nm in enumerate(O35)])
-    more = style_row([(f"assets/catalog2/{k}.webp", nm) for k, nm in MORE])
+    mens = style_row([(f"assets/catalog2/{k}.webp", nm) for k, nm in MENS] + [(f"assets/styles/o35-0{i+1}.jpg", nm) for i, nm in enumerate(O35)])
+    ladies = style_row([(f"assets/catalog2/{k}.webp", nm) for k, nm in LADIES])
     kids = style_row([(f"assets/kids/{k}.webp", nm) for k, nm in KIDS])
     body = f"""<main id="main">
   <section class="fc-hero hc-hero">
@@ -394,16 +394,22 @@ def build_haircut():
   <section class="fc-sec fc-alt" id="catalog" aria-labelledby="h-catalog">
     <div class="wrap">
       {head_block("HAIR CATALOG", "h-catalog", "ヘアカタログ")}
+      <ul class="hc-tabs">
+        <li><a href="#cat-pop"><b>人気スタイル</b></a></li>
+        <li><a href="#cat-mens"><b>メンズ</b></a></li>
+        <li><a href="#cat-ladies"><b>レディース</b></a></li>
+        <li><a href="#cat-kids"><b>キッズ</b></a></li>
+      </ul>
       <p class="hc-swipe">横にスワイプして見られます</p>
-      <h3 class="hc-cat-h" id="cat-u35"><span>UNDER 35</span>メンズ</h3>
+      <h3 class="hc-cat-h" id="cat-pop"><span>人気スタイル</span>POPULAR</h3>
       {u35}
-      <h3 class="hc-cat-h" id="cat-o35"><span>OVER 35</span>メンズ</h3>
-      {o35}
-      <h3 class="hc-cat-h" id="cat-kids"><span>KIDS</span>キッズ</h3>
+      <h3 class="hc-cat-h" id="cat-mens"><span>メンズ</span>MEN'S</h3>
+      {mens}
+      <h3 class="hc-cat-h" id="cat-ladies"><span>レディース</span>LADIES'</h3>
+      {ladies}
+      <h3 class="hc-cat-h" id="cat-kids"><span>キッズ</span>KIDS</h3>
       {kids}
-      <h3 class="hc-cat-h" id="cat-more"><span>いろいろなスタイル</span>レディース・メンズ</h3>
-      {more}
-      <p class="fc-note center-t">{ph("※キッズ・いろいろなスタイルの|画像はイメージです。")}</p>
+      <p class="fc-note center-t">{ph("※メンズ・レディース・キッズの|画像の多くはイメージです。")}</p>
     </div>
   </section>
 
@@ -411,7 +417,7 @@ def build_haircut():
 
 """
     write("haircut.html", head, body, foot)
-    print(f"ヘアカットのページを作成しました（ヘアカタログ{len(U35) + len(O35) + len(MORE)}スタイル）")
+    print(f"ヘアカットのページを作成しました（ヘアカタログ{len(U35) + len(O35) + len(MENS) + len(LADIES) + len(KIDS)}スタイル）")
 
 
 # ---------- 眉毛カット ----------

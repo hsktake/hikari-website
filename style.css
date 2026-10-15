@@ -2703,3 +2703,12 @@ main .fc-hero { padding-bottom: 46px; }
   .footer-nav .fn-legal { padding-top: 10px; gap: 0 16px; }
   .footer-nav .fn-legal a { padding: 2px 0; font-size: 11.5px; }
 }
+
+/* ヘアカタログ：4つの分類ボタン */
+.hc-cat-h span { font-family: var(--round); font-weight: 800; font-size: 22px; }
+.hc-cat-h { font-family: var(--en); letter-spacing: .1em; font-size: 12px; }
+.hc-tabs { list-style: none; margin: 18px auto 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; max-width: 560px; }
+.hc-tabs a { display: block; text-align: center; text-decoration: none; background: var(--white); border: 2px solid var(--orange); border-radius: 999px; padding: 9px 4px; box-shadow: 0 4px 0 rgba(239,122,0,.25); color: var(--orange-deep); transition: background .15s; }
+.hc-tabs a:hover { background: var(--orange); color: var(--white); }
+.hc-tabs b { font-size: 14px; white-space: nowrap; }
+@media (max-width: 420px) { .hc-tabs { gap: 6px; } .hc-tabs b { font-size: 12.5px; letter-spacing: 0; } }
