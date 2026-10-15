@@ -2883,6 +2883,6 @@ p.rq-closed { margin: 10px 0 0; font-size: 14px; }
 .sps-list strong { color: #D8432C; }
 
 /* 管理シートで出し分ける部分（hidden を確実に効かせる） */
-.sb[hidden], .sp-fc[hidden], .sp-badges[hidden], .fc-pref[hidden], .fc-pref li[hidden] { display: none !important; }
+.gp2[hidden], .sb[hidden], .sp-fc[hidden], .sp-badges[hidden], .fc-pref[hidden], .fc-pref li[hidden] { display: none !important; }
 .sp-badges:not(:has(> :not([hidden]))) { display: none; }
 .sp-closed { background: #FDE7E0; }

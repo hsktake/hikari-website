@@ -184,8 +184,19 @@ STD_PRICES = {("男性", "1,400円"): "cut_men", ("女性", "1,600円"): "cut_wo
               ("うなじ", "2,000円/回"): "hair_unaji", ("耳毛", "2,000円/回"): "hair_mimige"}
 
 
-def price_val(n, p):
-    key = STD_PRICES.get((n, p))
+# グループのお店の料金（管理シートの料金タブ。店舗コードごと）
+BRAND_PRICES = {
+    "00201": {("男性", "1,500円"): "plus_cut", ("女性", "1,500円"): "plus_cut"},
+    "00205": {("男性", "1,500円"): "mrcool_men", ("女性", "2,000円"): "mrcool_women"},
+    "00202": {("男性", "2,000円"): "alpha_cut", ("女性", "2,000円"): "alpha_cut", ("スキンフェードカット", "4,000円"): "alpha_fade",
+              ("スキンフェードメンテナンス", "3,100円"): "alpha_fade_m", ("カット+マシンシャンプー", "3,400円"): "alpha_shampoo"},
+}
+
+
+def price_val(n, p, code=""):
+    if code == "00207" and p == "1,300円〜1,400円":  # DELIGHT：セルフコース〜フルサービス
+        return '<span data-price="delight_self">1,300</span>円〜<span data-price="delight_full">1,400</span>円'
+    key = BRAND_PRICES[code].get((n, p)) if code in BRAND_PRICES else STD_PRICES.get((n, p))
     m = re.match(r"([\d,]+)(.*)", p)
     if not key or not m:
         return esc(p)
@@ -196,7 +207,7 @@ def price_html(s):
     groups = []
     for g in s["prices"]:
         items = "".join(
-            f'<li><span>{esc(zen(n))}</span><b>{price_val(n, p)}</b></li>' for n, p in g["items"])
+            f'<li><span>{esc(zen(n))}</span><b>{price_val(n, p, s["code"])}</b></li>' for n, p in g["items"])
         groups.append(f'<div class="pg"><p class="pg-ttl">{esc(zen(g["label"]))}</p><ul>{items}</ul></div>')
     return "".join(groups)
 

@@ -12,6 +12,7 @@ GitHub Actions（.github/workflows/sync-sheet.yml）が1日に数回自動で実
 
 反映するもの
   店舗情報   → data/shops.json の営業時間・定休日・フェイスケア・閉店 → 店舗一覧・店舗ページ・フェイスケアの対応店舗
+               ・グループのお店のホームページ（plus/ delight/ mrcool/ alpha/）
   料金       → 全ページの data-price="キー" の数字
   店舗の予定 → news.html の休業情報・営業時間変更情報、各店舗ページの「臨時休業・営業時間の変更」
   店舗数     → ヘッダーの「北関東に〇店舗」（閉店を除いた店舗の数）
@@ -289,7 +290,8 @@ def replace_div(src, start_tag, inner):
 # ---------- まとめて反映 ----------
 def html_files():
     files = glob.glob(os.path.join(ROOT, "*.html")) + glob.glob(os.path.join(ROOT, "shop", "*.html")) \
-        + glob.glob(os.path.join(ROOT, "recruit", "*.html"))
+        + glob.glob(os.path.join(ROOT, "recruit", "*.html")) \
+        + [os.path.join(ROOT, d, "index.html") for d in ("plus", "delight", "mrcool", "alpha")]
     return sorted(files)
 
 
@@ -299,7 +301,7 @@ def main():
     tabs = {t: read_tab(t, offline) for t in TABS}
 
     open_count = apply_shop_info(tabs["店舗情報"])
-    for b in ("build_shops.py", "build_menu.py", "build_recruit.py"):
+    for b in ("build_shops.py", "build_menu.py", "build_recruit.py", "build_brands.py"):
         subprocess.run([sys.executable, os.path.join(ROOT, "tools", b)], check=True, cwd=ROOT, stdout=subprocess.DEVNULL)
 
     prices = price_map(tabs["料金"])

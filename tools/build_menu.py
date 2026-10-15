@@ -843,22 +843,32 @@ GROUP = [
 ]
 
 
+# 大きな料金（管理シートの料金タブのキー）
+GROUP_PRICE = {"plus": "plus_cut", "delight": "delight_self", "mrcool": "mrcool_men", "alpha": "alpha_cut"}
+# 店舗コード（管理シートの店舗情報で「閉店」にすると、このページから外す）
+GROUP_CODE = {"plus": "00201", "delight": "00207", "mrcool": "00205", "alpha": "00202"}
+
+
 def build_group():
     head, foot = shell("グループのお店｜カットハウスひかり",
                        "株式会社エイチ・エス・ケイが運営するカットハウスひかり以外のお店。カットスペースPLUS、Men's Cut & Self DELIGHT、HAIR STUDIO MR.COOL、シャンプーカット アルファ、コインランドリー ララ・ドリーム清原テクノ店。")
+    with open(os.path.join(ROOT, "data", "shops.json"), encoding="utf-8") as f:
+        closed = {s["code"] for s in json.load(f) if s.get("closed")}
     cards = []
     for d, photo, logo, w, h, name, kind, area, catch, (pl, pn, pu), col in GROUP:
+        if GROUP_CODE.get(d) in closed:
+            continue
         nm = " ".join(ph(x) for x in name.split("|"))
         mark = (f'<img src="{logo}" alt="" width="{w}" height="{h}" loading="lazy">' if logo
                 else '<span class="gp-word"><small>COIN LAUNDRY</small>ララ・ドリーム</span>')
-        cards.append(f'''<li class="gp2 gp2-{d}">
+        cards.append(f'''<li class="gp2 gp2-{d}"{(' data-code="' + GROUP_CODE[d] + '"') if d in GROUP_CODE else ""}>
         <a href="{d}/">
           <span class="gp2-photo"><img src="{photo}" alt="{esc(name.replace("|", " "))}の店舗" width="840" height="560" loading="lazy"><span class="gp2-mark">{mark}</span></span>
           <span class="gp2-body">
             <span class="gp2-kind">{esc(kind)}<span>{ic("pin")}{esc(area)}</span></span>
             <b class="gp2-name">{nm}</b>
             <span class="gp2-catch">{ph(catch)}</span>
-            <span class="gp2-price"><small>{esc(pl)}</small><em>{esc(pn)}</em><small>{esc(pu)}</small></span>
+            <span class="gp2-price"><small>{esc(pl)}</small><em{(' data-price="' + GROUP_PRICE[d] + '"') if d in GROUP_PRICE else ""}>{esc(pn)}</em><small>{esc(pu)}</small></span>
             <span class="gp2-go">ホームページを見る<span aria-hidden="true">›</span></span>
           </span>
         </a>

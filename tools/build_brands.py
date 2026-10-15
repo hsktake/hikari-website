@@ -15,11 +15,58 @@
 使い方: python3 tools/build_brands.py
 """
 import html
+import json
 import os
+import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GROUP = "../"  # カットハウスひかり（グループのサイト）への相対パス
 HQ_TEL = "050-1720-5983"
+
+# ---- ホームページ管理シート（カットハウスひかりと同じシート）で変わるところ ----
+# 店舗情報タブ（data/shops.json）の店舗コード。営業時間・定休日・閉店がシートで変わると、このページも変わる
+BRAND_CODE = {"plus": "00201", "delight": "00207", "mrcool": "00205", "alpha": "00202"}
+# シート（data/shops.json）での書き方。これと同じあいだは、このページ独自の書き方（平日／土日祝 など）のまま
+SHEET_BASE = {"plus": ("9:00〜19:00", "無休"), "delight": ("9:00〜19:00（土日祝は18:30閉店）", "無休"),
+              "mrcool": ("9:00〜18:45", "無休"), "alpha": ("9:00〜18:00", "火曜")}
+# 料金タブのキー（料金表の名前 → キー）と、トップの大きな料金のキー
+PRICE_KEYS = {"plus": {"ヘアカット": "plus_cut"},
+              "delight": {"セルフコース|（ヘアカットのみ）": "delight_self", "フルサービス|（ヘアカット＋ドライ＋バキューム）": "delight_full"},
+              "mrcool": {"男性": "mrcool_men", "女性": "mrcool_women"},
+              "alpha": {"カット": "alpha_cut", "スキンフェードカット": "alpha_fade", "スキンフェードメンテナンス": "alpha_fade_m", "カット＋マシンシャンプー": "alpha_shampoo"}}
+BADGE_KEY = {"plus": "plus_cut", "delight": "delight_self", "mrcool": "mrcool_men", "alpha": "alpha_cut"}
+CLOSED_TEXT = "この店舗は閉店いたしました。長らくのご利用、誠にありがとうございました。"
+CUR = {"dir": ""}  # いま作っているブランド
+
+
+def load_shops():
+    with open(os.path.join(ROOT, "data", "shops.json"), encoding="utf-8") as f:
+        return {s["code"]: s for s in json.load(f)}
+
+
+SHOPS = load_shops()
+
+
+def hours_notes(h):
+    """tools/sync_sheet.py と同じ（営業時間が変わったときの注意書き）"""
+    m = re.match(r"^(\d{1,2}):(\d{2})〜(\d{1,2}):(\d{2})$", h)
+    if not m:
+        return []
+    t = f"{int(m[3])}時" + (f"{int(m[4])}分" if m[4] != "00" else "")
+    return [f"ご案内の目安の時刻が{t}以降となるチケットは購入できません。", f"混雑状況によって{t}より早く受付を終了する場合があります。"]
+
+
+def price_span(key, v):
+    """「1,500円」「¥1,300」の数字の部分を data-price にする"""
+    m = re.match(r"^(¥?)([\d,]+)(.*)$", v)
+    if not key or not m:
+        return esc(v)
+    return f'{esc(m[1])}<span data-price="{key}">{m[2]}</span>{esc(m[3])}'
+
+
+def tokens(h):
+    """文中の {キー:1,500} を data-price に"""
+    return re.sub(r"\{(\w+):([\d,]+)\}", r'<span data-price="\1">\2</span>', h)
 RECRUIT_TEL = "0120-877-100"
 
 
@@ -74,10 +121,10 @@ def b_price(d):
     for g in d["groups"]:
         rows = "".join(
             f'<li><span class="pr-name">{ph(n)}</span><span class="pr-dots" aria-hidden="true"></span>'
-            f'<span class="pr-val">{esc(v)}</span></li>' for n, v in g["items"])
+            f'<span class="pr-val">{price_span(PRICE_KEYS.get(CUR["dir"], {}).get(n), v)}</span></li>' for n, v in g["items"])
         lab = f'<h3>{esc(g["label"])}</h3>' if g.get("label") else ""
         groups.append(f'<div class="pr-group">{lab}<ul>{rows}</ul></div>')
-    note = f'<p class="note">{ph(d["note"])}</p>' if d.get("note") else ""
+    note = f'<p class="note">{tokens(ph(d["note"]))}</p>' if d.get("note") else ""
     lead = f'<p class="lead">{ph(d["lead"])}</p>' if d.get("lead") else ""
     return f"""<section class="sec price" id="price"><div class="wrap">
   <p class="en">PRICE</p><h2>{ph(d.get("title", "料金"))}</h2>{lead}
@@ -170,9 +217,21 @@ def b_recruit(d):
 
 def b_info(d, b):
     rows = [("住所", (f'〒{esc(d["zip"])}<br>' if d["zip"] else "") + f'{esc(d["address"])}' + (f'<br><small>{esc(d["near"])}</small>' if d.get("near") else ""))]
-    hours = esc(d["hours"]) + "".join(f"<br><small>※{esc(n)}</small>" for n in d.get("notes", []))
-    rows.append(("営業時間", hours))
-    rows.append(("定休日", esc(d["holiday"])))
+    hours, notes, holiday = d["hours"], d.get("notes", []), d["holiday"]
+    base = SHEET_BASE.get(b["dir"])
+    sh = SHOPS.get(BRAND_CODE.get(b["dir"], ""))
+    if base and sh:  # 管理シートで変わっていたら、シートの書き方にする
+        if sh["hours"] != base[0]:
+            hours, notes = sh["hours"], hours_notes(sh["hours"])
+        if sh["holiday"] != base[1]:
+            holiday = sh["holiday"]
+    if base:
+        rows.append(("営業時間", f'<span data-sf="hours" data-base="{esc(base[0])}">{esc(hours)}</span><span data-sf="notes">'
+                     + "".join(f"<br><small>※{esc(n)}</small>" for n in notes) + "</span>"))
+        rows.append(("定休日", f'<span data-sf="holiday" data-base="{esc(base[1])}">{esc(holiday)}</span>'))
+    else:
+        rows.append(("営業時間", esc(hours) + "".join(f"<br><small>※{esc(n)}</small>" for n in notes)))
+        rows.append(("定休日", esc(holiday)))
     if d.get("tel"):
         rows.append(("電話", f'<a href="tel:{d["tel"]}">{esc(d["tel"])}</a>' + (f'<br><small>{esc(d["telnote"])}</small>' if d.get("telnote") else "")))
     if d.get("pay"):
@@ -213,7 +272,7 @@ BRANDS = [
                        "groups": [{"label": "ヘアカット", "items": [("ヘアカット", "1,500円")]},
                                   {"label": "脱毛（都度払い）", "items": [("ひげ脱毛", "3,500円"), ("ひじ下", "3,000円"), ("手先", "2,000円"), ("うなじ", "2,000円"), ("耳毛", "2,000円")]},
                                   {"label": "光フェイシャル（都度払い）", "items": [("顔全体", "4,500円")]}],
-                       "note": "どなたでも、どんなヘアスタイルでも|お一人様1,500円です。"}),
+                       "note": "どなたでも、どんなヘアスタイルでも|お一人様{plus_cut:1,500}円です。"}),
             ("points", {"en": "POINT", "title": "PLUSの|こだわり", "items": [
                 ("scissors", "こだわりの|カット技術", "お客様の理想の|ヘアスタイルを形に。"),
                 ("sparkle", "ひげ・肌の|お悩みも", "最新エステマシンで|お顔のケアも。"),
@@ -358,6 +417,11 @@ BRANDS = [
 
 # ---------------------------------------------------------------- ページ
 def page(b):
+    CUR["dir"] = b["dir"]
+    code = BRAND_CODE.get(b["dir"], "")
+    closed = ""
+    if SHOPS.get(code, {}).get("closed"):
+        closed = f'<div class="closed-note"><p>{CLOSED_TEXT}</p></div>'
     fonts = f'<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?{b["fonts"]}&display=swap">'
     if b["logo"]:
         logo = f'<img class="logo" src="img/{b["logo"]}" alt="{esc(b["name"])}" width="{b["logo_w"]}" height="{b["logo_h"]}">'
@@ -365,7 +429,9 @@ def page(b):
         logo = f'<span class="wordmark"><small>{esc(b["kana"])}</small>{esc(b["name"])}</span>'
     nav = "".join(f'<a href="{h}">{esc(t)}</a>' for h, t in b["nav"])
     h = b["hero"]
-    badge = f'<p class="hero-badge"><small>{esc(h["badge"][0])}</small><b>{esc(h["badge"][1])}</b><span>{esc(h["badge"][2])}</span></p>'
+    bk = BADGE_KEY.get(b["dir"])
+    badge = (f'<p class="hero-badge"><small>{esc(h["badge"][0])}</small><b{(' data-price="' + bk + '"') if bk else ""}>{esc(h["badge"][1])}</b>'
+             f'<span>{esc(h["badge"][2])}</span></p>')
     hero_logo = ""
     if b["dir"] == "delight":
         hero_logo = '<img class="hero-logo" src="img/logo-white.webp" alt="" width="1000" height="241">'
@@ -399,7 +465,7 @@ def page(b):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://docs.google.com https://*.googleusercontent.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; base-uri 'self'; form-action 'none'">
 <title>{esc(b["title"])}</title>
 <meta name="description" content="{esc(b["desc"])}">
 <link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">
@@ -408,14 +474,15 @@ def page(b):
 {fonts}
 <link rel="stylesheet" href="style.css?v={VERSION}">
 <script src="to-top.js?v={VERSION}" defer></script>
+{f'<script src="sheet.js?v={VERSION}" defer></script>' if code else ""}
 </head>
-<body class="b-{b["dir"]}">
+<body class="b-{b["dir"]}"{f' data-code="{code}"' if code else ""}>
 <header class="head"><div class="wrap head-in">
   <a class="brand" href="./">{logo}</a>
   <nav class="gnav" aria-label="メニュー">{nav}</nav>
 </div></header>
 <main>
-{hero}
+{closed}{hero}
 {body}
 {info}
 {neighbor}
@@ -426,7 +493,7 @@ def page(b):
 """
 
 
-VERSION = 4
+VERSION = 5
 
 TOTOP_JS = r"""/* 下までスクロールしたら「ページの一番上へ」ボタンを出す */
 (function () {
@@ -450,7 +517,85 @@ TOTOP_JS = r"""/* 下までスクロールしたら「ページの一番上へ�
 })();
 """
 
+SHEET_JS = r"""/* ホームページ管理シート（カットハウスひかりと同じシート）の「店舗情報」「料金」を読んで、
+   営業時間・定休日・閉店のお知らせ・料金を最新にする。読めないときは書いてある内容のまま。（tools/build_brands.py が作成） */
+(function () {
+  "use strict";
+  var SHEET_ID = "1RBR08sNvthcwJHfssDh8RFLwtZ-17URXR149_jYetzw";
+  var CODE = document.body.getAttribute("data-code");
+  var CLOSED_TEXT = "この店舗は閉店いたしました。長らくのご利用、誠にありがとうございました。";
+  if (!window.fetch || !CODE) return;
+  function esc(t) {
+    return String(t).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
+  }
+  function parseCSV(text) {
+    var rows = [], row = [], cur = "", q = false;
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (q) { if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += c; }
+      else if (c === '"') q = true;
+      else if (c === ",") { row.push(cur); cur = ""; }
+      else if (c === "\n" || c === "\r") { if (c === "\r" && text[i + 1] === "\n") i++; row.push(cur); rows.push(row); row = []; cur = ""; }
+      else cur += c;
+    }
+    if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
+    return rows;
+  }
+  function load(tab, need) {
+    var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:csv&headers=1&sheet=" + encodeURIComponent(tab) + "&_=" + Date.now();
+    return fetch(url, { credentials: "omit" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }).then(function (t) {
+      if (/^\s*</.test(t)) throw new Error("not csv");
+      var rows = parseCSV(t);
+      if (!need.test((rows[0] || []).join(","))) throw new Error("wrong tab");
+      return rows;
+    });
+  }
+  function col(head, re, def) {
+    for (var i = 0; i < head.length; i++) if (re.test(head[i])) return i;
+    return def;
+  }
+  function hoursNotes(h) {
+    var m = String(h).match(/^(\d{1,2}):(\d{2})〜(\d{1,2}):(\d{2})$/);
+    if (!m) return [];
+    var t = +m[3] + "時" + (m[4] !== "00" ? +m[4] + "分" : "");
+    return ["ご案内の目安の時刻が" + t + "以降となるチケットは購入できません。", "混雑状況によって" + t + "より早く受付を終了する場合があります。"];
+  }
+  function ready(fn) { if (document.readyState !== "loading") fn(); else document.addEventListener("DOMContentLoaded", fn); }
+
+  ready(function () {
+    // 料金
+    var els = document.querySelectorAll("[data-price]");
+    if (els.length) load("料金", /金額/).then(function (rows) {
+      var map = {};
+      rows.slice(1).forEach(function (r) { var n = String(r[2] || "").replace(/[^\d]/g, ""); if (r[0] && n) map[r[0].trim()] = Number(n).toLocaleString("ja-JP"); });
+      els.forEach(function (el) { var v = map[el.getAttribute("data-price")]; if (v) el.textContent = v; });
+    }).catch(function () {});
+    // 店舗情報（営業時間・定休日・閉店）
+    load("店舗情報", /営業時間/).then(function (rows) {
+      var h = rows[0], cC = col(h, /コード/, 0), cH = col(h, /営業時間/, 2), cD = col(h, /定休日/, 3), cS = col(h, /状態/, 5);
+      var r = rows.slice(1).filter(function (r) { return ("0000" + String(r[cC] || "").trim()).slice(-5) === CODE; })[0];
+      if (!r) return;
+      var hours = String(r[cH] || "").trim(), hol = String(r[cD] || "").trim();
+      var eh = document.querySelector('[data-sf="hours"]'), en = document.querySelector('[data-sf="notes"]'), ed = document.querySelector('[data-sf="holiday"]');
+      if (eh && hours && hours !== eh.getAttribute("data-base") && hours !== eh.textContent) {
+        eh.textContent = hours;
+        if (en) en.innerHTML = hoursNotes(hours).map(function (n) { return "<br><small>※" + esc(n) + "</small>"; }).join("");
+      }
+      if (ed && hol && hol !== ed.getAttribute("data-base")) ed.textContent = hol;
+      if (/閉店/.test(r[cS] || "") && !document.querySelector(".closed-note")) {
+        var main = document.querySelector("main"), n = document.createElement("div");
+        n.className = "closed-note";
+        n.innerHTML = "<p>" + esc(CLOSED_TEXT) + "</p>";
+        if (main) main.insertBefore(n, main.firstChild);
+      }
+    }).catch(function () {});
+  });
+})();
+"""
+
+
 BASE_CSS = r"""
+.closed-note{background:#c0392b;color:#fff;text-align:center;font-weight:700;padding:14px 16px;line-height:1.6}
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%}
 body{margin:0;font-family:var(--jp);color:var(--ink);background:var(--bg);line-height:1.85;letter-spacing:.03em;overflow-x:hidden}
@@ -752,6 +897,9 @@ def main():
             f.write(page(b))
         with open(os.path.join(d, "to-top.js"), "w", encoding="utf-8") as f:
             f.write(TOTOP_JS)
+        if b["dir"] in BRAND_CODE:
+            with open(os.path.join(d, "sheet.js"), "w", encoding="utf-8") as f:
+                f.write(SHEET_JS)
         with open(os.path.join(d, "style.css"), "w", encoding="utf-8") as f:
             f.write(BASE_CSS.strip() + "\n/* ---- このブランドの見た目 ---- */\n" + THEMES[b["dir"]].strip() + "\n")
         print(f"{b['dir']}/ を作成しました（{b['name']}）")

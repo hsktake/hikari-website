@@ -522,9 +522,9 @@
   }
   var CLOSED_TEXT = "この店舗は閉店いたしました。長らくのご利用、誠にありがとうございました。";
   function shopInfo() {
-    var page = document.querySelector(".sp-body[data-code]"), fc = document.querySelectorAll("li[data-code]"),
+    var page = document.querySelector(".sp-body[data-code]"), fc = document.querySelectorAll(".fc-pref li[data-code]"),
       area = document.querySelectorAll(".area-main strong");
-    if (!window.SHOPS && !page && !fc.length && !area.length) return;
+    if (!window.SHOPS && !page && !fc.length && !area.length && !document.querySelector("li.gp2[data-code]")) return;
     load("店舗情報", /営業時間/).then(function (rows) {
       var cC = col(rows, /コード/, 0), cH = col(rows, /営業時間/, 2), cD = col(rows, /定休日/, 3), cF = col(rows, /フェイス/, 4), cS = col(rows, /状態/, 5);
       var info = {}, open = 0, all = 0;
@@ -572,6 +572,8 @@
         }
       }
       // フェイスケアの対応店舗
+      // グループのお店：閉店したお店のカードを外す
+      document.querySelectorAll("li.gp2[data-code]").forEach(function (li) { var x = info[li.getAttribute("data-code")]; if (x && x.closed) li.hidden = true; });
       if (fc.length) {
         var total = 0;
         fc.forEach(function (li) { var x = info[li.getAttribute("data-code")]; if (x) li.hidden = x.closed || !x.care; });
