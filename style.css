@@ -2785,3 +2785,74 @@ html.nav-lock .to-top { display: none; }
   .fq-tabs .ic svg { width: 18px; height: 18px; }
   .fq-tabs button b { font-size: 13px; letter-spacing: 0; }
 }
+
+/* PC：右上の「メニュー」ボタンで、ヘッダーにないページ（アプリの使い方・よくあるご質問など）も開ける */
+@media (min-width: 1061px) {
+  .header-inner { position: relative; gap: 14px; }
+  .nav { order: 1; }
+  .menu-btn {
+    order: 2; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    width: 58px; height: 52px; border: 2px solid var(--brown); background: var(--white); border-radius: 14px;
+    font-family: var(--round); font-weight: 800; font-size: 10.5px; color: var(--brown); cursor: pointer; padding: 6px 0 4px;
+  }
+  .menu-btn:hover { background: var(--orange-soft); }
+  .menu-btn .bars { margin: 7px 0 4px; }
+  .menu-btn .bars, .menu-btn .bars::before, .menu-btn .bars::after { display: block; width: 20px; height: 2.5px; border-radius: 2px; background: currentColor; position: relative; transition: transform .2s; }
+  .menu-btn .bars::before, .menu-btn .bars::after { content: ""; position: absolute; left: 0; }
+  .menu-btn .bars::before { top: -6px; } .menu-btn .bars::after { top: 6px; }
+  .menu-btn[aria-expanded="true"] { background: var(--brown); color: var(--white); }
+  .menu-btn[aria-expanded="true"] .bars { background: transparent; }
+  .menu-btn[aria-expanded="true"] .bars::before { transform: translateY(6px) rotate(45deg); }
+  .menu-btn[aria-expanded="true"] .bars::after { transform: translateY(-6px) rotate(-45deg); }
+  .site-header.is-open .nav-sub {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; position: absolute; top: calc(100% + 4px); right: var(--gutter);
+    width: 440px; padding: 18px; background: var(--white); border: 3px solid var(--orange); border-radius: 20px;
+    box-shadow: 0 16px 34px rgba(74,46,26,.18); z-index: 40;
+  }
+  .site-header.is-open .nav-sub::before { content: "そのほかのページ"; grid-column: 1 / -1; font-size: 13px; font-weight: 800; color: var(--orange-deep); }
+  .nav .nav-sub a { font-size: 14px; padding: 10px 12px; border: 2px solid var(--line); border-radius: 12px; text-align: center; }
+  .nav .nav-sub a:hover { border-color: var(--orange); background: var(--orange-soft); }
+}
+@media (min-width: 1061px) and (max-width: 1240px) {
+  .brand-area { display: none; }
+  .nav a { padding: 8px 10px; font-size: 14.5px; }
+}
+
+/* グループのお店：写真＋ロゴ＋ブランド色で、お店ごとにひと目で分かるように（PCは左右交互） */
+.gp2-list { list-style: none; margin: 30px auto 0; padding: 0; display: grid; gap: 26px; max-width: 980px; }
+.gp2 a { display: grid; grid-template-columns: 1.1fr 1fr; background: var(--white); border-radius: 24px; overflow: hidden; text-decoration: none; color: var(--brown); box-shadow: 0 8px 0 color-mix(in srgb, var(--gc) 22%, transparent), 0 14px 30px rgba(74,46,26,.08); border: 3px solid var(--gc); transition: transform .15s; }
+.gp2 a:hover { transform: translateY(-3px); }
+.gp2:nth-child(even) .gp2-photo { order: 2; }
+.gp2-photo { position: relative; display: block; min-height: 100%; }
+.gp2-photo > img { width: 100%; height: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; }
+.gp2-mark { position: absolute; left: 16px; bottom: 16px; display: grid; place-items: center; width: 116px; height: 86px; background: var(--white); border-radius: 16px; box-shadow: 0 6px 16px rgba(0,0,0,.18); padding: 8px; }
+.gp2:nth-child(even) .gp2-mark { left: auto; right: 16px; }
+.gp2-mark img { max-width: 100%; max-height: 100%; width: auto; height: auto; }
+.gp2-mark .gp-word { font-size: 15px; text-align: center; }
+.gp2-body { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 10px; padding: 28px 30px; border-top: 0; }
+.gp2-kind { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 12.5px; font-weight: 800; color: var(--white); }
+.gp2-kind { background: var(--gc); padding: 4px 12px; border-radius: 999px; }
+.gp2-kind > span { display: inline-flex; align-items: center; gap: 3px; font-weight: 700; opacity: .92; }
+.gp2-kind .ic { width: 16px; height: 16px; background: none; color: inherit; }
+.gp2-kind .ic svg { width: 15px; height: 15px; stroke-width: 3; }
+.gp2-name { font-size: 24px; line-height: 1.35; color: var(--gc); }
+.gp2-name .ph, .gp2-catch .ph { display: inline-block; }
+.gp2-catch { font-size: 15px; font-weight: 700; line-height: 1.7; }
+.gp2-price { display: flex; align-items: baseline; gap: 6px; padding-top: 10px; margin-top: 2px; border-top: 2px dashed var(--line); align-self: stretch; }
+.gp2-price small { font-size: 13px; font-weight: 800; }
+.gp2-price em { font-style: normal; font-family: var(--en); font-weight: 600; font-size: 38px; line-height: 1; color: var(--gc); }
+.gp2-go { display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; background: var(--gc); color: var(--white); font-weight: 800; font-size: 14.5px; padding: 11px 22px; border-radius: 999px; }
+.gp2-go span { font-size: 18px; line-height: 1; }
+@media (max-width: 760px) {
+  .gp2-list { gap: 20px; }
+  .gp2 a { grid-template-columns: 1fr; }
+  .gp2:nth-child(even) .gp2-photo { order: 0; }
+  .gp2:nth-child(even) .gp2-mark { right: auto; left: 12px; }
+  .gp2-mark { left: 12px; bottom: -26px; width: 100px; height: 72px; }
+  .gp2-body { padding: 46px 20px 22px; }
+  .gp2-name { font-size: 21px; }
+  .gp2-price em { font-size: 34px; }
+  .gp2-go { align-self: stretch; justify-content: center; }
+}
+.gp2-plus { --gc: #1d3170; } .gp2-delight { --gc: #111111; } .gp2-mrcool { --gc: #e37100; } .gp2-alpha { --gc: #8a6a3a; } .gp2-laladream { --gc: #1c4fa3; }
+.gp2 a { box-shadow: 0 8px 0 rgba(74,46,26,.12), 0 14px 30px rgba(74,46,26,.08); }

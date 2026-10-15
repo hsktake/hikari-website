@@ -47,6 +47,18 @@
         menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
         document.documentElement.classList.toggle("nav-lock", open); // メニューを開いている間は後ろのページを動かさない
       });
+      // PC：メニューの外をクリック・Escキーで閉じる
+      function closeMenu() {
+        header.classList.remove("is-open");
+        menuBtn.setAttribute("aria-expanded", "false");
+        document.documentElement.classList.remove("nav-lock");
+      }
+      document.addEventListener("click", function (e) {
+        if (header.classList.contains("is-open") && !header.contains(e.target)) closeMenu();
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && header.classList.contains("is-open")) { closeMenu(); menuBtn.focus(); }
+      });
       header.querySelectorAll(".nav a").forEach(function (a) {
         a.addEventListener("click", function () {
           header.classList.remove("is-open");

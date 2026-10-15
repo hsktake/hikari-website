@@ -145,6 +145,7 @@ def ic(name):
     return f'<span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true">{ICONS[name]}</svg></span>'
 
 
+ICONS["pin"] = '<path d="M24 43s13-12.5 13-23a13 13 0 0 0-26 0c0 10.5 13 23 13 23Z"/><circle cx="24" cy="20" r="5"/>'
 ICONS["check"] = '<path d="m12 25 8 8 16-17"/>'
 ICONS["card"] = '<rect x="5" y="11" width="38" height="26" rx="4"/><path d="M5 19h38M11 29h10"/>'
 ICONS["key"] = '<circle cx="15" cy="24" r="8"/><path d="M23 24h19M36 24v7M42 24v5"/>'
@@ -827,11 +828,12 @@ def build_community():
 
 # ---------- グループのお店（姉妹ブランド・関連店舗のサイトへの入口） ----------
 GROUP = [
-    ("plus/", "plus/img/logo.webp", 200, 168, "カットスペースPLUS", "ヘアカット専門店", "茨城県ひたちなか市", "次世代型ヘアカット専門店。|髪と顔のトータルケアはお任せ。", "ヘアカット 1,500円（税込）"),
-    ("delight/", "delight/img/logo.webp", 283, 180, "Men's Cut & Self|DELIGHT", "メンズヘアカット専門店", "栃木県宇都宮市", "カット以外をセルフ化し、|低価格・高品質・ハイスピード。", "セルフコース 1,300円"),
-    ("mrcool/", "mrcool/img/logo.webp", 391, 113, "HAIR STUDIO|MR.COOL", "ヘアカット専門店", "栃木県那須町", "ヘアカット専門店|×コミュニケーション。", "男性 1,500円・女性 2,000円"),
-    ("alpha/", "alpha/img/logo.webp", 164, 255, "シャンプーカット|アルファ", "メンズヘアサロン", "千葉県八千代市", "お買い物ついでにサッとカット。|美容師によるメンズヘアサロン。", "カット 2,000円（税込）"),
-    ("laladream/", "", 0, 0, "ララ・ドリーム|清原テクノ店", "コインランドリー", "栃木県宇都宮市", "リーズナブルな価格で洗濯乾燥を！|となりはDELIGHT。", "AM5:00〜AM0:00 年中無休"),
+    # (フォルダ, 写真, ロゴ, 幅, 高さ, 店名, 種類, 地域, ひとこと, (料金の前, 数字, 後), テーマ色)
+    ("plus", "assets/group/plus.webp", "plus/img/logo.webp", 200, 168, "カットスペースPLUS", "ヘアカット専門店", "茨城県ひたちなか市", "次世代型ヘアカット専門店。|髪と顔のトータルケアも。", ("ヘアカット", "1,500", "円（税込）"), "#1d3170"),
+    ("delight", "assets/group/delight.webp", "delight/img/logo.webp", 283, 180, "Men's Cut & Self|DELIGHT", "メンズヘアカット専門店", "栃木県宇都宮市", "カット以外はセルフで、|安い・早い・高品質。", ("セルフコース", "1,300", "円"), "#111111"),
+    ("mrcool", "assets/group/mrcool.webp", "mrcool/img/logo.webp", 391, 113, "HAIR STUDIO|MR.COOL", "ヘアカット専門店", "栃木県那須町", "ヘアカット専門店|×コミュニケーション。", ("男性", "1,500", "円（税込）"), "#e37100"),
+    ("alpha", "assets/group/alpha.webp", "alpha/img/logo.webp", 164, 255, "シャンプーカット|アルファ", "メンズヘアサロン", "千葉県八千代市", "お買い物ついでに|サッとカット。", ("カット", "2,000", "円（税込）"), "#8a6a3a"),
+    ("laladream", "assets/group/laladream.webp", "", 0, 0, "ララ・ドリーム|清原テクノ店", "コインランドリー", "栃木県宇都宮市", "リーズナブルな価格で|洗濯乾燥を！", ("営業時間", "5:00〜0:00", "年中無休"), "#1c4fa3"),
 ]
 
 
@@ -839,13 +841,22 @@ def build_group():
     head, foot = shell("グループのお店｜カットハウスひかり",
                        "株式会社エイチ・エス・ケイが運営するカットハウスひかり以外のお店。カットスペースPLUS、Men's Cut & Self DELIGHT、HAIR STUDIO MR.COOL、シャンプーカット アルファ、コインランドリー ララ・ドリーム清原テクノ店。")
     cards = []
-    for href, logo, w, h, name, kind, area, catch, price in GROUP:
-        vis = (f'<img src="{logo}" alt="" width="{w}" height="{h}" loading="lazy">' if logo
-               else '<span class="gp-word"><small>COIN LAUNDRY</small>ララ・ドリーム</span>')
-        cards.append(f'<li><a href="{href}"><span class="gp-logo">{vis}</span>'
-                     f'<span class="gp-kind"><span class="ph">{esc(kind)}</span>｜<span class="ph">{esc(area)}</span></span><b>{" ".join(ph(x) for x in name.split("|"))}</b>'
-                     f'<span class="gp-catch">{ph(catch)}</span><span class="gp-price">{esc(price)}</span>'
-                     f'<span class="gp-go">ホームページを見る ›</span></a></li>')
+    for d, photo, logo, w, h, name, kind, area, catch, (pl, pn, pu), col in GROUP:
+        nm = " ".join(ph(x) for x in name.split("|"))
+        mark = (f'<img src="{logo}" alt="" width="{w}" height="{h}" loading="lazy">' if logo
+                else '<span class="gp-word"><small>COIN LAUNDRY</small>ララ・ドリーム</span>')
+        cards.append(f'''<li class="gp2 gp2-{d}">
+        <a href="{d}/">
+          <span class="gp2-photo"><img src="{photo}" alt="{esc(name.replace("|", " "))}の店舗" width="840" height="560" loading="lazy"><span class="gp2-mark">{mark}</span></span>
+          <span class="gp2-body">
+            <span class="gp2-kind">{esc(kind)}<span>{ic("pin")}{esc(area)}</span></span>
+            <b class="gp2-name">{nm}</b>
+            <span class="gp2-catch">{ph(catch)}</span>
+            <span class="gp2-price"><small>{esc(pl)}</small><em>{esc(pn)}</em><small>{esc(pu)}</small></span>
+            <span class="gp2-go">ホームページを見る<span aria-hidden="true">›</span></span>
+          </span>
+        </a>
+      </li>''')
     body = f"""<main id="main">
   <section class="page-hero legal-hero">
     <div class="wrap">
@@ -855,8 +866,10 @@ def build_group():
   </section>
   <section class="fc-sec">
     <div class="wrap">
-      <p class="gp-lead">{ph("株式会社エイチ・エス・ケイは、|カットハウスひかりのほかにも|これらのお店を運営しています。")}</p>
-      <ul class="gp-list gp-page">{"".join(cards)}</ul>
+      <p class="gp-lead">{ph("カットハウスひかりのほかにも、|こんなお店を運営しています。")}</p>
+      <ul class="gp2-list">
+      {"".join(cards)}
+      </ul>
     </div>
   </section>
 </main>
