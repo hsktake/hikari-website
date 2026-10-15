@@ -252,16 +252,46 @@ def build_facecare():
     head, foot = shell("フェイスケア（ヒゲ脱毛・光フェイシャル）｜カットハウスひかり",
                        "カットハウスひかりのフェイスケア。ヒゲ脱毛（初回お試し1,000円）・光フェイシャル（初回お試し2,000円）。都度払いで、ヘアカットのついでに気軽に。茨城・栃木・千葉・福島の対応店舗で受付中。")
     n, stores = store_list()
-    faq = [
-        ("永久脱毛ですか？", "光脱毛は永久脱毛ではなく、|抑毛・減毛効果が期待できる|脱毛方法です。繰り返し照射することで|毛根にダメージを与え、|徐々に毛が薄くなる|脱毛方法です。"),
-        ("何回くらいで効果がでますか？", "一般的に6回目から|効果を実感でき、|回数を重ねるごとに|自己処理が|どんどん楽になってきます。個人差はございますが、|15回〜20回で|ヒゲが気にならない|状態になります。"),
-        ("痛みはありますか？", "様々な脱毛方法の中でも、|刺激が少ないのが|光脱毛の特徴です。チクチクという|刺激は感じます。"),
-        ("途中解約はできますか？", "当店のヒゲ脱毛に|契約の縛りはございません。1回ずつ都度払いなので、|気軽にご利用ください。"),
-        ("こどもでも利用できますか？", "ヒゲが気になる|思春期のお子様にも|ご利用いただけます。未成年者の場合、|初回のみ|保護者さまの同意を|いただいております。"),
+    # Q&A（社内資料「よくある質問 Q&A」のお客様向け説明を、短く言い換えたもの）
+    faq_groups = [
+        ("beard", "ヒゲ脱毛", [
+            ("何回くらいで効果がでますか？", "自己処理がラクになるのは|10〜15回くらい。|ツルツルにしたい方は|15〜20回前後、|濃いヒゲの方は|25回前後が目安です。"),
+            ("効果はいつわかりますか？", "照射から1〜2週間後に、|毛がスルッと抜けてきます。"),
+            ("永久脱毛ですか？", "永久脱毛ではありませんが、|くり返し照射することで|生えにくくなります。"),
+            ("痛みはありますか？", "チクチクとした|刺激はありますが、|レーザー脱毛より|痛みは少なめです。"),
+            ("どのくらいのペースで|通えばいいですか？", "最短2週間に1回。|カットのついでなど、|お好きなペースでOKです。"),
+            ("ヒゲを少し残せますか？", "5回ほど照射したあと、|残したい形に|調整できます。|デザインヒゲも|ご相談ください。"),
+        ]),
+        ("calendar", "施術の前と後", [
+            ("当日はどうすればいいですか？", "ヒゲをそってから|お越しください。|日焼け止めや乳液など、|油分のあるスキンケアは|控えてください。"),
+            ("施術のあとに|気をつけることは？", "当日は、お酒の飲みすぎ・|サウナ・長風呂・|激しい運動を控えて、|保湿と日焼け対策を|してください。"),
+            ("赤みが出たら|どうすればいいですか？", "冷やして保湿してください。|1週間たっても|おさまらないときは、|お店にご相談ください。"),
+            ("ニキビがあっても|大丈夫ですか？", "赤く腫れている所は|避けて照射します。"),
+        ]),
+        ("sparkle", "光フェイシャル", [
+            ("光フェイシャルって何？", "肌に光をあてて、|肌の生まれ変わりを|助けます。|シミ・くすみをうすくし、|ハリのある肌へ。"),
+            ("1回で効果は続きますか？", "肌は少しずつ|元に戻るので、|定期的な照射が|おすすめです。"),
+            ("シミやホクロにも|あてられますか？", "シミは大丈夫です|（肝斑は取れません）。|ホクロには照射しません。"),
+            ("すぐにメイクできますか？", "はい、|施術のあとすぐに|メイクできます。"),
+        ]),
+        ("kid", "お子さま・その他", [
+            ("こどもでも利用できますか？", "ヒゲが気になる|思春期のお子さまも|ご利用いただけます。|未成年の方は、|初回のみ|保護者さまの同意が|必要です。"),
+            ("こどもは何回くらい|かかりますか？", "うすいヒゲで10回前後、|濃いヒゲで15回以上が|目安です。|成長とともに、|また生えてくることも|あります。"),
+            ("体に悪い影響は|ありませんか？", "光が届くのは|毛の根もと|（3〜4mmほど）までなので、|ご安心ください。"),
+            ("途中でやめられますか？", "契約の縛りはありません。|1回ずつの|都度払いです。"),
+        ]),
     ]
-    faq_html = "\n".join(
-        f'      <details class="qa"><summary><span class="q-mark" aria-hidden="true">Q</span><span class="q-text">{esc(q)}</span></summary><div class="a-body"><span class="a-mark" aria-hidden="true">A</span><div><p>{t(a)}</p></div></div></details>'
-        for q, a in faq)
+    tabs = "".join(
+        f'<li role="presentation"><button type="button" role="tab" id="fq-tab{i}" aria-controls="fq-{i}" aria-selected="{"true" if i == 0 else "false"}">{ic(icon)}<b>{name}</b></button></li>'
+        for i, (icon, name, _) in enumerate(faq_groups))
+    panels = []
+    for i, (icon, name, items) in enumerate(faq_groups):
+        qas = "\n".join(
+            f'        <details class="qa"><summary><span class="q-mark" aria-hidden="true">Q</span><span class="q-text">{ph(q)}</span></summary><div class="a-body"><span class="a-mark" aria-hidden="true">A</span><div><p>{ph(a)}</p></div></div></details>'
+            for q, a in items)
+        panels.append(f'      <div class="fq-panel" role="tabpanel" id="fq-{i}" aria-labelledby="fq-tab{i}">\n        <p class="fq-h">{ic(icon)}{name}</p>\n{qas}\n      </div>')
+    faq_html = (f'      <p class="fc-sec-lead">{ph("気になる質問を|タップしてください。")}</p>\n'
+                f'      <ul class="fq-tabs" role="tablist" aria-label="質問のジャンル">{tabs}</ul>\n' + "\n".join(panels))
     body = f"""<main id="main">
   <section class="fc-hero">
     <div class="wrap fc-hero-grid">
@@ -317,7 +347,7 @@ def build_facecare():
   </section>
 
   <section class="fc-sec fc-alt" id="fc-faq" aria-labelledby="h-fcfaq">
-    <div class="wrap fc-narrow">
+    <div class="wrap fc-narrow" data-tabs>
       {head_block("Q&amp;A", "h-fcfaq", "よくあるご質問")}
 {faq_html}
       <div class="mx-consult">{ic("chat")}<p><b>ご相談・見学受付中！</b>{ph("費用や効果など、|お気軽にご相談ください。")}</p></div>

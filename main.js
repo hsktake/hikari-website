@@ -222,6 +222,31 @@
       });
     });
   });
+  /* Q&A のジャンル切り替え（タブ） */
+  ready(function () {
+    document.querySelectorAll("[data-tabs]").forEach(function (box) {
+      var tabs = box.querySelectorAll('[role="tab"]');
+      function show(t) {
+        tabs.forEach(function (x) {
+          var on = x === t;
+          x.setAttribute("aria-selected", on ? "true" : "false");
+          x.tabIndex = on ? 0 : -1;
+          var p = document.getElementById(x.getAttribute("aria-controls"));
+          if (p) p.hidden = !on;
+        });
+      }
+      tabs.forEach(function (t, i) {
+        t.addEventListener("click", function () { show(t); });
+        t.addEventListener("keydown", function (e) {
+          var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+          if (!d) return;
+          var n = tabs[(i + d + tabs.length) % tabs.length];
+          n.focus(); show(n);
+        });
+      });
+      if (tabs.length) show(tabs[0]);
+    });
+  });
   /* 下までスクロールしたら「ページの一番上へ」ボタンを出す */
   ready(function () {
     var btn = document.createElement("button");
