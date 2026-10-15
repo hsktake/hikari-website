@@ -2746,3 +2746,9 @@ main .fc-hero { padding-bottom: 46px; }
 .gp-kind .ph{display:inline-block}
 .gp-price{white-space:nowrap}
 @media (max-width:860px){.gp-page{grid-template-columns:1fr}}
+/* PCでもボタン・リンクを中央に */
+#app .ax-more { grid-column: 1 / -1; text-align: center; }
+@media (min-width: 601px) {
+  .menu-body { align-items: center; text-align: center; }
+  .menu-body .menu-price { justify-content: center; }
+}
