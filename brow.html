@@ -6,7 +6,7 @@
 <title>眉毛カット｜カットハウスひかり</title>
 <meta name="description" content="カットハウスひかりの眉毛カット。ヘアカットと一緒にご注文いただけるオプションです。スペシャルコース200円・全体コース100円。公式アプリからもご注文いただけます。">
 <meta name="robots" content="noindex, nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://docs.google.com https://*.googleusercontent.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#EF7A00">
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
@@ -15,8 +15,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=149">
-<script src="main.js?v=149"></script>
+<link rel="stylesheet" href="style.css?v=150">
+<script src="main.js?v=150"></script>
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
@@ -48,7 +48,7 @@
         <p class="fc-en">EYEBROW</p>
         <h1>眉毛カット<br><span>眉毛も髪もプロにおまかせ</span></h1>
         <p class="fc-lead"><span class="ph">ヘアカットと一緒に</span><span class="ph">注文できるオプション</span></p>
-        <div class="pz"><p class="pz-h">ヘアカットに追加で</p><ul><li><a href="#bw-course"><small>スペシャル</small><span class="pz-v"><b>200</b><i>円</i></span></a></li><li><a href="#bw-course"><small>全体</small><span class="pz-v"><b>100</b><i>円</i></span></a></li></ul><p class="pz-note"><span class="ph">※料金は税込です。</span></p></div>
+        <div class="pz"><p class="pz-h">ヘアカットに追加で</p><ul><li><a href="#bw-course"><small>スペシャル</small><span class="pz-v"><b data-price="brow_special">200</b><i>円</i></span></a></li><li><a href="#bw-course"><small>全体</small><span class="pz-v"><b data-price="brow_all">100</b><i>円</i></span></a></li></ul><p class="pz-note"><span class="ph">※料金は税込です。</span></p></div>
       </div>
       <div class="fc-brow-ba bw-hero-ba">
         <figure><img src="assets/menu/brow-before.webp" alt="眉毛カット前" width="300" height="131"><figcaption>BEFORE</figcaption></figure>
@@ -56,7 +56,7 @@
       </div>
     </div>
   </section>
-<nav class="mx-switch wrap" aria-label="メニューのページ"><ul><li><a href="haircut.html"><span class="mx-ic"><img src="assets/scissors.svg" alt="" width="28" height="28"></span><b>ヘアカット</b><small>男性1,400円</small></a></li><li><a href="brow.html" aria-current="page"><span class="mx-ic"><svg viewBox="0 0 40 28" width="30" height="21" aria-hidden="true"><path d="M3 18c8-10 22-12 34-5" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/></svg></span><b>眉毛カット</b><small>＋200円</small></a></li><li><a href="facecare.html"><span class="mx-ic"><img src="assets/sparkle.svg" alt="" width="26" height="26"></span><b>フェイスケア</b><small>初回1,000円〜</small></a></li></ul></nav>
+<nav class="mx-switch wrap" aria-label="メニューのページ"><ul><li><a href="haircut.html"><span class="mx-ic"><img src="assets/scissors.svg" alt="" width="28" height="28"></span><b>ヘアカット</b><small>男性<span data-price="cut_men">1,400</span>円</small></a></li><li><a href="brow.html" aria-current="page"><span class="mx-ic"><svg viewBox="0 0 40 28" width="30" height="21" aria-hidden="true"><path d="M3 18c8-10 22-12 34-5" stroke="currentColor" stroke-width="5" fill="none" stroke-linecap="round"/></svg></span><b>眉毛カット</b><small>＋<span data-price="brow_special">200</span>円</small></a></li><li><a href="facecare.html"><span class="mx-ic"><img src="assets/sparkle.svg" alt="" width="26" height="26"></span><b>フェイスケア</b><small>初回<span data-price="beard_trial">1,000</span>円〜</small></a></li></ul></nav>
   <section class="fc-sec" id="bw-survey" aria-labelledby="h-bwsurvey">
     <div class="wrap">
       <p class="fc-en">SURVEY</p>
@@ -79,8 +79,8 @@
       <p class="fc-en">COURSE</p>
       <h2 id="h-bwcourse"><span class="ph">選べる2つのコース</span></h2>
       <ul class="bw-prices">
-        <li class="is-main"><span class="bw-name">スペシャル</span><b>200<small>円</small></b><span class="bw-desc"><span class="ph">全体の長さ</span><span class="ph">＋眉周り</span></span></li>
-        <li><span class="bw-name">全体</span><b>100<small>円</small></b><span class="bw-desc"><span class="ph">全体の</span><span class="ph">長さ</span></span></li>
+        <li class="is-main"><span class="bw-name">スペシャル</span><b><span data-price="brow_special">200</span><small>円</small></b><span class="bw-desc"><span class="ph">全体の長さ</span><span class="ph">＋眉周り</span></span></li>
+        <li><span class="bw-name">全体</span><b><span data-price="brow_all">100</span><small>円</small></b><span class="bw-desc"><span class="ph">全体の</span><span class="ph">長さ</span></span></li>
       </ul>
       <p class="fc-note center-t">※料金は税込です。</p>
     </div>

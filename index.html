@@ -7,7 +7,7 @@
 <meta name="description" content="北関東に62店舗のヘアカット専門店カットハウスひかり。公式アプリで予約すれば、待ち時間はおうちで過ごせて、お店ではほとんど待ちません。茨城・栃木・千葉・福島。">
 <!-- 試作版のため検索エンジンに載せない（本番切り替え時に削除） -->
 <meta name="robots" content="noindex, nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://i.ytimg.com; frame-src https://www.youtube-nocookie.com; script-src 'self'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://docs.google.com https://*.googleusercontent.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://i.ytimg.com; frame-src https://www.youtube-nocookie.com; script-src 'self'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#EF7A00">
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
@@ -16,8 +16,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=149">
-<script src="main.js?v=149"></script>
+<link rel="stylesheet" href="style.css?v=150">
+<script src="main.js?v=150"></script>
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
@@ -233,7 +233,7 @@
           <div class="menu-media mm-cut"><img src="assets/menu/haircut-main.webp" alt="メガネの男性のツーブロックスタイル" width="600" height="600" loading="lazy"></div>
           <div class="menu-body">
             <h3>ヘアカット</h3>
-            <p class="menu-price is-row"><span><small>男性</small><b>1,400</b>円</span><span><small>女性</small><b>1,600</b>円</span></p>
+            <p class="menu-price is-row"><span><small>男性</small><b data-price="cut_men">1,400</b>円</span><span><small>女性</small><b data-price="cut_women">1,600</b>円</span></p>
             <p><span class="ph">丸刈りから</span><span class="ph">ロングまで。</span><span class="ph">大人も</span><span class="ph">お子さまも、</span><span class="ph">男性も</span><span class="ph">女性も。</span></p>
             <a class="more" href="haircut.html">詳しく見る</a>
           </div>
@@ -246,7 +246,7 @@
           </div>
           <div class="menu-body">
             <h3>眉毛カット</h3>
-            <p class="menu-price"><span><small>カットに＋</small><b>200</b>円</span></p>
+            <p class="menu-price"><span><small>カットに＋</small><b data-price="brow_special">200</b>円</span></p>
             <p><span class="ph">カットと</span><span class="ph">一緒に</span><span class="ph">注文できます。</span><span class="ph">髪型と眉を</span><span class="ph">同時に</span><span class="ph">すっきり。</span></p>
             <a class="more" href="brow.html">詳しく見る</a>
           </div>
@@ -255,7 +255,7 @@
           <div class="menu-media mm-face"><img src="assets/menu/facecare-smile.webp" alt="あごに手を当てて笑う男性" width="600" height="600" loading="lazy"></div>
           <div class="menu-body">
             <h3>フェイスケア</h3>
-            <p class="menu-price"><span><small>初回お試し</small><b>1,000</b>円〜</span></p>
+            <p class="menu-price"><span><small>初回お試し</small><b data-price="beard_trial">1,000</b>円〜</span></p>
             <p><span class="ph">カットの</span><span class="ph">ついでに、</span><span class="ph">ヒゲと肌の</span><span class="ph">お悩みも。</span></p>
             <a class="more" href="facecare.html">詳しく見る</a>
           </div>

@@ -279,3 +279,166 @@
     });
   });
 })();
+
+/* ===== ホームページ管理シート（Googleスプレッドシート）から、お知らせ・休業・料金などを読み込む =====
+   シートが読めないときは、HTML に書いてある内容をそのまま表示する。 */
+(function () {
+  "use strict";
+  var SHEET_ID = "1jFqWrK2nqotA_KuIcxwKrYuEjn_UMDfQ5QUKY1ElP3w";
+  var CACHE_MIN = 3; // 同じタブを何分おきに読み直すか
+  var script = document.currentScript;
+  var BASE = script ? script.src.replace(/[^/]*$/, "") : location.href.replace(/[^/]*$/, "");
+
+  function ready(fn) {
+    if (document.readyState !== "loading") fn();
+    else document.addEventListener("DOMContentLoaded", fn);
+  }
+  function esc(t) {
+    return String(t).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  // CSV を行の配列に（"" で囲んだ改行・カンマにも対応）
+  function parseCSV(text) {
+    var rows = [], row = [], cur = "", q = false;
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (q) {
+        if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; }
+        else cur += c;
+      } else if (c === '"') q = true;
+      else if (c === ",") { row.push(cur); cur = ""; }
+      else if (c === "\n" || c === "\r") {
+        if (c === "\r" && text[i + 1] === "\n") i++;
+        row.push(cur); rows.push(row); row = []; cur = "";
+      } else cur += c;
+    }
+    if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
+    return rows;
+  }
+  function load(tab) {
+    var key = "hk-sheet:" + tab;
+    try {
+      var c = JSON.parse(sessionStorage.getItem(key) || "null");
+      if (c && Date.now() - c.t < CACHE_MIN * 60000) return Promise.resolve(c.rows);
+    } catch (e) {}
+    var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:csv&headers=1&sheet=" + encodeURIComponent(tab);
+    return fetch(url, { credentials: "omit" }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.text();
+    }).then(function (t) {
+      if (/^\s*</.test(t)) throw new Error("not csv"); // ログイン画面などが返ってきたとき
+      var rows = parseCSV(t).slice(1).filter(function (r) {
+        return r.some(function (v) { return v.trim() !== ""; });
+      });
+      try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), rows: rows })); } catch (e) {}
+      return rows;
+    });
+  }
+  function toDate(s) {
+    var m = String(s || "").match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);
+    return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null;
+  }
+  var WD = "日月火水木金土";
+  function fmtDay(d, withYear) {
+    return (withYear ? d.getFullYear() + "/" : "") + (d.getMonth() + 1) + "/" + d.getDate() + "（" + WD[d.getDay()] + "）";
+  }
+  function money(v) {
+    var n = String(v).replace(/[^\d]/g, "");
+    return n ? Number(n).toLocaleString("ja-JP") : "";
+  }
+  function href(link) {
+    try { return new URL(link, BASE).href; } catch (e) { return ""; }
+  }
+
+  // 料金：data-price="キー" の数字を置きかえる
+  function prices() {
+    var els = document.querySelectorAll("[data-price]");
+    if (!els.length) return;
+    load("料金").then(function (rows) {
+      var map = {};
+      rows.forEach(function (r) { var v = money(r[2]); if (r[0] && v) map[r[0].trim()] = v; });
+      els.forEach(function (el) {
+        var v = map[el.getAttribute("data-price")];
+        if (v) el.textContent = v;
+      });
+    }).catch(function () {});
+  }
+
+  // お知らせ帯：全ページのいちばん上
+  function notice() {
+    var header = document.querySelector(".site-header");
+    if (!header) return;
+    load("お知らせ帯").then(function (rows) {
+      var r = rows.filter(function (r) { return /[○◯〇oO]/.test(r[0] || "") && (r[1] || "").trim(); })[0];
+      if (!r) return;
+      var bar = document.createElement("div");
+      bar.className = "site-notice";
+      var text = '<span class="sn-ic" aria-hidden="true">!</span><span>' + esc(r[1].trim()) + "</span>";
+      var link = (r[2] || "").trim();
+      bar.innerHTML = link ? '<a href="' + esc(href(link)) + '">' + text + '<span class="sn-go" aria-hidden="true">›</span></a>' : "<p>" + text + "</p>";
+      header.parentNode.insertBefore(bar, header);
+    }).catch(function () {});
+  }
+
+  // 休業・営業時間変更：過ぎた日は出さない。同じ日付の行はまとめる
+  function days(box, tab) {
+    load(tab).then(function (rows) {
+      var today = new Date(); today.setHours(0, 0, 0, 0);
+      var groups = [], byKey = {};
+      rows.forEach(function (r) {
+        var s = toDate(r[0]), e = toDate(r[1]), t = (r[2] || "").trim();
+        if (!s || !t || (e || s) < today) return;
+        var k = s.getTime() + "-" + (e ? e.getTime() : "");
+        if (!byKey[k]) { byKey[k] = { s: s, e: e, items: [] }; groups.push(byKey[k]); }
+        byKey[k].items.push(t);
+      });
+      groups.sort(function (a, b) { return a.s - b.s || (a.e ? 1 : 0) - (b.e ? 1 : 0); });
+      box.innerHTML = groups.length ? groups.map(function (g) {
+        var label = g.s.getFullYear() + "/" + fmtDay(g.s, false) + (g.e ? "〜" + fmtDay(g.e, g.e.getFullYear() !== g.s.getFullYear()) : "");
+        return '<div class="nw-day"><p class="nw-date">' + label + "</p><ul>" + g.items.map(function (t) {
+          var m = t.match(/^(全店舗[^（(]*)(.*)$/);
+          return "<li>" + (m ? "<strong>" + esc(m[1]) + "</strong>" + esc(m[2]) : esc(t)) + "</li>";
+        }).join("") + "</ul></div>";
+      }).join("") : '<p class="nw-none">現在、予定はありません。</p>';
+      var upd = box.parentNode.querySelector(".nw-upd");
+      if (upd) upd.hidden = true;
+    }).catch(function () {});
+  }
+
+  // お知らせ：表示に○の行を新しい順に
+  function infos(box) {
+    load("お知らせ").then(function (rows) {
+      var list = rows.filter(function (r) { return toDate(r[0]) && (r[1] || "").trim() && /[○◯〇oO]/.test(r[3] || ""); })
+        .sort(function (a, b) { return toDate(b[0]) - toDate(a[0]); });
+      if (!list.length) return;
+      box.innerHTML = list.map(function (r) {
+        var d = toDate(r[0]);
+        var id = (r[4] || "").trim() || "n" + d.getFullYear() + ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2);
+        var paras = String(r[2] || "").replace(/\r/g, "").split(/\n\s*\n/).map(function (p) {
+          var lines = p.trim().split("\n").map(esc);
+          if (!lines[0]) return "";
+          if (/^[■【]/.test(lines[0])) lines[0] = "<strong>" + lines[0] + "</strong>";
+          var sign = /本部\s*$/.test(p.trim()) && /株式会社/.test(p);
+          return "<p" + (sign ? ' class="legal-sign"' : "") + ">" + lines.join("<br>") + "</p>";
+        }).join("");
+        return '<details class="qa nw-info" id="' + esc(id) + '"><summary><span class="q-text">' + esc(r[1].trim()) +
+          "<small>" + d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate() + "</small></span></summary>" +
+          '<div class="a-body"><div>' + paras + "</div></div></details>";
+      }).join("");
+      var t = location.hash && document.getElementById(location.hash.slice(1));
+      if (t && t.tagName === "DETAILS") { t.open = true; t.scrollIntoView(); }
+    }).catch(function () {});
+  }
+
+  ready(function () {
+    if (!window.fetch || !SHEET_ID) return;
+    notice();
+    prices();
+    document.querySelectorAll("[data-sheet]").forEach(function (box) {
+      var tab = box.getAttribute("data-sheet");
+      if (tab === "お知らせ") infos(box);
+      else days(box, tab);
+    });
+  });
+})();

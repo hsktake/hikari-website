@@ -62,7 +62,7 @@ def write_list_data(shops):
 
 
 # ---------- 店舗ページ ----------
-CSP = ("default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; "
+CSP = ("default-src 'self'; connect-src 'self' https://docs.google.com https://*.googleusercontent.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; "
        "img-src 'self' data:; frame-src https://www.google.com; script-src 'self'; base-uri 'self'; form-action 'none'")
 
 SCISSORS = ('<svg class="hero-scissors" viewBox="0 0 200 200" aria-hidden="true">'
@@ -175,11 +175,27 @@ def badges(s):
     return "".join(out)
 
 
+# 標準料金は管理シート（料金タブ）の値に置きかわる（main.js の data-price）
+STD_PRICES = {("男性", "1,400円"): "cut_men", ("女性", "1,600円"): "cut_women",
+              ("ヒゲ", "3,500円/回"): "beard", ("顔全体", "4,500円/回"): "facial", ("光フェイシャル", "4,500円/回"): "facial",
+              ("ひじ下", "3,000円/回"): "hair_hijishita", ("ひざ下", "4,500円/回"): "hair_hizashita",
+              ("手先", "2,000円/回"): "hair_tesaki", ("足先", "2,500円/回"): "hair_ashisaki",
+              ("うなじ", "2,000円/回"): "hair_unaji", ("耳毛", "2,000円/回"): "hair_mimige"}
+
+
+def price_val(n, p):
+    key = STD_PRICES.get((n, p))
+    m = re.match(r"([\d,]+)(.*)", p)
+    if not key or not m:
+        return esc(p)
+    return f'<span data-price="{key}">{m.group(1)}</span>{esc(m.group(2))}'
+
+
 def price_html(s):
     groups = []
     for g in s["prices"]:
         items = "".join(
-            f'<li><span>{esc(zen(n))}</span><b>{esc(p)}</b></li>' for n, p in g["items"])
+            f'<li><span>{esc(zen(n))}</span><b>{price_val(n, p)}</b></li>' for n, p in g["items"])
         groups.append(f'<div class="pg"><p class="pg-ttl">{esc(zen(g["label"]))}</p><ul>{items}</ul></div>')
     return "".join(groups)
 

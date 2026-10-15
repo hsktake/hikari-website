@@ -93,7 +93,7 @@ def page(prefix, title, desc, body, v):
 <meta name="description" content="{esc(desc)}">
 <!-- 試作版のため検索エンジンに載せない（本番切り替え時に削除） -->
 <meta name="robots" content="noindex, nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; frame-src https://docs.google.com; script-src 'self'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://docs.google.com https://*.googleusercontent.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; frame-src https://docs.google.com; script-src 'self'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#EF7A00">
 <link rel="icon" href="{p}assets/favicon-32.png" sizes="32x32" type="image/png">
