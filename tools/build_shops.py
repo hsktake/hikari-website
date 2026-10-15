@@ -47,6 +47,8 @@ def load():
 def write_list_data(shops):
     rows = []
     for s in shops:
+        if s.get("closed"):
+            continue
         rows.append({
             "p": s["pref"], "code": s["code"], "name": s["name"], "city": s["city"],
             "address": s["address"], "hours": s["hours"], "holiday": s["holiday"],
@@ -161,11 +163,10 @@ def name_html(s):
 
 
 def badges(s):
+    # 定休日なし・ヒゲ脱毛は管理シート（店舗情報）で変わるので、いつも置いて hidden で出し分ける（main.js）
     out = []
-    if s["holiday"] == "無休":
-        out.append('<span class="sb sb-open">定休日なし</span>')
-    if s["care"]:
-        out.append('<span class="sb sb-care">ヒゲ脱毛・光フェイシャル</span>')
+    out.append('<span class="sb sb-open" data-sf="open"' + ("" if s["holiday"] == "無休" else " hidden") + '>定休日なし</span>')
+    out.append('<span class="sb sb-care" data-sf="care"' + ("" if s["care"] else " hidden") + '>ヒゲ脱毛・光フェイシャル</span>')
     if s["menOnly"]:
         out.append('<span class="sb sb-other">男性専用</span>')
     if s["brand"] == "other":
@@ -206,6 +207,7 @@ def map_embed_url(s):
 
 
 def nearby(s, shops):
+    shops = [x for x in shops if not x.get("closed")]
     same_city = [x for x in shops if x["city"] == s["city"] and x["code"] != s["code"]]
     same_pref = [x for x in shops if x["pref"] == s["pref"] and x["code"] != s["code"] and x not in same_city]
     picks = (same_city + same_pref)[:4]
@@ -217,6 +219,17 @@ def nearby(s, shops):
         cards.append(f'<li><a href="{x["code"]}.html"><span class="{cls}">{im}</span>'
                      f'<span class="nb-city">{esc(x["city"])}</span><span class="nb-name">{esc(x["short"])}</span></a></li>')
     return "".join(cards)
+
+
+CLOSED_TEXT = "この店舗は閉店いたしました。長らくのご利用、誠にありがとうございました。"
+
+
+def closed_note(s):
+    """管理シートの店舗情報で「閉店」にした店舗（main.js も同じ文を出す）"""
+    if not s.get("closed"):
+        return ""
+    return (f'<div class="sp-notice sp-closed"><p>{CLOSED_TEXT}</p>'
+            f'<a class="ext" href="../shops.html">ほかの店舗を探す</a></div>')
 
 
 def shop_page(s, shops, v):
@@ -269,7 +282,7 @@ def shop_page(s, shops, v):
       <div class="sp-head">
         <h1>{name_html(s)}</h1>
         <p class="sp-addr">{ICON["pin"]}<span>{addr_html(s["address"])}</span></p>
-        {('<div class="sp-badges">' + badges(s) + '</div>') if badges(s) else ""}
+        <div class="sp-badges">{badges(s)}</div>
         <div class="sp-actions">
           <a class="btn sp-btn-wait" href="{esc(s["mis"])}" rel="noopener">{ICON["wait"]}いまの待ち状況を見る</a>
           <a class="btn sp-btn-app" href="#sp-app">{ICON["phone"]}アプリで予約する</a>
@@ -279,14 +292,14 @@ def shop_page(s, shops, v):
     </div>
   </section>
 
-  <div class="wrap sp-body">
-    {other_note}{notice}
+  <div class="wrap sp-body" data-code="{s["code"]}">
+    {closed_note(s)}{other_note}{notice}
     <div class="sp-sheet" data-shop="{esc(s["short"])}" hidden></div>
     <section class="sp-block reveal" aria-labelledby="h-info">
       <h2 class="sp-h" id="h-info">店舗情報</h2>
       <dl class="sp-info">
-        <div><dt>{ICON["clock"]}営業時間</dt><dd><strong>{esc(s["hours"])}</strong><ul class="sp-notes">{notes}</ul></dd></div>
-        <div><dt>{ICON["cal"]}定休日</dt><dd><strong>{esc(s["holiday"])}</strong><a class="sp-link" href="{EIGYO_URL}">臨時休業・営業時間の変更はこちら</a></dd></div>
+        <div><dt>{ICON["clock"]}営業時間</dt><dd><strong data-sf="hours">{esc(s["hours"])}</strong><ul class="sp-notes" data-sf="notes">{notes}</ul></dd></div>
+        <div><dt>{ICON["cal"]}定休日</dt><dd><strong data-sf="holiday">{esc(s["holiday"])}</strong><a class="sp-link" href="{EIGYO_URL}">臨時休業・営業時間の変更はこちら</a></dd></div>
         <div><dt>{ICON["pin"]}住所</dt><dd>{addr_html(s["address"])}</dd></div>
         <div><dt>{ICON["card"]}{pay_label}</dt><dd><span class="chips">{pay}</span></dd></div>
         <div><dt>{ICON["wifi"]}Wi-Fi</dt><dd>{esc(wifi)}</dd></div>
@@ -297,7 +310,7 @@ def shop_page(s, shops, v):
       <h2 class="sp-h" id="h-price">料金</h2>
       <div class="sp-price">{price_html(s)}</div>
       <p class="sp-small">※チケットは店頭の券売機、または公式アプリでお求めください。</p>
-      {('<p class="sp-fc"><a href="../facecare.html">ヒゲ脱毛・光フェイシャル・眉毛カットについて詳しく ›</a></p>') if s["care"] else ""}
+      <p class="sp-fc" data-sf="care"{"" if s["care"] else " hidden"}><a href="../facecare.html">ヒゲ脱毛・光フェイシャル・眉毛カットについて詳しく ›</a></p>
     </section>
     {parking}
     <section class="sp-block reveal" aria-labelledby="h-map">

@@ -468,7 +468,7 @@
     var name = box.getAttribute("data-shop");
     plan().then(function (items) {
       var mine = items.filter(function (it) { return it.shop === name || it.shop === "全店舗"; });
-      if (!mine.length) return;
+      if (!mine.length) { box.hidden = true; box.innerHTML = ""; return; }
       box.innerHTML = '<p class="sps-h"><span aria-hidden="true">!</span>臨時休業・営業時間の変更</p><ul class="sps-list">' +
         mine.map(function (it) { return "<li><b>" + dayLabel(it).replace(/^\d{4}\//, "") + "</b><span>" + it.own + "</span></li>"; }).join("") + "</ul>" +
         '<a class="sps-more" href="' + esc(href("news.html#eigyo")) + '">ほかの店舗の情報も見る ›</a>';
@@ -512,6 +512,83 @@
     });
   }
 
+  // 店舗情報タブ（店舗コード・店舗・営業時間・定休日・フェイスケア・状態）：店舗一覧・店舗ページ・フェイスケアの対応店舗・店舗数
+  // 営業時間が変わったら、下の注意書き（〇時以降のチケットは…）も新しい閉店時刻で作り直す（tools/sync_sheet.py と同じ）
+  function hoursNotes(h) {
+    var m = String(h).match(/^(\d{1,2}):(\d{2})〜(\d{1,2}):(\d{2})$/);
+    if (!m) return [];
+    var t = +m[3] + "時" + (m[4] !== "00" ? +m[4] + "分" : "");
+    return ["ご案内の目安の時刻が" + t + "以降となるチケットは購入できません。", "混雑状況によって" + t + "より早く受付を終了する場合があります。"];
+  }
+  var CLOSED_TEXT = "この店舗は閉店いたしました。長らくのご利用、誠にありがとうございました。";
+  function shopInfo() {
+    var page = document.querySelector(".sp-body[data-code]"), fc = document.querySelectorAll("li[data-code]"),
+      area = document.querySelectorAll(".area-main strong");
+    if (!window.SHOPS && !page && !fc.length && !area.length) return;
+    load("店舗情報", /営業時間/).then(function (rows) {
+      var cC = col(rows, /コード/, 0), cH = col(rows, /営業時間/, 2), cD = col(rows, /定休日/, 3), cF = col(rows, /フェイス/, 4), cS = col(rows, /状態/, 5);
+      var info = {}, open = 0, all = 0;
+      rows.forEach(function (r) {
+        var code = (r[cC] || "").trim();
+        if (/^\d+$/.test(code)) code = ("0000" + code).slice(-5); else return;
+        var x = { hours: (r[cH] || "").trim(), holiday: (r[cD] || "").trim(), care: /あり|[○◯〇]/.test(r[cF] || ""), closed: /閉店/.test(r[cS] || "") };
+        info[code] = x; all++;
+        if (!x.closed) open++;
+      });
+      if (all < 10) return; // 読み込みが途中のときなどは何もしない
+      // 店舗一覧（shops.js）
+      if (window.SHOPS) {
+        for (var i = window.SHOPS.length - 1; i >= 0; i--) {
+          var s = window.SHOPS[i], x = info[s.code];
+          if (!x) continue;
+          if (x.closed) { window.SHOPS.splice(i, 1); continue; }
+          if (x.hours) s.hours = x.hours;
+          if (x.holiday) s.holiday = x.holiday;
+          s.care = x.care;
+        }
+        if (window.hkShopsRefresh) window.hkShopsRefresh();
+      }
+      // 店舗ページ
+      var x2 = page && info[page.getAttribute("data-code")];
+      if (x2) {
+        var q = function (k) { return document.querySelectorAll('[data-sf="' + k + '"]'); };
+        var h = q("hours")[0];
+        if (h && x2.hours && h.textContent !== x2.hours) {
+          h.textContent = x2.hours;
+          var ul = q("notes")[0];
+          if (ul) ul.innerHTML = hoursNotes(x2.hours).map(function (n) { return "<li>" + esc(n) + "</li>"; }).join("");
+        }
+        var d = q("holiday")[0];
+        if (d && x2.holiday) d.textContent = x2.holiday;
+        q("open").forEach(function (e) { e.hidden = (x2.holiday || (d && d.textContent)) !== "無休"; });
+        q("care").forEach(function (e) { e.hidden = !x2.care; });
+        var bd = document.querySelector(".sp-badges");
+        if (bd) bd.hidden = !bd.querySelector(":scope > :not([hidden])");
+        if (x2.closed && !page.querySelector(".sp-closed")) {
+          var n = document.createElement("div");
+          n.className = "sp-notice sp-closed";
+          n.innerHTML = "<p>" + esc(CLOSED_TEXT) + '</p><a class="ext" href="' + esc(href("shops.html")) + '">ほかの店舗を探す</a>';
+          page.insertBefore(n, page.firstChild);
+        }
+      }
+      // フェイスケアの対応店舗
+      if (fc.length) {
+        var total = 0;
+        fc.forEach(function (li) { var x = info[li.getAttribute("data-code")]; if (x) li.hidden = x.closed || !x.care; });
+        document.querySelectorAll(".fc-pref").forEach(function (g) {
+          var n = g.querySelectorAll("li[data-code]:not([hidden])").length;
+          total += n;
+          g.hidden = !n;
+          var sp = g.querySelector("[data-fc-n]");
+          if (sp) sp.textContent = n + "店舗";
+        });
+        document.querySelectorAll("[data-fc-total]").forEach(function (e) { e.textContent = total; });
+      }
+      // ヘッダーの「北関東に〇店舗」
+      area.forEach(function (e) { e.textContent = open; });
+    }).catch(function () {});
+  }
+
   // 採用：募集停止の職種に印。「応募フォームのURL」の行にURLがあれば、相談・見学・応募のボタンをフォームへ
   function recruit() {
     var jobs = document.querySelectorAll("[data-job]"), entries = document.querySelectorAll("[data-entry]");
@@ -544,6 +621,7 @@
     if (!window.fetch || !SHEET_ID) return;
     notice();
     prices();
+    shopInfo();
     recruit();
     document.querySelectorAll("[data-shop]").forEach(shopDays);
     document.querySelectorAll("[data-sheet]").forEach(function (box) { days(box, box.getAttribute("data-sheet")); });

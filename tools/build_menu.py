@@ -232,16 +232,20 @@ def head_block(en, hid, title, sub=""):
 
 
 def store_list():
+    # 店舗をすべて置き、対応していない店舗は hidden（管理シートの店舗情報で変わったとき main.js が出し分ける）
     with open(os.path.join(ROOT, "data", "shops.json"), encoding="utf-8") as f:
-        shops = [s for s in json.load(f) if s["care"]]
+        shops = [s for s in json.load(f) if not s.get("closed")]
     groups = []
+    total = 0
     for p in PREFS:
         items = [s for s in shops if s["pref"] == p]
+        n = sum(1 for s in items if s["care"])
+        total += n
         if not items:
             continue
-        lis = "".join(f'<li><a href="shop/{s["code"]}.html"><small>{esc(s["city"])}</small>{esc(s["short"])}</a></li>' for s in items)
-        groups.append(f'<div class="fc-pref"><p class="fc-pref-name">{p}県<span>{len(items)}店舗</span></p><ul>{lis}</ul></div>')
-    return len(shops), "".join(groups)
+        lis = "".join(f'<li data-code="{s["code"]}"{"" if s["care"] else " hidden"}><a href="shop/{s["code"]}.html"><small>{esc(s["city"])}</small>{esc(s["short"])}</a></li>' for s in items)
+        groups.append(f'<div class="fc-pref"{"" if n else " hidden"}><p class="fc-pref-name">{p}県<span data-fc-n>{n}店舗</span></p><ul>{lis}</ul></div>')
+    return total, "".join(groups)
 
 
 def write(name, head, body, foot):
@@ -303,7 +307,7 @@ def build_facecare():
         <h1>髪も、肌も、髭も。<br><span>首から上のトータルケア</span></h1>
         <p class="fc-lead">{ph("カットのついでに、|ヒゲと肌のケアも。")}</p>
         {price_board("初回お試し", [("ヒゲ脱毛", "1,000", "#beard", "beard_trial"), ("光フェイシャル", "2,000", "#facial", "facial_trial")], raw_note='<span class="ph">通常 ヒゲ脱毛<span data-price="beard">3,500</span>円・</span><span class="ph">光フェイシャル<span data-price="facial">4,500</span>円</span><span class="ph">（1回・税込）</span>')}
-        <p class="pz-link"><a href="#fc-shops">対応店舗（{n}店舗）を見る ›</a></p>
+        <p class="pz-link"><a href="#fc-shops">対応店舗（<span data-fc-total>{n}</span>店舗）を見る ›</a></p>
       </div>
       <div class="fc-hero-photo"><img src="assets/facecare/hero-smile.webp" alt="あごに手を当てて笑う男性" width="900" height="696"></div>
     </div>
@@ -360,7 +364,7 @@ def build_facecare():
   <section class="fc-sec" id="fc-shops" aria-labelledby="h-fcshops">
     <div class="wrap">
       {head_block("SHOP", "h-fcshops", "対応店舗")}
-      <p class="fc-sec-lead">{ph(f"{n}店舗で|受付中です。")}</p>
+      <p class="fc-sec-lead"><span class="ph"><span data-fc-total>{n}</span>店舗で</span><span class="ph">受付中です。</span></p>
       <div class="fc-stores">{stores}</div>
       <p class="center"><a class="btn btn-main" href="shops.html">すべての店舗を探す</a></p>
     </div>

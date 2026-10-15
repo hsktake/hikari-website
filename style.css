@@ -2881,3 +2881,8 @@ p.rq-closed { margin: 10px 0 0; font-size: 14px; }
 .sps-list li { display: flex; flex-wrap: wrap; gap: 2px 12px; margin: 0 !important; background: var(--white); border-radius: 12px; padding: 8px 12px; font-size: 14.5px; line-height: 1.6; }
 .sps-list b { font-family: var(--en); font-weight: 600; min-width: 10.5em; }
 .sps-list strong { color: #D8432C; }
+
+/* 管理シートで出し分ける部分（hidden を確実に効かせる） */
+.sb[hidden], .sp-fc[hidden], .sp-badges[hidden], .fc-pref[hidden], .fc-pref li[hidden] { display: none !important; }
+.sp-badges:not(:has(> :not([hidden]))) { display: none; }
+.sp-closed { background: #FDE7E0; }

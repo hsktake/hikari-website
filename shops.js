@@ -26,10 +26,16 @@
     return (s || "").normalize("NFKC").toLowerCase().replace(/[ヶヵ]/g, "ケ").replace(/\s+/g, "");
   }
 
-  SHOPS.forEach(function (s) {
-    s.noHoliday = s.holiday === "無休";
-    s.key = norm(s.name + s.city + s.address);
-  });
+  function prep() {
+    SHOPS.forEach(function (s) {
+      s.noHoliday = s.holiday === "無休";
+      s.key = norm(s.name + s.city + s.address);
+    });
+  }
+  prep();
+  function countOf(p) {
+    return p === "すべて" ? SHOPS.length : SHOPS.filter(function (s) { return s.p === p; }).length;
+  }
 
   // ---- エリアのタブ ----
   ["すべて"].concat(PREFS).forEach(function (p) {
@@ -37,8 +43,7 @@
     b.type = "button";
     b.dataset.pref = p;
     b.appendChild(document.createTextNode(p));
-    var n = p === "すべて" ? SHOPS.length : SHOPS.filter(function (s) { return s.p === p; }).length;
-    b.appendChild(el("small", null, String(n)));
+    b.appendChild(el("small", null, String(countOf(p))));
     b.addEventListener("click", function () { setPref(p, true); });
     $tabs.appendChild(b);
   });
@@ -177,6 +182,16 @@
   // トップページの検索欄から来たときは、その言葉で絞り込む
   var qParam = new URLSearchParams(location.search).get("q");
   if (qParam) { state.q = qParam; $q.value = qParam; }
+
+  // 管理シート（店舗情報）で営業時間・定休日・閉店などが変わったとき、main.js が window.SHOPS を直してから呼ぶ
+  window.hkShopsRefresh = function () {
+    prep();
+    Array.prototype.forEach.call($tabs.children, function (b) {
+      var sm = b.querySelector("small");
+      if (sm) sm.textContent = String(countOf(b.dataset.pref));
+    });
+    render();
+  };
 
   var fromHash = decodeURIComponent(location.hash.slice(1));
   setPref(PREFS.indexOf(fromHash) >= 0 ? fromHash : "すべて", false);
