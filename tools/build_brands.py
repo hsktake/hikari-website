@@ -402,6 +402,9 @@ def page(b):
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; base-uri 'self'; form-action 'none'">
 <title>{esc(b["title"])}</title>
 <meta name="description" content="{esc(b["desc"])}">
+<link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="img/favicon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 {fonts}
 <link rel="stylesheet" href="style.css?v={VERSION}">
 </head>
