@@ -364,7 +364,7 @@ def build_haircut():
     head, foot = shell("ヘアカット・ヘアカタログ｜カットハウスひかり",
                        "カットハウスひかりのヘアカット。丸刈りからロングまで、大人もお子さまも、男性も女性も。ヘアカタログ（人気スタイル・メンズ・レディース・キッズ）とチケットの買い方をご案内します。")
     u35 = style_row([(f"assets/styles/u35-0{i+1}.jpg", nm) for i, nm in enumerate(U35)])
-    mens = style_row([(f"assets/catalog2/{k}.webp", nm) for k, nm in MENS] + [(f"assets/styles/o35-0{i+1}.jpg", nm) for i, nm in enumerate(O35)])
+    mens = style_row([(f"assets/catalog2/{k}.webp", nm) for k, nm in MENS])
     ladies = style_row([(f"assets/catalog2/{k}.webp", nm) for k, nm in LADIES])
     kids = style_row([(f"assets/kids/{k}.webp", nm) for k, nm in KIDS])
     body = f"""<main id="main">
@@ -417,7 +417,7 @@ def build_haircut():
 
 """
     write("haircut.html", head, body, foot)
-    print(f"ヘアカットのページを作成しました（ヘアカタログ{len(U35) + len(O35) + len(MENS) + len(LADIES) + len(KIDS)}スタイル）")
+    print(f"ヘアカットのページを作成しました（ヘアカタログ{len(U35) + len(MENS) + len(LADIES) + len(KIDS)}スタイル）")
 
 
 # ---------- 眉毛カット ----------
