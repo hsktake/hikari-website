@@ -426,7 +426,7 @@ def page(b):
 """
 
 
-VERSION = 2
+VERSION = 3
 
 TOTOP_JS = r"""/* 下までスクロールしたら「ページの一番上へ」ボタンを出す */
 (function () {
@@ -631,7 +631,16 @@ THEMES = {
 .head{border-bottom:1px solid #000}
 .head::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:6px}
 .gnav a{font-family:var(--en);letter-spacing:.1em;color:#111} .gnav a:hover{color:var(--red)}
-.hero{background:#000} .hero-bg{left:45%} .hero-bg img{object-position:50% 20%}
+.hero{background:#000} .hero-bg{left:42%} .hero-bg img{object-position:50% 20%}
+.hero-bg::after{background:linear-gradient(90deg,#000 0%,rgba(0,0,0,.45) 16%,rgba(0,0,0,0) 42%)}
+.hero-in>*{max-width:560px}
+.hero h1{font-size:clamp(30px,4.2vw,48px)}
+@media (max-width:600px){
+  .hero-bg{left:0;bottom:auto;height:420px} .hero-bg img{object-position:65% 0}
+  .hero-bg::after{background:linear-gradient(0deg,#000 0%,rgba(0,0,0,.55) 30%,rgba(0,0,0,0) 60%)}
+  .hero-in{padding-top:300px}
+  .hero-logo{width:min(300px,80%)}
+}
 .hero-logo{width:min(420px,80%);height:auto;margin-bottom:18px}
 .hero h1{font-weight:900}
 .hero-badge{background:#fff;color:#000} .hero-badge b{font-weight:900}
