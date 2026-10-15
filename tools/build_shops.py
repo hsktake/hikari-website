@@ -19,6 +19,10 @@ APP_IOS = "https://apple.co/3tl829o"
 APP_ANDROID = "https://play.google.com/store/apps/details?id=hsk.hims_app&hl=ja"
 
 
+# 姉妹ブランドの新しいホームページ（tools/build_brands.py で作成）
+BRAND_SITES = {"00201": "plus/", "00207": "delight/", "00205": "mrcool/", "00202": "alpha/"}
+
+
 def esc(s):
     return html.escape(str(s), quote=True)
 
@@ -116,7 +120,7 @@ def head(title, desc, v, canonical_path):
       <a href="../facecare.html">フェイスケア</a>
       <a href="../app.html">公式アプリ</a>
       <a class="nav-recruit" href="../recruit.html">採用情報</a>
-      <div class="nav-sub"><a href="../app-guide.html">アプリの使い方</a><a href="../member.html">HiCARD会員</a><a href="../faq.html">よくあるご質問</a><a href="../contact.html">お問い合わせ</a><a href=".././#company">会社案内</a><a href="../community.html">地域とともに</a><a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a><a href="../privacy.html">プライバシーポリシー</a><a href="../tokushoho.html">特定商取引法に基づく表記</a></div>
+      <div class="nav-sub"><a href="../app-guide.html">アプリの使い方</a><a href="../member.html">HiCARD会員</a><a href="../faq.html">よくあるご質問</a><a href="../contact.html">お問い合わせ</a><a href=".././#company">会社案内</a><a href="../community.html">地域とともに</a><a href=".././#group">グループのお店</a><a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a><a href="../privacy.html">プライバシーポリシー</a><a href="../tokushoho.html">特定商取引法に基づく表記</a></div>
     </nav>
   </div>
 </header>
@@ -132,7 +136,7 @@ FOOTER = """
       <div class="fn-col"><p class="fn-h">お店・メニュー</p><ul><li><a href="../shops.html">店舗を探す</a></li><li><a href="../haircut.html">ヘアカット</a></li><li><a href="../brow.html">眉毛カット</a></li><li><a href="../facecare.html">フェイスケア</a></li></ul></div>
       <div class="fn-col"><p class="fn-h">公式アプリ・会員</p><ul><li><a href="../app.html">公式アプリ</a></li><li><a href="../app-guide.html">アプリの使い方</a></li><li><a href="../member.html">HiCARD会員</a></li></ul></div>
       <div class="fn-col"><p class="fn-h">ご案内</p><ul><li><a href="../news.html">お知らせ</a></li><li><a href="../faq.html">よくあるご質問</a></li><li><a href="../contact.html">お問い合わせ</a></li></ul></div>
-      <div class="fn-col"><p class="fn-h">会社</p><ul><li><a href=".././#company">会社案内</a></li><li><a href="../community.html">地域とともに</a></li><li><a href="../recruit.html">採用情報</a></li><li><a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a></li></ul></div>
+      <div class="fn-col"><p class="fn-h">会社</p><ul><li><a href=".././#company">会社案内</a></li><li><a href=".././#group">グループのお店</a></li><li><a href="../community.html">地域とともに</a></li><li><a href="../recruit.html">採用情報</a></li><li><a href="https://www.instagram.com/cut_hikari/" rel="noopener">Instagram</a></li></ul></div>
       <p class="fn-legal"><a href=".././">トップページ</a><a href="../privacy.html">プライバシーポリシー</a><a href="../tokushoho.html">特定商取引法に基づく表記</a></p>
     </nav>
     <p class="copy">© 1997 H.S.K</p>
@@ -214,7 +218,9 @@ def shop_page(s, shops, v):
     other_note = ""
     if s["brand"] == "other":
         extra = f'<br>{esc(s["formerly"])}' if s["formerly"] else ""
-        link = f'<a class="ext" href="{esc(s["official"])}" rel="noopener">{esc(s["name"])} 公式サイト</a>' if s["official"] else ""
+        site = BRAND_SITES.get(s["code"])
+        link = (f'<a class="ext" href="../{site}">{esc(s["name"])} のホームページ</a>' if site
+                else (f'<a class="ext" href="{esc(s["official"])}" rel="noopener">{esc(s["name"])} 公式サイト</a>' if s["official"] else ""))
         other_note = (f'<div class="sp-notice"><p>別業態の店舗のため、サービス等がカットハウスひかりとは異なる場合があります。{extra}</p>{link}</div>')
     notice = ""
     if s.get("notice"):
