@@ -51,13 +51,14 @@
   .hero .big { font-size: 56px; font-weight: 800; line-height: 1.05; letter-spacing: -.01em; color: var(--ink); margin: 6px 0 2px; }
   .hero .big small { font-size: 18px; color: var(--ink2); margin-left: 4px; }
   .hero .spark { margin-top: 10px; }
+  #heroCvr { display: flex; align-items: center; }
   .ring-wrap { display: flex; align-items: center; gap: 16px; }
   .ring-txt .lb { font-size: 13px; font-weight: 800; color: var(--brown); }
   .ring-txt p { margin: 4px 0 6px; font-size: 12px; color: var(--ink2); }
-  .minis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .minis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .mini { border-radius: 14px; background: #FFFBF5; border: 1px solid var(--line); padding: 10px 12px; }
   .mini .lb { font-size: 12px; color: var(--ink2); font-weight: 700; display: flex; align-items: center; gap: 6px; }
-  .mini .v { font-size: 24px; font-weight: 800; line-height: 1.2; }
+  .mini .v { font-size: 24px; font-weight: 800; line-height: 1.2; white-space: nowrap; }
   .mini .v small { font-size: 12px; color: var(--ink2); margin-left: 2px; }
   .mini .delta { font-size: 11.5px; }
 
@@ -65,7 +66,10 @@
   svg text { font-family: inherit; }
   .viz { width: 100%; display: block; overflow: visible; }
   .lk { transition: opacity .15s; cursor: default; }
-  .lk:hover { opacity: .85 !important; }
+  .lk:hover { opacity: .8 !important; }
+  .sk.on .lk { opacity: .08 !important; }
+  .sk.on .lk.hl { opacity: .75 !important; }
+  .sk .nd { cursor: pointer; }
   .heat-legend { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--muted); margin-top: 8px; }
   .heat-legend i { width: 22px; height: 10px; border-radius: 3px; display: inline-block; }
   .heat-box { overflow-x: auto; }
@@ -128,7 +132,8 @@
     main { padding: 12px; }
     .card { padding: 14px 14px 16px; border-radius: 16px; }
     .hero .big { font-size: 46px; }
-    .minis { grid-template-columns: repeat(2, 1fr); }
+    .hide-sp { display: none; }
+    td:first-child { min-width: 5.5em; }
     .shops { grid-template-columns: 1fr 1fr; gap: 8px; }
     .shop .ph { height: 84px; }
     h1 { font-size: 16px; }
@@ -162,7 +167,7 @@
       <h2 class="group">お客様の動き<small>どこから入って、どこへ進み、どこで帰ったか</small></h2>
       <section class="card s7"><h2><span class="ic">🔻</span>来店までの流れ</h2><p class="sub">この月に来た人のうち、店舗を探し、そのあと待ち状況・地図・電話・アプリDLまで進んだ人数</p><div id="fFunnel"></div></section>
       <section class="card s5"><h2><span class="ic">🚪</span>最初に開いたページ（入口）</h2><p class="sub">「すぐ帰った」＝10秒未満で1ページだけ見て帰った割合</p><div id="tLanding"></div></section>
-      <section class="card s12"><h2><span class="ic">🔀</span>ページのつながり</h2><p class="sub">左のページを見たあと、右のページへ進んだ人の流れ（太いほど多い。上位の流れだけ）。線に指を合わせると回数が出ます</p><div id="sankey"></div></section>
+      <section class="card s12"><h2><span class="ic">🔀</span>ページのつながり</h2><p class="sub">左のページを見たあと、右のページへ進んだ回数の流れ（太いほど多い。上位の流れだけ）。ページ名に指を合わせる・タップすると、そのページの流れだけ濃くなります</p><div id="sankey"></div></section>
       <section class="card s7"><h2><span class="ic">👋</span>ここで終わった人が多いページ</h2><p class="sub">割合は目安。店舗ページは、待ち状況や地図を見てお店に向かった人も含みます（右の「来店・連絡」）</p><div id="tExits"></div></section>
       <section class="card s5"><h2><span class="ic">🧭</span>どこから来たか × 成約率</h2><p class="sub">訪問回数と、そのうち来店につながった割合</p><div id="tChannels"></div></section>
 
@@ -191,6 +196,7 @@
   var C1 = "#D96A00", C2 = "#2F86B8", C3 = "#3E9E5A", CMP = "#B9AFA6", GRID = "#EFE9E2", INK = "#2B2420", INK2 = "#6B625B", MUTED = "#9A918A";
   var HEAT = ["#F7EFE6", "#FCE3C6", "#F8C88F", "#F2A856", "#E58424", "#C46200", "#8F4500"];
   var FUNNEL = ["#9A4700", "#D96A00", "#F0A050"];
+  var FUNNEL_SHORT = ["ホームページに来た", "店舗を探した", "待ち状況・地図・電話・アプリDL"];
   var WD = ["日", "月", "火", "水", "木", "金", "土"];
   var D = null, charts = {};
   if (window.Chart) {
@@ -381,8 +387,11 @@
           out += '<text x="' + (W / 2) + '" y="' + (py + gap / 2 + 5) + '" text-anchor="middle" font-size="12.5" font-weight="800" fill="#B3402A">↓ ' + num(lost) + "人（" + (prevN ? Math.round(lost / prevN * 100) : 0) + "%）が離れた</text>";
         }
         out += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + barH + '" rx="10" fill="' + FUNNEL[i] + '"><title>' + esc(r[2]) + "：" + num(n) + "人</title></rect>";
-        out += '<text x="' + (W / 2) + '" y="' + (y + 22) + '" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">' + esc(String(r[2]).replace(/（.*?）/, "")) + "</text>";
-        out += '<text x="' + (W / 2) + '" y="' + (y + 44) + '" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">' + num(n) + '人 <tspan font-size="12" font-weight="600">' + Math.round(n / n0 * 100) + "%</tspan></text>";
+        var name = FUNNEL_SHORT[i] || String(r[2]), inside = w >= name.length * 12.5 + 28;
+        var tx = inside ? W / 2 : x + w + 12, anc = inside ? "middle" : "start", col = inside ? "#fff" : INK;
+        if (!inside && tx + name.length * 12.5 > W) { tx = W / 2; anc = "middle"; col = INK; }
+        out += '<text x="' + tx + '" y="' + (y + 22) + '" text-anchor="' + anc + '" font-size="12" font-weight="700" fill="' + col + '">' + esc(name) + "</text>";
+        out += '<text x="' + tx + '" y="' + (y + 44) + '" text-anchor="' + anc + '" font-size="18" font-weight="800" fill="' + col + '">' + num(n) + '人 <tspan font-size="12" font-weight="600">' + Math.round(n / n0 * 100) + "%</tspan></text>";
       });
       box.innerHTML = svgEl(W, H, out, "来店までの流れ");
     }
@@ -396,59 +405,80 @@
 
     // 離脱
     var ex = rowsOf(D.exits, m).sort(function (a, b) { return b[4] - a[4]; }).slice(0, 10);
-    $("tExits").innerHTML = ex.length ? "<table><thead><tr><th>ページ</th><th class=n>表示</th><th class=n>終わった</th><th class=n>割合</th><th class=n>来店・連絡</th></tr></thead><tbody>" +
-      ex.map(function (r) { return "<tr><td>" + esc(r[1]) + "</td><td class=n>" + num(r[2]) + "</td><td class=n>" + num(r[4]) + "</td><td class=n>" + rateCell(r[5]) + "</td><td class=n>" + num(r[6]) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
+    $("tExits").innerHTML = ex.length ? "<table><thead><tr><th>ページ</th><th class='n hide-sp'>表示</th><th class=n>終わった</th><th class=n>割合</th><th class=n>来店・連絡</th></tr></thead><tbody>" +
+      ex.map(function (r) { return "<tr><td>" + esc(r[1]) + '</td><td class="n hide-sp">' + num(r[2]) + "</td><td class=n>" + num(r[4]) + "</td><td class=n>" + rateCell(r[5]) + "</td><td class=n>" + num(r[6]) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
   }
 
-  // サンキー図（左＝前のページ、右＝次のページ）
+  // サンキー図（左＝前のページ、右＝次のページ）。ページ名に指を合わせる・タップすると、そのページの流れだけ濃くなる
   function renderSankey(m) {
     var box = $("sankey");
     var lk = rowsOf(D.links, m).map(function (r) { return { f: String(r[1]), t: String(r[2]), v: Number(r[3]) }; })
       .filter(function (l) { return l.v > 0; }).sort(function (a, b) { return b.v - a.v; }).slice(0, 14);
     if (!lk.length) { box.innerHTML = EMPTY; return; }
     var W = Math.max(320, box.clientWidth || 800), narrow = W < 560;
-    var lab = narrow ? 92 : 150, nodeW = 12, pad = narrow ? 8 : 10, fs = narrow ? 11 : 12.5;
+    var lab = narrow ? 96 : 170, nodeW = 12, pad = narrow ? 10 : 14, fs = narrow ? 11 : 13;
     var L = {}, R = {};
     lk.forEach(function (l) { L[l.f] = (L[l.f] || 0) + l.v; R[l.t] = (R[l.t] || 0) + l.v; });
     var lNames = Object.keys(L).sort(function (a, b) { return L[b] - L[a]; }), rNames = Object.keys(R).sort(function (a, b) { return R[b] - R[a]; });
     var total = lk.reduce(function (s, l) { return s + l.v; }, 0);
-    var minNode = 18, n = Math.max(lNames.length, rNames.length);
-    var H = Math.max(220, Math.min(560, n * 46));
-    var scale = (H - pad * (n - 1)) / total;
+    var minNode = narrow ? 26 : 22, n = Math.max(lNames.length, rNames.length);
+    var H = Math.max(240, Math.min(440, n * (narrow ? 44 : 40)));
     function place(names, sums) {
-      var y = 0, pos = {}, used = names.reduce(function (s, k) { return s + Math.max(minNode, sums[k] * scale); }, 0) + pad * (names.length - 1);
-      y = (H - used) / 2;
-      names.forEach(function (k) { var h = Math.max(minNode, sums[k] * scale); pos[k] = { y: y, h: h, off: 0 }; y += h + pad; });
+      var free = H - pad * (names.length - 1), small = 0, bigSum = 0;
+      names.forEach(function (k) { if (sums[k] / total * free < minNode) small++; else bigSum += sums[k]; });
+      var sc = bigSum ? (free - small * minNode) / bigSum : 0, y = 0, pos = {};
+      names.forEach(function (k) { var h = Math.max(minNode, sums[k] * sc); pos[k] = { y: y, h: h, off: 0 }; y += h + pad; });
+      pos._end = y - pad;
       return pos;
     }
     var lp = place(lNames, L), rp = place(rNames, R);
+    var H2 = Math.max(lp._end, rp._end);
+    [lp, rp].forEach(function (pos) { var sh = (H2 - pos._end) / 2; Object.keys(pos).forEach(function (k) { if (k !== "_end") pos[k].y += sh; }); });
+    H = Math.ceil(H2) + 2;
     var x0 = lab, x1 = W - lab - nodeW, out = "";
     lk.forEach(function (l) {
       var a = lp[l.f], b = rp[l.t];
       var ha = a.h * l.v / L[l.f], hb = b.h * l.v / R[l.t];
       var ya = a.y + a.off, yb = b.y + b.off; a.off += ha; b.off += hb;
       var sx = x0 + nodeW, ex = x1, mx = (sx + ex) / 2;
-      out += '<path class="lk" d="M' + sx + "," + ya + " C" + mx + "," + ya + " " + mx + "," + yb + " " + ex + "," + yb + " L" + ex + "," + (yb + hb) + " C" + mx + "," + (yb + hb) + " " + mx + "," + (ya + ha) + " " + sx + "," + (ya + ha) + ' Z" fill="' + C1 + '" opacity=".28"><title>' + esc(l.f) + " → " + esc(l.t) + "：" + num(l.v) + "回</title></path>";
+      out += '<path class="lk" data-f="' + esc(l.f) + '" data-t="' + esc(l.t) + '" d="M' + sx + "," + ya + " C" + mx + "," + ya + " " + mx + "," + yb + " " + ex + "," + yb + " L" + ex + "," + (yb + hb) + " C" + mx + "," + (yb + hb) + " " + mx + "," + (ya + ha) + " " + sx + "," + (ya + ha) + ' Z" fill="' + C1 + '" opacity=".32"><title>' + esc(l.f) + " → " + esc(l.t) + "：" + num(l.v) + "回</title></path>";
     });
+    function label(x, anchor, p, k, v) {
+      var cy = p.y + p.h / 2 + fs / 2 - 1;
+      return '<text x="' + x + '" y="' + cy + '" text-anchor="' + anchor + '" font-size="' + fs + '" font-weight="700" fill="' + INK + '">' + esc(k) +
+        ' <tspan font-weight="500" fill="' + INK2 + '" font-size="' + (fs - 1.5) + '">' + num(v) + "</tspan></text>";
+    }
     lNames.forEach(function (k) {
       var p = lp[k];
-      out += '<rect x="' + x0 + '" y="' + p.y + '" width="' + nodeW + '" height="' + p.h + '" rx="3" fill="#4A2E1A"><title>' + esc(k) + "：" + num(L[k]) + "回</title></rect>";
-      out += '<text x="' + (x0 - 8) + '" y="' + (p.y + p.h / 2 - 1) + '" text-anchor="end" font-size="' + fs + '" font-weight="700" fill="' + INK + '">' + esc(k) + '</text><text x="' + (x0 - 8) + '" y="' + (p.y + p.h / 2 + fs) + '" text-anchor="end" font-size="' + (fs - 1.5) + '" fill="' + INK2 + '">' + num(L[k]) + "回</text>";
+      out += '<g class="nd" data-f="' + esc(k) + '"><rect x="' + x0 + '" y="' + p.y + '" width="' + nodeW + '" height="' + p.h + '" rx="3" fill="#4A2E1A"/>' + label(x0 - 8, "end", p, k, L[k]) +
+        '<rect x="0" y="' + p.y + '" width="' + (x0 + nodeW) + '" height="' + p.h + '" fill="transparent"/></g>';
     });
     rNames.forEach(function (k) {
       var p = rp[k];
-      out += '<rect x="' + x1 + '" y="' + p.y + '" width="' + nodeW + '" height="' + p.h + '" rx="3" fill="' + C2 + '"><title>' + esc(k) + "：" + num(R[k]) + "回</title></rect>";
-      out += '<text x="' + (x1 + nodeW + 8) + '" y="' + (p.y + p.h / 2 - 1) + '" font-size="' + fs + '" font-weight="700" fill="' + INK + '">' + esc(k) + '</text><text x="' + (x1 + nodeW + 8) + '" y="' + (p.y + p.h / 2 + fs) + '" font-size="' + (fs - 1.5) + '" fill="' + INK2 + '">' + num(R[k]) + "回</text>";
+      out += '<g class="nd" data-t="' + esc(k) + '"><rect x="' + x1 + '" y="' + p.y + '" width="' + nodeW + '" height="' + p.h + '" rx="3" fill="' + C2 + '"/>' + label(x1 + nodeW + 8, "start", p, k, R[k]) +
+        '<rect x="' + x1 + '" y="' + p.y + '" width="' + (W - x1) + '" height="' + p.h + '" fill="transparent"/></g>';
     });
-    out += '<text x="' + (x0 + nodeW / 2) + '" y="-8" text-anchor="middle" font-size="11" font-weight="800" fill="' + MUTED + '">前のページ</text><text x="' + (x1 + nodeW / 2) + '" y="-8" text-anchor="middle" font-size="11" font-weight="800" fill="' + MUTED + '">次のページ</text>';
-    box.innerHTML = '<div style="padding-top:16px">' + svgEl(W, H, out, "ページのつながり") + "</div>";
+    box.innerHTML = '<div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:800;color:' + MUTED + ';margin:0 0 6px"><span>◀ 前のページ</span><span>次のページ ▶</span></div>' +
+      '<div class="sk">' + svgEl(W, H, out, "ページのつながり") + "</div>";
+    var sk = box.querySelector(".sk");
+    var on = function (g) {
+      var f = g.getAttribute("data-f"), t = g.getAttribute("data-t");
+      sk.classList.add("on");
+      sk.querySelectorAll(".lk").forEach(function (p) { p.classList.toggle("hl", (f && p.getAttribute("data-f") === f) || (t && p.getAttribute("data-t") === t)); });
+    };
+    var off = function () { sk.classList.remove("on"); };
+    sk.querySelectorAll(".nd").forEach(function (g) {
+      g.addEventListener("mouseenter", function () { on(g); });
+      g.addEventListener("mouseleave", off);
+      g.addEventListener("click", function (e) { e.stopPropagation(); if (sk.classList.contains("on") && sk.dataset.cur === (g.getAttribute("data-f") || g.getAttribute("data-t"))) { off(); sk.dataset.cur = ""; } else { on(g); sk.dataset.cur = g.getAttribute("data-f") || g.getAttribute("data-t"); } });
+    });
   }
 
   function renderChannels(m) {
     var ch = rowsOf(D.channels, m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 8);
     var mx = Math.max.apply(null, ch.map(function (r) { return +r[2]; }).concat([1]));
     $("tChannels").innerHTML = ch.length ? "<table><thead><tr><th>どこから</th><th class=n>訪問</th><th style=width:22%></th><th class=n>成約率</th></tr></thead><tbody>" +
-      ch.map(function (r) { return "<tr><td>" + esc(r[1]) + "</td><td class=n>" + num(r[2]) + '</td><td><div class="meter" style="width:' + (+r[2] / mx * 100) + '%"></div></td><td class=n>' + rateCell(r[5], true) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
+      ch.map(function (r) { return '<tr><td title="' + esc(r[1]) + '">' + esc(String(r[1]).replace(/（.*）/, "")) + "</td><td class=n>" + num(r[2]) + '</td><td><div class="meter" style="width:' + (+r[2] / mx * 100) + '%"></div></td><td class=n>' + rateCell(r[5], true) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
   }
 
   // 曜日×時間帯のヒートマップ
