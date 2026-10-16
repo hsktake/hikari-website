@@ -89,6 +89,8 @@ function shopLabel_(s) { return String(s).replace(/（.*$/, '').replace(/｜.*$/
 
 // ---------------------------------------------------------------- まとめて更新
 function updateAll() {
+  // 毎朝の自動更新がまだなら、ここでオンにする（最初に1回「今すぐ更新」を押すだけでよいように）
+  if (!ScriptApp.getProjectTriggers().some(t => t.getHandlerFunction() === 'updateAll')) setupTrigger();
   const ss = SpreadsheetApp.getActive();
   const months = months_();
   const thisM = months[0], lastM = months[1] || '';
