@@ -81,6 +81,68 @@ function months_() { // 計測開始から今月まで（新しい順）
 }
 function shopLabel_(s) { return String(s).replace(/（.*$/, '').replace(/｜.*$/, '').trim(); }
 
+// ページのパス → ページの種類（ホームページの main.js のコンテンツグループと同じ名前）
+const PAGE_TYPES = [
+  [/^(index\.html)?$/, 'トップ'], [/^shops\.html/, '店舗を探す'], [/^shop\//, '店舗ページ'],
+  [/^haircut\.html/, 'ヘアカット'], [/^brow\.html/, '眉毛カット'], [/^facecare\.html/, 'フェイスケア'],
+  [/^app\.html/, '公式アプリ'], [/^app-guide\.html/, 'アプリの使い方'], [/^news\.html/, 'お知らせ'],
+  [/^recruit/, '採用情報'], [/^member\.html/, 'HiCARD会員'], [/^faq\.html/, 'よくあるご質問'],
+  [/^contact\.html/, 'お問い合わせ'], [/^community\.html/, '地域とともに'], [/^group\.html/, 'グループのお店'],
+  [/^(privacy|tokushoho)\.html/, '規約・表記'],
+  [/^plus\//, 'グループ：カットスペースPLUS'], [/^delight\//, "グループ：Men's Cut & Self DELIGHT"],
+  [/^mrcool\//, 'グループ：HAIR STUDIO MR.COOL'], [/^alpha\//, 'グループ：シャンプーカット アルファ'],
+  [/^laladream\//, 'グループ：ララ・ドリーム 清原テクノ店'],
+];
+function pathOf_(url) { // URL かパスから、パスだけ（? と # は取る）
+  return String(url || '').replace(/^https?:\/\/[^\/]+/, '').split('#')[0].split('?')[0] || '/';
+}
+function pageType_(path) {
+  const rel = pathOf_(path).replace(/^\/hikari-website\//, '/').replace(/^\//, ''); // 本番前（GitHub Pages）の /hikari-website/ を外す
+  for (let i = 0; i < PAGE_TYPES.length; i++) if (PAGE_TYPES[i][0].test(rel)) return PAGE_TYPES[i][1];
+  return 'その他';
+}
+const GOAL_EVENTS = ['app_download', 'wait_status_click', 'map_click', 'tel_click', 'recruit_contact'];
+
+// 来店までの流れ（ファネル）：GA4 の runFunnelReport（v1alpha。Apps Script のサービスにないので直接呼ぶ）
+const FUNNEL_STEPS = ['ホームページに来た', '店舗を探した（店舗一覧・店舗ページを見た）', 'そのあと 待ち状況・地図・電話・アプリDL を押した'];
+function funnel_(ym, usePathField) {
+  const y = Number(ym.slice(0, 4)), m = Number(ym.slice(4));
+  const first = Utilities.formatDate(new Date(y, m - 1, 1), TZ, 'yyyy-MM-dd');
+  const lastD = new Date(y, m, 0), today = new Date();
+  const last = Utilities.formatDate(lastD > today ? today : lastD, TZ, 'yyyy-MM-dd');
+  const shopStep = usePathField
+    ? { funnelFieldFilter: { fieldName: 'pagePath', stringFilter: { matchType: 'CONTAINS', value: '/shop' } } }
+    : { funnelEventFilter: { eventName: 'page_view', funnelParameterFilterExpression: { funnelParameterFilter: { eventParameterName: 'page_location', stringFilter: { matchType: 'CONTAINS', value: '/shop' } } } } };
+  const body = {
+    dateRanges: [{ startDate: first < START ? START : first, endDate: last }],
+    funnel: {
+      isOpenFunnel: false,
+      steps: [
+        { name: FUNNEL_STEPS[0], filterExpression: { funnelEventFilter: { eventName: 'session_start' } } },
+        { name: FUNNEL_STEPS[1], filterExpression: shopStep },
+        { name: FUNNEL_STEPS[2], filterExpression: { orGroup: { expressions: ['wait_status_click', 'map_click', 'tel_click', 'app_download'].map(e => ({ funnelEventFilter: { eventName: e } })) } } },
+      ],
+    },
+  };
+  const res = UrlFetchApp.fetch('https://analyticsdata.googleapis.com/v1alpha/' + PROPERTY + ':runFunnelReport', {
+    method: 'post', contentType: 'application/json', payload: JSON.stringify(body), muteHttpExceptions: true,
+    headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+  });
+  if (res.getResponseCode() !== 200) throw new Error('ファネル ' + res.getResponseCode() + ' ' + res.getContentText().slice(0, 200));
+  const t = JSON.parse(res.getContentText()).funnelTable || {};
+  const mh = (t.metricHeaders || []).map(h => h.name);
+  const iu = mh.indexOf('activeUsers');
+  const out = FUNNEL_STEPS.map(() => 0);
+  (t.rows || []).forEach(r => {
+    const dv = r.dimensionValues || [];
+    if (dv.length > 1 && dv[1].value !== 'RESERVED_TOTAL') return; // 内訳の行は使わない（合計だけ）
+    const name = String(dv[0] && dv[0].value || '');
+    const i = FUNNEL_STEPS.findIndex(s => name.indexOf(s) >= 0);
+    if (i >= 0) out[i] = Number(r.metricValues[iu >= 0 ? iu : 0].value || 0);
+  });
+  return out;
+}
+
 // ---------------------------------------------------------------- まとめて更新
 function updateAll() {
   // 毎朝の自動更新がまだなら、ここでオンにする
@@ -162,7 +224,61 @@ function updateAll() {
   hr.sort((a, b) => b[0].localeCompare(a[0]) || Number(a[1]) - Number(b[1])).forEach(r => dRows.push([monthLabel_(r[0]), '時間帯', Number(r[1]) + '時台', r[2]]));
   write_(ss, '端末・地域・時間帯', ['月', '種類', '内容', '人数・回数'], dRows);
 
-  // 9) 更新情報（画面の「最終更新」）
+  // 9) お客様の動き：入口のページ（最初に開いたページ）と、すぐ帰った割合
+  const lp = run_(['yearMonth', 'landingPage'], ['sessions', 'engagedSessions']);
+  const land = {};
+  lp.forEach(r => {
+    if (!r[1] || r[1] === '(not set)') return;
+    const k = r[0] + '|' + pageType_(r[1]);
+    land[k] = land[k] || [r[0], pageType_(r[1]), 0, 0];
+    land[k][2] += r[2]; land[k][3] += r[3];
+  });
+  const lRows = Object.values(land).sort((a, b) => b[0].localeCompare(a[0]) || b[2] - a[2])
+    .map(r => [monthLabel_(r[0]), r[1], r[2], Math.max(0, r[2] - r[3]), r[2] ? Math.max(0, r[2] - r[3]) / r[2] : 0]);
+  write_(ss, '入口のページ', ['月', '最初に開いたページ', '訪問回数', 'すぐ帰った回数', 'すぐ帰った割合'], lRows, { pct: [5] });
+
+  // 10) ページのつながり（前のページ → 次のページ）。前のページ＝同じサイト内の参照元（pageReferrer）
+  const tr = run_(['yearMonth', 'hostName', 'pageReferrer', 'pagePath'], ['screenPageViews']);
+  const link = {}, nextOf = {};
+  tr.forEach(r => {
+    const ref = String(r[2] || ''), mt = ref.match(/^https?:\/\/([^\/]+)/);
+    if (!mt || mt[1] !== r[1]) return;                  // サイトの外から来た（＝入口）は入口のページの表で数える
+    if (pathOf_(ref) === pathOf_(r[3])) return;          // 同じページの読み込み直しは数えない
+    const from = pageType_(ref), to = pageType_(r[3]);
+    const k = r[0] + '|' + from + '|' + to;
+    link[k] = link[k] || [r[0], from, to, 0];
+    link[k][3] += r[4];
+    nextOf[r[0] + '|' + from] = (nextOf[r[0] + '|' + from] || 0) + r[4];
+  });
+  const tRows = Object.values(link).sort((a, b) => b[0].localeCompare(a[0]) || b[3] - a[3]).map(r => [monthLabel_(r[0]), r[1], r[2], r[3]]);
+  write_(ss, 'ページのつながり', ['月', '前のページ', '次のページ', '回数'], tRows);
+
+  // 11) 離脱：ページごとの「ここで終わった」（表示回数 − 次のページへ進んだ回数。目安）と、来店・連絡につながる動き
+  const pv = run_(['yearMonth', 'pagePath'], ['screenPageViews']);
+  const gv = run_(['yearMonth', 'pagePath', 'eventName'], ['eventCount'], inList_('eventName', GOAL_EVENTS));
+  const ex = {};
+  const exRow = (m, t) => (ex[m + '|' + t] = ex[m + '|' + t] || [m, t, 0, 0, 0]);
+  pv.forEach(r => { exRow(r[0], pageType_(r[1]))[2] += r[2]; });
+  gv.forEach(r => { exRow(r[0], pageType_(r[1]))[4] += r[3]; });
+  const xRows = Object.values(ex).filter(r => r[2] > 0).map(r => {
+    const next = Math.min(r[2], nextOf[r[0] + '|' + r[1]] || 0), end = r[2] - next;
+    return [r[0], r[1], r[2], next, end, end / r[2], r[4]];
+  }).sort((a, b) => b[0].localeCompare(a[0]) || b[2] - a[2]).map(r => [monthLabel_(r[0])].concat(r.slice(1)));
+  write_(ss, '離脱', ['月', 'ページ', '表示回数', '次のページへ進んだ', 'ここで終わった', 'ここで終わった割合', '来店・連絡につながる動き'], xRows, { pct: [6] });
+
+  // 12) 来店までの流れ（ファネル。人数）
+  const fRows = [];
+  months.slice(0, 12).forEach(m => {
+    let f = null;
+    try { f = funnel_(m, true); }
+    catch (e1) {
+      try { f = funnel_(m, false); } catch (e2) { ERRORS.push('来店までの流れ：' + e2.message); }
+    }
+    if (f) FUNNEL_STEPS.forEach((s, i) => fRows.push([monthLabel_(m), i + 1, s, f[i]]));
+  });
+  write_(ss, '来店までの流れ', ['月', '順番', '段階', '人数'], fRows);
+
+  // 13) 更新情報（画面の「最終更新」）
   const info = ss.getSheetByName('更新情報') || ss.insertSheet('更新情報');
   info.clear();
   info.getRange(1, 1, 2, 2).setValues([
@@ -220,5 +336,9 @@ function getData(force) {
     appdl: read('アプリDLの場所'),
     search: read('検索ワード'),
     dev: read('端末・地域・時間帯'),
+    landing: read('入口のページ'),
+    links: read('ページのつながり'),
+    exits: read('離脱'),
+    funnel: read('来店までの流れ'),
   };
 }

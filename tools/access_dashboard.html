@@ -52,6 +52,20 @@
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .chip { background: #FFF1DE; color: var(--brown); border-radius: 999px; padding: 4px 10px; font-size: 13px; font-weight: 700; }
   .chip i { font-style: normal; color: var(--ink2); font-weight: 500; margin-left: 4px; }
+  h2.group { grid-column: 1 / -1; margin: 14px 0 -4px; font-size: 17px; font-weight: 800; color: var(--brown); }
+  h2.group small { display: block; font-size: 12px; font-weight: 500; color: var(--muted); }
+  select.mini { background: #FFF1DE; padding: 3px 10px; font-size: 13px; width: auto; max-width: 70%; }
+  .fun .st { margin: 2px 0; }
+  .fun .lb { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .fun .row { display: flex; align-items: center; gap: 10px; }
+  .fun .b { height: 26px; border-radius: 0 4px 4px 0; background: var(--c1); min-width: 3px; }
+  .fun .v { white-space: nowrap; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .fun .v small { font-weight: 500; color: var(--ink2); margin-left: 4px; }
+  .fun .drop { color: var(--down); font-size: 12.5px; font-weight: 700; margin: 4px 0 6px 6px; }
+  .rate { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
+  .rate .meter { width: 54px; background: var(--grid); height: 8px; border-radius: 4px; overflow: hidden; }
+  .rate .meter i { display: block; height: 100%; background: var(--c1); border-radius: 4px; }
+  td .arrow { color: var(--muted); margin: 0 4px; }
   footer { max-width: 1180px; margin: 0 auto; padding: 8px 16px 28px; color: var(--muted); font-size: 12px; }
   #loading { text-align: center; padding: 60px 0; color: var(--ink2); font-weight: 700; }
   @media (max-width: 760px) {
@@ -78,6 +92,13 @@
     <div class="grid">
       <section class="card"><h2>月ごとの訪問者数</h2><p class="sub">直近12か月（今月は今日まで）</p><div class="cv"><canvas id="cTrend"></canvas></div></section>
       <section class="card"><h2>月ごとの「来店につながる動き」</h2><p class="sub">アプリDLボタン・待ち状況・地図が押された回数</p><div class="cv"><canvas id="cAct"></canvas></div></section>
+      <h2 class="group">お客様の動き<small>どこから入って、どのページへ進み、どこで帰ったか</small></h2>
+      <section class="card wide"><h2>来店までの流れ</h2><p class="sub">この月にホームページに来た人のうち、店舗を探し、そのあと待ち状況・地図・電話・アプリDLまで進んだ人数</p><div id="fFunnel" class="fun"></div></section>
+      <section class="card"><h2>最初に開いたページ（入口）</h2><p class="sub">検索やSNSから最初に開いたページと、そのページだけ見てすぐ帰った割合（10秒未満・1ページだけ）</p><div id="tLanding"></div></section>
+      <section class="card"><h2>よく通る道 TOP10</h2><p class="sub">あるページから次のページへ進んだ回数</p><div id="tPaths"></div></section>
+      <section class="card"><h2>このページを見た人は、次にどこへ？</h2><p class="sub"><select id="nextSel" class="mini" aria-label="ページを選ぶ"></select> を見たあとに進んだページ（灰色は、そこで終わった回数）</p><div class="cv tall"><canvas id="cNext"></canvas></div></section>
+      <section class="card"><h2>ここで終わった人が多いページ</h2><p class="sub">終わった割合は目安です。店舗ページなどは、待ち状況や地図を見てお店に向かった人も含みます（右の「来店・連絡」）</p><div id="tExits"></div></section>
+      <h2 class="group">よく見られたもの</h2>
       <section class="card"><h2>よく見られたページ</h2><p class="sub">ページの種類ごとの表示回数</p><div class="cv tall"><canvas id="cContent"></canvas></div></section>
       <section class="card"><h2>どこから来たか</h2><p class="sub">訪問回数</p><div class="cv tall"><canvas id="cChannel"></canvas></div></section>
       <section class="card wide"><h2>よく見られた店舗 TOP15</h2><p class="sub">店舗ページの表示回数と、待ち状況・地図が押された回数</p><div id="tShops"></div></section>
@@ -172,8 +193,10 @@
       { label: "地図を開いた", data: tr.map(function (r) { return ev(r, "地図を開いた"); }), backgroundColor: C3 }
     ], { legend: true });
 
+    renderFlow(m);
+
     // コンテンツ別
-    var cg = rowsOf(D.content, m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 16);
+    var cg =rowsOf(D.content, m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 16);
     hbar("cContent", cg.map(function (r) { return r[1]; }), cg.map(function (r) { return Number(r[2]); }), "表示回数");
     // 流入元
     var ch = rowsOf(D.channels, m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 10);
@@ -217,6 +240,63 @@
     $("tSearch").innerHTML = st.length ? '<div class="chips">' + st.map(function (r) { return '<span class="chip">' + esc(r[1]) + "<i>" + num(r[2]) + "回</i></span>"; }).join("") + "</div>" : '<p class="empty">この月はまだ検索されていません</p>';
   }
 
+  var EMPTY = '<p class="empty">この月のデータはまだありません</p>';
+  function rateCell(v) {
+    var p = Math.round(Number(v || 0) * 100);
+    return '<div class="rate"><span>' + p + '%</span><span class="meter"><i style="width:' + p + '%"></i></span></div>';
+  }
+
+  // お客様の動き：来店までの流れ・入口・よく通る道・次のページ・離脱
+  function renderFlow(m) {
+    // 来店までの流れ（列：0月 1順番 2段階 3人数）
+    var fs = rowsOf(D.funnel || [], m).sort(function (a, b) { return a[1] - b[1]; });
+    var n0 = fs.length ? Number(fs[0][3]) : 0;
+    if (!n0) $("fFunnel").innerHTML = EMPTY;
+    else $("fFunnel").innerHTML = fs.map(function (r, i) {
+      var n = Number(r[3]), w = Math.max(1, n / n0 * 100), out = "";
+      if (i > 0) {
+        var prevN = Number(fs[i - 1][3]), lost = Math.max(0, prevN - n);
+        out += '<div class="drop">↓ ここで ' + num(lost) + "人（" + (prevN ? Math.round(lost / prevN * 100) : 0) + "%）が離れた</div>";
+      }
+      return out + '<div class="st"><div class="lb">' + (i + 1) + ". " + esc(r[2]) + '</div><div class="row"><div class="b" style="width:' + (w * 0.78) + '%"></div><div class="v">' + num(n) + "人<small>" + Math.round(n / n0 * 100) + "%</small></div></div></div>";
+    }).join("");
+
+    // 入口（列：0月 1ページ 2訪問回数 3すぐ帰った回数 4割合）
+    var lp = rowsOf(D.landing || [], m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 10);
+    $("tLanding").innerHTML = lp.length ? "<table><thead><tr><th>ページ</th><th class=n>訪問回数</th><th class=n>すぐ帰った</th></tr></thead><tbody>" +
+      lp.map(function (r) { return "<tr><td>" + esc(r[1]) + "</td><td class=n>" + num(r[2]) + "</td><td class=n>" + rateCell(r[4]) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
+
+    // よく通る道（列：0月 1前 2次 3回数）
+    var lk = rowsOf(D.links || [], m);
+    var top = lk.slice().sort(function (a, b) { return b[3] - a[3]; }).slice(0, 10);
+    var mx = Math.max.apply(null, top.map(function (r) { return Number(r[3]); }).concat([1]));
+    $("tPaths").innerHTML = top.length ? "<table><thead><tr><th>前のページ → 次のページ</th><th class=n>回数</th><th style=width:28%></th></tr></thead><tbody>" +
+      top.map(function (r) { return "<tr><td>" + esc(r[1]) + '<span class="arrow">→</span>' + esc(r[2]) + "</td><td class=n>" + num(r[3]) + '</td><td><div class="meter" style="width:' + (Number(r[3]) / mx * 100) + '%"></div></td></tr>'; }).join("") + "</tbody></table>" : EMPTY;
+
+    // 離脱（列：0月 1ページ 2表示 3次へ 4終わった 5割合 6来店・連絡）
+    var ex = rowsOf(D.exits || [], m);
+    var exSorted = ex.slice().sort(function (a, b) { return b[4] - a[4]; }).slice(0, 12);
+    $("tExits").innerHTML = exSorted.length ? "<table><thead><tr><th>ページ</th><th class=n>表示</th><th class=n>終わった</th><th class=n>割合</th><th class=n>来店・連絡</th></tr></thead><tbody>" +
+      exSorted.map(function (r) { return "<tr><td>" + esc(r[1]) + "</td><td class=n>" + num(r[2]) + "</td><td class=n>" + num(r[4]) + "</td><td class=n>" + rateCell(r[5]) + "</td><td class=n>" + num(r[6]) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
+
+    // 次のページ（選んだページ）
+    var sel = $("nextSel"), keep = sel.value;
+    var pages = ex.slice().sort(function (a, b) { return b[2] - a[2]; }).map(function (r) { return String(r[1]); });
+    if (!pages.length) pages = ["トップ"];
+    sel.innerHTML = pages.map(function (p) { return "<option>" + esc(p) + "</option>"; }).join("");
+    sel.value = pages.indexOf(keep) >= 0 ? keep : (pages.indexOf("トップ") >= 0 ? "トップ" : pages[0]);
+    renderNext(m);
+  }
+  function renderNext(m) {
+    m = m || $("month").value;
+    var p = $("nextSel").value;
+    var nx = rowsOf(D.links || [], m).filter(function (r) { return String(r[1]) === p; }).sort(function (a, b) { return b[3] - a[3]; }).slice(0, 10);
+    var exr = rowsOf(D.exits || [], m).filter(function (r) { return String(r[1]) === p; })[0];
+    var labels = nx.map(function (r) { return r[2]; }), data = nx.map(function (r) { return Number(r[3]); }), colors = nx.map(function () { return C1; });
+    if (exr && Number(exr[4]) > 0) { labels.push("ここで終わった"); data.push(Number(exr[4])); colors.push("#B9AFA6"); }
+    hbar("cNext", labels, data, "回数", false, colors);
+  }
+
   function baseOpts(o) {
     return {
       responsive: true, maintainAspectRatio: false, animation: false,
@@ -234,7 +314,7 @@
     sets.forEach(function (s) { if (type === "bar") { s.borderRadius = 4; s.maxBarThickness = 28; s.borderSkipped = "start"; } });
     charts[id] = new Chart($(id), { type: type, data: { labels: labels, datasets: sets }, options: baseOpts(o) });
   }
-  function hbar(id, labels, data, label, isPct) {
+  function hbar(id, labels, data, label, isPct, colors) {
     if (!window.Chart) return;
     if (charts[id]) charts[id].destroy();
     var el = $(id), box = el.parentNode, old = box.querySelector(".empty");
@@ -251,10 +331,11 @@
     o.scales = { x: { beginAtZero: true, max: isPct ? 100 : undefined, grid: { color: GRID }, border: { display: false }, ticks: { precision: 0, callback: function (v) { return isPct ? v + "%" : v; } } },
                  y: { grid: { display: false }, ticks: { autoSkip: false } } };
     o.plugins.tooltip = { callbacks: { label: function (c) { return " " + label + "：" + (isPct ? c.parsed.x + "%" : num(c.parsed.x)); } } };
-    charts[id] = new Chart(el, { type: "bar", data: { labels: labels, datasets: [{ label: label, data: data, backgroundColor: C1, borderRadius: 4, maxBarThickness: 22, borderSkipped: "start" }] }, options: o });
+    charts[id] = new Chart(el, { type: "bar", data: { labels: labels, datasets: [{ label: label, data: data, backgroundColor: colors || C1, borderRadius: 4, maxBarThickness: 22, borderSkipped: "start" }] }, options: o });
   }
 
   $("month").addEventListener("change", render);
+  $("nextSel").addEventListener("change", function () { renderNext(); });
   $("refresh").addEventListener("click", function () { load(true); });
   load(false);
 })();
