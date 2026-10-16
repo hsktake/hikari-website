@@ -7,15 +7,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
-    --orange: #EF7A00; --c1: #D96A00; --c2: #2F86B8; --c3: #3E9E5A;
-    --brown: #4A2E1A; --ink: #2B2420; --ink2: #6B625B; --muted: #9A918A;
-    --bg: #FFFAF2; --card: #FFFFFF; --line: #F0E6DA; --grid: #EFE9E2;
+    --orange: #EF7A00; --c1: #D96A00; --c2: #2F86B8; --c3: #3E9E5A; --cmp: #B9AFA6;
+    --brown: #4A2E1A; --brown2: #6B4426; --ink: #2B2420; --ink2: #6B625B; --muted: #9A918A;
+    --bg: #FFF6EA; --card: #FFFFFF; --line: #F0E6DA; --grid: #EFE9E2; --tint: #FFF1DE;
     --up: #2E7D4F; --down: #B3402A;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif; font-size: 14px; line-height: 1.6; }
-  header { position: sticky; top: 0; z-index: 5; background: var(--brown); color: #fff; padding: 12px 16px; }
-  .bar { max-width: 1180px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", system-ui, sans-serif; font-size: 14px; line-height: 1.6; }
+  header { position: sticky; top: 0; z-index: 20; background: linear-gradient(120deg, var(--brown) 0%, var(--brown2) 100%); color: #fff; padding: 12px 16px; box-shadow: 0 2px 10px rgba(74,46,26,.25); }
+  .bar { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+  .logo { width: 38px; height: 38px; border-radius: 12px; background: var(--orange); display: grid; place-items: center; flex: none; }
   h1 { margin: 0; font-size: 18px; font-weight: 800; letter-spacing: .02em; flex: 1 1 auto; }
   h1 small { display: block; font-size: 12px; font-weight: 500; opacity: .8; }
   .ctrl { display: flex; gap: 8px; align-items: center; }
@@ -23,61 +24,122 @@
   select { background: #fff; color: var(--brown); }
   button { background: var(--orange); color: #fff; }
   button:disabled { opacity: .6; cursor: wait; }
-  main { max-width: 1180px; margin: 0 auto; padding: 16px; }
-  .note { background: #FFF1DE; border-radius: 12px; padding: 10px 14px; margin-bottom: 14px; color: var(--brown); font-size: 13px; }
+  main { max-width: 1200px; margin: 0 auto; padding: 16px; }
+  .note { background: var(--tint); border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; color: var(--brown); font-size: 13px; }
   .note.err { background: #FDE7E0; }
-  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
-  .kpi { background: var(--card); border-radius: 14px; padding: 12px 14px; box-shadow: 0 1px 0 var(--line); }
-  .kpi .lb { font-size: 12.5px; color: var(--ink2); font-weight: 700; }
-  .kpi .v { font-size: 30px; font-weight: 800; line-height: 1.2; color: var(--ink); font-variant-numeric: tabular-nums; }
-  .kpi .v small { font-size: 13px; margin-left: 2px; color: var(--ink2); }
-  .kpi .cmp { font-size: 12px; color: var(--muted); }
-  .kpi .cmp b { font-weight: 800; }
-  .up { color: var(--up); } .down { color: var(--down); }
-  .kpi.main { border-top: 4px solid var(--orange); }
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .card { background: var(--card); border-radius: 14px; padding: 14px 16px 16px; box-shadow: 0 1px 0 var(--line); min-width: 0; }
-  .card.wide { grid-column: 1 / -1; }
-  .card h2 { margin: 0 0 2px; font-size: 15px; font-weight: 800; color: var(--brown); }
-  .card .sub { margin: 0 0 10px; font-size: 12px; color: var(--muted); }
+  .period { color: var(--ink2); font-size: 12.5px; margin: 0 0 10px; }
+  .period b { color: var(--brown); }
+  .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+  .card { grid-column: span 6; background: var(--card); border-radius: 18px; padding: 16px 18px 18px; box-shadow: 0 1px 0 var(--line), 0 6px 18px rgba(74,46,26,.05); min-width: 0; position: relative; }
+  .s4 { grid-column: span 4; } .s5 { grid-column: span 5; } .s7 { grid-column: span 7; } .s8 { grid-column: span 8; } .s12 { grid-column: 1 / -1; }
+  .card h2 { margin: 0 0 2px; font-size: 15px; font-weight: 800; color: var(--brown); display: flex; align-items: center; gap: 8px; }
+  .card h2 .ic { width: 26px; height: 26px; border-radius: 8px; background: var(--tint); display: grid; place-items: center; flex: none; }
+  .card .sub { margin: 0 0 12px; font-size: 12px; color: var(--muted); }
+  h2.group { grid-column: 1 / -1; margin: 18px 0 -2px; font-size: 19px; font-weight: 800; color: var(--brown); display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  h2.group::before { content: ""; width: 6px; height: 20px; border-radius: 3px; background: var(--orange); align-self: center; }
+  h2.group small { font-size: 12px; font-weight: 500; color: var(--muted); }
+  .empty { color: var(--muted); font-size: 13px; padding: 26px 0; text-align: center; }
   .cv { position: relative; height: 260px; }
-  .cv.tall { height: 380px; }
-  .cv .empty { position: absolute; inset: 0; padding-top: 110px; }
-  .empty { color: var(--muted); font-size: 13px; padding: 24px 0; text-align: center; }
+  .cv.tall { height: 340px; }
+  .up { color: var(--up); } .down { color: var(--down); }
+  .delta { font-size: 12.5px; font-weight: 700; color: var(--muted); }
+  .delta b { font-weight: 800; }
+
+  /* ヒーロー */
+  .hero { display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(135deg, #FFFFFF 0%, #FFF3E2 100%); }
+  .hero .lb { font-size: 13px; font-weight: 800; color: var(--brown); }
+  .hero .big { font-size: 56px; font-weight: 800; line-height: 1.05; letter-spacing: -.01em; color: var(--ink); margin: 6px 0 2px; }
+  .hero .big small { font-size: 18px; color: var(--ink2); margin-left: 4px; }
+  .hero .spark { margin-top: 10px; }
+  .ring-wrap { display: flex; align-items: center; gap: 16px; }
+  .ring-txt .lb { font-size: 13px; font-weight: 800; color: var(--brown); }
+  .ring-txt p { margin: 4px 0 6px; font-size: 12px; color: var(--ink2); }
+  .minis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .mini { border-radius: 14px; background: #FFFBF5; border: 1px solid var(--line); padding: 10px 12px; }
+  .mini .lb { font-size: 12px; color: var(--ink2); font-weight: 700; display: flex; align-items: center; gap: 6px; }
+  .mini .v { font-size: 24px; font-weight: 800; line-height: 1.2; }
+  .mini .v small { font-size: 12px; color: var(--ink2); margin-left: 2px; }
+  .mini .delta { font-size: 11.5px; }
+
+  /* ファネル・サンキー・ヒートマップ */
+  svg text { font-family: inherit; }
+  .viz { width: 100%; display: block; overflow: visible; }
+  .lk { transition: opacity .15s; cursor: default; }
+  .lk:hover { opacity: .85 !important; }
+  .heat-legend { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--muted); margin-top: 8px; }
+  .heat-legend i { width: 22px; height: 10px; border-radius: 3px; display: inline-block; }
+  .heat-box { overflow-x: auto; }
+
+  /* 表・メーター */
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th, td { padding: 7px 6px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
   th { font-size: 12px; color: var(--ink2); font-weight: 700; }
   td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .meter { height: 8px; border-radius: 4px; background: var(--c1); min-width: 2px; }
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .chip { background: #FFF1DE; color: var(--brown); border-radius: 999px; padding: 4px 10px; font-size: 13px; font-weight: 700; }
-  .chip i { font-style: normal; color: var(--ink2); font-weight: 500; margin-left: 4px; }
-  h2.group { grid-column: 1 / -1; margin: 14px 0 -4px; font-size: 17px; font-weight: 800; color: var(--brown); }
-  h2.group small { display: block; font-size: 12px; font-weight: 500; color: var(--muted); }
-  select.mini { background: #FFF1DE; padding: 3px 10px; font-size: 13px; width: auto; max-width: 70%; }
-  .fun .st { margin: 2px 0; }
-  .fun .lb { font-size: 13px; font-weight: 700; color: var(--ink); }
-  .fun .row { display: flex; align-items: center; gap: 10px; }
-  .fun .b { height: 26px; border-radius: 0 4px 4px 0; background: var(--c1); min-width: 3px; }
-  .fun .v { white-space: nowrap; font-weight: 800; font-variant-numeric: tabular-nums; }
-  .fun .v small { font-weight: 500; color: var(--ink2); margin-left: 4px; }
-  .fun .drop { color: var(--down); font-size: 12.5px; font-weight: 700; margin: 4px 0 6px 6px; }
+  .meter { height: 10px; border-radius: 5px; background: var(--c1); min-width: 2px; }
   .rate { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
-  .rate .meter { width: 54px; background: var(--grid); height: 8px; border-radius: 4px; overflow: hidden; }
-  .rate .meter i { display: block; height: 100%; background: var(--c1); border-radius: 4px; }
-  td .arrow { color: var(--muted); margin: 0 4px; }
-  footer { max-width: 1180px; margin: 0 auto; padding: 8px 16px 28px; color: var(--muted); font-size: 12px; }
-  #loading { text-align: center; padding: 60px 0; color: var(--ink2); font-weight: 700; }
-  @media (max-width: 760px) {
-    .kpis { grid-template-columns: repeat(2, 1fr); }
-    .grid { grid-template-columns: 1fr; }
-    .kpi .v { font-size: 24px; }
+  .rate .track { width: 64px; background: var(--grid); height: 8px; border-radius: 4px; overflow: hidden; }
+  .rate .track i { display: block; height: 100%; border-radius: 4px; background: var(--c1); }
+  .rate .track.blue i { background: var(--c2); }
+  .arrow { color: var(--muted); margin: 0 4px; }
+
+  /* スマホの形（トップページのスクロール） */
+  .phone { width: 230px; margin: 0 auto; border: 7px solid var(--brown); border-radius: 30px; padding: 16px 10px 14px; background: #FFFBF5; position: relative; }
+  .phone::before { content: ""; position: absolute; top: 6px; left: 50%; width: 46px; height: 5px; border-radius: 3px; background: var(--brown); transform: translateX(-50%); opacity: .5; }
+  .ph-row { margin: 5px 0; }
+  .ph-row .t { display: flex; justify-content: space-between; font-size: 11.5px; font-weight: 700; color: var(--ink); }
+  .ph-row .t span:last-child { color: var(--ink2); font-variant-numeric: tabular-nums; }
+  .ph-row .b { height: 9px; border-radius: 5px; background: var(--grid); overflow: hidden; }
+  .ph-row .b i { display: block; height: 100%; background: var(--c1); border-radius: 5px; }
+
+  /* 店舗カード */
+  .shops { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px; }
+  .shop { border-radius: 14px; overflow: hidden; background: #FFFBF5; border: 1px solid var(--line); position: relative; }
+  .shop .ph { height: 110px; background: var(--tint) center / cover no-repeat; position: relative; }
+  .shop .rk { position: absolute; top: 8px; left: 8px; width: 30px; height: 30px; border-radius: 50%; background: var(--orange); color: #fff; font-weight: 800; display: grid; place-items: center; box-shadow: 0 2px 6px rgba(0,0,0,.2); }
+  .shop .bd { padding: 8px 12px 10px; }
+  .shop .nm { font-weight: 800; font-size: 14px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .shop .st { display: flex; gap: 10px; font-size: 12px; color: var(--ink2); margin-top: 2px; flex-wrap: wrap; }
+  .shop .st b { color: var(--ink); font-size: 15px; margin-right: 2px; }
+
+  /* 端末 */
+  .dev { display: flex; align-items: center; gap: 14px; }
+  .dev .dn { width: 150px; height: 150px; flex: none; position: relative; }
+  .dev .dn .ct { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; font-size: 11.5px; color: var(--ink2); pointer-events: none; }
+  .dev .dn .ct b { display: block; font-size: 22px; color: var(--ink); line-height: 1.1; }
+  .legend { list-style: none; margin: 0; padding: 0; flex: 1; }
+  .legend li { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 13px; }
+  .legend i { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+  .legend span:last-child { margin-left: auto; font-weight: 800; font-variant-numeric: tabular-nums; }
+
+  /* 検索ワード */
+  .cloud { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: baseline; }
+  .cloud span { background: var(--tint); color: var(--brown); border-radius: 999px; padding: 3px 12px; font-weight: 800; line-height: 1.5; }
+  .cloud span i { font-style: normal; font-weight: 500; color: var(--ink2); font-size: 11px; margin-left: 4px; }
+
+  footer { max-width: 1200px; margin: 0 auto; padding: 8px 16px 28px; color: var(--muted); font-size: 12px; }
+  #loading { text-align: center; padding: 80px 0; color: var(--ink2); font-weight: 700; }
+  #loading .sp { width: 38px; height: 38px; border-radius: 50%; border: 4px solid var(--tint); border-top-color: var(--orange); margin: 0 auto 12px; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (max-width: 900px) {
+    .card, .s4, .s5, .s7, .s8 { grid-column: 1 / -1; }
+    .shops { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 520px) {
+    main { padding: 12px; }
+    .card { padding: 14px 14px 16px; border-radius: 16px; }
+    .hero .big { font-size: 46px; }
+    .minis { grid-template-columns: repeat(2, 1fr); }
+    .shops { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .shop .ph { height: 84px; }
     h1 { font-size: 16px; }
+    .dev { flex-direction: column; align-items: stretch; }
+    .dev .dn { margin: 0 auto; }
   }
 </style>
 </head>
 <body>
 <header><div class="bar">
+  <div class="logo" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V10M10 19V5M16 19v-7M22 19H2"/></svg></div>
   <h1>ホームページ アクセス集計<small id="upd">読み込み中…</small></h1>
   <div class="ctrl">
     <select id="month" aria-label="表示する月"></select>
@@ -85,51 +147,71 @@
   </div>
 </div></header>
 <main>
-  <div id="loading">数字を読み込んでいます…</div>
+  <div id="loading"><div class="sp"></div>数字を読み込んでいます…</div>
   <div id="app" hidden>
     <div id="notes"></div>
-    <div class="kpis" id="kpis"></div>
+    <p class="period" id="period"></p>
     <div class="grid">
-      <section class="card"><h2>月ごとの訪問者数</h2><p class="sub">直近12か月（今月は今日まで）</p><div class="cv"><canvas id="cTrend"></canvas></div></section>
-      <section class="card"><h2>月ごとの「来店につながる動き」</h2><p class="sub">アプリDLボタン・待ち状況・地図が押された回数</p><div class="cv"><canvas id="cAct"></canvas></div></section>
-      <h2 class="group">お客様の動き<small>どこから入って、どのページへ進み、どこで帰ったか</small></h2>
-      <section class="card wide"><h2>来店までの流れ</h2><p class="sub">この月にホームページに来た人のうち、店舗を探し、そのあと待ち状況・地図・電話・アプリDLまで進んだ人数</p><div id="fFunnel" class="fun"></div></section>
-      <section class="card"><h2>最初に開いたページ（入口）</h2><p class="sub">検索やSNSから最初に開いたページと、そのページだけ見てすぐ帰った割合（10秒未満・1ページだけ）</p><div id="tLanding"></div></section>
-      <section class="card"><h2>よく通る道 TOP10</h2><p class="sub">あるページから次のページへ進んだ回数</p><div id="tPaths"></div></section>
-      <section class="card"><h2>このページを見た人は、次にどこへ？</h2><p class="sub"><select id="nextSel" class="mini" aria-label="ページを選ぶ"></select> を見たあとに進んだページ（灰色は、そこで終わった回数）</p><div class="cv tall"><canvas id="cNext"></canvas></div></section>
-      <section class="card"><h2>ここで終わった人が多いページ</h2><p class="sub">終わった割合は目安です。店舗ページなどは、待ち状況や地図を見てお店に向かった人も含みます（右の「来店・連絡」）</p><div id="tExits"></div></section>
+      <!-- いちばん大事な数字 -->
+      <section class="card s4 hero" id="heroUsers"></section>
+      <section class="card s4" id="heroCvr"></section>
+      <section class="card s4"><div class="minis" id="minis"></div></section>
+
+      <section class="card s12"><h2><span class="ic">📈</span>日ごとの訪問回数</h2><p class="sub">オレンジ＝この月、灰色の点線＝前の月の同じ日、緑＝来店につながった訪問（待ち状況・地図・電話・アプリDL）</p><div class="cv"><canvas id="cDaily"></canvas></div></section>
+
+      <h2 class="group">お客様の動き<small>どこから入って、どこへ進み、どこで帰ったか</small></h2>
+      <section class="card s7"><h2><span class="ic">🔻</span>来店までの流れ</h2><p class="sub">この月に来た人のうち、店舗を探し、そのあと待ち状況・地図・電話・アプリDLまで進んだ人数</p><div id="fFunnel"></div></section>
+      <section class="card s5"><h2><span class="ic">🚪</span>最初に開いたページ（入口）</h2><p class="sub">「すぐ帰った」＝10秒未満で1ページだけ見て帰った割合</p><div id="tLanding"></div></section>
+      <section class="card s12"><h2><span class="ic">🔀</span>ページのつながり</h2><p class="sub">左のページを見たあと、右のページへ進んだ人の流れ（太いほど多い。上位の流れだけ）。線に指を合わせると回数が出ます</p><div id="sankey"></div></section>
+      <section class="card s7"><h2><span class="ic">👋</span>ここで終わった人が多いページ</h2><p class="sub">割合は目安。店舗ページは、待ち状況や地図を見てお店に向かった人も含みます（右の「来店・連絡」）</p><div id="tExits"></div></section>
+      <section class="card s5"><h2><span class="ic">🧭</span>どこから来たか × 成約率</h2><p class="sub">訪問回数と、そのうち来店につながった割合</p><div id="tChannels"></div></section>
+
+      <h2 class="group">いつ見られているか</h2>
+      <section class="card s12"><h2><span class="ic">🗓️</span>曜日 × 時間帯</h2><p class="sub">訪問回数。色が濃いほど多い（この月）</p><div class="heat-box" id="heat"></div></section>
+
       <h2 class="group">よく見られたもの</h2>
-      <section class="card"><h2>よく見られたページ</h2><p class="sub">ページの種類ごとの表示回数</p><div class="cv tall"><canvas id="cContent"></canvas></div></section>
-      <section class="card"><h2>どこから来たか</h2><p class="sub">訪問回数</p><div class="cv tall"><canvas id="cChannel"></canvas></div></section>
-      <section class="card wide"><h2>よく見られた店舗 TOP15</h2><p class="sub">店舗ページの表示回数と、待ち状況・地図が押された回数</p><div id="tShops"></div></section>
-      <section class="card"><h2>トップページはどこまで見られたか</h2><p class="sub">トップを開いた回数のうち、そのコーナーまで見た割合</p><div class="cv tall"><canvas id="cSection"></canvas></div></section>
-      <section class="card"><h2>アプリDLボタンが押された場所</h2><p class="sub">どのページの、どのコーナーのボタンか</p><div id="tAppdl"></div></section>
-      <section class="card"><h2>見ている時間帯</h2><p class="sub">訪問回数（0時〜23時）</p><div class="cv"><canvas id="cHour"></canvas></div></section>
-      <section class="card"><h2>スマホ・パソコン／地域</h2><p class="sub">訪問者数</p><div id="tDev"></div></section>
-      <section class="card wide"><h2>店舗検索で調べられた言葉</h2><p class="sub">店舗一覧の検索欄に入力された言葉（多い順）</p><div id="tSearch"></div></section>
+      <section class="card s12"><h2><span class="ic">💈</span>よく見られた店舗</h2><p class="sub">店舗ページの表示回数と、待ち状況・地図が押された回数</p><div id="tShops"></div></section>
+      <section class="card s7"><h2><span class="ic">📄</span>よく見られたページ</h2><p class="sub">ページの種類ごとの表示回数</p><div class="cv tall"><canvas id="cContent"></canvas></div></section>
+      <section class="card s5"><h2><span class="ic">📱</span>トップページはどこまで見られたか</h2><p class="sub">トップを開いた人のうち、そのコーナーまでスクロールした割合</p><div id="phone"></div></section>
+      <section class="card s5"><h2><span class="ic">💻</span>スマホ・パソコン</h2><p class="sub">訪問者数</p><div id="tDev"></div></section>
+      <section class="card s7"><h2><span class="ic">📍</span>地域</h2><p class="sub">訪問者数（上位8）</p><div id="tRegion"></div></section>
+      <section class="card s6"><h2><span class="ic">⬇️</span>アプリDLボタンが押された場所</h2><p class="sub">どのページの、どのコーナーのボタンか</p><div id="tAppdl"></div></section>
+      <section class="card s6"><h2><span class="ic">🔍</span>店舗検索で調べられた言葉</h2><p class="sub">店舗一覧の検索欄に入力された言葉（大きいほど多い）</p><div id="tSearch"></div></section>
+
+      <h2 class="group">これまでの推移</h2>
+      <section class="card"><h2><span class="ic">👥</span>月ごとの訪問者数</h2><p class="sub">直近12か月（今月は今日まで）</p><div class="cv"><canvas id="cTrend"></canvas></div></section>
+      <section class="card"><h2><span class="ic">✅</span>月ごとの「来店につながる動き」</h2><p class="sub">アプリDLボタン・待ち状況・地図が押された回数</p><div class="cv"><canvas id="cAct"></canvas></div></section>
     </div>
   </div>
 </main>
-<footer>データ：Googleアナリティクス（毎朝6時ごろ自動で更新）。「最新にする」を押すと、その場で集め直します（1分ほどかかります）。</footer>
+<footer>データ：Googleアナリティクス（毎朝6時ごろ自動で更新）。「最新にする」を押すと、その場で集め直します（1〜2分）。社内の閲覧を数えないようにするには、そのスマホ・パソコンでホームページの URL の最後に ?notrack=1 を付けて1回開いてください。</footer>
 <script>
 (function () {
   "use strict";
-  var C1 = "#D96A00", C2 = "#2F86B8", C3 = "#3E9E5A", GRID = "#EFE9E2", INK2 = "#6B625B";
+  var C1 = "#D96A00", C2 = "#2F86B8", C3 = "#3E9E5A", CMP = "#B9AFA6", GRID = "#EFE9E2", INK = "#2B2420", INK2 = "#6B625B", MUTED = "#9A918A";
+  var HEAT = ["#F7EFE6", "#FCE3C6", "#F8C88F", "#F2A856", "#E58424", "#C46200", "#8F4500"];
+  var FUNNEL = ["#9A4700", "#D96A00", "#F0A050"];
+  var WD = ["日", "月", "火", "水", "木", "金", "土"];
   var D = null, charts = {};
   if (window.Chart) {
-    Chart.defaults.font.family = '"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif';
+    Chart.defaults.font.family = '"Hiragino Sans","Noto Sans JP","Yu Gothic",system-ui,sans-serif';
     Chart.defaults.color = INK2;
     Chart.defaults.plugins.legend.labels.boxWidth = 12;
     Chart.defaults.plugins.tooltip.backgroundColor = "#2B2420";
+    Chart.defaults.plugins.tooltip.padding = 10;
   }
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   var num = function (v) { return Number(v || 0).toLocaleString("ja-JP"); };
   var pct = function (v) { return Math.round(Number(v || 0) * 100) + "%"; };
+  var EMPTY = '<p class="empty">この月のデータはまだありません</p>';
+  function rowsOf(list, m) { return (list || []).filter(function (r) { return String(r[0]) === m; }); }
+  function ymOf(label) { var a = String(label).match(/(\d{4})年(\d{1,2})月/); return a ? [Number(a[1]), Number(a[2])] : null; }
+  function svgEl(w, h, inner, label) { return '<svg class="viz" viewBox="0 0 ' + w + " " + h + '" width="' + w + '" height="' + h + '" role="img" aria-label="' + esc(label || "") + '">' + inner + "</svg>"; }
 
   function load(force) {
     $("refresh").disabled = true;
-    if (force) $("upd").textContent = "集め直しています…（1分ほど）";
+    if (force) $("upd").textContent = "集め直しています…（1〜2分）";
     google.script.run
       .withSuccessHandler(function (d) { D = d; $("refresh").disabled = false; start(); })
       .withFailureHandler(function (e) {
@@ -144,157 +226,326 @@
     $("upd").textContent = D.updated ? "最終更新：" + D.updated : "まだ集計していません";
     var sel = $("month"), cur = sel.value;
     var months = D.monthly.map(function (r) { return String(r[0]); });
-    sel.innerHTML = months.map(function (m, i) { return "<option>" + esc(m) + "</option>"; }).join("");
+    sel.innerHTML = months.map(function (m) { return "<option>" + esc(m) + "</option>"; }).join("");
     if (cur && months.indexOf(cur) >= 0) sel.value = cur;
     var notes = "";
     if (D.errors) notes += '<p class="note err">一部の表が読み込めませんでした：' + esc(D.errors) + "</p>";
     var m0 = D.monthly[0];
-    if (!m0 || Number(m0[1]) < 30) notes += '<p class="note">新しいホームページはまだ本番公開前のため、数字はごくわずかです。本番に切り替えると、ここに毎月の数字がたまっていきます。</p>';
+    if (!m0 || Number(m0[1]) < 30) notes += '<p class="note">新しいホームページはまだ本番公開前のため、数字はごくわずかです（ほとんどが社内の確認の閲覧です）。本番に切り替えると、ここに毎月の数字がたまっていきます。</p>';
     $("notes").innerHTML = notes;
     render();
   }
 
-  function rowsOf(list, m) { return list.filter(function (r) { return String(r[0]) === m; }); }
+  // 月別の行・比較の行 → 同じ形に
+  function fromMonthly(r) {
+    if (!r) return null;
+    var E = D.events.length, ev = {};
+    D.events.forEach(function (n, i) { ev[n] = Number(r[7 + i] || 0); });
+    return { users: +r[1], newUsers: +r[2], sessions: +r[3], views: +r[4], eng: +r[6], goal: +(r[7 + E] || 0), cvr: +(r[8 + E] || 0), ev: ev };
+  }
+  function fromCompare(r) {
+    if (!r) return null;
+    var ev = {};
+    D.events.forEach(function (n, i) { ev[n] = Number(r[10 + i] || 0); });
+    return { users: +r[3], newUsers: +r[4], sessions: +r[5], views: +r[6], eng: +r[7], goal: +r[8], cvr: +r[9], ev: ev, start: String(r[1]), end: String(r[2]) };
+  }
+  function md(s) { var a = String(s).split("-"); return Number(a[1]) + "/" + Number(a[2]); }
 
   function render() {
-    var m = $("month").value;
+    var m = $("month").value, ym = ymOf(m);
     var idx = D.monthly.map(function (r) { return String(r[0]); }).indexOf(m);
-    var cur = D.monthly[idx] || [], prev = D.monthly[idx + 1] || null;
-    // 月別の列：0月 1訪問者 2はじめて 3訪問回数 4表示回数 5平均滞在 6しっかり見た割合 7〜 イベント
-    var ev = function (r, name) { var i = D.events.indexOf(name); return r ? Number(r[7 + i] || 0) : 0; };
-    var K = [
-      ["訪問者数", function (r) { return r ? Number(r[1]) : 0; }, true, "人"],
-      ["訪問回数", function (r) { return r ? Number(r[3]) : 0; }, true, "回"],
-      ["ページ表示回数", function (r) { return r ? Number(r[4]) : 0; }, true, "回"],
-      ["アプリDLボタン", function (r) { return ev(r, "アプリDLボタン"); }, true, "回"],
-      ["待ち状況を見た", function (r) { return ev(r, "待ち状況を見た"); }, false, "回"],
-      ["地図を開いた", function (r) { return ev(r, "地図を開いた"); }, false, "回"],
-      ["電話をかけた", function (r) { return ev(r, "電話をかけた"); }, false, "回"],
-      ["採用の連絡", function (r) { return ev(r, "採用の連絡"); }, false, "回"]
-    ];
-    $("kpis").innerHTML = K.map(function (k) {
-      var a = k[1](cur), b = prev ? k[1](prev) : null, cmp = "";
-      if (b !== null) {
-        if (b > 0) {
-          var d = Math.round((a - b) / b * 100);
-          cmp = '先月 ' + num(b) + '（<b class="' + (d > 0 ? "up" : d < 0 ? "down" : "") + '">' + (d > 0 ? "▲" : d < 0 ? "▼" : "±") + Math.abs(d) + "%</b>）";
-        } else cmp = "先月 " + num(b);
-      } else cmp = "先月のデータなし";
-      return '<div class="kpi' + (k[2] ? " main" : "") + '"><div class="lb">' + k[0] + '</div><div class="v">' + num(a) + "<small>" + k[3] + '</small></div><div class="cmp">' + cmp + "</div></div>";
-    }).join("");
+    var cur = fromMonthly(D.monthly[idx]), prev = fromMonthly(D.monthly[idx + 1]), cmpLabel = "前の月";
+    // 今月は「1日〜今日」と「先月の1日〜同じ日」で比べる
+    var cc = D.compare || [];
+    if (idx === 0 && cc.length === 2 && ym && String(cc[0][1]).indexOf(ym[0] + "-" + ("0" + ym[1]).slice(-2)) === 0) {
+      cur = fromCompare(cc[0]); prev = fromCompare(cc[1]);
+      cmpLabel = "先月の同じ期間";
+      $("period").innerHTML = "<b>" + md(cur.start) + "〜" + md(cur.end) + "</b> の数字。比べているのは <b>" + md(prev.start) + "〜" + md(prev.end) + "</b>（先月の同じ日数）";
+    } else {
+      $("period").innerHTML = "<b>" + esc(m) + "</b> の1か月分。比べているのは前の月の1か月分";
+    }
+    cur = cur || { users: 0, newUsers: 0, sessions: 0, views: 0, eng: 0, goal: 0, cvr: 0, ev: {} };
+    renderHero(m, ym, cur, prev, cmpLabel);
+    renderDaily(ym);
+    renderFlow(m);
+    renderChannels(m);
+    renderHeat(m);
+    renderShops(m);
+    renderContent(m);
+    renderPhone(m);
+    renderDev(m);
+    renderAppdl(m);
+    renderSearch(m);
+    renderTrend();
+  }
 
-    // 推移（古い順・12か月）
+  function delta(a, b, isRate) {
+    if (b === null || b === undefined) return '<span class="delta">比べるデータなし</span>';
+    if (isRate) {
+      var p = Math.round((a - b) * 1000) / 10;
+      return '<span class="delta">' + pct(b) + ' → <b class="' + (p > 0 ? "up" : p < 0 ? "down" : "") + '">' + (p > 0 ? "▲" : p < 0 ? "▼" : "±") + Math.abs(p) + "ポイント</b></span>";
+    }
+    if (!b) return '<span class="delta">比べる側 ' + num(b) + "</span>";
+    var d = Math.round((a - b) / b * 100);
+    return '<span class="delta">' + num(b) + ' → <b class="' + (d > 0 ? "up" : d < 0 ? "down" : "") + '">' + (d > 0 ? "▲" : d < 0 ? "▼" : "±") + Math.abs(d) + "%</b></span>";
+  }
+
+  function sparkline(vals, w, h, color) {
+    if (!vals.length) return "";
+    var mx = Math.max.apply(null, vals.concat([1])), n = vals.length;
+    var pts = vals.map(function (v, i) { return [n === 1 ? w / 2 : i / (n - 1) * (w - 6) + 3, h - 4 - v / mx * (h - 10)]; });
+    var line = pts.map(function (p) { return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" ");
+    var area = "M" + pts[0][0] + "," + (h - 2) + " L" + line.split(" ").join(" L") + " L" + pts[n - 1][0] + "," + (h - 2) + " Z";
+    var last = pts[n - 1];
+    return svgEl(w, h, '<path d="' + area + '" fill="' + color + '" opacity=".12"/><polyline points="' + line + '" fill="none" stroke="' + color + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="' + last[0] + '" cy="' + last[1] + '" r="4" fill="' + color + '" stroke="#fff" stroke-width="2"/>', "日ごとの推移");
+  }
+  function dailyOf(ym) {
+    if (!ym) return [];
+    var key = ym[0] + "-" + ("0" + ym[1]).slice(-2);
+    return (D.daily || []).filter(function (r) { return String(r[0]).indexOf(key) === 0; });
+  }
+
+  function renderHero(m, ym, cur, prev, cmpLabel) {
+    var dl = dailyOf(ym);
+    $("heroUsers").innerHTML = '<div><div class="lb">訪問者数（見に来た人）</div><div class="big">' + num(cur.users) + "<small>人</small></div>" +
+      delta(cur.users, prev ? prev.users : null) + '<div class="delta">うち はじめての人 ' + num(cur.newUsers) + "人 ・ 比較：" + cmpLabel + "</div></div>" +
+      '<div class="spark">' + sparkline(dl.map(function (r) { return +r[1]; }), 300, 56, C1) + "</div>";
+    // 成約率のリング
+    var v = Math.max(0, Math.min(1, cur.cvr || 0)), R = 54, L = 2 * Math.PI * R;
+    var ring = svgEl(136, 136, '<circle cx="68" cy="68" r="' + R + '" fill="none" stroke="#F6E9D9" stroke-width="14"/>' +
+      '<circle cx="68" cy="68" r="' + R + '" fill="none" stroke="' + C1 + '" stroke-width="14" stroke-linecap="round" stroke-dasharray="' + (L * v).toFixed(1) + " " + L.toFixed(1) + '" transform="rotate(-90 68 68)"/>' +
+      '<text x="68" y="70" text-anchor="middle" font-size="30" font-weight="800" fill="' + INK + '">' + Math.round(v * 100) + '<tspan font-size="15">%</tspan></text>' +
+      '<text x="68" y="92" text-anchor="middle" font-size="11" fill="' + INK2 + '">成約率</text>', "成約率 " + pct(v));
+    $("heroCvr").innerHTML = '<div class="ring-wrap">' + ring + '<div class="ring-txt"><div class="lb">来店につながった割合</div><p>訪問 ' + num(cur.sessions) + "回のうち、待ち状況・地図・電話・アプリDLまで進んだのは <b>" + num(cur.goal) + "回</b></p>" + delta(cur.cvr, prev ? prev.cvr : null, true) + "</div></div>";
+    var M = [
+      ["訪問回数", cur.sessions, prev && prev.sessions, "回", "🔁"],
+      ["ページ表示", cur.views, prev && prev.views, "回", "📄"],
+      ["アプリDL", cur.ev["アプリDLボタン"], prev && prev.ev["アプリDLボタン"], "回", "⬇️"],
+      ["待ち状況", cur.ev["待ち状況を見た"], prev && prev.ev["待ち状況を見た"], "回", "⏱️"],
+      ["地図", cur.ev["地図を開いた"], prev && prev.ev["地図を開いた"], "回", "📍"],
+      ["電話", cur.ev["電話をかけた"], prev && prev.ev["電話をかけた"], "回", "📞"]
+    ];
+    $("minis").innerHTML = M.map(function (k) {
+      return '<div class="mini"><div class="lb"><span aria-hidden="true">' + k[4] + "</span>" + k[0] + '</div><div class="v">' + num(k[1]) + "<small>" + k[3] + "</small></div>" + delta(+k[1] || 0, prev ? (+k[2] || 0) : null) + "</div>";
+    }).join("");
+  }
+
+  function renderDaily(ym) {
+    if (!ym) return;
+    var days = new Date(ym[0], ym[1], 0).getDate();
+    var pY = ym[1] === 1 ? ym[0] - 1 : ym[0], pM = ym[1] === 1 ? 12 : ym[1] - 1;
+    var cur = {}, prv = {}, goal = {};
+    dailyOf(ym).forEach(function (r) { var d = Number(String(r[0]).slice(8)); cur[d] = +r[2]; goal[d] = +r[4]; });
+    dailyOf([pY, pM]).forEach(function (r) { prv[Number(String(r[0]).slice(8))] = +r[2]; });
+    var today = String(D.today || ""), labels = [], a = [], b = [], g = [];
+    for (var d = 1; d <= days; d++) {
+      var key = ym[0] + "-" + ("0" + ym[1]).slice(-2) + "-" + ("0" + d).slice(-2);
+      labels.push(d + "(" + WD[new Date(ym[0], ym[1] - 1, d).getDay()] + ")");
+      var future = today && key > today;
+      a.push(future ? null : (cur[d] || 0));
+      g.push(future ? null : (goal[d] || 0));
+      b.push(prv[d] === undefined ? null : prv[d]);
+    }
+    if (charts.cDaily) charts.cDaily.destroy();
+    if (!window.Chart) return;
+    var o = baseOpts({ legend: true });
+    o.scales.x.ticks = { maxRotation: 0, autoSkip: true, maxTicksLimit: 16, color: function (c) { var t = labels[c.index] || ""; return /土/.test(t) ? C2 : /日\)/.test(t) ? "#B3402A" : INK2; } };
+    charts.cDaily = new Chart($("cDaily"), { type: "line", data: { labels: labels, datasets: [
+      { label: "この月", data: a, borderColor: C1, backgroundColor: "rgba(217,106,0,.12)", fill: true, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 5, tension: .3 },
+      { label: "前の月", data: b, borderColor: CMP, borderDash: [5, 4], borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, tension: .3, fill: false },
+      { label: "来店につながった訪問", data: g, borderColor: C3, backgroundColor: C3, borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, tension: .3, fill: false }
+    ] }, options: o });
+  }
+
+  function rateCell(v, blue) {
+    var p = Math.round(Number(v || 0) * 100);
+    return '<div class="rate"><span>' + p + '%</span><span class="track' + (blue ? " blue" : "") + '"><i style="width:' + Math.min(100, p) + '%"></i></span></div>';
+  }
+
+  // お客様の動き
+  function renderFlow(m) {
+    // ファネル（台形）
+    var fs = rowsOf(D.funnel, m).sort(function (a, b) { return a[1] - b[1]; });
+    var n0 = fs.length ? Number(fs[0][3]) : 0;
+    var box = $("fFunnel");
+    if (!n0) box.innerHTML = EMPTY;
+    else {
+      var W = Math.max(300, box.clientWidth || 600), barH = 54, gap = 40, H = fs.length * barH + (fs.length - 1) * gap + 8, minW = 70, out = "";
+      var widths = fs.map(function (r) { return Math.max(minW, (W - 8) * Number(r[3]) / n0); });
+      fs.forEach(function (r, i) {
+        var w = widths[i], x = (W - w) / 2, y = i * (barH + gap), n = Number(r[3]);
+        if (i > 0) {
+          var pw = widths[i - 1], px = (W - pw) / 2, py = y - gap;
+          out += '<path d="M' + px + "," + py + " L" + (px + pw) + "," + py + " L" + (x + w) + "," + y + " L" + x + "," + y + ' Z" fill="' + FUNNEL[i] + '" opacity=".18"/>';
+          var prevN = Number(fs[i - 1][3]), lost = Math.max(0, prevN - n);
+          out += '<text x="' + (W / 2) + '" y="' + (py + gap / 2 + 5) + '" text-anchor="middle" font-size="12.5" font-weight="800" fill="#B3402A">↓ ' + num(lost) + "人（" + (prevN ? Math.round(lost / prevN * 100) : 0) + "%）が離れた</text>";
+        }
+        out += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + barH + '" rx="10" fill="' + FUNNEL[i] + '"><title>' + esc(r[2]) + "：" + num(n) + "人</title></rect>";
+        out += '<text x="' + (W / 2) + '" y="' + (y + 22) + '" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">' + esc(String(r[2]).replace(/（.*?）/, "")) + "</text>";
+        out += '<text x="' + (W / 2) + '" y="' + (y + 44) + '" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">' + num(n) + '人 <tspan font-size="12" font-weight="600">' + Math.round(n / n0 * 100) + "%</tspan></text>";
+      });
+      box.innerHTML = svgEl(W, H, out, "来店までの流れ");
+    }
+
+    // 入口
+    var lp = rowsOf(D.landing, m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 8);
+    $("tLanding").innerHTML = lp.length ? "<table><thead><tr><th>ページ</th><th class=n>訪問</th><th class=n>すぐ帰った</th></tr></thead><tbody>" +
+      lp.map(function (r) { return "<tr><td>" + esc(r[1]) + "</td><td class=n>" + num(r[2]) + "</td><td class=n>" + rateCell(r[4]) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
+
+    renderSankey(m);
+
+    // 離脱
+    var ex = rowsOf(D.exits, m).sort(function (a, b) { return b[4] - a[4]; }).slice(0, 10);
+    $("tExits").innerHTML = ex.length ? "<table><thead><tr><th>ページ</th><th class=n>表示</th><th class=n>終わった</th><th class=n>割合</th><th class=n>来店・連絡</th></tr></thead><tbody>" +
+      ex.map(function (r) { return "<tr><td>" + esc(r[1]) + "</td><td class=n>" + num(r[2]) + "</td><td class=n>" + num(r[4]) + "</td><td class=n>" + rateCell(r[5]) + "</td><td class=n>" + num(r[6]) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
+  }
+
+  // サンキー図（左＝前のページ、右＝次のページ）
+  function renderSankey(m) {
+    var box = $("sankey");
+    var lk = rowsOf(D.links, m).map(function (r) { return { f: String(r[1]), t: String(r[2]), v: Number(r[3]) }; })
+      .filter(function (l) { return l.v > 0; }).sort(function (a, b) { return b.v - a.v; }).slice(0, 14);
+    if (!lk.length) { box.innerHTML = EMPTY; return; }
+    var W = Math.max(320, box.clientWidth || 800), narrow = W < 560;
+    var lab = narrow ? 92 : 150, nodeW = 12, pad = narrow ? 8 : 10, fs = narrow ? 11 : 12.5;
+    var L = {}, R = {};
+    lk.forEach(function (l) { L[l.f] = (L[l.f] || 0) + l.v; R[l.t] = (R[l.t] || 0) + l.v; });
+    var lNames = Object.keys(L).sort(function (a, b) { return L[b] - L[a]; }), rNames = Object.keys(R).sort(function (a, b) { return R[b] - R[a]; });
+    var total = lk.reduce(function (s, l) { return s + l.v; }, 0);
+    var minNode = 18, n = Math.max(lNames.length, rNames.length);
+    var H = Math.max(220, Math.min(560, n * 46));
+    var scale = (H - pad * (n - 1)) / total;
+    function place(names, sums) {
+      var y = 0, pos = {}, used = names.reduce(function (s, k) { return s + Math.max(minNode, sums[k] * scale); }, 0) + pad * (names.length - 1);
+      y = (H - used) / 2;
+      names.forEach(function (k) { var h = Math.max(minNode, sums[k] * scale); pos[k] = { y: y, h: h, off: 0 }; y += h + pad; });
+      return pos;
+    }
+    var lp = place(lNames, L), rp = place(rNames, R);
+    var x0 = lab, x1 = W - lab - nodeW, out = "";
+    lk.forEach(function (l) {
+      var a = lp[l.f], b = rp[l.t];
+      var ha = a.h * l.v / L[l.f], hb = b.h * l.v / R[l.t];
+      var ya = a.y + a.off, yb = b.y + b.off; a.off += ha; b.off += hb;
+      var sx = x0 + nodeW, ex = x1, mx = (sx + ex) / 2;
+      out += '<path class="lk" d="M' + sx + "," + ya + " C" + mx + "," + ya + " " + mx + "," + yb + " " + ex + "," + yb + " L" + ex + "," + (yb + hb) + " C" + mx + "," + (yb + hb) + " " + mx + "," + (ya + ha) + " " + sx + "," + (ya + ha) + ' Z" fill="' + C1 + '" opacity=".28"><title>' + esc(l.f) + " → " + esc(l.t) + "：" + num(l.v) + "回</title></path>";
+    });
+    lNames.forEach(function (k) {
+      var p = lp[k];
+      out += '<rect x="' + x0 + '" y="' + p.y + '" width="' + nodeW + '" height="' + p.h + '" rx="3" fill="#4A2E1A"><title>' + esc(k) + "：" + num(L[k]) + "回</title></rect>";
+      out += '<text x="' + (x0 - 8) + '" y="' + (p.y + p.h / 2 - 1) + '" text-anchor="end" font-size="' + fs + '" font-weight="700" fill="' + INK + '">' + esc(k) + '</text><text x="' + (x0 - 8) + '" y="' + (p.y + p.h / 2 + fs) + '" text-anchor="end" font-size="' + (fs - 1.5) + '" fill="' + INK2 + '">' + num(L[k]) + "回</text>";
+    });
+    rNames.forEach(function (k) {
+      var p = rp[k];
+      out += '<rect x="' + x1 + '" y="' + p.y + '" width="' + nodeW + '" height="' + p.h + '" rx="3" fill="' + C2 + '"><title>' + esc(k) + "：" + num(R[k]) + "回</title></rect>";
+      out += '<text x="' + (x1 + nodeW + 8) + '" y="' + (p.y + p.h / 2 - 1) + '" font-size="' + fs + '" font-weight="700" fill="' + INK + '">' + esc(k) + '</text><text x="' + (x1 + nodeW + 8) + '" y="' + (p.y + p.h / 2 + fs) + '" font-size="' + (fs - 1.5) + '" fill="' + INK2 + '">' + num(R[k]) + "回</text>";
+    });
+    out += '<text x="' + (x0 + nodeW / 2) + '" y="-8" text-anchor="middle" font-size="11" font-weight="800" fill="' + MUTED + '">前のページ</text><text x="' + (x1 + nodeW / 2) + '" y="-8" text-anchor="middle" font-size="11" font-weight="800" fill="' + MUTED + '">次のページ</text>';
+    box.innerHTML = '<div style="padding-top:16px">' + svgEl(W, H, out, "ページのつながり") + "</div>";
+  }
+
+  function renderChannels(m) {
+    var ch = rowsOf(D.channels, m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 8);
+    var mx = Math.max.apply(null, ch.map(function (r) { return +r[2]; }).concat([1]));
+    $("tChannels").innerHTML = ch.length ? "<table><thead><tr><th>どこから</th><th class=n>訪問</th><th style=width:22%></th><th class=n>成約率</th></tr></thead><tbody>" +
+      ch.map(function (r) { return "<tr><td>" + esc(r[1]) + "</td><td class=n>" + num(r[2]) + '</td><td><div class="meter" style="width:' + (+r[2] / mx * 100) + '%"></div></td><td class=n>' + rateCell(r[5], true) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
+  }
+
+  // 曜日×時間帯のヒートマップ
+  function renderHeat(m) {
+    var box = $("heat"), rows = rowsOf(D.heat, m);
+    if (!rows.length) { box.innerHTML = EMPTY; return; }
+    var v = {}, mx = 1;
+    rows.forEach(function (r) { var k = r[1] + "-" + r[2]; v[k] = +r[3]; if (+r[3] > mx) mx = +r[3]; });
+    var W = Math.max(560, box.clientWidth || 900), left = 30, top = 18, cw = (W - left) / 24, ch = Math.max(22, Math.min(34, cw * 0.9)), H = top + ch * 7 + 4, out = "";
+    var order = [1, 2, 3, 4, 5, 6, 0]; // 月〜日
+    order.forEach(function (wd, i) {
+      out += '<text x="' + (left - 8) + '" y="' + (top + i * ch + ch / 2 + 4) + '" text-anchor="end" font-size="12" font-weight="700" fill="' + (wd === 0 ? "#B3402A" : wd === 6 ? C2 : INK2) + '">' + WD[wd] + "</text>";
+      for (var h = 0; h < 24; h++) {
+        var c = v[wd + "-" + h] || 0, step = c ? Math.min(HEAT.length - 1, 1 + Math.floor(c / mx * (HEAT.length - 1.0001))) : 0;
+        out += '<rect x="' + (left + h * cw + 1) + '" y="' + (top + i * ch + 1) + '" width="' + (cw - 2) + '" height="' + (ch - 2) + '" rx="4" fill="' + HEAT[step] + '"><title>' + WD[wd] + "曜 " + h + "時台：" + num(c) + "回</title></rect>";
+      }
+    });
+    for (var h2 = 0; h2 < 24; h2 += 3) out += '<text x="' + (left + h2 * cw + cw / 2) + '" y="12" text-anchor="middle" font-size="11" fill="' + MUTED + '">' + h2 + "時</text>";
+    box.innerHTML = svgEl(W, H, out, "曜日と時間帯ごとの訪問回数") +
+      '<div class="heat-legend">少ない ' + HEAT.slice(1).map(function (c) { return '<i style="background:' + c + '"></i>'; }).join("") + " 多い（最大 " + num(mx) + "回）</div>";
+  }
+
+  function renderShops(m) {
+    var sh = rowsOf(D.shops, m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 15);
+    if (!sh.length) { $("tShops").innerHTML = '<p class="empty">この月のデータはまだありません</p>'; return; }
+    var base = D.siteBase || "";
+    var cards = sh.slice(0, 6).map(function (r, i) {
+      var img = r[6] ? base + "assets/shops/" + r[6] + ".webp" : "";
+      return '<div class="shop"><div class="ph"' + (img ? ' style="background-image:url(\'' + esc(img) + '\')"' : "") + '><span class="rk">' + (i + 1) + '</span></div><div class="bd"><div class="nm">' + esc(r[1]) + '</div><div class="st"><span><b>' + num(r[2]) + "</b>表示</span><span><b>" + num(r[4]) + "</b>待ち状況</span><span><b>" + num(r[5]) + "</b>地図</span></div></div></div>";
+    }).join("");
+    var rest = sh.slice(6), mx = Math.max.apply(null, sh.map(function (r) { return +r[2]; }).concat([1]));
+    var tbl = rest.length ? "<table><thead><tr><th>順位・店舗</th><th class=n>表示</th><th style=width:28%></th><th class=n>待ち状況</th><th class=n>地図</th></tr></thead><tbody>" +
+      rest.map(function (r, i) { return "<tr><td>" + (i + 7) + ". " + esc(r[1]) + "</td><td class=n>" + num(r[2]) + '</td><td><div class="meter" style="width:' + (+r[2] / mx * 100) + '%"></div></td><td class=n>' + num(r[4]) + "</td><td class=n>" + num(r[5]) + "</td></tr>"; }).join("") + "</tbody></table>" : "";
+    $("tShops").innerHTML = '<div class="shops">' + cards + "</div>" + tbl;
+  }
+
+  function renderContent(m) {
+    var cg = rowsOf(D.content, m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 12);
+    hbar("cContent", cg.map(function (r) { return r[1]; }), cg.map(function (r) { return Number(r[2]); }), "表示回数");
+  }
+
+  function renderPhone(m) {
+    var sc = rowsOf(D.sections, m);
+    if (!sc.length || !sc.some(function (r) { return +r[2] > 0; })) { $("phone").innerHTML = EMPTY; return; }
+    $("phone").innerHTML = '<div class="phone">' + sc.map(function (r) {
+      var p = Math.round(+r[3] * 100);
+      return '<div class="ph-row"><div class="t"><span>' + esc(r[1]) + "</span><span>" + p + '%</span></div><div class="b"><i style="width:' + p + '%"></i></div></div>';
+    }).join("") + "</div>";
+  }
+
+  function renderDev(m) {
+    var dv = rowsOf(D.dev, m).filter(function (r) { return r[1] === "端末"; }).sort(function (a, b) { return b[3] - a[3]; });
+    if (!dv.length) { $("tDev").innerHTML = EMPTY; if (charts.cDev) charts.cDev.destroy(); return; }
+    var top = dv.slice(0, 3), restN = dv.slice(3).reduce(function (s, r) { return s + Number(r[3]); }, 0);
+    var labels = top.map(function (r) { return r[2]; }), data = top.map(function (r) { return +r[3]; });
+    if (restN) { labels.push("その他"); data.push(restN); }
+    var cols = [C1, C2, C3, CMP], tot = data.reduce(function (s, x) { return s + x; }, 0) || 1;
+    $("tDev").innerHTML = '<div class="dev"><div class="dn"><canvas id="cDev"></canvas><div class="ct"><div><b>' + Math.round(data[0] / tot * 100) + "%</b>" + esc(labels[0]) + '</div></div></div><ul class="legend">' +
+      labels.map(function (l, i) { return '<li><i style="background:' + cols[i] + '"></i><span>' + esc(l) + "</span><span>" + num(data[i]) + "人（" + Math.round(data[i] / tot * 100) + "%）</span></li>"; }).join("") + "</ul></div>";
+    if (!window.Chart) return;
+    if (charts.cDev) charts.cDev.destroy();
+    charts.cDev = new Chart($("cDev"), { type: "doughnut", data: { labels: labels, datasets: [{ data: data, backgroundColor: cols.slice(0, data.length), borderColor: "#fff", borderWidth: 2 }] },
+      options: { responsive: true, maintainAspectRatio: false, animation: false, cutout: "68%", plugins: { legend: { display: false } } } });
+  }
+
+  function renderAppdl(m) {
+    var ad = rowsOf(D.appdl, m).slice(0, 10);
+    var mx = Math.max.apply(null, ad.map(function (r) { return +r[4]; }).concat([1]));
+    $("tAppdl").innerHTML = ad.length ? "<table><thead><tr><th>ページ・場所</th><th>ストア</th><th class=n>回数</th><th style=width:22%></th></tr></thead><tbody>" +
+      ad.map(function (r) { return "<tr><td>" + esc(r[1]) + '<span class="arrow">›</span>' + esc(r[2]) + "</td><td>" + esc(r[3]) + "</td><td class=n>" + num(r[4]) + '</td><td><div class="meter" style="width:' + (+r[4] / mx * 100) + '%"></div></td></tr>'; }).join("") + "</tbody></table>" : '<p class="empty">この月はまだ押されていません</p>';
+  }
+
+  function renderSearch(m) {
+    var st = rowsOf(D.search, m).slice(0, 40);
+    if (!st.length) { $("tSearch").innerHTML = '<p class="empty">この月はまだ検索されていません</p>'; return; }
+    var mx = Math.max.apply(null, st.map(function (r) { return +r[2]; }).concat([1]));
+    $("tSearch").innerHTML = '<div class="cloud">' + st.map(function (r) {
+      var size = 12 + Math.round(14 * Math.sqrt(+r[2] / mx));
+      return '<span style="font-size:' + size + 'px">' + esc(r[1]) + "<i>" + num(r[2]) + "</i></span>";
+    }).join("") + "</div>";
+  }
+
+  function renderTrend() {
     var tr = D.monthly.slice(0, 12).reverse();
     var labels = tr.map(function (r) { return String(r[0]).replace(/^\d{4}年/, ""); });
-    chart("cTrend", "line", labels, [{ label: "訪問者数", data: tr.map(function (r) { return Number(r[1]); }), borderColor: C1, backgroundColor: C1, borderWidth: 2, pointRadius: 4, tension: .25 }], { legend: false });
+    var ev = function (r, name) { var i = D.events.indexOf(name); return r ? Number(r[7 + i] || 0) : 0; };
+    chart("cTrend", "line", labels, [{ label: "訪問者数", data: tr.map(function (r) { return Number(r[1]); }), borderColor: C1, backgroundColor: "rgba(217,106,0,.12)", fill: true, borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: C1, tension: .3 }], { legend: false });
     chart("cAct", "bar", labels, [
       { label: "アプリDLボタン", data: tr.map(function (r) { return ev(r, "アプリDLボタン"); }), backgroundColor: C1 },
       { label: "待ち状況を見た", data: tr.map(function (r) { return ev(r, "待ち状況を見た"); }), backgroundColor: C2 },
       { label: "地図を開いた", data: tr.map(function (r) { return ev(r, "地図を開いた"); }), backgroundColor: C3 }
     ], { legend: true });
-
-    renderFlow(m);
-
-    // コンテンツ別
-    var cg =rowsOf(D.content, m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 16);
-    hbar("cContent", cg.map(function (r) { return r[1]; }), cg.map(function (r) { return Number(r[2]); }), "表示回数");
-    // 流入元
-    var ch = rowsOf(D.channels, m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 10);
-    hbar("cChannel", ch.map(function (r) { return r[1]; }), ch.map(function (r) { return Number(r[2]); }), "訪問回数");
-    // トップのコーナー
-    var sc = rowsOf(D.sections, m);
-    hbar("cSection", sc.map(function (r) { return r[1]; }), sc.map(function (r) { return Math.round(Number(r[3]) * 100); }), "見た割合（%）", true);
-
-    // 店舗
-    var sh = rowsOf(D.shops, m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 15);
-    var maxV = Math.max.apply(null, sh.map(function (r) { return Number(r[2]); }).concat([1]));
-    $("tShops").innerHTML = sh.length ? "<table><thead><tr><th>店舗</th><th class=n>表示回数</th><th style=width:30%></th><th class=n>待ち状況</th><th class=n>地図</th></tr></thead><tbody>" +
-      sh.map(function (r) { return "<tr><td>" + esc(r[1]) + "</td><td class=n>" + num(r[2]) + '</td><td><div class="meter" style="width:' + (Number(r[2]) / maxV * 100) + '%"></div></td><td class=n>' + num(r[4]) + "</td><td class=n>" + num(r[5]) + "</td></tr>"; }).join("") +
-      "</tbody></table>" : '<p class="empty">この月のデータはまだありません</p>';
-
-    // アプリDLの場所
-    var ad = rowsOf(D.appdl, m).slice(0, 12);
-    $("tAppdl").innerHTML = ad.length ? "<table><thead><tr><th>ページ</th><th>場所</th><th>ストア</th><th class=n>回数</th></tr></thead><tbody>" +
-      ad.map(function (r) { return "<tr><td>" + esc(r[1]) + "</td><td>" + esc(r[2]) + "</td><td>" + esc(r[3]) + "</td><td class=n>" + num(r[4]) + "</td></tr>"; }).join("") +
-      "</tbody></table>" : '<p class="empty">この月はまだ押されていません</p>';
-
-    // 時間帯
-    var hours = []; for (var h = 0; h < 24; h++) hours.push(0);
-    rowsOf(D.dev, m).filter(function (r) { return r[1] === "時間帯"; }).forEach(function (r) { var hh = parseInt(r[2], 10); if (hh >= 0 && hh < 24) hours[hh] = Number(r[3]); });
-    chart("cHour", "bar", hours.map(function (_, i) { return i + "時"; }), [{ label: "訪問回数", data: hours, backgroundColor: C1 }], { legend: false });
-
-    // 端末・地域
-    var dv = rowsOf(D.dev, m).filter(function (r) { return r[1] === "端末"; });
+    // 地域（ここで描く：月の選択に合わせる）
+    var m = $("month").value;
     var rg = rowsOf(D.dev, m).filter(function (r) { return r[1] === "地域"; }).slice(0, 8);
-    var tbl = function (title, list) {
-      if (!list.length) return "";
-      var mx = Math.max.apply(null, list.map(function (r) { return Number(r[3]); }).concat([1]));
-      return "<table><thead><tr><th>" + title + "</th><th class=n>訪問者数</th><th style=width:40%></th></tr></thead><tbody>" +
-        list.map(function (r) { return "<tr><td>" + esc(r[2]) + "</td><td class=n>" + num(r[3]) + '</td><td><div class="meter" style="width:' + (Number(r[3]) / mx * 100) + '%"></div></td></tr>'; }).join("") + "</tbody></table>";
-    };
-    var dt = tbl("端末", dv) + (rg.length ? "<div style=height:10px></div>" : "") + tbl("地域", rg);
-    $("tDev").innerHTML = dt || '<p class="empty">この月のデータはまだありません</p>';
-
-    // 検索ワード
-    var st = rowsOf(D.search, m).slice(0, 40);
-    $("tSearch").innerHTML = st.length ? '<div class="chips">' + st.map(function (r) { return '<span class="chip">' + esc(r[1]) + "<i>" + num(r[2]) + "回</i></span>"; }).join("") + "</div>" : '<p class="empty">この月はまだ検索されていません</p>';
-  }
-
-  var EMPTY = '<p class="empty">この月のデータはまだありません</p>';
-  function rateCell(v) {
-    var p = Math.round(Number(v || 0) * 100);
-    return '<div class="rate"><span>' + p + '%</span><span class="meter"><i style="width:' + p + '%"></i></span></div>';
-  }
-
-  // お客様の動き：来店までの流れ・入口・よく通る道・次のページ・離脱
-  function renderFlow(m) {
-    // 来店までの流れ（列：0月 1順番 2段階 3人数）
-    var fs = rowsOf(D.funnel || [], m).sort(function (a, b) { return a[1] - b[1]; });
-    var n0 = fs.length ? Number(fs[0][3]) : 0;
-    if (!n0) $("fFunnel").innerHTML = EMPTY;
-    else $("fFunnel").innerHTML = fs.map(function (r, i) {
-      var n = Number(r[3]), w = Math.max(1, n / n0 * 100), out = "";
-      if (i > 0) {
-        var prevN = Number(fs[i - 1][3]), lost = Math.max(0, prevN - n);
-        out += '<div class="drop">↓ ここで ' + num(lost) + "人（" + (prevN ? Math.round(lost / prevN * 100) : 0) + "%）が離れた</div>";
-      }
-      return out + '<div class="st"><div class="lb">' + (i + 1) + ". " + esc(r[2]) + '</div><div class="row"><div class="b" style="width:' + (w * 0.78) + '%"></div><div class="v">' + num(n) + "人<small>" + Math.round(n / n0 * 100) + "%</small></div></div></div>";
-    }).join("");
-
-    // 入口（列：0月 1ページ 2訪問回数 3すぐ帰った回数 4割合）
-    var lp = rowsOf(D.landing || [], m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 10);
-    $("tLanding").innerHTML = lp.length ? "<table><thead><tr><th>ページ</th><th class=n>訪問回数</th><th class=n>すぐ帰った</th></tr></thead><tbody>" +
-      lp.map(function (r) { return "<tr><td>" + esc(r[1]) + "</td><td class=n>" + num(r[2]) + "</td><td class=n>" + rateCell(r[4]) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
-
-    // よく通る道（列：0月 1前 2次 3回数）
-    var lk = rowsOf(D.links || [], m);
-    var top = lk.slice().sort(function (a, b) { return b[3] - a[3]; }).slice(0, 10);
-    var mx = Math.max.apply(null, top.map(function (r) { return Number(r[3]); }).concat([1]));
-    $("tPaths").innerHTML = top.length ? "<table><thead><tr><th>前のページ → 次のページ</th><th class=n>回数</th><th style=width:28%></th></tr></thead><tbody>" +
-      top.map(function (r) { return "<tr><td>" + esc(r[1]) + '<span class="arrow">→</span>' + esc(r[2]) + "</td><td class=n>" + num(r[3]) + '</td><td><div class="meter" style="width:' + (Number(r[3]) / mx * 100) + '%"></div></td></tr>'; }).join("") + "</tbody></table>" : EMPTY;
-
-    // 離脱（列：0月 1ページ 2表示 3次へ 4終わった 5割合 6来店・連絡）
-    var ex = rowsOf(D.exits || [], m);
-    var exSorted = ex.slice().sort(function (a, b) { return b[4] - a[4]; }).slice(0, 12);
-    $("tExits").innerHTML = exSorted.length ? "<table><thead><tr><th>ページ</th><th class=n>表示</th><th class=n>終わった</th><th class=n>割合</th><th class=n>来店・連絡</th></tr></thead><tbody>" +
-      exSorted.map(function (r) { return "<tr><td>" + esc(r[1]) + "</td><td class=n>" + num(r[2]) + "</td><td class=n>" + num(r[4]) + "</td><td class=n>" + rateCell(r[5]) + "</td><td class=n>" + num(r[6]) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
-
-    // 次のページ（選んだページ）
-    var sel = $("nextSel"), keep = sel.value;
-    var pages = ex.slice().sort(function (a, b) { return b[2] - a[2]; }).map(function (r) { return String(r[1]); });
-    if (!pages.length) pages = ["トップ"];
-    sel.innerHTML = pages.map(function (p) { return "<option>" + esc(p) + "</option>"; }).join("");
-    sel.value = pages.indexOf(keep) >= 0 ? keep : (pages.indexOf("トップ") >= 0 ? "トップ" : pages[0]);
-    renderNext(m);
-  }
-  function renderNext(m) {
-    m = m || $("month").value;
-    var p = $("nextSel").value;
-    var nx = rowsOf(D.links || [], m).filter(function (r) { return String(r[1]) === p; }).sort(function (a, b) { return b[3] - a[3]; }).slice(0, 10);
-    var exr = rowsOf(D.exits || [], m).filter(function (r) { return String(r[1]) === p; })[0];
-    var labels = nx.map(function (r) { return r[2]; }), data = nx.map(function (r) { return Number(r[3]); }), colors = nx.map(function () { return C1; });
-    if (exr && Number(exr[4]) > 0) { labels.push("ここで終わった"); data.push(Number(exr[4])); colors.push("#B9AFA6"); }
-    hbar("cNext", labels, data, "回数", false, colors);
+    var mx = Math.max.apply(null, rg.map(function (r) { return +r[3]; }).concat([1]));
+    $("tRegion").innerHTML = rg.length ? "<table><tbody>" + rg.map(function (r) { return "<tr><td style=width:28%>" + esc(r[2]) + '</td><td><div class="meter" style="width:' + (+r[3] / mx * 100) + '%"></div></td><td class=n style=width:70px>' + num(r[3]) + "人</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
   }
 
   function baseOpts(o) {
@@ -314,7 +565,7 @@
     sets.forEach(function (s) { if (type === "bar") { s.borderRadius = 4; s.maxBarThickness = 28; s.borderSkipped = "start"; } });
     charts[id] = new Chart($(id), { type: type, data: { labels: labels, datasets: sets }, options: baseOpts(o) });
   }
-  function hbar(id, labels, data, label, isPct, colors) {
+  function hbar(id, labels, data, label) {
     if (!window.Chart) return;
     if (charts[id]) charts[id].destroy();
     var el = $(id), box = el.parentNode, old = box.querySelector(".empty");
@@ -328,15 +579,21 @@
     var o = baseOpts({ legend: false });
     o.indexAxis = "y";
     o.interaction = { mode: "nearest", axis: "y", intersect: false };
-    o.scales = { x: { beginAtZero: true, max: isPct ? 100 : undefined, grid: { color: GRID }, border: { display: false }, ticks: { precision: 0, callback: function (v) { return isPct ? v + "%" : v; } } },
-                 y: { grid: { display: false }, ticks: { autoSkip: false } } };
-    o.plugins.tooltip = { callbacks: { label: function (c) { return " " + label + "：" + (isPct ? c.parsed.x + "%" : num(c.parsed.x)); } } };
-    charts[id] = new Chart(el, { type: "bar", data: { labels: labels, datasets: [{ label: label, data: data, backgroundColor: colors || C1, borderRadius: 4, maxBarThickness: 22, borderSkipped: "start" }] }, options: o });
+    o.scales = { x: { beginAtZero: true, grid: { color: GRID }, border: { display: false }, ticks: { precision: 0 } },
+                 y: { grid: { display: false }, ticks: { autoSkip: false, color: INK } } };
+    o.plugins.tooltip = { callbacks: { label: function (c) { return " " + label + "：" + num(c.parsed.x); } } };
+    charts[id] = new Chart(el, { type: "bar", data: { labels: labels, datasets: [{ label: label, data: data, backgroundColor: C1, borderRadius: 4, maxBarThickness: 22, borderSkipped: "start" }] }, options: o });
   }
 
   $("month").addEventListener("change", render);
-  $("nextSel").addEventListener("change", function () { renderNext(); });
   $("refresh").addEventListener("click", function () { load(true); });
+  var rt = null, lastW = window.innerWidth;
+  window.addEventListener("resize", function () {
+    if (!D || Math.abs(window.innerWidth - lastW) < 40) return;
+    lastW = window.innerWidth;
+    clearTimeout(rt);
+    rt = setTimeout(function () { var m = $("month").value; renderFlow(m); renderHeat(m); }, 200);
+  });
   load(false);
 })();
 </script>
