@@ -1,12 +1,13 @@
 /**
  * ホームページ アクセス集計（カットハウスひかり）
- * Googleアナリティクス 4 の数字を、毎朝6時ごろ自動でこのスプレッドシートに書き込みます。
- * メニュー「アクセス集計」→「今すぐ更新」でもすぐ更新できます。
+ *  - データ置き場：スプレッドシート（SS_ID）。人は直接さわらない
+ *  - 集計：毎朝6時ごろ、Googleアナリティクス 4 の数字をスプレッドシートの各タブに書き込む（updateAll）
+ *  - 表示：ウェブアプリ（doGet → Dashboard.html）。URL を開くとグラフ付きの画面
  *
- * このコードの元は GitHub の hsktake/hikari-website の tools/access_report.gs（Claude が管理）。
- * スプレッドシートの「拡張機能 → Apps Script」に貼ってあり、
- * 「サービス」に Google Analytics Data API（AnalyticsData）を追加しています。
+ * このコードの元は GitHub の hsktake/hikari-website の tools/access_report.gs と tools/access_dashboard.html（Claude が管理）。
+ * Apps Script の「サービス」に Google Analytics Data API（AnalyticsData v1beta）を追加しています。
  */
+const SS_ID = '1ebLbFcPGZ5JQCqlUOQZTOJPvTJ8KSz5iMmKcknia7jw';
 const PROPERTY = 'properties/559307576'; // GA4 プロパティ「カットハウスひかり ホームページ」
 const START = '2026-10-01';               // 計測を始めた月
 const TZ = 'Asia/Tokyo';
@@ -35,14 +36,7 @@ const REGIONS = {
 };
 const TOP_SECTIONS = ['ヒーロー', 'ヘアカタログ帯', '店舗を探す', '公式アプリ', 'メニュー', '予約からカットまで', 'Instagram', '会社案内', '採用情報'];
 
-// ---------------------------------------------------------------- メニュー・自動更新
-function onOpen() {
-  SpreadsheetApp.getUi().createMenu('アクセス集計')
-    .addItem('今すぐ更新', 'updateAll')
-    .addItem('毎朝の自動更新をオンにする', 'setupTrigger')
-    .addToUi();
-}
-
+// ---------------------------------------------------------------- 自動更新（毎朝6時）
 function setupTrigger() {
   ScriptApp.getProjectTriggers().forEach(t => { if (t.getHandlerFunction() === 'updateAll') ScriptApp.deleteTrigger(t); });
   ScriptApp.newTrigger('updateAll').timeBased().everyDays(1).atHour(6).inTimezone(TZ).create();
@@ -89,11 +83,11 @@ function shopLabel_(s) { return String(s).replace(/（.*$/, '').replace(/｜.*$/
 
 // ---------------------------------------------------------------- まとめて更新
 function updateAll() {
-  // 毎朝の自動更新がまだなら、ここでオンにする（最初に1回「今すぐ更新」を押すだけでよいように）
+  // 毎朝の自動更新がまだなら、ここでオンにする
   if (!ScriptApp.getProjectTriggers().some(t => t.getHandlerFunction() === 'updateAll')) setupTrigger();
-  const ss = SpreadsheetApp.getActive();
+  const ss = SpreadsheetApp.openById(SS_ID);
   const months = months_();
-  const thisM = months[0], lastM = months[1] || '';
+
 
   // 1) 月別の主な数字
   const base = run_(['yearMonth'], ['totalUsers', 'newUsers', 'sessions', 'screenPageViews', 'averageSessionDuration', 'engagementRate']);
@@ -168,8 +162,12 @@ function updateAll() {
   hr.sort((a, b) => b[0].localeCompare(a[0]) || Number(a[1]) - Number(b[1])).forEach(r => dRows.push([monthLabel_(r[0]), '時間帯', Number(r[1]) + '時台', r[2]]));
   write_(ss, '端末・地域・時間帯', ['月', '種類', '内容', '人数・回数'], dRows);
 
-  // 9) まとめ（グラフの元になる表。位置は固定）
-  summary_(ss, months, monthly, cg, sRows, chRows, secRows, dv, stRows, thisM, lastM);
+  // 9) 更新情報（画面の「最終更新」）
+  const info = ss.getSheetByName('更新情報') || ss.insertSheet('更新情報');
+  info.clear();
+  info.getRange(1, 1, 2, 2).setValues([
+    ['最終更新', Utilities.formatDate(new Date(), TZ, 'yyyy/MM/dd HH:mm')],
+    ['読めなかった表', ERRORS.join(' ／ ').slice(0, 500)]]);
 }
 
 // 表を書く（1行目は見出し）
@@ -188,81 +186,39 @@ function write_(ss, name, head, rows, opt) {
   sh.autoResizeColumns(1, head.length);
 }
 
-// ---------------------------------------------------------------- まとめ
-const S = { // まとめシートの行の位置（グラフがこの位置を見ているので変えない）
-  kpi: 6, kpiN: 8,
-  trend: 17, trendN: 12,
-  content: 32, contentN: 20,
-  channel: 55, channelN: 10,
-  shop: 68, shopN: 10,
-  section: 81, sectionN: 9,
-  device: 93, deviceN: 4,
-  search: 100, searchN: 10,
-};
+// ---------------------------------------------------------------- ウェブアプリ（表示）
+function doGet() {
+  // はじめて開いたとき（許可した直後）に、毎朝の自動更新をオンにする
+  if (!ScriptApp.getProjectTriggers().some(t => t.getHandlerFunction() === 'updateAll')) setupTrigger();
+  return HtmlService.createHtmlOutputFromFile('Dashboard')
+    .setTitle('ホームページ アクセス集計｜カットハウスひかり')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
 
-function summary_(ss, months, monthly, cg, sRows, chRows, secRows, dv, stRows, thisM, lastM) {
-  const sh = ss.getSheetByName('まとめ') || ss.insertSheet('まとめ', 0);
-  const T = monthLabel_(thisM), L = lastM ? monthLabel_(lastM) : '';
-  const put = (row, col, vals) => { if (vals.length) sh.getRange(row, col, vals.length, vals[0].length).setValues(vals); };
-  const clear = (row, n, w) => sh.getRange(row, 1, n, w).clearContent();
-  const title = (row, text, head) => { sh.getRange(row - 2, 1).setValue(text); put(row - 1, 1, [head]); };
-
-  sh.getRange('A:A').setNumberFormat('@');
-  sh.getRange(1, 1).setValue('ホームページ アクセス集計（カットハウスひかり）');
-  sh.getRange(2, 1).setValue('最終更新：' + Utilities.formatDate(new Date(), TZ, 'yyyy年M月d日 H:mm') + '　※今月の数字は今日までの分です');
-  sh.getRange(3, 1).setValue(ERRORS.length ? '※一部の表が読み込めませんでした：' + ERRORS.join(' ／ ').slice(0, 300) : '');
-
-  // 今月と先月
-  const t = monthly[thisM], l = lastM ? monthly[lastM] : null;
-  const kpis = [['訪問者数', 'users'], ['訪問回数', 'sessions'], ['ページ表示回数', 'views'],
-    ['アプリDLボタン', 'app_download'], ['待ち状況を見た', 'wait_status_click'], ['地図を開いた', 'map_click'],
-    ['電話をかけた', 'tel_click'], ['採用の連絡', 'recruit_contact']];
-  const val = (o, k) => !o ? '' : (k in o ? o[k] : (o.ev[k] || 0));
-  title(S.kpi, '■ 今月と先月', ['項目', '今月（' + T + '）', '先月' + (L ? '（' + L + '）' : ''), '先月とくらべて']);
-  clear(S.kpi, S.kpiN, 4);
-  put(S.kpi, 1, kpis.map(k => {
-    const a = val(t, k[1]), b = val(l, k[1]);
-    return [k[0], a, b, b ? (a - b) / b : ''];
-  }));
-  sh.getRange(S.kpi, 2, S.kpiN, 2).setNumberFormat('#,##0');
-  sh.getRange(S.kpi, 4, S.kpiN, 1).setNumberFormat('+0%;-0%;0%');
-
-  // 月ごとの推移（古い順に12か月）
-  title(S.trend, '■ 月ごとの推移（直近12か月）', ['月', '訪問者数', 'ページ表示回数', 'アプリDLボタン', '待ち状況を見た', '地図を開いた']);
-  clear(S.trend, S.trendN, 6);
-  put(S.trend, 1, months.slice(0, S.trendN).reverse().map(m => {
-    const o = monthly[m];
-    return [monthLabel_(m), o.users, o.views, o.ev.app_download || 0, o.ev.wait_status_click || 0, o.ev.map_click || 0];
-  }));
-
-  // 今月のコンテンツ別
-  title(S.content, '■ 今月よく見られたページ（コンテンツ別）', ['コンテンツ', 'ページ表示回数', '訪問者数']);
-  clear(S.content, S.contentN, 3);
-  put(S.content, 1, cg.filter(r => r[0] === thisM && r[1] && r[1] !== '(not set)').sort((a, b) => b[2] - a[2]).slice(0, S.contentN).map(r => [r[1], r[2], r[3]]));
-
-  // 今月の流入元
-  title(S.channel, '■ 今月どこから来たか', ['どこから来たか', '訪問回数']);
-  clear(S.channel, S.channelN, 2);
-  put(S.channel, 1, chRows.filter(r => r[0] === T).slice(0, S.channelN).map(r => [r[1], r[2]]));
-
-  // 今月の店舗ページ TOP10
-  title(S.shop, '■ 今月よく見られた店舗 TOP10', ['店舗', 'ページ表示回数', '待ち状況を見た', '地図を開いた']);
-  clear(S.shop, S.shopN, 4);
-  put(S.shop, 1, sRows.filter(r => r[0] === T).slice(0, S.shopN).map(r => [r[1], r[2], r[4], r[5]]));
-
-  // 今月 トップのコーナー
-  title(S.section, '■ 今月 トップページの各コーナーまで見た割合', ['コーナー', '見た回数', '見た割合']);
-  clear(S.section, S.sectionN, 3);
-  put(S.section, 1, secRows.filter(r => r[0] === T).map(r => [r[1], r[2], r[3]]));
-  sh.getRange(S.section, 3, S.sectionN, 1).setNumberFormat('0%');
-
-  // 今月の端末
-  title(S.device, '■ 今月の端末', ['端末', '訪問者数']);
-  clear(S.device, S.deviceN, 2);
-  put(S.device, 1, dv.filter(r => r[0] === thisM).sort((a, b) => b[2] - a[2]).slice(0, S.deviceN).map(r => [DEVICES[r[1]] || r[1], r[2]]));
-
-  // 今月の店舗検索
-  title(S.search, '■ 今月よく検索された言葉（店舗検索）', ['検索された言葉', '回数']);
-  clear(S.search, S.searchN, 2);
-  put(S.search, 1, stRows.filter(r => r[0] === T).slice(0, S.searchN).map(r => [r[1], r[2]]));
+// 画面から呼ぶ：スプレッドシートの数字をまとめて返す（まだ空のとき・「最新にする」のときは先に集計する）
+function getData(force) {
+  const ss = SpreadsheetApp.openById(SS_ID);
+  const mon = ss.getSheetByName('月別');
+  if (force || !mon || mon.getLastRow() < 2) updateAll();
+  const read = (name) => {
+    const sh = ss.getSheetByName(name);
+    if (!sh || sh.getLastRow() < 2) return [];
+    return sh.getRange(2, 1, sh.getLastRow() - 1, sh.getLastColumn()).getValues()
+      .map(r => r.map(v => v instanceof Date ? Utilities.formatDate(v, TZ, 'yyyy/MM/dd HH:mm') : v));
+  };
+  const info = ss.getSheetByName('更新情報');
+  const iv = info ? info.getRange(1, 2, 2, 1).getValues() : [[''], ['']];
+  return {
+    updated: iv[0][0] instanceof Date ? Utilities.formatDate(iv[0][0], TZ, 'yyyy/MM/dd HH:mm') : String(iv[0][0] || ''),
+    errors: String(iv[1][0] || ''),
+    events: EVENTS.map(e => e[1]),
+    monthly: read('月別'),
+    content: read('コンテンツ別'),
+    shops: read('店舗別'),
+    channels: read('流入元'),
+    sections: read('トップのコーナー'),
+    appdl: read('アプリDLの場所'),
+    search: read('検索ワード'),
+    dev: read('端末・地域・時間帯'),
+  };
 }

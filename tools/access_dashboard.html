@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<!-- ホームページ アクセス集計の画面（Apps Script の Dashboard.html。元は GitHub の tools/access_dashboard.html） -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --orange: #EF7A00; --c1: #D96A00; --c2: #2F86B8; --c3: #3E9E5A;
+    --brown: #4A2E1A; --ink: #2B2420; --ink2: #6B625B; --muted: #9A918A;
+    --bg: #FFFAF2; --card: #FFFFFF; --line: #F0E6DA; --grid: #EFE9E2;
+    --up: #2E7D4F; --down: #B3402A;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif; font-size: 14px; line-height: 1.6; }
+  header { position: sticky; top: 0; z-index: 5; background: var(--brown); color: #fff; padding: 12px 16px; }
+  .bar { max-width: 1180px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+  h1 { margin: 0; font-size: 18px; font-weight: 800; letter-spacing: .02em; flex: 1 1 auto; }
+  h1 small { display: block; font-size: 12px; font-weight: 500; opacity: .8; }
+  .ctrl { display: flex; gap: 8px; align-items: center; }
+  select, button { font: inherit; font-weight: 700; border-radius: 999px; border: 0; padding: 7px 14px; cursor: pointer; }
+  select { background: #fff; color: var(--brown); }
+  button { background: var(--orange); color: #fff; }
+  button:disabled { opacity: .6; cursor: wait; }
+  main { max-width: 1180px; margin: 0 auto; padding: 16px; }
+  .note { background: #FFF1DE; border-radius: 12px; padding: 10px 14px; margin-bottom: 14px; color: var(--brown); font-size: 13px; }
+  .note.err { background: #FDE7E0; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+  .kpi { background: var(--card); border-radius: 14px; padding: 12px 14px; box-shadow: 0 1px 0 var(--line); }
+  .kpi .lb { font-size: 12.5px; color: var(--ink2); font-weight: 700; }
+  .kpi .v { font-size: 30px; font-weight: 800; line-height: 1.2; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .kpi .v small { font-size: 13px; margin-left: 2px; color: var(--ink2); }
+  .kpi .cmp { font-size: 12px; color: var(--muted); }
+  .kpi .cmp b { font-weight: 800; }
+  .up { color: var(--up); } .down { color: var(--down); }
+  .kpi.main { border-top: 4px solid var(--orange); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .card { background: var(--card); border-radius: 14px; padding: 14px 16px 16px; box-shadow: 0 1px 0 var(--line); min-width: 0; }
+  .card.wide { grid-column: 1 / -1; }
+  .card h2 { margin: 0 0 2px; font-size: 15px; font-weight: 800; color: var(--brown); }
+  .card .sub { margin: 0 0 10px; font-size: 12px; color: var(--muted); }
+  .cv { position: relative; height: 260px; }
+  .cv.tall { height: 380px; }
+  .cv .empty { position: absolute; inset: 0; padding-top: 110px; }
+  .empty { color: var(--muted); font-size: 13px; padding: 24px 0; text-align: center; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 7px 6px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+  th { font-size: 12px; color: var(--ink2); font-weight: 700; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .meter { height: 8px; border-radius: 4px; background: var(--c1); min-width: 2px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { background: #FFF1DE; color: var(--brown); border-radius: 999px; padding: 4px 10px; font-size: 13px; font-weight: 700; }
+  .chip i { font-style: normal; color: var(--ink2); font-weight: 500; margin-left: 4px; }
+  footer { max-width: 1180px; margin: 0 auto; padding: 8px 16px 28px; color: var(--muted); font-size: 12px; }
+  #loading { text-align: center; padding: 60px 0; color: var(--ink2); font-weight: 700; }
+  @media (max-width: 760px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .grid { grid-template-columns: 1fr; }
+    .kpi .v { font-size: 24px; }
+    h1 { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <h1>ホームページ アクセス集計<small id="upd">読み込み中…</small></h1>
+  <div class="ctrl">
+    <select id="month" aria-label="表示する月"></select>
+    <button id="refresh" type="button">最新にする</button>
+  </div>
+</div></header>
+<main>
+  <div id="loading">数字を読み込んでいます…</div>
+  <div id="app" hidden>
+    <div id="notes"></div>
+    <div class="kpis" id="kpis"></div>
+    <div class="grid">
+      <section class="card"><h2>月ごとの訪問者数</h2><p class="sub">直近12か月（今月は今日まで）</p><div class="cv"><canvas id="cTrend"></canvas></div></section>
+      <section class="card"><h2>月ごとの「来店につながる動き」</h2><p class="sub">アプリDLボタン・待ち状況・地図が押された回数</p><div class="cv"><canvas id="cAct"></canvas></div></section>
+      <section class="card"><h2>よく見られたページ</h2><p class="sub">ページの種類ごとの表示回数</p><div class="cv tall"><canvas id="cContent"></canvas></div></section>
+      <section class="card"><h2>どこから来たか</h2><p class="sub">訪問回数</p><div class="cv tall"><canvas id="cChannel"></canvas></div></section>
+      <section class="card wide"><h2>よく見られた店舗 TOP15</h2><p class="sub">店舗ページの表示回数と、待ち状況・地図が押された回数</p><div id="tShops"></div></section>
+      <section class="card"><h2>トップページはどこまで見られたか</h2><p class="sub">トップを開いた回数のうち、そのコーナーまで見た割合</p><div class="cv tall"><canvas id="cSection"></canvas></div></section>
+      <section class="card"><h2>アプリDLボタンが押された場所</h2><p class="sub">どのページの、どのコーナーのボタンか</p><div id="tAppdl"></div></section>
+      <section class="card"><h2>見ている時間帯</h2><p class="sub">訪問回数（0時〜23時）</p><div class="cv"><canvas id="cHour"></canvas></div></section>
+      <section class="card"><h2>スマホ・パソコン／地域</h2><p class="sub">訪問者数</p><div id="tDev"></div></section>
+      <section class="card wide"><h2>店舗検索で調べられた言葉</h2><p class="sub">店舗一覧の検索欄に入力された言葉（多い順）</p><div id="tSearch"></div></section>
+    </div>
+  </div>
+</main>
+<footer>データ：Googleアナリティクス（毎朝6時ごろ自動で更新）。「最新にする」を押すと、その場で集め直します（1分ほどかかります）。</footer>
+<script>
+(function () {
+  "use strict";
+  var C1 = "#D96A00", C2 = "#2F86B8", C3 = "#3E9E5A", GRID = "#EFE9E2", INK2 = "#6B625B";
+  var D = null, charts = {};
+  if (window.Chart) {
+    Chart.defaults.font.family = '"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif';
+    Chart.defaults.color = INK2;
+    Chart.defaults.plugins.legend.labels.boxWidth = 12;
+    Chart.defaults.plugins.tooltip.backgroundColor = "#2B2420";
+  }
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  var num = function (v) { return Number(v || 0).toLocaleString("ja-JP"); };
+  var pct = function (v) { return Math.round(Number(v || 0) * 100) + "%"; };
+
+  function load(force) {
+    $("refresh").disabled = true;
+    if (force) $("upd").textContent = "集め直しています…（1分ほど）";
+    google.script.run
+      .withSuccessHandler(function (d) { D = d; $("refresh").disabled = false; start(); })
+      .withFailureHandler(function (e) {
+        $("refresh").disabled = false;
+        $("loading").textContent = "読み込めませんでした：" + (e && e.message ? e.message : e);
+      })
+      .getData(!!force);
+  }
+
+  function start() {
+    $("loading").hidden = true; $("app").hidden = false;
+    $("upd").textContent = D.updated ? "最終更新：" + D.updated : "まだ集計していません";
+    var sel = $("month"), cur = sel.value;
+    var months = D.monthly.map(function (r) { return String(r[0]); });
+    sel.innerHTML = months.map(function (m, i) { return "<option>" + esc(m) + "</option>"; }).join("");
+    if (cur && months.indexOf(cur) >= 0) sel.value = cur;
+    var notes = "";
+    if (D.errors) notes += '<p class="note err">一部の表が読み込めませんでした：' + esc(D.errors) + "</p>";
+    var m0 = D.monthly[0];
+    if (!m0 || Number(m0[1]) < 30) notes += '<p class="note">新しいホームページはまだ本番公開前のため、数字はごくわずかです。本番に切り替えると、ここに毎月の数字がたまっていきます。</p>';
+    $("notes").innerHTML = notes;
+    render();
+  }
+
+  function rowsOf(list, m) { return list.filter(function (r) { return String(r[0]) === m; }); }
+
+  function render() {
+    var m = $("month").value;
+    var idx = D.monthly.map(function (r) { return String(r[0]); }).indexOf(m);
+    var cur = D.monthly[idx] || [], prev = D.monthly[idx + 1] || null;
+    // 月別の列：0月 1訪問者 2はじめて 3訪問回数 4表示回数 5平均滞在 6しっかり見た割合 7〜 イベント
+    var ev = function (r, name) { var i = D.events.indexOf(name); return r ? Number(r[7 + i] || 0) : 0; };
+    var K = [
+      ["訪問者数", function (r) { return r ? Number(r[1]) : 0; }, true, "人"],
+      ["訪問回数", function (r) { return r ? Number(r[3]) : 0; }, true, "回"],
+      ["ページ表示回数", function (r) { return r ? Number(r[4]) : 0; }, true, "回"],
+      ["アプリDLボタン", function (r) { return ev(r, "アプリDLボタン"); }, true, "回"],
+      ["待ち状況を見た", function (r) { return ev(r, "待ち状況を見た"); }, false, "回"],
+      ["地図を開いた", function (r) { return ev(r, "地図を開いた"); }, false, "回"],
+      ["電話をかけた", function (r) { return ev(r, "電話をかけた"); }, false, "回"],
+      ["採用の連絡", function (r) { return ev(r, "採用の連絡"); }, false, "回"]
+    ];
+    $("kpis").innerHTML = K.map(function (k) {
+      var a = k[1](cur), b = prev ? k[1](prev) : null, cmp = "";
+      if (b !== null) {
+        if (b > 0) {
+          var d = Math.round((a - b) / b * 100);
+          cmp = '先月 ' + num(b) + '（<b class="' + (d > 0 ? "up" : d < 0 ? "down" : "") + '">' + (d > 0 ? "▲" : d < 0 ? "▼" : "±") + Math.abs(d) + "%</b>）";
+        } else cmp = "先月 " + num(b);
+      } else cmp = "先月のデータなし";
+      return '<div class="kpi' + (k[2] ? " main" : "") + '"><div class="lb">' + k[0] + '</div><div class="v">' + num(a) + "<small>" + k[3] + '</small></div><div class="cmp">' + cmp + "</div></div>";
+    }).join("");
+
+    // 推移（古い順・12か月）
+    var tr = D.monthly.slice(0, 12).reverse();
+    var labels = tr.map(function (r) { return String(r[0]).replace(/^\d{4}年/, ""); });
+    chart("cTrend", "line", labels, [{ label: "訪問者数", data: tr.map(function (r) { return Number(r[1]); }), borderColor: C1, backgroundColor: C1, borderWidth: 2, pointRadius: 4, tension: .25 }], { legend: false });
+    chart("cAct", "bar", labels, [
+      { label: "アプリDLボタン", data: tr.map(function (r) { return ev(r, "アプリDLボタン"); }), backgroundColor: C1 },
+      { label: "待ち状況を見た", data: tr.map(function (r) { return ev(r, "待ち状況を見た"); }), backgroundColor: C2 },
+      { label: "地図を開いた", data: tr.map(function (r) { return ev(r, "地図を開いた"); }), backgroundColor: C3 }
+    ], { legend: true });
+
+    // コンテンツ別
+    var cg = rowsOf(D.content, m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 16);
+    hbar("cContent", cg.map(function (r) { return r[1]; }), cg.map(function (r) { return Number(r[2]); }), "表示回数");
+    // 流入元
+    var ch = rowsOf(D.channels, m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 10);
+    hbar("cChannel", ch.map(function (r) { return r[1]; }), ch.map(function (r) { return Number(r[2]); }), "訪問回数");
+    // トップのコーナー
+    var sc = rowsOf(D.sections, m);
+    hbar("cSection", sc.map(function (r) { return r[1]; }), sc.map(function (r) { return Math.round(Number(r[3]) * 100); }), "見た割合（%）", true);
+
+    // 店舗
+    var sh = rowsOf(D.shops, m).sort(function (a, b) { return b[2] - a[2]; }).slice(0, 15);
+    var maxV = Math.max.apply(null, sh.map(function (r) { return Number(r[2]); }).concat([1]));
+    $("tShops").innerHTML = sh.length ? "<table><thead><tr><th>店舗</th><th class=n>表示回数</th><th style=width:30%></th><th class=n>待ち状況</th><th class=n>地図</th></tr></thead><tbody>" +
+      sh.map(function (r) { return "<tr><td>" + esc(r[1]) + "</td><td class=n>" + num(r[2]) + '</td><td><div class="meter" style="width:' + (Number(r[2]) / maxV * 100) + '%"></div></td><td class=n>' + num(r[4]) + "</td><td class=n>" + num(r[5]) + "</td></tr>"; }).join("") +
+      "</tbody></table>" : '<p class="empty">この月のデータはまだありません</p>';
+
+    // アプリDLの場所
+    var ad = rowsOf(D.appdl, m).slice(0, 12);
+    $("tAppdl").innerHTML = ad.length ? "<table><thead><tr><th>ページ</th><th>場所</th><th>ストア</th><th class=n>回数</th></tr></thead><tbody>" +
+      ad.map(function (r) { return "<tr><td>" + esc(r[1]) + "</td><td>" + esc(r[2]) + "</td><td>" + esc(r[3]) + "</td><td class=n>" + num(r[4]) + "</td></tr>"; }).join("") +
+      "</tbody></table>" : '<p class="empty">この月はまだ押されていません</p>';
+
+    // 時間帯
+    var hours = []; for (var h = 0; h < 24; h++) hours.push(0);
+    rowsOf(D.dev, m).filter(function (r) { return r[1] === "時間帯"; }).forEach(function (r) { var hh = parseInt(r[2], 10); if (hh >= 0 && hh < 24) hours[hh] = Number(r[3]); });
+    chart("cHour", "bar", hours.map(function (_, i) { return i + "時"; }), [{ label: "訪問回数", data: hours, backgroundColor: C1 }], { legend: false });
+
+    // 端末・地域
+    var dv = rowsOf(D.dev, m).filter(function (r) { return r[1] === "端末"; });
+    var rg = rowsOf(D.dev, m).filter(function (r) { return r[1] === "地域"; }).slice(0, 8);
+    var tbl = function (title, list) {
+      if (!list.length) return "";
+      var mx = Math.max.apply(null, list.map(function (r) { return Number(r[3]); }).concat([1]));
+      return "<table><thead><tr><th>" + title + "</th><th class=n>訪問者数</th><th style=width:40%></th></tr></thead><tbody>" +
+        list.map(function (r) { return "<tr><td>" + esc(r[2]) + "</td><td class=n>" + num(r[3]) + '</td><td><div class="meter" style="width:' + (Number(r[3]) / mx * 100) + '%"></div></td></tr>'; }).join("") + "</tbody></table>";
+    };
+    var dt = tbl("端末", dv) + (rg.length ? "<div style=height:10px></div>" : "") + tbl("地域", rg);
+    $("tDev").innerHTML = dt || '<p class="empty">この月のデータはまだありません</p>';
+
+    // 検索ワード
+    var st = rowsOf(D.search, m).slice(0, 40);
+    $("tSearch").innerHTML = st.length ? '<div class="chips">' + st.map(function (r) { return '<span class="chip">' + esc(r[1]) + "<i>" + num(r[2]) + "回</i></span>"; }).join("") + "</div>" : '<p class="empty">この月はまだ検索されていません</p>';
+  }
+
+  function baseOpts(o) {
+    return {
+      responsive: true, maintainAspectRatio: false, animation: false,
+      interaction: { mode: "index", intersect: false },
+      plugins: { legend: { display: !!o.legend, position: "bottom" } },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxRotation: 0, autoSkip: true } },
+        y: { beginAtZero: true, grid: { color: GRID }, border: { display: false }, ticks: { precision: 0 } }
+      }
+    };
+  }
+  function chart(id, type, labels, sets, o) {
+    if (!window.Chart) return;
+    if (charts[id]) charts[id].destroy();
+    sets.forEach(function (s) { if (type === "bar") { s.borderRadius = 4; s.maxBarThickness = 28; s.borderSkipped = "start"; } });
+    charts[id] = new Chart($(id), { type: type, data: { labels: labels, datasets: sets }, options: baseOpts(o) });
+  }
+  function hbar(id, labels, data, label, isPct) {
+    if (!window.Chart) return;
+    if (charts[id]) charts[id].destroy();
+    var el = $(id), box = el.parentNode, old = box.querySelector(".empty");
+    if (old) old.remove();
+    if (!labels.length) {
+      var p = document.createElement("p");
+      p.className = "empty"; p.textContent = "この月のデータはまだありません";
+      box.appendChild(p); el.hidden = true; return;
+    }
+    el.hidden = false;
+    var o = baseOpts({ legend: false });
+    o.indexAxis = "y";
+    o.interaction = { mode: "nearest", axis: "y", intersect: false };
+    o.scales = { x: { beginAtZero: true, max: isPct ? 100 : undefined, grid: { color: GRID }, border: { display: false }, ticks: { precision: 0, callback: function (v) { return isPct ? v + "%" : v; } } },
+                 y: { grid: { display: false }, ticks: { autoSkip: false } } };
+    o.plugins.tooltip = { callbacks: { label: function (c) { return " " + label + "：" + (isPct ? c.parsed.x + "%" : num(c.parsed.x)); } } };
+    charts[id] = new Chart(el, { type: "bar", data: { labels: labels, datasets: [{ label: label, data: data, backgroundColor: C1, borderRadius: 4, maxBarThickness: 22, borderSkipped: "start" }] }, options: o });
+  }
+
+  $("month").addEventListener("change", render);
+  $("refresh").addEventListener("click", function () { load(true); });
+  load(false);
+})();
+</script>
+</body>
+</html>
