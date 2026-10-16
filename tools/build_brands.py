@@ -465,7 +465,7 @@ def page(b):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://docs.google.com https://*.googleusercontent.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://docs.google.com https://*.googleusercontent.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; script-src 'self' https://www.googletagmanager.com; base-uri 'self'; form-action 'none'">
 <title>{esc(b["title"])}</title>
 <meta name="description" content="{esc(b["desc"])}">
 <link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">
@@ -474,6 +474,7 @@ def page(b):
 {fonts}
 <link rel="stylesheet" href="style.css?v={VERSION}">
 <script src="to-top.js?v={VERSION}" defer></script>
+<script src="ga.js?v={VERSION}" data-name="{esc(b["name"])}" defer></script>
 {f'<script src="sheet.js?v={VERSION}" defer></script>' if code else ""}
 </head>
 <body class="b-{b["dir"]}"{f' data-code="{code}"' if code else ""}>
@@ -493,7 +494,7 @@ def page(b):
 """
 
 
-VERSION = 5
+VERSION = 6
 
 TOTOP_JS = r"""/* 下までスクロールしたら「ページの一番上へ」ボタンを出す */
 (function () {
@@ -516,6 +517,37 @@ TOTOP_JS = r"""/* 下までスクロールしたら「ページの一番上へ�
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
 """
+
+GA_JS = r"""/* アクセス解析（Googleアナリティクス 4。カットハウスひかりと同じプロパティ。コンテンツグループ＝このお店の名前）
+   ページの表示と、待ち状況・地図・電話・LINE・カットハウスひかりへのリンクのクリックを記録する。（tools/build_brands.py が作成） */
+(function () {
+  "use strict";
+  var GA_ID = "G-P582HM9KTN";
+  if (/^(localhost|127\.|\[::1\])/.test(location.hostname) || location.protocol === "file:") return;
+  var me = document.currentScript;
+  var NAME = (me && me.getAttribute("data-name")) || document.title;
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { window.dataLayer.push(arguments); }
+  window.gtag = gtag;
+  gtag("js", new Date());
+  gtag("config", GA_ID, { content_group: "グループ：" + NAME });
+  var tag = document.createElement("script");
+  tag.async = true;
+  tag.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+  document.head.appendChild(tag);
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a[href]");
+    if (!a) return;
+    var h = a.href || "", p = { shop_name: NAME, section_name: "グループ：" + NAME };
+    if (/cut-hikari\.info/.test(h)) gtag("event", "wait_status_click", p);
+    else if (/goo\.gl\/maps|google\.[a-z.]+\/maps|maps\.app\.goo\.gl/.test(h)) gtag("event", "map_click", p);
+    else if (/^tel:/.test(h)) { p.method = "電話"; gtag("event", a.closest(".recruit") ? "recruit_contact" : "tel_click", p); }
+    else if (/line\.me|lin\.ee/.test(h)) gtag("event", "line_click", p);
+    else if (/instagram\.com/.test(h)) gtag("event", "instagram_click", p);
+  }, true);
+})();
+"""
+
 
 SHEET_JS = r"""/* ホームページ管理シート（カットハウスひかりと同じシート）の「店舗情報」「料金」を読んで、
    営業時間・定休日・閉店のお知らせ・料金を最新にする。読めないときは書いてある内容のまま。（tools/build_brands.py が作成） */
@@ -897,6 +929,8 @@ def main():
             f.write(page(b))
         with open(os.path.join(d, "to-top.js"), "w", encoding="utf-8") as f:
             f.write(TOTOP_JS)
+        with open(os.path.join(d, "ga.js"), "w", encoding="utf-8") as f:
+            f.write(GA_JS)
         if b["dir"] in BRAND_CODE:
             with open(os.path.join(d, "sheet.js"), "w", encoding="utf-8") as f:
                 f.write(SHEET_JS)

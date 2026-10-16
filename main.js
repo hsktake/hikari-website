@@ -1,3 +1,89 @@
+/* ===== アクセス解析（Googleアナリティクス 4）=====
+   ページの表示に加えて、ビジネスに大事な動き（アプリのダウンロード・待ち状況・地図・電話・採用の連絡・
+   トップの各コーナーの表示・店舗検索）を記録する。集計はアクセス集計シート（GAS）とルッカースタジオで見る。 */
+(function () {
+  "use strict";
+  var GA_ID = "G-P582HM9KTN";
+  if (/^(localhost|127\.|\[::1\])/.test(location.hostname) || location.protocol === "file:") return; // 手元の確認では送らない
+  var script = document.currentScript;
+  var ROOT = script ? script.src.replace(/main\.js.*$/, "") : "";
+  var rel = location.href.split("#")[0].split("?")[0].replace(ROOT, "");
+
+  // ページの種類（コンテンツグループ）：「各コンテンツごと」の集計に使う
+  var GROUPS = [[/^(index\.html)?$/, "トップ"], [/^shops\.html/, "店舗を探す"], [/^shop\//, "店舗ページ"],
+    [/^haircut\.html/, "ヘアカット"], [/^brow\.html/, "眉毛カット"], [/^facecare\.html/, "フェイスケア"],
+    [/^app\.html/, "公式アプリ"], [/^app-guide\.html/, "アプリの使い方"], [/^news\.html/, "お知らせ"],
+    [/^recruit/, "採用情報"], [/^member\.html/, "HiCARD会員"], [/^faq\.html/, "よくあるご質問"],
+    [/^contact\.html/, "お問い合わせ"], [/^community\.html/, "地域とともに"], [/^group\.html/, "グループのお店"],
+    [/^(privacy|tokushoho)\.html/, "規約・表記"]];
+  var group = "その他";
+  for (var i = 0; i < GROUPS.length; i++) if (GROUPS[i][0].test(rel)) { group = GROUPS[i][1]; break; }
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { window.dataLayer.push(arguments); }
+  window.gtag = gtag;
+  gtag("js", new Date());
+  gtag("config", GA_ID, { content_group: group });
+  var tag = document.createElement("script");
+  tag.async = true;
+  tag.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+  document.head.appendChild(tag);
+
+  function txt(el) { return el ? (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 40) : ""; }
+  // トップの各コーナーの名前（ほかのページは見出しの文字）
+  var SECTIONS = { shops: "店舗を探す", app: "公式アプリ", menu: "メニュー", flow: "予約からカットまで", sns: "Instagram",
+    company: "会社案内", recruit: "採用情報" };
+  function sectionName(sec) {
+    if (!sec) return "";
+    if (sec.classList.contains("hero")) return "ヒーロー";
+    if (sec.classList.contains("style-band")) return "ヘアカタログ帯";
+    return SECTIONS[sec.id] || txt(sec.querySelector("h2, h1")) || sec.getAttribute("aria-label") || "";
+  }
+  function shopName(el) {
+    var card = el.closest(".shop");
+    if (card) return txt(card.querySelector(".name, h3, strong"));
+    var h1 = document.querySelector(".sp-head h1");
+    return h1 ? txt(h1) : "";
+  }
+  function send(name, el, extra) {
+    var p = { section_name: sectionName(el.closest("section")) || group };
+    for (var k in extra) if (extra[k]) p[k] = extra[k];
+    gtag("event", name, p);
+  }
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a[href]");
+    if (!a) return;
+    var h = a.href || "";
+    if (/apps\.apple\.com|apple\.co\//.test(h)) send("app_download", a, { store: "App Store" });
+    else if (/play\.google\.com/.test(h)) send("app_download", a, { store: "Google Play" });
+    else if (a.hasAttribute("data-app-link")) send("app_download", a, { store: "アプリのページへ" });
+    else if (/cut-hikari\.info/.test(h)) send("wait_status_click", a, { shop_name: shopName(a) });
+    else if (/goo\.gl\/maps|google\.[a-z.]+\/maps|maps\.app\.goo\.gl/.test(h)) send("map_click", a, { shop_name: shopName(a) });
+    else if (/^tel:/.test(h)) send(/recruit/.test(rel) || a.closest("#recruit") ? "recruit_contact" : "tel_click", a, { method: "電話", link_text: txt(a) });
+    else if (a.hasAttribute("data-entry")) send("recruit_contact", a, { method: /^mailto:/.test(h) ? "メール" : "フォーム", link_text: a.getAttribute("data-entry") });
+    else if (/^mailto:/.test(h)) send("mail_click", a, { link_text: txt(a) });
+    else if (/instagram\.com/.test(h)) send("instagram_click", a, {});
+  }, true);
+
+  // コーナーが画面に出たら1回だけ記録（どこまで見られているか）
+  if ("IntersectionObserver" in window) {
+    var seen = {};
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var n = sectionName(en.target);
+        io.unobserve(en.target);
+        if (!n || seen[n]) return;
+        seen[n] = true;
+        gtag("event", "section_view", { section_name: n });
+      });
+    }, { threshold: 0.35 });
+    var start = function () { document.querySelectorAll("main > section, main > div > section").forEach(function (s) { io.observe(s); }); };
+    if (document.readyState !== "loading") start(); else document.addEventListener("DOMContentLoaded", start);
+  }
+})();
+
 /* カットハウスひかり：動きと動画 */
 (function () {
   "use strict";

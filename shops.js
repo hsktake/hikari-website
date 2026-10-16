@@ -175,7 +175,16 @@
     });
   }
 
-  $q.addEventListener("input", function () { state.q = $q.value; render(); });
+  var searchTimer;
+  $q.addEventListener("input", function () {
+    state.q = $q.value; render();
+    // 店舗検索の言葉を記録（入力が止まって1.5秒後に1回。アクセス解析）
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function () {
+      var t = $q.value.trim();
+      if (t && window.gtag) window.gtag("event", "search", { search_term: t.slice(0, 40) });
+    }, 1500);
+  });
   $care.addEventListener("change", function () { state.care = $care.checked; render(); });
   $open.addEventListener("change", function () { state.open = $open.checked; render(); });
 

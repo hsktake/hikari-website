@@ -64,8 +64,8 @@ def write_list_data(shops):
 
 
 # ---------- 店舗ページ ----------
-CSP = ("default-src 'self'; connect-src 'self' https://docs.google.com https://*.googleusercontent.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; "
-       "img-src 'self' data:; frame-src https://www.google.com; script-src 'self'; base-uri 'self'; form-action 'none'")
+CSP = ("default-src 'self'; connect-src 'self' https://docs.google.com https://*.googleusercontent.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; "
+       "img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; frame-src https://www.google.com; script-src 'self' https://www.googletagmanager.com; base-uri 'self'; form-action 'none'")
 
 SCISSORS = ('<svg class="hero-scissors" viewBox="0 0 200 200" aria-hidden="true">'
             '<g class="blade-a" fill="currentColor"><path d="M95 103 178 8q12-4 12 8l-85 91Z"/><path d="M100 100 72 136" stroke="currentColor" stroke-width="14" stroke-linecap="round"/><circle cx="56" cy="156" r="24" fill="none" stroke="currentColor" stroke-width="14"/></g>'
