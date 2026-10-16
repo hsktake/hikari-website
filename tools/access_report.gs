@@ -44,17 +44,17 @@ function setupTrigger() {
 
 // ---------------------------------------------------------------- GA4 から読む
 const ERRORS = [];
-function run_(dims, mets, filter, limit, orderBys) {
+function run_(dims, mets, filter, limit, orderBys, range) {
   try {
-    return runRaw_(dims, mets, filter, limit, orderBys);
+    return runRaw_(dims, mets, filter, limit, orderBys, range);
   } catch (e) { // 1つの表が読めなくても、ほかの表は更新する
     ERRORS.push(dims.join(',') + '：' + e.message);
     return [];
   }
 }
-function runRaw_(dims, mets, filter, limit, orderBys) {
+function runRaw_(dims, mets, filter, limit, orderBys, range) {
   const req = {
-    dateRanges: [{ startDate: START, endDate: 'today' }],
+    dateRanges: [range || { startDate: START, endDate: 'today' }],
     dimensions: dims.map(n => ({ name: n })),
     metrics: mets.map(n => ({ name: n })),
     limit: limit || 10000,
@@ -102,6 +102,9 @@ function pageType_(path) {
   return 'その他';
 }
 const GOAL_EVENTS = ['app_download', 'wait_status_click', 'map_click', 'tel_click', 'recruit_contact'];
+// 「来店につながった訪問」＝この動きが1つでもあった訪問（成約率の分子）
+const VISIT_GOALS = ['wait_status_click', 'map_click', 'tel_click', 'app_download'];
+const ymd_ = (d) => Utilities.formatDate(d, TZ, 'yyyy-MM-dd');
 
 // 来店までの流れ（ファネル）：GA4 の runFunnelReport（v1alpha。Apps Script のサービスにないので直接呼ぶ）
 const FUNNEL_STEPS = ['ホームページに来た', '店舗を探した（店舗一覧・店舗ページを見た）', 'そのあと 待ち状況・地図・電話・アプリDL を押した'];
@@ -154,16 +157,52 @@ function updateAll() {
   // 1) 月別の主な数字
   const base = run_(['yearMonth'], ['totalUsers', 'newUsers', 'sessions', 'screenPageViews', 'averageSessionDuration', 'engagementRate']);
   const ev = run_(['yearMonth', 'eventName'], ['eventCount'], inList_('eventName', EVENTS.map(e => e[0])));
+  const gs = run_(['yearMonth'], ['sessions'], inList_('eventName', VISIT_GOALS));
+  const goalSes = {};
+  gs.forEach(r => goalSes[r[0]] = r[1]);
   const monthly = {};
   months.forEach(m => monthly[m] = { users: 0, newUsers: 0, sessions: 0, views: 0, dur: 0, eng: 0, ev: {} });
   base.forEach(r => { const o = monthly[r[0]]; if (o) Object.assign(o, { users: r[1], newUsers: r[2], sessions: r[3], views: r[4], dur: r[5], eng: r[6] }); });
   ev.forEach(r => { const o = monthly[r[0]]; if (o) o.ev[r[1]] = r[2]; });
-  const mHead = ['月', '訪問者数', 'うち はじめての人', '訪問回数', 'ページ表示回数', '平均滞在時間（秒）', 'しっかり見た割合'].concat(EVENTS.map(e => e[1]));
+  const mHead = ['月', '訪問者数', 'うち はじめての人', '訪問回数', 'ページ表示回数', '平均滞在時間（秒）', 'しっかり見た割合'].concat(EVENTS.map(e => e[1]), ['来店につながった訪問', '成約率']);
   const mRows = months.map(m => {
-    const o = monthly[m];
-    return [monthLabel_(m), o.users, o.newUsers, o.sessions, o.views, Math.round(o.dur), o.eng].concat(EVENTS.map(e => o.ev[e[0]] || 0));
+    const o = monthly[m], g = Math.min(goalSes[m] || 0, o.sessions || 0);
+    return [monthLabel_(m), o.users, o.newUsers, o.sessions, o.views, Math.round(o.dur), o.eng].concat(EVENTS.map(e => o.ev[e[0]] || 0), [g, o.sessions ? g / o.sessions : 0]);
   });
-  write_(ss, '月別', mHead, mRows, { pct: [7] });
+  write_(ss, '月別', mHead, mRows, { pct: [7, mHead.length] });
+
+  // 1b) 今月の途中までを、先月の同じ日数と比べる（公平な比較）
+  const now = new Date();
+  const d = Number(Utilities.formatDate(now, TZ, 'd'));
+  const y0 = Number(Utilities.formatDate(now, TZ, 'yyyy')), m0 = Number(Utilities.formatDate(now, TZ, 'M'));
+  const prevLast = new Date(y0, m0 - 1, 0).getDate();
+  const ranges = [
+    ['今月', { startDate: ymd_(new Date(y0, m0 - 1, 1)), endDate: ymd_(now) }],
+    ['先月の同じ期間', { startDate: ymd_(new Date(y0, m0 - 2, 1)), endDate: ymd_(new Date(y0, m0 - 2, Math.min(d, prevLast))) }],
+  ];
+  const cRows = ranges.map(([name, rg]) => {
+    const b = run_([], ['totalUsers', 'newUsers', 'sessions', 'screenPageViews', 'engagementRate'], null, null, null, rg)[0] || [0, 0, 0, 0, 0];
+    const e = {};
+    run_(['eventName'], ['eventCount'], inList_('eventName', EVENTS.map(x => x[0])), null, null, rg).forEach(r => e[r[0]] = r[1]);
+    const g = (run_([], ['sessions'], inList_('eventName', VISIT_GOALS), null, null, rg)[0] || [0])[0];
+    return [name, rg.startDate, rg.endDate, b[0], b[1], b[2], b[3], b[4], g, b[2] ? Math.min(1, g / b[2]) : 0].concat(EVENTS.map(x => e[x[0]] || 0));
+  });
+  write_(ss, '同じ期間の比較', ['期間', '開始', '終了', '訪問者数', 'うち はじめての人', '訪問回数', 'ページ表示回数', 'しっかり見た割合', '来店につながった訪問', '成約率'].concat(EVENTS.map(e => e[1])), cRows, { pct: [8, 10], text: [2, 3] });
+
+  // 1c) 日別（グラフ用。計測開始から今日まで）
+  const dy = run_(['date'], ['totalUsers', 'sessions', 'screenPageViews']);
+  const dg = run_(['date'], ['sessions'], inList_('eventName', VISIT_GOALS));
+  const dgm = {};
+  dg.forEach(r => dgm[r[0]] = r[1]);
+  const dRows0 = dy.sort((a, b) => a[0].localeCompare(b[0]))
+    .map(r => [r[0].slice(0, 4) + '-' + r[0].slice(4, 6) + '-' + r[0].slice(6), r[1], r[2], r[3], dgm[r[0]] || 0]);
+  write_(ss, '日別', ['日付', '訪問者数', '訪問回数', 'ページ表示回数', '来店につながった訪問'], dRows0, { text: [1] });
+
+  // 1d) 曜日×時間帯（訪問回数）
+  const wh = run_(['yearMonth', 'dayOfWeek', 'hour'], ['sessions']);
+  const whRows = wh.sort((a, b) => b[0].localeCompare(a[0]) || Number(a[1]) - Number(b[1]) || Number(a[2]) - Number(b[2]))
+    .map(r => [monthLabel_(r[0]), Number(r[1]), Number(r[2]), r[3]]);
+  write_(ss, '曜日×時間帯', ['月', '曜日（0=日）', '時', '訪問回数'], whRows);
 
   // 2) コンテンツ別（ページの種類）
   const cg = run_(['yearMonth', 'contentGroup'], ['screenPageViews', 'totalUsers', 'userEngagementDuration']);
@@ -173,23 +212,34 @@ function updateAll() {
   write_(ss, 'コンテンツ別', ['月', 'コンテンツ', 'ページ表示回数', '訪問者数', '1回あたりの滞在（秒）'], cgRows);
 
   // 3) 店舗別（店舗ページの表示 ＋ 待ち状況・地図のクリック）
-  const sp = run_(['yearMonth', 'pageTitle'], ['screenPageViews', 'totalUsers'], eq_('contentGroup', '店舗ページ'));
+  const sp = run_(['yearMonth', 'pageTitle', 'pagePath'], ['screenPageViews', 'totalUsers'], eq_('contentGroup', '店舗ページ'));
   const sc = run_(['yearMonth', 'customEvent:shop_name', 'eventName'], ['eventCount'], inList_('eventName', ['wait_status_click', 'map_click']));
   const shops = {};
   const key = (m, s) => m + '|' + s;
-  sp.forEach(r => { const k = key(r[0], shopLabel_(r[1])); shops[k] = shops[k] || [r[0], shopLabel_(r[1]), 0, 0, 0, 0]; shops[k][2] += r[2]; shops[k][3] += r[3]; });
+  sp.forEach(r => {
+    const k = key(r[0], shopLabel_(r[1]));
+    shops[k] = shops[k] || [r[0], shopLabel_(r[1]), 0, 0, 0, 0, ''];
+    shops[k][2] += r[3]; shops[k][3] += r[4];
+    const mc = String(r[2]).match(/shop\/(\d+)\.html/);
+    if (mc) shops[k][6] = mc[1];
+  });
   sc.forEach(r => {
     if (!r[1] || r[1] === '(not set)') return;
-    const k = key(r[0], shopLabel_(r[1])); shops[k] = shops[k] || [r[0], shopLabel_(r[1]), 0, 0, 0, 0];
+    const k = key(r[0], shopLabel_(r[1])); shops[k] = shops[k] || [r[0], shopLabel_(r[1]), 0, 0, 0, 0, ''];
     shops[k][r[2] === 'wait_status_click' ? 4 : 5] += r[3];
   });
   const sRows = Object.values(shops).sort((a, b) => b[0].localeCompare(a[0]) || b[2] - a[2]).map(r => [monthLabel_(r[0])].concat(r.slice(1)));
-  write_(ss, '店舗別', ['月', '店舗', 'ページ表示回数', '訪問者数', '待ち状況を見た', '地図を開いた'], sRows);
+  write_(ss, '店舗別', ['月', '店舗', 'ページ表示回数', '訪問者数', '待ち状況を見た', '地図を開いた', '店舗コード'], sRows, { text: [7] });
 
   // 4) 流入元
   const ch = run_(['yearMonth', 'sessionDefaultChannelGroup'], ['sessions', 'totalUsers']);
-  const chRows = ch.sort((a, b) => b[0].localeCompare(a[0]) || b[2] - a[2]).map(r => [monthLabel_(r[0]), CHANNELS[r[1]] || r[1], r[2], r[3]]);
-  write_(ss, '流入元', ['月', 'どこから来たか', '訪問回数', '訪問者数'], chRows);
+  const chg = {};
+  run_(['yearMonth', 'sessionDefaultChannelGroup'], ['sessions'], inList_('eventName', VISIT_GOALS)).forEach(r => chg[r[0] + '|' + r[1]] = r[2]);
+  const chRows = ch.sort((a, b) => b[0].localeCompare(a[0]) || b[2] - a[2]).map(r => {
+    const g = Math.min(chg[r[0] + '|' + r[1]] || 0, r[2]);
+    return [monthLabel_(r[0]), CHANNELS[r[1]] || r[1], r[2], r[3], g, r[2] ? g / r[2] : 0];
+  });
+  write_(ss, '流入元', ['月', 'どこから来たか', '訪問回数', '訪問者数', '来店につながった訪問', '成約率'], chRows, { pct: [6] });
 
   // 5) トップのコーナー（トップを開いた回数のうち、そのコーナーまで見た割合）
   const topViews = {};
@@ -292,6 +342,7 @@ function write_(ss, name, head, rows, opt) {
   sh.clear();
   const data = [head].concat(rows);
   sh.getRange(1, 1, data.length, 1).setNumberFormat('@'); // 「2026年10月」が日付にならないように
+  ((opt && opt.text) || []).forEach(c => sh.getRange(1, c, data.length, 1).setNumberFormat('@')); // 日付の文字も文字のまま
   sh.getRange(1, 1, data.length, head.length).setValues(data);
   sh.getRange(1, 1, 1, head.length).setFontWeight('bold').setBackground('#EF7A00').setFontColor('#ffffff');
   sh.setFrozenRows(1);
@@ -340,5 +391,10 @@ function getData(force) {
     links: read('ページのつながり'),
     exits: read('離脱'),
     funnel: read('来店までの流れ'),
+    compare: read('同じ期間の比較'),
+    daily: read('日別'),
+    heat: read('曜日×時間帯'),
+    today: Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd'),
+    siteBase: 'https://hsktake.github.io/hikari-website/',
   };
 }

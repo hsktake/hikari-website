@@ -5,6 +5,27 @@
   "use strict";
   var GA_ID = "G-P582HM9KTN";
   if (/^(localhost|127\.|\[::1\])/.test(location.hostname) || location.protocol === "file:") return; // 手元の確認では送らない
+  // 社内の閲覧を数えない：URL に ?notrack=1 を付けて1回開くと、このブラウザからは送らない（?notrack=0 で元に戻す）
+  var nt = location.search.match(/[?&]notrack=([01])/), off = false;
+  try {
+    if (nt) { if (nt[1] === "1") localStorage.setItem("hk_notrack", "1"); else localStorage.removeItem("hk_notrack"); }
+    off = localStorage.getItem("hk_notrack") === "1";
+  } catch (e) { off = !!(nt && nt[1] === "1"); }
+  if (nt) {
+    var toast = function () {
+      var d = document.createElement("div");
+      d.setAttribute("role", "status");
+      d.textContent = off ? "このブラウザからの閲覧は、アクセス集計に数えません（社内用の設定）" : "このブラウザからの閲覧を、アクセス集計に数えるように戻しました";
+      var s = d.style;
+      s.position = "fixed"; s.left = "50%"; s.bottom = "24px"; s.transform = "translateX(-50%)"; s.zIndex = "9999";
+      s.background = "#4A2E1A"; s.color = "#fff"; s.padding = "12px 18px"; s.borderRadius = "14px"; s.fontWeight = "700";
+      s.fontSize = "14px"; s.maxWidth = "calc(100% - 32px)"; s.boxShadow = "0 6px 20px rgba(0,0,0,.25)"; s.textAlign = "center";
+      document.body.appendChild(d);
+      setTimeout(function () { d.remove(); }, 6000);
+    };
+    if (document.body) toast(); else document.addEventListener("DOMContentLoaded", toast);
+  }
+  if (off) return;
   var script = document.currentScript;
   var ROOT = script ? script.src.replace(/main\.js.*$/, "") : "";
   var rel = location.href.split("#")[0].split("?")[0].replace(ROOT, "");

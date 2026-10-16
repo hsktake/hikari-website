@@ -4,6 +4,12 @@
   "use strict";
   var GA_ID = "G-P582HM9KTN";
   if (/^(localhost|127\.|\[::1\])/.test(location.hostname) || location.protocol === "file:") return;
+  // 社内の閲覧を数えない（カットハウスひかりのサイトで ?notrack=1 を開いたブラウザ。同じドメインのあいだ有効）
+  var nt = location.search.match(/[?&]notrack=([01])/);
+  try {
+    if (nt) { if (nt[1] === "1") localStorage.setItem("hk_notrack", "1"); else localStorage.removeItem("hk_notrack"); }
+    if (localStorage.getItem("hk_notrack") === "1") return;
+  } catch (e) { if (nt && nt[1] === "1") return; }
   var me = document.currentScript;
   var NAME = (me && me.getAttribute("data-name")) || document.title;
   window.dataLayer = window.dataLayer || [];
