@@ -117,7 +117,7 @@ function pathOf_(url) { // URL かパスから、パスだけ（? と # は取�
   return String(url || '').replace(/^https?:\/\/[^\/]+/, '').replace(/^[a-z0-9-]+(\.[a-z0-9-]+)+(?=\/)/i, '').split('#')[0].split('?')[0] || '/';
 }
 function pageType_(path) {
-  const rel = pathOf_(path).replace(/^\/hikari-website\//, '/').replace(/^\//, ''); // 本番前（GitHub Pages）の /hikari-website/ を外す
+  const rel = pathOf_(path).replace(/^\/hikari-website(\/|$)/, '/').replace(/^\//, ''); // 「/hikari-website」（最後の / なし）も同じ // 本番前（GitHub Pages）の /hikari-website/ を外す
   for (let i = 0; i < PAGE_TYPES.length; i++) if (PAGE_TYPES[i][0].test(rel)) return PAGE_TYPES[i][1];
   return 'その他';
 }
@@ -523,7 +523,7 @@ function getRangeData(start, end, cs, ce, force, site) {
   const ok = (d) => /^\d{4}-\d{2}-\d{2}$/.test(String(d || ''));
   if (![start, end, cs, ce].every(ok)) throw new Error('期間の指定が正しくありません');
   site = String(site || 'hikari').slice(0, 120);
-  const key = ['r6', site, start, end, cs, ce].join('|');
+  const key = ['r7', site, start, end, cs, ce].join('|');
   if (!force) { const c = cacheGet_(key); if (c) return c; }
   ERRORS.length = 0;
   const data = {
