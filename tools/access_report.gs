@@ -53,17 +53,37 @@ function run_(dims, mets, filter, limit, orderBys, range) {
   }
 }
 function runRaw_(dims, mets, filter, limit, orderBys, range) {
-  const req = {
-    dateRanges: [range || { startDate: START, endDate: 'today' }],
-    dimensions: dims.map(n => ({ name: n })),
-    metrics: mets.map(n => ({ name: n })),
-    limit: limit || 10000,
-  };
-  if (filter) req.dimensionFilter = filter;
+  const req = buildReq_({ dims: dims, mets: mets, filter: filter, limit: limit, range: range });
   if (orderBys) req.orderBys = orderBys;
-  const res = AnalyticsData.Properties.runReport(req, PROPERTY);
-  return (res.rows || []).map(r =>
+  return rows_(AnalyticsData.Properties.runReport(req, PROPERTY));
+}
+function buildReq_(s) {
+  const req = {
+    dateRanges: [s.range || { startDate: START, endDate: 'today' }],
+    dimensions: (s.dims || []).map(n => ({ name: n })),
+    metrics: s.mets.map(n => ({ name: n })),
+    limit: s.limit || 10000,
+  };
+  if (s.filter) req.dimensionFilter = s.filter;
+  return req;
+}
+function rows_(res) {
+  return ((res && res.rows) || []).map(r =>
     (r.dimensionValues || []).map(v => v.value).concat((r.metricValues || []).map(v => Number(v.value))));
+}
+// まとめて読む（5つずつ batchRunReports。失敗したら1つずつ読んで、どれが読めないかを記録）
+function batch_(specs) {
+  const keys = Object.keys(specs), out = {};
+  for (let i = 0; i < keys.length; i += 5) {
+    const chunk = keys.slice(i, i + 5);
+    try {
+      const res = AnalyticsData.Properties.batchRunReports({ requests: chunk.map(k => buildReq_(specs[k])) }, PROPERTY);
+      chunk.forEach((k, j) => out[k] = rows_((res.reports || [])[j]));
+    } catch (e) {
+      chunk.forEach(k => { const s = specs[k]; out[k] = run_(s.dims || [], s.mets, s.filter, s.limit, null, s.range); });
+    }
+  }
+  return out;
 }
 const eq_ = (field, value) => ({ filter: { fieldName: field, stringFilter: { value: value, matchType: 'EXACT' } } });
 const inList_ = (field, values) => ({ filter: { fieldName: field, inListFilter: { values: values } } });
@@ -113,11 +133,14 @@ function funnel_(ym, usePathField) {
   const first = Utilities.formatDate(new Date(y, m - 1, 1), TZ, 'yyyy-MM-dd');
   const lastD = new Date(y, m, 0), today = new Date();
   const last = Utilities.formatDate(lastD > today ? today : lastD, TZ, 'yyyy-MM-dd');
+  return funnelFor_({ startDate: first < START ? START : first, endDate: last }, usePathField);
+}
+function funnelFor_(rg, usePathField) {
   const shopStep = usePathField
     ? { funnelFieldFilter: { fieldName: 'pagePath', stringFilter: { matchType: 'CONTAINS', value: '/shop' } } }
     : { funnelEventFilter: { eventName: 'page_view', funnelParameterFilterExpression: { funnelParameterFilter: { eventParameterName: 'page_location', stringFilter: { matchType: 'CONTAINS', value: '/shop' } } } } };
   const body = {
-    dateRanges: [{ startDate: first < START ? START : first, endDate: last }],
+    dateRanges: [rg],
     funnel: {
       isOpenFunnel: false,
       steps: [
@@ -147,7 +170,7 @@ function funnel_(ym, usePathField) {
 }
 
 // ---------------------------------------------------------------- まとめて更新
-function updateAll() {
+function updateAll(e) {
   // 毎朝の自動更新がまだなら、ここでオンにする
   if (!ScriptApp.getProjectTriggers().some(t => t.getHandlerFunction() === 'updateAll')) setupTrigger();
   const ss = SpreadsheetApp.openById(SS_ID);
@@ -334,6 +357,8 @@ function updateAll() {
   info.getRange(1, 1, 2, 2).setValues([
     ['最終更新', Utilities.formatDate(new Date(), TZ, 'yyyy/MM/dd HH:mm')],
     ['読めなかった表', ERRORS.join(' ／ ').slice(0, 500)]]);
+  // 毎朝の自動更新のときは、画面でよく使う期間（今月・先月）を先に集めておく（画面がすぐ開く）
+  if (e && e.triggerUid) { try { prewarm_(); } catch (err) { /* 先読みできなくても画面はその場で集める */ } }
 }
 
 // 表を書く（1行目は見出し）
@@ -351,6 +376,168 @@ function write_(ss, name, head, rows, opt) {
     ((opt && opt.pct) || []).forEach(c => sh.getRange(2, c, rows.length, 1).setNumberFormat('0%'));
   }
   sh.autoResizeColumns(1, head.length);
+}
+
+// ================================================================ 期間を指定して集計（画面から）
+// 選んだ期間（rg）の数字を、その場で GA4 から集める。月ごとの表（スプレッドシート）とは別に、期間を自由に選べるようにするため
+function collect_(rg) {
+  const R = (o) => Object.assign({ range: rg }, o);
+  const g = batch_({
+    base: R({ mets: ['totalUsers', 'newUsers', 'sessions', 'screenPageViews', 'averageSessionDuration', 'engagementRate'] }),
+    ev: R({ dims: ['eventName'], mets: ['eventCount'], filter: inList_('eventName', EVENTS.map(e => e[0])) }),
+    goal: R({ mets: ['sessions'], filter: inList_('eventName', VISIT_GOALS) }),
+    daily: R({ dims: ['date'], mets: ['totalUsers', 'sessions', 'screenPageViews'] }),
+    dailyGoal: R({ dims: ['date'], mets: ['sessions'], filter: inList_('eventName', VISIT_GOALS) }),
+    content: R({ dims: ['contentGroup'], mets: ['screenPageViews', 'totalUsers', 'userEngagementDuration'] }),
+    shopPv: R({ dims: ['pageTitle', 'pagePath'], mets: ['screenPageViews', 'totalUsers'], filter: eq_('contentGroup', '店舗ページ') }),
+    shopEv: R({ dims: ['customEvent:shop_name', 'eventName'], mets: ['eventCount'], filter: inList_('eventName', ['wait_status_click', 'map_click']) }),
+    ch: R({ dims: ['sessionDefaultChannelGroup'], mets: ['sessions', 'totalUsers'] }),
+    chGoal: R({ dims: ['sessionDefaultChannelGroup'], mets: ['sessions'], filter: inList_('eventName', VISIT_GOALS) }),
+    sec: R({ dims: ['customEvent:section_name'], mets: ['eventCount'], filter: and_(eq_('eventName', 'section_view'), eq_('contentGroup', 'トップ')) }),
+    appdl: R({ dims: ['contentGroup', 'customEvent:section_name', 'customEvent:store'], mets: ['eventCount'], filter: eq_('eventName', 'app_download') }),
+    search: R({ dims: ['searchTerm'], mets: ['eventCount'], filter: eq_('eventName', 'search') }),
+    dev: R({ dims: ['deviceCategory'], mets: ['totalUsers'] }),
+    region: R({ dims: ['region'], mets: ['totalUsers'] }),
+    heat: R({ dims: ['dayOfWeek', 'hour'], mets: ['sessions'] }),
+    landing: R({ dims: ['landingPage'], mets: ['sessions', 'engagedSessions'] }),
+    links: R({ dims: ['hostName', 'pageReferrer', 'pagePath'], mets: ['screenPageViews'] }),
+    pv: R({ dims: ['pagePath'], mets: ['screenPageViews'] }),
+    pageGoal: R({ dims: ['pagePath', 'eventName'], mets: ['eventCount'], filter: inList_('eventName', GOAL_EVENTS) }),
+  });
+  const out = summary_(g);
+  // ページの種類ごと
+  out.content = g.content.filter(r => r[0] && r[0] !== '(not set)').sort((a, b) => b[1] - a[1]).map(r => [r[0], r[1], r[2], r[1] ? Math.round(r[3] / r[1]) : 0]);
+  // 店舗
+  const shops = {};
+  const sh = (name) => (shops[name] = shops[name] || [name, 0, 0, 0, 0, '']);
+  g.shopPv.forEach(r => { const o = sh(shopLabel_(r[0])); o[1] += r[2]; o[2] += r[3]; const mc = String(r[1]).match(/shop\/(\d+)\.html/); if (mc) o[5] = mc[1]; });
+  g.shopEv.forEach(r => { if (!r[0] || r[0] === '(not set)') return; const o = sh(shopLabel_(r[0])); o[r[1] === 'wait_status_click' ? 3 : 4] += r[2]; });
+  out.shops = Object.values(shops).sort((a, b) => b[1] - a[1]);
+  // 流入元
+  const chg = {};
+  g.chGoal.forEach(r => chg[r[0]] = r[1]);
+  out.channels = g.ch.sort((a, b) => b[1] - a[1]).map(r => { const x = Math.min(chg[r[0]] || 0, r[1]); return [CHANNELS[r[0]] || r[0], r[1], r[2], x, r[1] ? x / r[1] : 0]; });
+  // トップのコーナー
+  const topViews = (g.content.find(r => r[0] === 'トップ') || [0, 0])[1];
+  const sec = {};
+  g.sec.forEach(r => sec[r[0]] = r[1]);
+  out.sections = TOP_SECTIONS.map(n => [n, sec[n] || 0, topViews ? Math.min(1, (sec[n] || 0) / topViews) : 0]);
+  out.appdl = g.appdl.sort((a, b) => b[3] - a[3]);
+  out.search = g.search.filter(r => r[0] && r[0] !== '(not set)').sort((a, b) => b[1] - a[1]);
+  out.devices = g.dev.sort((a, b) => b[1] - a[1]).map(r => [DEVICES[r[0]] || r[0], r[1]]);
+  out.regions = g.region.sort((a, b) => b[1] - a[1]).map(r => [REGIONS[r[0]] || r[0], r[1]]);
+  out.heat = g.heat.map(r => [Number(r[0]), Number(r[1]), r[2]]);
+  // 入口
+  const land = {};
+  g.landing.forEach(r => { if (!r[0] || r[0] === '(not set)') return; const t = pageType_(r[0]); land[t] = land[t] || [t, 0, 0]; land[t][1] += r[1]; land[t][2] += r[2]; });
+  out.landing = Object.values(land).sort((a, b) => b[1] - a[1]).map(r => [r[0], r[1], Math.max(0, r[1] - r[2]), r[1] ? Math.max(0, r[1] - r[2]) / r[1] : 0]);
+  // つながり・離脱
+  const link = {}, nextOf = {};
+  g.links.forEach(r => {
+    const ref = String(r[1] || ''), mt = ref.match(/^https?:\/\/([^\/]+)/);
+    if (!mt || mt[1] !== r[0] || pathOf_(ref) === pathOf_(r[2])) return;
+    const from = pageType_(ref), to = pageType_(r[2]), k = from + '|' + to;
+    link[k] = link[k] || [from, to, 0]; link[k][2] += r[3];
+    nextOf[from] = (nextOf[from] || 0) + r[3];
+  });
+  out.links = Object.values(link).sort((a, b) => b[2] - a[2]);
+  const ex = {};
+  const exRow = (t) => (ex[t] = ex[t] || [t, 0, 0]);
+  g.pv.forEach(r => { exRow(pageType_(r[0]))[1] += r[1]; });
+  g.pageGoal.forEach(r => { exRow(pageType_(r[0]))[2] += r[2]; });
+  out.exits = Object.values(ex).filter(r => r[1] > 0).map(r => { const next = Math.min(r[1], nextOf[r[0]] || 0), end = r[1] - next; return [r[0], r[1], next, end, end / r[1], r[2]]; }).sort((a, b) => b[3] - a[3]);
+  // 来店までの流れ
+  try { out.funnel = funnelFor_(rg, true); }
+  catch (e1) { try { out.funnel = funnelFor_(rg, false); } catch (e2) { out.funnel = null; ERRORS.push('来店までの流れ：' + e2.message); } }
+  return out;
+}
+// 主な数字・動き・日別（比べる期間はこれだけ読む）
+function summary_(g) {
+  const b = g.base[0] || [0, 0, 0, 0, 0, 0];
+  const goal = Math.min((g.goal[0] || [0])[0], b[2] || 0);
+  const ev = {};
+  EVENTS.forEach(e => ev[e[1]] = 0);
+  g.ev.forEach(r => { const e = EVENTS.find(x => x[0] === r[0]); if (e) ev[e[1]] = r[1]; });
+  const dgm = {};
+  g.dailyGoal.forEach(r => dgm[r[0]] = r[1]);
+  const daily = g.daily.sort((a, c) => a[0].localeCompare(c[0])).map(r => [r[0].slice(0, 4) + '-' + r[0].slice(4, 6) + '-' + r[0].slice(6), r[1], r[2], r[3], dgm[r[0]] || 0]);
+  return { kpi: { users: b[0], newUsers: b[1], sessions: b[2], views: b[3], dur: Math.round(b[4]), eng: b[5], goal: goal, cvr: b[2] ? goal / b[2] : 0 }, ev: ev, daily: daily };
+}
+function collectPrev_(rg) {
+  const R = (o) => Object.assign({ range: rg }, o);
+  return summary_(batch_({
+    base: R({ mets: ['totalUsers', 'newUsers', 'sessions', 'screenPageViews', 'averageSessionDuration', 'engagementRate'] }),
+    ev: R({ dims: ['eventName'], mets: ['eventCount'], filter: inList_('eventName', EVENTS.map(e => e[0])) }),
+    goal: R({ mets: ['sessions'], filter: inList_('eventName', VISIT_GOALS) }),
+    daily: R({ dims: ['date'], mets: ['totalUsers', 'sessions', 'screenPageViews'] }),
+    dailyGoal: R({ dims: ['date'], mets: ['sessions'], filter: inList_('eventName', VISIT_GOALS) }),
+  }));
+}
+
+// 画面から呼ぶ：期間（start〜end）と、比べる期間（cs〜ce）の数字。同じ期間は6時間まで覚えておく（force で集め直し）
+function getRangeData(start, end, cs, ce, force) {
+  const ok = (d) => /^\d{4}-\d{2}-\d{2}$/.test(String(d || ''));
+  if (![start, end, cs, ce].every(ok)) throw new Error('期間の指定が正しくありません');
+  const key = ['r3', start, end, cs, ce].join('|');
+  if (!force) { const c = cacheGet_(key); if (c) return c; }
+  ERRORS.length = 0;
+  const data = {
+    range: { start: start, end: end }, cmp: { start: cs, end: ce },
+    cur: collect_({ startDate: start, endDate: end }),
+    prev: collectPrev_({ startDate: cs, endDate: ce }),
+    errors: ERRORS.join(' ／ ').slice(0, 500),
+    at: Utilities.formatDate(new Date(), TZ, 'yyyy/MM/dd HH:mm'),
+  };
+  cachePut_(key, data);
+  return data;
+}
+// 画面から呼ぶ：月ごとの推移（スプレッドシート）と基本の情報。空のとき・force のときは先に集計
+function getBase(force) {
+  const ss = SpreadsheetApp.openById(SS_ID);
+  const mon = ss.getSheetByName('月別');
+  if (force || !mon || mon.getLastRow() < 2) updateAll();
+  const sh = ss.getSheetByName('月別');
+  const monthly = sh && sh.getLastRow() > 1 ? sh.getRange(2, 1, sh.getLastRow() - 1, sh.getLastColumn()).getValues() : [];
+  const info = ss.getSheetByName('更新情報');
+  const iv = info ? info.getRange(1, 2, 2, 1).getValues() : [[''], ['']];
+  return {
+    updated: iv[0][0] instanceof Date ? Utilities.formatDate(iv[0][0], TZ, 'yyyy/MM/dd HH:mm') : String(iv[0][0] || ''),
+    errors: String(iv[1][0] || ''),
+    events: EVENTS.map(e => e[1]),
+    monthly: monthly.map(r => r.map(v => v instanceof Date ? Utilities.formatDate(v, TZ, 'yyyy/MM/dd') : v)),
+    today: Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd'),
+    start: START,
+    siteBase: 'https://hsktake.github.io/hikari-website/',
+  };
+}
+// 朝の先読み（今月・先月）。画面の期間の決め方（Dashboard.html の periodOf）と同じ
+function prewarm_() {
+  const now = new Date();
+  const y = Number(Utilities.formatDate(now, TZ, 'yyyy')), m = Number(Utilities.formatDate(now, TZ, 'M')), d = Number(Utilities.formatDate(now, TZ, 'd'));
+  const prevLast = new Date(y, m - 1, 0).getDate();
+  getRangeData(ymd_(new Date(y, m - 1, 1)), ymd_(now), ymd_(new Date(y, m - 2, 1)), ymd_(new Date(y, m - 2, Math.min(d, prevLast))), true);
+  getRangeData(ymd_(new Date(y, m - 2, 1)), ymd_(new Date(y, m - 1, 0)), ymd_(new Date(y, m - 3, 1)), ymd_(new Date(y, m - 2, 0)), true);
+}
+// キャッシュ（1つ 100KB までなので分けて入れる）
+function cachePut_(key, obj) {
+  try {
+    const c = CacheService.getUserCache(), s = JSON.stringify(obj), n = Math.ceil(s.length / 90000), o = {};
+    if (n > 20) return;
+    for (let i = 0; i < n; i++) o[key + '#' + i] = s.slice(i * 90000, (i + 1) * 90000);
+    o[key] = String(n);
+    c.putAll(o, 21600);
+  } catch (e) { /* 覚えられなくても動く */ }
+}
+function cacheGet_(key) {
+  try {
+    const c = CacheService.getUserCache(), n = Number(c.get(key) || 0);
+    if (!n) return null;
+    const keys = [];
+    for (let i = 0; i < n; i++) keys.push(key + '#' + i);
+    const got = c.getAll(keys);
+    if (keys.some(k => got[k] == null)) return null;
+    return JSON.parse(keys.map(k => got[k]).join(''));
+  } catch (e) { return null; }
 }
 
 // ---------------------------------------------------------------- ウェブアプリ（表示）
