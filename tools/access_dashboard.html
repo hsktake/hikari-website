@@ -437,6 +437,33 @@
   .cloud span { transform: none; transition: opacity .4s ease var(--d, 0s); }
   @media (max-width: 520px) { .hero .big { font-size: 44px; } h2.group small { display: none; } }
   @media (prefers-reduced-motion: reduce) { .rv, .rv.in, h2.group.rv, h2.group.rv.in { opacity: 1; transform: none; animation: none; } }
+
+  /* ===== ページの切り替え（サイト分析／QR・リンク） ===== */
+  .views { padding: 0 max(16px, calc((100% - 1200px) / 2 + 16px)); display: flex; gap: 22px; border-bottom: 1px solid var(--line); margin-bottom: 10px; }
+  .vtab { font: inherit; font-size: 14px; font-weight: 600; color: var(--muted); background: none; border: 0; padding: 8px 2px 10px; cursor: pointer; border-bottom: 2px solid transparent; display: flex; align-items: center; gap: 6px; }
+  .vtab:hover { color: var(--ink); }
+  .vtab.on { color: var(--ink); border-bottom-color: var(--orange); }
+  .vcount { font-family: var(--num); font-size: 11px; font-weight: 600; background: var(--tint); color: var(--ink2); border-radius: 999px; padding: 1px 7px; }
+  .vcount:empty { display: none; }
+  body.v-links .site-chip { display: none; }
+  body.v-links #drJump { display: none; }
+  .lk-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin: 4px 0 16px; flex-wrap: wrap; }
+  .lk-title { margin: 0; font-size: 20px; font-weight: 700; color: var(--ink); }
+  .lk-sub { margin: 4px 0 0; font-size: 12.5px; color: var(--muted); }
+  .lk-new { font: inherit; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 10px; padding: 10px 16px; background: var(--orange); color: #fff; cursor: pointer; }
+  .lk-new:hover { filter: brightness(.95); }
+  .lk-kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+  .lk-kpi > div { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .lk-kpi .lb { font-size: 12px; color: var(--ink2); font-weight: 500; }
+  .lk-kpi .v { font-family: var(--num); font-size: 26px; font-weight: 600; color: var(--ink); line-height: 1.2; margin-top: 2px; }
+  .lk-kpi .v small { font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--ink2); margin-left: 3px; }
+  .lk-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .lk-foot { margin: 12px 0 0; font-size: 12px; color: var(--muted); }
+  #tQr td .dt { display: block; font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  #tQr tbody tr { cursor: pointer; }
+  .modal-card.wide { width: min(560px, 100%); }
+  .qn-err { grid-column: 1 / -1; margin: 0; font-size: 12.5px; color: #B42318; }
+  @media (max-width: 520px) { .lk-kpi { gap: 8px; } .lk-kpi > div { padding: 10px 12px; } .lk-kpi .v { font-size: 20px; } .lk-new { width: 100%; justify-content: center; } }
 </style>
 </head>
 <body>
@@ -447,8 +474,12 @@
     <button id="refresh" class="refresh" type="button" title="この期間の数字を、いまの状態に集め直します"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7M21 4v5h-5"/></svg><span class="rt">最新にする</span></button>
     <button id="menuBtn" class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="drawer"><i></i></button>
   </div>
+  <nav class="views" role="tablist" aria-label="ページ">
+    <button class="vtab on" type="button" role="tab" data-view="site" aria-selected="true">サイト分析</button>
+    <button class="vtab" type="button" role="tab" data-view="links" aria-selected="false">QR・リンク<span class="vcount" id="qrCount"></span></button>
+  </nav>
   <div class="periods" id="periods" role="group" aria-label="期間">
-    <span class="site-chip" title="見るサイト"><select id="siteSel" aria-label="見るサイト"><option value="hikari">カットハウスひかり</option></select></span>
+    <span class="site-chip" id="siteChip" title="見るサイト"><select id="siteSel" aria-label="見るサイト"><option value="hikari">カットハウスひかり</option></select></span>
     <button class="chip" data-p="month" type="button">今月</button>
     <button class="chip" data-p="last" type="button">先月</button>
     <button class="chip" data-p="d7" type="button">過去7日</button>
@@ -499,21 +530,26 @@
       <section class="card rv"><h2>アプリDLボタンが押された場所</h2><p class="sub">どのページの、どのコーナーのボタンか</p><div id="tAppdl"></div></section>
       <section class="card rv"><h2>店舗検索で調べられた言葉</h2><p class="sub">店舗一覧の検索欄に入力された言葉（大きいほど多い）</p><div id="tSearch"></div></section>
 
-      <h2 class="group rv jump" id="sec-qr">QR・リンク<small>チラシ・ポスター・SNS などに使う専用のQR・リンク（どのサイトを選んでいても全部出します）</small></h2>
-      <section class="card s12 rv"><h2>作ったQR・リンク</h2><p class="sub">この期間に読み取られた・押された回数。行き先がサイト内なら、そのあと来店につながった割合も出ます</p><div id="tQr"></div></section>
-      <section class="card s12 rv" id="qrMake"><h2>QR・リンクを作る</h2><p class="sub">名前と行き先を選んで「作る」を押すだけ。あとから行き先を変えても、同じQRのまま使えます</p>
-        <div class="qr-form">
-          <label class="qf"><span>名前</span><input id="qName" type="text" maxlength="40" placeholder="例：10月チラシ、水戸駅南店ポスター"></label>
-          <div class="qf"><span>種類</span><div class="seg" id="qKind"><button type="button" class="on" data-k="QR">QRコード</button><button type="button" data-k="リンク">リンク（SNSなど）</button></div></div>
-          <label class="qf"><span>行き先</span><select id="qDest"></select></label>
-          <label class="qf" id="qUrlRow" hidden><span>URL</span><input id="qUrl" type="url" placeholder="https://〜"></label>
-          <button type="button" class="qr-go" id="qGo">作る</button>
-        </div>
-      </section>
-
       <h2 class="group rv jump" id="sec-trend">これまでの推移<small>月ごと（スプレッドシートに毎朝保存している数字）</small></h2>
       <section class="card rv" data-chart="cTrend"><h2>月ごとの訪問者数</h2><p class="sub">直近12か月（今月は今日まで。すべてのサイトの合計）</p><div class="cv"><canvas id="cTrend"></canvas></div></section>
       <section class="card rv" data-chart="cAct"><h2>月ごとの「来店につながる動き」</h2><p class="sub">アプリDLボタン・待ち状況・地図が押された回数</p><div class="cv"><canvas id="cAct"></canvas></div></section>
+    </div>
+    <div id="viewLinks" hidden>
+      <div class="lk-head">
+        <div><h2 class="lk-title">QR・リンク一覧</h2><p class="lk-sub">チラシ・ポスター・SNS などに使う専用のQR・リンク。どのサイト・お店あてでも、ここにまとめて出ます</p></div>
+        <button type="button" class="lk-new" id="qrNewBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>新しく作る</button>
+      </div>
+      <div class="lk-kpi" id="lkKpi"></div>
+      <section class="card">
+        <div class="lk-filter" id="lkFilter" role="group" aria-label="しぼりこみ">
+          <button type="button" class="chip on" data-f="all">すべて</button>
+          <button type="button" class="chip" data-f="QR">QRコード</button>
+          <button type="button" class="chip" data-f="リンク">リンク</button>
+          <button type="button" class="chip" data-f="off">停止中</button>
+        </div>
+        <div id="tQr"></div>
+        <p class="lk-foot">回数＝この期間に読み取られた・押された回数。行き先がサイト内なら、そのあと来店につながった割合（成約率）も出ます</p>
+      </section>
     </div>
   </div>
 </main>
@@ -524,14 +560,16 @@
 <div class="scrim" id="scrim"></div>
 <nav class="drawer" id="drawer" aria-label="メニュー" aria-hidden="true">
   <div class="dr-head">メニュー<button class="dr-close" id="drClose" type="button" aria-label="メニューを閉じる">×</button></div>
-  <div class="dr-sec"><h3>見たい場所へ</h3>
+  <div class="dr-sec"><h3>ページ</h3>
+    <button class="dr-item" data-view-go="site" type="button"><span>サイト分析<small>ホームページの見られ方</small></span><span class="go">›</span></button>
+    <button class="dr-item" data-view-go="links" type="button"><span>QR・リンク一覧<small>作る・回数を見る・行き先を変える</small></span><span class="go">›</span></button>
+  </div>
+  <div class="dr-sec" id="drJump"><h3>見たい場所へ</h3>
     <button class="dr-item" data-go="heroUsers" type="button">主な数字<span class="go">›</span></button>
     <button class="dr-item" data-go="sec-daily" type="button">日ごとの訪問回数<span class="go">›</span></button>
     <button class="dr-item" data-go="sec-flow" type="button"><span>お客様の動き<small>来店までの流れ・入口・分岐図・離脱</small></span><span class="go">›</span></button>
     <button class="dr-item" data-go="sec-when" type="button">いつ見られているか<span class="go">›</span></button>
     <button class="dr-item" data-go="sec-top" type="button"><span>よく見られたもの<small>店舗・ページ・端末・地域・検索</small></span><span class="go">›</span></button>
-    <button class="dr-item" data-go="sec-qr" type="button"><span>QR・リンク<small>作ったQR・リンクの数字</small></span><span class="go">›</span></button>
-    <button class="dr-item" data-go="qrMake" type="button">QR・リンクを作る<span class="go">›</span></button>
     <button class="dr-item" data-go="sec-trend" type="button">これまでの推移<span class="go">›</span></button>
   </div>
   <div class="dr-sec"><h3>開く</h3>
@@ -556,6 +594,21 @@
     </details>
   </div>
 </nav>
+<div class="modal" id="qrNew" hidden role="dialog" aria-modal="true" aria-labelledby="qnTitle">
+  <div class="modal-card wide">
+    <button class="dr-close mclose" id="qnClose" type="button" aria-label="閉じる">×</button>
+    <h3 id="qnTitle">QR・リンクを新しく作る</h3>
+    <p class="qm-dest">名前と行き先を選んで「作る」を押すだけ。あとから行き先を変えても、同じQRのまま使えます</p>
+    <div class="qr-form">
+      <label class="qf"><span>名前</span><input id="qName" type="text" maxlength="40" placeholder="例：10月チラシ、水戸駅南店ポスター"></label>
+      <div class="qf"><span>種類</span><div class="seg" id="qKind"><button type="button" class="on" data-k="QR">QRコード</button><button type="button" data-k="リンク">リンク（SNSなど）</button></div></div>
+      <label class="qf"><span>行き先</span><select id="qDest"></select></label>
+      <label class="qf" id="qUrlRow" hidden><span>URL</span><input id="qUrl" type="url" placeholder="https://〜"></label>
+      <p class="qn-err" id="qnErr" hidden></p>
+      <button type="button" class="qr-go" id="qGo">作る</button>
+    </div>
+  </div>
+</div>
 <div class="modal" id="qrModal" hidden role="dialog" aria-modal="true" aria-labelledby="qmTitle">
   <div class="modal-card">
     <button class="dr-close mclose" id="qmClose" type="button" aria-label="閉じる">×</button>
@@ -1043,7 +1096,7 @@
   });
 
   // ---------------- QR・リンク
-  var QR = [], KIND = "QR", CUR = null;
+  var QR = [], KIND = "QR", CUR = null, FILTER = "all";
   function destName(d) {
     var hit = (B.dests || []).filter(function (x) { return x[0] === d; })[0];
     return hit ? hit[1] : d;
@@ -1055,16 +1108,21 @@
     QR = B.qr || [];
     destOptions($("qDest")); destOptions($("qmDest2"));
     $("qDest").addEventListener("change", function () { $("qUrlRow").hidden = $("qDest").value !== "__url"; });
+    $("qrNewBtn").addEventListener("click", function () { $("qnErr").hidden = true; $("qrNew").hidden = false; setTimeout(function () { $("qName").focus(); }, 50); });
+    $("qnClose").addEventListener("click", function () { $("qrNew").hidden = true; });
+    $("qrNew").addEventListener("click", function (e) { if (e.target === $("qrNew")) $("qrNew").hidden = true; });
+    $("lkFilter").querySelectorAll(".chip").forEach(function (c) { c.addEventListener("click", function () { FILTER = c.getAttribute("data-f"); $("lkFilter").querySelectorAll(".chip").forEach(function (x) { x.classList.toggle("on", x === c); }); renderQr(); }); });
     $("qmDest2").addEventListener("change", function () { $("qmUrl2").hidden = $("qmDest2").value !== "__url"; });
     $("qKind").querySelectorAll("button").forEach(function (b) { b.addEventListener("click", function () { KIND = b.getAttribute("data-k"); $("qKind").querySelectorAll("button").forEach(function (x) { x.classList.toggle("on", x === b); }); }); });
     $("qGo").addEventListener("click", function () {
       var name = $("qName").value.trim(), dest = $("qDest").value === "__url" ? $("qUrl").value.trim() : $("qDest").value;
       if (!name) { $("qName").focus(); return; }
-      if ($("qDest").value === "__url" && !/^https:\/\//i.test(dest)) { $("qUrl").focus(); alertNote("URLは https:// で始まるものを入れてください"); return; }
+      if ($("qDest").value === "__url" && !/^https:\/\//i.test(dest)) { $("qUrl").focus(); $("qnErr").textContent = "URLは https:// で始まるものを入れてください"; $("qnErr").hidden = false; return; }
       $("qGo").disabled = true; $("qGo").textContent = "作っています…";
       call("addLink", [name, KIND, dest], function (r) {
         $("qGo").disabled = false; $("qGo").textContent = "作る";
         QR = r.list; $("qName").value = ""; $("qUrl").value = "";
+        $("qrNew").hidden = true;
         renderQr(); openQr(r.id);
       });
     });
@@ -1089,7 +1147,6 @@
       call("updateLink", [CUR.id, null, next], function (list) { QR = list; renderQr(); openQr(CUR.id); });
     });
   }
-  function alertNote(msg) { $("notes").innerHTML = '<p class="note err">' + esc(msg) + "</p>"; }
   function statsOf(q) {
     var t = (D && D.cur && D.cur.tracked) || { camp: [], go: [] };
     var c = t.camp.filter(function (r) { return r[0] === q.id; })[0], g = t.go.filter(function (r) { return r[0] === q.id; })[0];
@@ -1099,16 +1156,28 @@
   function renderQr() {
     var box = $("tQr");
     if (!box) return;
-    if (!QR.length) { box.innerHTML = '<p class="empty">まだありません。下の「QR・リンクを作る」で作れます</p>'; return; }
-    var mx = Math.max.apply(null, QR.map(function (q) { return statsOf(q).n; }).concat([1]));
-    box.innerHTML = "<table><thead><tr><th>名前</th><th class=hide-sp>行き先</th><th class=n>回数</th><th style=width:18% class=hide-sp></th><th class=n>成約率</th><th></th></tr></thead><tbody>" +
-      QR.map(function (q) {
+    var active = QR.filter(function (q) { return q.status !== "止める"; }).length, total = 0;
+    QR.forEach(function (q) { total += statsOf(q).n; });
+    $("qrCount").textContent = QR.length ? String(QR.length) : "";
+    $("lkKpi").innerHTML = '<div><div class="lb">作った数</div><div class="v">' + num(QR.length) + "<small>件</small></div></div>" +
+      '<div><div class="lb">使用中</div><div class="v">' + num(active) + "<small>件</small></div></div>" +
+      '<div><div class="lb">期間の回数</div><div class="v">' + num(total) + "<small>回</small></div></div>";
+    if (!QR.length) { box.innerHTML = '<p class="empty">まだありません。右上の「新しく作る」から作れます</p>'; return; }
+    var list = QR.filter(function (q) {
+      if (FILTER === "off") return q.status === "止める";
+      if (FILTER === "all") return true;
+      return q.kind === FILTER && q.status !== "止める";
+    });
+    if (!list.length) { box.innerHTML = '<p class="empty">あてはまるものがありません</p>'; return; }
+    var mx = Math.max.apply(null, list.map(function (q) { return statsOf(q).n; }).concat([1]));
+    box.innerHTML = "<table><thead><tr><th>名前</th><th class=hide-sp>行き先</th><th class=n>回数</th><th style=width:16% class=hide-sp></th><th class=n>成約率</th><th></th></tr></thead><tbody>" +
+      list.map(function (q) {
         var st = statsOf(q), off = q.status === "止める";
-        return "<tr><td><span class='tag" + (off ? " off" : "") + "'>" + esc(off ? "停止中" : q.kind) + "</span>" + esc(q.name) + "</td><td class=hide-sp>" + esc(destName(q.dest)) + "</td><td class=n>" + num(st.n) +
-          "</td><td class=hide-sp>" + meter(st.n, mx) + "</td><td class=n>" + (st.cvr === null ? '<span style="color:#9A918A">―</span>' : rateCell(st.cvr, true)) +
-          '</td><td class=n><button type="button" class="qr-show" data-id="' + esc(q.id) + '">' + (q.kind === "QR" ? "QRを見る" : "リンク") + "</button></td></tr>";
+        return "<tr data-id='" + esc(q.id) + "'><td><span class='tag" + (off ? " off" : "") + "'>" + esc(off ? "停止中" : q.kind) + "</span>" + esc(q.name) + "<span class=dt>" + esc(q.created || "") + "</span></td><td class=hide-sp>" + esc(destName(q.dest)) + "</td><td class=n>" + num(st.n) +
+          "</td><td class=hide-sp>" + meter(st.n, mx) + "</td><td class=n>" + (st.cvr === null ? '<span style="color:#8A919E">―</span>' : rateCell(st.cvr, true)) +
+          '</td><td class=n><button type="button" class="qr-show" data-id="' + esc(q.id) + '">' + (q.kind === "QR" ? "QRを見る" : "開く") + "</button></td></tr>";
       }).join("") + "</tbody></table>";
-    box.querySelectorAll(".qr-show").forEach(function (b) { b.addEventListener("click", function () { openQr(b.getAttribute("data-id")); }); });
+    box.querySelectorAll("tbody tr").forEach(function (tr) { tr.addEventListener("click", function () { openQr(tr.getAttribute("data-id")); }); });
   }
   function openQr(id) {
     var q = QR.filter(function (x) { return x.id === id; })[0];
@@ -1147,6 +1216,25 @@
   }
   function closeQr() { $("qrModal").hidden = true; CUR = null; }
 
+  // ---------------- ページの切り替え（サイト分析／QR・リンク）
+  var VIEW = "site";
+  function setView(v, push) {
+    VIEW = v === "links" ? "links" : "site";
+    document.body.classList.toggle("v-links", VIEW === "links");
+    document.querySelectorAll(".vtab").forEach(function (t) { var on = t.getAttribute("data-view") === VIEW; t.classList.toggle("on", on); t.setAttribute("aria-selected", on ? "true" : "false"); });
+    document.querySelector("#app .grid").hidden = VIEW !== "site";
+    $("viewLinks").hidden = VIEW !== "links";
+    window.scrollTo(0, 0);
+    if (push && window.google && google.script && google.script.history) { try { google.script.history.push({ view: VIEW }, VIEW === "links" ? { page: "links" } : {}); } catch (e) { /* なくても動く */ } }
+    if (VIEW === "site" && D) replay();
+  }
+  document.querySelectorAll(".vtab").forEach(function (t) { t.addEventListener("click", function () { setView(t.getAttribute("data-view"), true); }); });
+  document.querySelectorAll("[data-view-go]").forEach(function (b) { b.addEventListener("click", function () { menu(false); setView(b.getAttribute("data-view-go"), true); }); });
+  try {
+    if (google.script.history) google.script.history.setChangeHandler(function (e) { setView(e.state && e.state.view ? e.state.view : (e.location && e.location.parameter && e.location.parameter.page === "links" ? "links" : "site"), false); });
+    if (google.script.url) google.script.url.getLocation(function (loc) { if (loc && loc.parameter && loc.parameter.page === "links") setView("links", false); });
+  } catch (e) { /* 試しの画面など */ }
+
   // ---------------- メニュー・上へ戻る
   function links() {
     var site = B.siteBase || "";
@@ -1164,7 +1252,7 @@
   $("menuBtn").addEventListener("click", function () { menu(true); });
   $("drClose").addEventListener("click", function () { menu(false); });
   $("scrim").addEventListener("click", function () { menu(false); });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { menu(false); closeQr(); } });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { menu(false); closeQr(); $("qrNew").hidden = true; } });
   document.querySelectorAll("[data-go]").forEach(function (b) {
     b.addEventListener("click", function () {
       menu(false);
