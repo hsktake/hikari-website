@@ -463,7 +463,12 @@ function collect_(rg, site) {
   out.heat = g.heat.map(r => [Number(r[0]), Number(r[1]), r[2]]);
   // 入口
   const land = {};
-  g.landing.forEach(r => { if (!r[0] || r[0] === '(not set)') return; const t = pageType_(r[0]); land[t] = land[t] || [t, 0, 0]; land[t][1] += r[1]; land[t][2] += r[2]; });
+  g.landing.forEach(r => {
+    if (!r[0] || r[0] === '(not set)') return;
+    let t = pageType_(r[0]);
+    if (t === 'その他') t = 'その他（' + String(r[0]).slice(0, 40) + '）'; // わからないページは実際のアドレスを出す
+    land[t] = land[t] || [t, 0, 0]; land[t][1] += r[1]; land[t][2] += r[2];
+  });
   out.landing = Object.values(land).sort((a, b) => b[1] - a[1]).map(r => [r[0], r[1], Math.max(0, r[1] - r[2]), r[1] ? Math.max(0, r[1] - r[2]) / r[1] : 0]);
   // つながり・離脱
   const link = {}, nextOf = {};
@@ -518,7 +523,7 @@ function getRangeData(start, end, cs, ce, force, site) {
   const ok = (d) => /^\d{4}-\d{2}-\d{2}$/.test(String(d || ''));
   if (![start, end, cs, ce].every(ok)) throw new Error('期間の指定が正しくありません');
   site = String(site || 'hikari').slice(0, 120);
-  const key = ['r5', site, start, end, cs, ce].join('|');
+  const key = ['r6', site, start, end, cs, ce].join('|');
   if (!force) { const c = cacheGet_(key); if (c) return c; }
   ERRORS.length = 0;
   const data = {
