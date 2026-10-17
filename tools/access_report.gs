@@ -478,7 +478,7 @@ function collectPrev_(rg) {
 function getRangeData(start, end, cs, ce, force) {
   const ok = (d) => /^\d{4}-\d{2}-\d{2}$/.test(String(d || ''));
   if (![start, end, cs, ce].every(ok)) throw new Error('期間の指定が正しくありません');
-  const key = ['r3', start, end, cs, ce].join('|');
+  const key = ['r4', start, end, cs, ce].join('|');
   if (!force) { const c = cacheGet_(key); if (c) return c; }
   ERRORS.length = 0;
   const data = {
