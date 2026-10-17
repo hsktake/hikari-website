@@ -6,7 +6,7 @@
 <!-- ホームページ アクセス集計の画面（Apps Script の Dashboard.html。元は GitHub の tools/access_dashboard.html） -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -338,6 +338,105 @@
     .rv, .rv.in, h2.group.rv, h2.group.rv.in { opacity: 1; transform: none; animation: none; }
     .fb, .ft, .fc, .sk .lk, .sk .nb, .hc, .cloud span, .meter, .rate .track i, .ph-row .b i, .ring .prog { transition: none !important; }
   }
+
+  /* ===== 落ち着いたプロ向けの見た目（オーナー指示 2026-10-17：見やすく・プロっぽく） ===== */
+  :root {
+    --brown: #1F2328; --ink: #1F2328; --ink2: #5B6270; --muted: #8A919E;
+    --bg: #F5F6F8; --card: #FFFFFF; --line: #E5E7EB; --grid: #EEF0F3; --tint: #F3F4F6;
+    --font: "Noto Sans JP", "Hiragino Sans", "Yu Gothic UI", system-ui, sans-serif;
+    --num: "Inter", "Noto Sans JP", system-ui, sans-serif;
+  }
+  body { font-weight: 400; -webkit-font-smoothing: antialiased; }
+  body::before { display: none; }
+  .num, td.n { font-family: var(--num); font-feature-settings: "tnum"; }
+  header { background: #fff; color: var(--ink); box-shadow: 0 1px 0 var(--line); }
+  .logo { width: 32px; height: 32px; border-radius: 8px; box-shadow: none; }
+  .logo .tw { display: none; }
+  h1 { font-size: 15px; font-weight: 700; letter-spacing: 0; }
+  h1 small { opacity: 1; color: var(--muted); font-weight: 400; }
+  .refresh { background: #fff; color: var(--ink); border: 1px solid var(--line); box-shadow: none; font-weight: 600; padding: 7px 14px; }
+  .refresh svg { stroke: var(--ink); }
+  .refresh:hover, .refresh:active { transform: none; box-shadow: none; background: var(--tint); }
+  .menu-btn { background: #fff; border: 1px solid var(--line); width: 38px; height: 36px; border-radius: 10px; }
+  .menu-btn:hover { background: var(--tint); transform: none; }
+  .menu-btn i, .menu-btn i::before, .menu-btn i::after { background: var(--ink); height: 2px; }
+  .periods { padding-bottom: 12px; }
+  .chip { color: var(--ink2); background: #fff; border: 1px solid var(--line); font-weight: 600; font-size: 12.5px; padding: 5px 12px; }
+  .chip:hover { background: var(--tint); transform: none; }
+  .chip.on { background: var(--ink); color: #fff; border-color: var(--ink); box-shadow: none; }
+  .site-chip { background: #FFF4EA; border: 1px solid #F3C9A3; padding: 5px 12px; }
+  .site-chip select, .site-chip::after { color: #9A4700; font-weight: 700; }
+  .custom input { border: 1px solid var(--line); }
+  .custom button { background: var(--ink); color: #fff; font-weight: 600; }
+  main { padding-top: 20px; }
+  .note { background: #fff; border: 1px solid var(--line); color: var(--ink2); border-radius: 10px; }
+  .note.err { background: #FEF3F2; border-color: #FBD5D0; color: #8A2A1C; }
+  .period { font-size: 12.5px; }
+  .period b { color: var(--ink); font-weight: 600; }
+  .period .vs { border-color: var(--line); color: var(--ink2); }
+  .grid { gap: 16px; }
+  .card { border-radius: 12px; box-shadow: none; border: 1px solid var(--line); padding: 18px 20px 20px; }
+  .card h2 { font-size: 14px; font-weight: 700; color: var(--ink); gap: 0; }
+  .card .sub { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+  h2.group { font-size: 12.5px; font-weight: 700; color: var(--ink2); letter-spacing: .08em; margin: 30px 0 -4px; gap: 10px; }
+  h2.group::after { content: ""; flex: 1; height: 1px; background: var(--line); order: 1; }
+  h2.group small { order: 2; letter-spacing: 0; font-weight: 400; color: var(--muted); }
+  .hero { background: #fff; }
+  .hero .lb, .ring-txt .lb { color: var(--ink2); font-weight: 600; font-size: 12.5px; }
+  .hero .big { font-family: var(--num); font-weight: 600; font-size: 52px; letter-spacing: -.02em; }
+  .hero .big small { font-size: 16px; font-weight: 500; }
+  .mini { background: #fff; border: 1px solid var(--line); border-radius: 10px; }
+  .mini:hover { transform: none; }
+  .mini .lb { font-weight: 500; }
+  .mini .v { font-size: 24px; letter-spacing: -.01em; }
+  .delta { font-weight: 500; }
+  th { font-weight: 600; font-size: 11.5px; color: var(--muted); }
+  th.n { font-family: var(--font); font-weight: 600; }
+  td { color: var(--ink); }
+  tbody tr:hover { background: #FAFAFB; }
+  .meter { height: 8px; border-radius: 4px; }
+  .st-no { background: var(--tint); color: var(--ink2); font-family: var(--num); }
+  .st-nm { font-weight: 600; }
+  .st-v { font-weight: 600; }
+  .tn .box { border: 1px solid #D9DDE3; border-radius: 8px; }
+  .tn .nm { font-weight: 600; }
+  .tr-chip { font-weight: 600; border: 1px solid var(--line); }
+  .shop { border-radius: 10px; background: #fff; }
+  .shop:hover { box-shadow: 0 6px 16px rgba(17,24,39,.08); }
+  .shop .bd { background: #fff; }
+  .shop .rk { width: 26px; height: 26px; font-size: 13px; box-shadow: none; background: var(--ink); }
+  .shop .nm { font-weight: 700; }
+  .phone { border-width: 6px; border-color: #2B2F36; background: #fff; }
+  .cloud span { background: var(--tint); color: var(--ink); font-weight: 600; }
+  .qf input, .qf select, .seg { background: #fff; border: 1px solid var(--line); }
+  .qr-go, .retry, .qm-dl { box-shadow: none; font-weight: 600; }
+  .qr-show { background: var(--tint); color: var(--ink); font-weight: 600; }
+  .scrim { background: rgba(17,24,39,.35); }
+  .drawer { border-radius: 0; background: #fff; box-shadow: -8px 0 24px rgba(17,24,39,.12); }
+  .dr-head { background: #fff; color: var(--ink); border-bottom: 1px solid var(--line); font-size: 15px; }
+  .dr-close { background: var(--tint); color: var(--ink); }
+  .dr-item { box-shadow: none; border: 1px solid var(--line); border-radius: 10px; font-weight: 600; padding: 11px 14px; }
+  .dr-item:hover { box-shadow: none; background: var(--tint); }
+  .gloss { box-shadow: none; border: 1px solid var(--line); border-radius: 10px; }
+  .to-top { background: #fff; border: 1px solid var(--line); box-shadow: 0 4px 12px rgba(17,24,39,.10); width: 40px; height: 40px; }
+  .to-top svg { stroke: var(--ink); }
+  .to-top:active { box-shadow: 0 2px 6px rgba(17,24,39,.10); }
+  .modal-card { border-radius: 14px; }
+  /* 読み込み中：シンプルな丸 */
+  .scissors { display: none !important; }
+  #loading::before { content: ""; display: block; width: 28px; height: 28px; margin: 0 auto 12px; border-radius: 50%; border: 3px solid var(--line); border-top-color: var(--orange); animation: spin .9s linear infinite; }
+  #loading { font-weight: 500; color: var(--muted); }
+  .busy-pill { background: var(--ink); font-weight: 500; padding: 10px 18px; }
+  .busy-pill::before { content: ""; width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; animation: spin .9s linear infinite; }
+  /* 動きは控えめに（ふわっと出るだけ） */
+  .rv { opacity: 0; transform: translateY(8px); }
+  .rv.in, h2.group.rv.in { animation: fadeUp .45s ease both; animation-delay: var(--dl, 0s); }
+  h2.group.rv { transform: translateY(8px); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .hc { transform: none; transition: opacity .4s ease var(--d, 0s); }
+  .cloud span { transform: none; transition: opacity .4s ease var(--d, 0s); }
+  @media (max-width: 520px) { .hero .big { font-size: 44px; } h2.group small { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .rv, .rv.in, h2.group.rv, h2.group.rv.in { opacity: 1; transform: none; animation: none; } }
 </style>
 </head>
 <body>
@@ -379,30 +478,30 @@
       <section class="card s4 hero rv jump" id="heroUsers"></section>
       <section class="card s4 rv" id="heroCvr"></section>
       <section class="card s4 rv"><div class="minis" id="minis"></div></section>
-      <section class="card s12 rv jump" id="sec-daily" data-chart="cDaily"><h2><span class="ic">📈</span>日ごとの訪問回数</h2><p class="sub">オレンジ＝この期間、灰色の点線＝比べる期間（同じ日数目どうし）、緑＝来店につながった訪問（待ち状況・地図・電話・アプリDL）</p><div class="cv"><canvas id="cDaily"></canvas></div></section>
+      <section class="card s12 rv jump" id="sec-daily" data-chart="cDaily"><h2>日ごとの訪問回数</h2><p class="sub">オレンジ＝この期間、灰色の点線＝比べる期間（同じ日数目どうし）、緑＝来店につながった訪問（待ち状況・地図・電話・アプリDL）</p><div class="cv"><canvas id="cDaily"></canvas></div></section>
 
-      <h2 class="group rv jump" id="sec-flow"><span class="bd">🚶</span>お客様の動き<small>どこから入って、どこへ進み、どこで帰ったか</small></h2>
-      <section class="card s7 rv"><h2><span class="ic">🔻</span>来店までの流れ</h2><p class="sub">来店につながる動き＝待ち状況・地図・電話・アプリDLのどれかを押した</p><div id="fFunnel"></div></section>
-      <section class="card s5 rv"><h2><span class="ic">🚪</span>最初に開いたページ（入口）</h2><p class="sub">「すぐ帰った」＝10秒未満で1ページだけ見て帰った割合</p><div id="tLanding"></div></section>
-      <section class="card s12 rv"><h2><span class="ic">🔀</span>ページのつながり（分岐図）</h2><p class="sub">はじめのページから、次にどのページへ進んだか（数字は回数。多い順に上から）</p><div class="tree-roots" id="treeRoots"></div><div class="tree-box" id="tree"></div></section>
-      <section class="card s7 rv"><h2><span class="ic">👋</span>ここで終わった人が多いページ</h2><p class="sub">割合は目安。店舗ページは、待ち状況や地図を見てお店に向かった人も含みます（右の「来店・連絡」）</p><div id="tExits"></div></section>
-      <section class="card s5 rv"><h2><span class="ic">🧭</span>どこから来たか × 成約率</h2><p class="sub">訪問回数と、そのうち来店につながった割合</p><div id="tChannels"></div></section>
+      <h2 class="group rv jump" id="sec-flow">お客様の動き<small>どこから入って、どこへ進み、どこで帰ったか</small></h2>
+      <section class="card s7 rv"><h2>来店までの流れ</h2><p class="sub">来店につながる動き＝待ち状況・地図・電話・アプリDLのどれかを押した</p><div id="fFunnel"></div></section>
+      <section class="card s5 rv"><h2>最初に開いたページ（入口）</h2><p class="sub">「すぐ帰った」＝10秒未満で1ページだけ見て帰った割合</p><div id="tLanding"></div></section>
+      <section class="card s12 rv"><h2>ページのつながり（分岐図）</h2><p class="sub">はじめのページから、次にどのページへ進んだか（数字は回数。多い順に上から）</p><div class="tree-roots" id="treeRoots"></div><div class="tree-box" id="tree"></div></section>
+      <section class="card s7 rv"><h2>ここで終わった人が多いページ</h2><p class="sub">割合は目安。店舗ページは、待ち状況や地図を見てお店に向かった人も含みます（右の「来店・連絡」）</p><div id="tExits"></div></section>
+      <section class="card s5 rv"><h2>どこから来たか × 成約率</h2><p class="sub">訪問回数と、そのうち来店につながった割合</p><div id="tChannels"></div></section>
 
-      <h2 class="group rv jump" id="sec-when"><span class="bd">🕒</span>いつ見られているか</h2>
-      <section class="card s12 rv"><h2><span class="ic">🗓️</span>曜日 × 時間帯</h2><p class="sub">訪問回数。色が濃いほど多い</p><div class="heat-box" id="heat"></div></section>
+      <h2 class="group rv jump" id="sec-when">いつ見られているか</h2>
+      <section class="card s12 rv"><h2>曜日 × 時間帯</h2><p class="sub">訪問回数。色が濃いほど多い</p><div class="heat-box" id="heat"></div></section>
 
-      <h2 class="group rv jump" id="sec-top"><span class="bd">⭐</span>よく見られたもの</h2>
-      <section class="card s12 rv"><h2><span class="ic">💈</span>よく見られた店舗</h2><p class="sub">店舗ページの表示回数と、待ち状況・地図が押された回数</p><div id="tShops"></div></section>
-      <section class="card s7 rv" data-chart="cContent"><h2><span class="ic">📄</span>よく見られたページ</h2><p class="sub">ページの種類ごとの表示回数</p><div class="cv tall"><canvas id="cContent"></canvas></div></section>
-      <section class="card s5 rv"><h2><span class="ic">📱</span>トップページはどこまで見られたか</h2><p class="sub">トップを開いた人のうち、そのコーナーまでスクロールした割合</p><div id="phone"></div></section>
-      <section class="card s5 rv" data-chart="cDev"><h2><span class="ic">💻</span>スマホ・パソコン</h2><p class="sub">訪問者数</p><div id="tDev"></div></section>
-      <section class="card s7 rv"><h2><span class="ic">📍</span>地域</h2><p class="sub">訪問者数（上位8）</p><div id="tRegion"></div></section>
-      <section class="card rv"><h2><span class="ic">⬇️</span>アプリDLボタンが押された場所</h2><p class="sub">どのページの、どのコーナーのボタンか</p><div id="tAppdl"></div></section>
-      <section class="card rv"><h2><span class="ic">🔍</span>店舗検索で調べられた言葉</h2><p class="sub">店舗一覧の検索欄に入力された言葉（大きいほど多い）</p><div id="tSearch"></div></section>
+      <h2 class="group rv jump" id="sec-top">よく見られたもの</h2>
+      <section class="card s12 rv"><h2>よく見られた店舗</h2><p class="sub">店舗ページの表示回数と、待ち状況・地図が押された回数</p><div id="tShops"></div></section>
+      <section class="card s7 rv" data-chart="cContent"><h2>よく見られたページ</h2><p class="sub">ページの種類ごとの表示回数</p><div class="cv tall"><canvas id="cContent"></canvas></div></section>
+      <section class="card s5 rv"><h2>トップページはどこまで見られたか</h2><p class="sub">トップを開いた人のうち、そのコーナーまでスクロールした割合</p><div id="phone"></div></section>
+      <section class="card s5 rv" data-chart="cDev"><h2>スマホ・パソコン</h2><p class="sub">訪問者数</p><div id="tDev"></div></section>
+      <section class="card s7 rv"><h2>地域</h2><p class="sub">訪問者数（上位8）</p><div id="tRegion"></div></section>
+      <section class="card rv"><h2>アプリDLボタンが押された場所</h2><p class="sub">どのページの、どのコーナーのボタンか</p><div id="tAppdl"></div></section>
+      <section class="card rv"><h2>店舗検索で調べられた言葉</h2><p class="sub">店舗一覧の検索欄に入力された言葉（大きいほど多い）</p><div id="tSearch"></div></section>
 
-      <h2 class="group rv jump" id="sec-qr"><span class="bd">🔗</span>QR・リンク<small>チラシ・ポスター・SNS などに使う専用のQR・リンク（どのサイトを選んでいても全部出します）</small></h2>
-      <section class="card s12 rv"><h2><span class="ic">📋</span>作ったQR・リンク</h2><p class="sub">この期間に読み取られた・押された回数。行き先がサイト内なら、そのあと来店につながった割合も出ます</p><div id="tQr"></div></section>
-      <section class="card s12 rv" id="qrMake"><h2><span class="ic">✨</span>QR・リンクを作る</h2><p class="sub">名前と行き先を選んで「作る」を押すだけ。あとから行き先を変えても、同じQRのまま使えます</p>
+      <h2 class="group rv jump" id="sec-qr">QR・リンク<small>チラシ・ポスター・SNS などに使う専用のQR・リンク（どのサイトを選んでいても全部出します）</small></h2>
+      <section class="card s12 rv"><h2>作ったQR・リンク</h2><p class="sub">この期間に読み取られた・押された回数。行き先がサイト内なら、そのあと来店につながった割合も出ます</p><div id="tQr"></div></section>
+      <section class="card s12 rv" id="qrMake"><h2>QR・リンクを作る</h2><p class="sub">名前と行き先を選んで「作る」を押すだけ。あとから行き先を変えても、同じQRのまま使えます</p>
         <div class="qr-form">
           <label class="qf"><span>名前</span><input id="qName" type="text" maxlength="40" placeholder="例：10月チラシ、水戸駅南店ポスター"></label>
           <div class="qf"><span>種類</span><div class="seg" id="qKind"><button type="button" class="on" data-k="QR">QRコード</button><button type="button" data-k="リンク">リンク（SNSなど）</button></div></div>
@@ -412,9 +511,9 @@
         </div>
       </section>
 
-      <h2 class="group rv jump" id="sec-trend"><span class="bd">📅</span>これまでの推移<small>月ごと（スプレッドシートに毎朝保存している数字）</small></h2>
-      <section class="card rv" data-chart="cTrend"><h2><span class="ic">👥</span>月ごとの訪問者数</h2><p class="sub">直近12か月（今月は今日まで。すべてのサイトの合計）</p><div class="cv"><canvas id="cTrend"></canvas></div></section>
-      <section class="card rv" data-chart="cAct"><h2><span class="ic">✅</span>月ごとの「来店につながる動き」</h2><p class="sub">アプリDLボタン・待ち状況・地図が押された回数</p><div class="cv"><canvas id="cAct"></canvas></div></section>
+      <h2 class="group rv jump" id="sec-trend">これまでの推移<small>月ごと（スプレッドシートに毎朝保存している数字）</small></h2>
+      <section class="card rv" data-chart="cTrend"><h2>月ごとの訪問者数</h2><p class="sub">直近12か月（今月は今日まで。すべてのサイトの合計）</p><div class="cv"><canvas id="cTrend"></canvas></div></section>
+      <section class="card rv" data-chart="cAct"><h2>月ごとの「来店につながる動き」</h2><p class="sub">アプリDLボタン・待ち状況・地図が押された回数</p><div class="cv"><canvas id="cAct"></canvas></div></section>
     </div>
   </div>
 </main>
@@ -426,26 +525,26 @@
 <nav class="drawer" id="drawer" aria-label="メニュー" aria-hidden="true">
   <div class="dr-head">メニュー<button class="dr-close" id="drClose" type="button" aria-label="メニューを閉じる">×</button></div>
   <div class="dr-sec"><h3>見たい場所へ</h3>
-    <button class="dr-item" data-go="heroUsers" type="button"><span class="ic">👥</span>主な数字<span class="go">›</span></button>
-    <button class="dr-item" data-go="sec-daily" type="button"><span class="ic">📈</span>日ごとの訪問回数<span class="go">›</span></button>
-    <button class="dr-item" data-go="sec-flow" type="button"><span class="ic">🚶</span><span>お客様の動き<small>来店までの流れ・入口・分岐図・離脱</small></span><span class="go">›</span></button>
-    <button class="dr-item" data-go="sec-when" type="button"><span class="ic">🕒</span>いつ見られているか<span class="go">›</span></button>
-    <button class="dr-item" data-go="sec-top" type="button"><span class="ic">⭐</span><span>よく見られたもの<small>店舗・ページ・端末・地域・検索</small></span><span class="go">›</span></button>
-    <button class="dr-item" data-go="sec-qr" type="button"><span class="ic">🔗</span><span>QR・リンク<small>作ったQR・リンクの数字</small></span><span class="go">›</span></button>
-    <button class="dr-item" data-go="qrMake" type="button"><span class="ic">✨</span>QR・リンクを作る<span class="go">›</span></button>
-    <button class="dr-item" data-go="sec-trend" type="button"><span class="ic">📅</span>これまでの推移<span class="go">›</span></button>
+    <button class="dr-item" data-go="heroUsers" type="button">主な数字<span class="go">›</span></button>
+    <button class="dr-item" data-go="sec-daily" type="button">日ごとの訪問回数<span class="go">›</span></button>
+    <button class="dr-item" data-go="sec-flow" type="button"><span>お客様の動き<small>来店までの流れ・入口・分岐図・離脱</small></span><span class="go">›</span></button>
+    <button class="dr-item" data-go="sec-when" type="button">いつ見られているか<span class="go">›</span></button>
+    <button class="dr-item" data-go="sec-top" type="button"><span>よく見られたもの<small>店舗・ページ・端末・地域・検索</small></span><span class="go">›</span></button>
+    <button class="dr-item" data-go="sec-qr" type="button"><span>QR・リンク<small>作ったQR・リンクの数字</small></span><span class="go">›</span></button>
+    <button class="dr-item" data-go="qrMake" type="button">QR・リンクを作る<span class="go">›</span></button>
+    <button class="dr-item" data-go="sec-trend" type="button">これまでの推移<span class="go">›</span></button>
   </div>
   <div class="dr-sec"><h3>開く</h3>
-    <a class="dr-item" id="lnkSite" href="#" target="_blank" rel="noopener"><span class="ic">🏠</span>ホームページ<span class="go">↗</span></a>
-    <a class="dr-item" id="lnkSheet" href="#" target="_blank" rel="noopener"><span class="ic">📗</span><span>スプレッドシート<small>毎朝の数字の保存先</small></span><span class="go">↗</span></a>
-    <a class="dr-item" id="lnkGa" href="#" target="_blank" rel="noopener"><span class="ic">📊</span>Googleアナリティクス<span class="go">↗</span></a>
+    <a class="dr-item" id="lnkSite" href="#" target="_blank" rel="noopener">ホームページ<span class="go">↗</span></a>
+    <a class="dr-item" id="lnkSheet" href="#" target="_blank" rel="noopener"><span>スプレッドシート<small>毎朝の数字の保存先</small></span><span class="go">↗</span></a>
+    <a class="dr-item" id="lnkGa" href="#" target="_blank" rel="noopener">Googleアナリティクス<span class="go">↗</span></a>
   </div>
   <div class="dr-sec"><h3>設定</h3>
-    <button class="dr-item" id="drRefresh" type="button"><span class="ic">🔄</span><span>最新にする<small>この期間を、いまの状態に集め直す</small></span></button>
-    <a class="dr-item" id="lnkNotrack" href="#" target="_blank" rel="noopener"><span class="ic">🙈</span><span>社内の閲覧を数えない<small>このスマホ・パソコンで1回開くだけ</small></span><span class="go">↗</span></a>
+    <button class="dr-item" id="drRefresh" type="button"><span>最新にする<small>この期間を、いまの状態に集め直す</small></span></button>
+    <a class="dr-item" id="lnkNotrack" href="#" target="_blank" rel="noopener"><span>社内の閲覧を数えない<small>このスマホ・パソコンで1回開くだけ</small></span><span class="go">↗</span></a>
   </div>
   <div class="dr-sec"><h3>わからないとき</h3>
-    <details class="gloss"><summary><span class="ic" style="width:28px;height:28px;border-radius:9px;background:var(--tint);display:grid;place-items:center">📖</span>言葉の意味</summary>
+    <details class="gloss"><summary>言葉の意味</summary>
       <dl>
         <dt>訪問者数</dt><dd>見に来た人の数（同じ人が何回来ても1人）</dd>
         <dt>訪問回数</dt><dd>見に来た回数（30分以上あくと別の回）</dd>
@@ -484,7 +583,7 @@
   var RM = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
   var B = null, D = null, P = null, SITE = "hikari", charts = {}, pending = {};
   if (window.Chart) {
-    Chart.defaults.font.family = '"M PLUS Rounded 1c","Hiragino Sans","Noto Sans JP",system-ui,sans-serif';
+    Chart.defaults.font.family = '"Inter","Noto Sans JP","Hiragino Sans",system-ui,sans-serif';
     Chart.defaults.color = INK2;
     Chart.defaults.plugins.legend.labels.boxWidth = 12;
     Chart.defaults.plugins.legend.labels.usePointStyle = true;
@@ -692,7 +791,7 @@
 
   function renderHero() {
     var cur = D.cur.kpi, prev = D.prev.kpi;
-    $("heroUsers").innerHTML = '<div class="stars" aria-hidden="true">' + star(40, 0, 18, "#FFC94D") + star(14, 22, 12, "#EF7A00") + star(54, 30, 10, "#FFC94D") + "</div>" +
+    $("heroUsers").innerHTML = '' +
       '<div><div class="lb">訪問者数（見に来た人）</div><div class="big">' + cnt(cur.users) + "<small>人</small></div>" +
       delta(cur.users, prev.users) + '<div class="delta">うち はじめての人 <span class="num">' + num(cur.newUsers) + "</span>人</div></div>" +
       '<div class="spark">' + sparkline(D.cur.daily.map(function (r) { return +r[1]; }), 300, 56, C1) + "</div>";
@@ -700,7 +799,7 @@
     var ring = '<svg class="viz ring" style="width:136px;flex:none" viewBox="0 0 136 136" width="136" height="136" role="img" aria-label="成約率 ' + pct(v) + '">' +
       '<circle cx="68" cy="68" r="' + R + '" fill="none" stroke="#F6E9D9" stroke-width="14"/>' +
       '<circle class="prog" cx="68" cy="68" r="' + R + '" fill="none" stroke="' + C1 + '" stroke-width="14" stroke-linecap="' + (v > 0 ? "round" : "butt") + '" data-dash="' + (L * v).toFixed(1) + " " + L.toFixed(1) + '" style="stroke-dasharray:' + (RM ? (L * v).toFixed(1) : "0") + " " + L.toFixed(1) + '" transform="rotate(-90 68 68)"/>' +
-      '<text x="68" y="72" text-anchor="middle" font-size="32" font-weight="600" fill="' + INK + '" style="font-family:Fredoka,sans-serif">' + Math.round(v * 100) + '<tspan font-size="15">%</tspan></text>' +
+      '<text x="68" y="72" text-anchor="middle" font-size="32" font-weight="600" fill="' + INK + '" style="font-family:Inter,sans-serif">' + Math.round(v * 100) + '<tspan font-size="15">%</tspan></text>' +
       '<text x="68" y="94" text-anchor="middle" font-size="11" fill="' + INK2 + '">成約率</text></svg>';
     $("heroCvr").innerHTML = '<div class="ring-wrap">' + ring + '<div class="ring-txt"><div class="lb">来店につながった割合</div><p>訪問 <span class="num">' + num(cur.sessions) + "</span>回のうち、待ち状況・地図・電話・アプリDLまで進んだのは <b>" + cnt(cur.goal) + "回</b></p>" + delta(cur.cvr, prev.cvr, true) + "</div></div>";
     var e = D.cur.ev, pe = D.prev.ev;
@@ -708,7 +807,7 @@
       ["アプリDL", e["アプリDLボタン"], pe["アプリDLボタン"], "回", "⬇️"], ["待ち状況", e["待ち状況を見た"], pe["待ち状況を見た"], "回", "⏱️"],
       ["地図", e["地図を開いた"], pe["地図を開いた"], "回", "📍"], ["電話", e["電話をかけた"], pe["電話をかけた"], "回", "📞"]];
     $("minis").innerHTML = M.map(function (k) {
-      return '<div class="mini"><div class="lb"><span aria-hidden="true">' + k[4] + "</span>" + k[0] + '</div><div class="v">' + cnt(k[1]) + "<small>" + k[3] + "</small></div>" + delta(+k[1] || 0, +k[2] || 0) + "</div>";
+      return '<div class="mini"><div class="lb">' + k[0] + '</div><div class="v">' + cnt(k[1]) + "<small>" + k[3] + "</small></div>" + delta(+k[1] || 0, +k[2] || 0) + "</div>";
     }).join("");
   }
 
