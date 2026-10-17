@@ -191,7 +191,40 @@
   .busy-pill.show { transform: translateX(-50%) translateY(0); }
   .busy-pill .scissors { width: 32px; height: 32px; margin: 0; }
 
-  footer { max-width: 1200px; margin: 0 auto; padding: 8px 16px 28px; color: var(--muted); font-size: 12px; }
+  /* メニュー（右から出る） */
+  .menu-btn { font: inherit; border: 0; border-radius: 14px; width: 42px; height: 40px; cursor: pointer; background: rgba(255,255,255,.14); display: grid; place-items: center; transition: background .2s, transform .15s; flex: none; }
+  .menu-btn:hover { background: rgba(255,255,255,.24); transform: translateY(-1px); }
+  .menu-btn i { display: block; width: 18px; height: 2.5px; border-radius: 2px; background: #fff; position: relative; }
+  .menu-btn i::before, .menu-btn i::after { content: ""; position: absolute; left: 0; width: 18px; height: 2.5px; border-radius: 2px; background: #fff; transition: transform .3s var(--ease); }
+  .menu-btn i::before { top: -6px; } .menu-btn i::after { top: 6px; }
+  .scrim { position: fixed; inset: 0; background: rgba(43,36,32,.38); z-index: 50; opacity: 0; pointer-events: none; transition: opacity .3s; }
+  .scrim.open { opacity: 1; pointer-events: auto; }
+  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(340px, 88vw); background: var(--bg); z-index: 51; transform: translateX(105%); transition: transform .4s var(--ease); border-radius: 24px 0 0 24px; box-shadow: -10px 0 30px rgba(0,0,0,.18); overflow-y: auto; padding: 0 0 24px; }
+  .drawer.open { transform: none; }
+  .dr-head { position: sticky; top: 0; background: linear-gradient(120deg, var(--brown) 0%, var(--brown2) 100%); color: #fff; padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; font-weight: 800; font-size: 16px; z-index: 1; }
+  .dr-close { font: inherit; border: 0; background: rgba(255,255,255,.16); color: #fff; width: 36px; height: 36px; border-radius: 12px; font-size: 20px; cursor: pointer; line-height: 1; }
+  .dr-sec { padding: 14px 16px 2px; }
+  .dr-sec h3 { margin: 0 0 8px; font-size: 12px; color: var(--muted); font-weight: 800; letter-spacing: .05em; }
+  .dr-item { display: flex; align-items: center; gap: 12px; width: 100%; font: inherit; font-weight: 800; color: var(--ink); text-decoration: none; background: #fff; border: 0; border-radius: 16px; padding: 10px 12px; margin: 0 0 8px; cursor: pointer; box-shadow: 0 1px 0 var(--line); text-align: left; transition: transform .2s var(--ease), box-shadow .2s; opacity: 0; transform: translateX(24px); }
+  .drawer.open .dr-item { opacity: 1; transform: none; transition: transform .45s var(--ease) var(--d, 0s), opacity .35s ease var(--d, 0s), box-shadow .2s; }
+  .dr-item:hover { box-shadow: 0 6px 16px rgba(74,46,26,.12); }
+  .dr-item .ic { width: 36px; height: 36px; border-radius: 12px; background: var(--tint); display: grid; place-items: center; font-size: 17px; flex: none; }
+  .dr-item small { display: block; font-size: 11.5px; color: var(--muted); font-weight: 500; }
+  .dr-item .go { margin-left: auto; color: var(--muted); font-size: 13px; }
+  .gloss { background: #fff; border-radius: 16px; padding: 4px 14px; box-shadow: 0 1px 0 var(--line); }
+  .gloss summary { cursor: pointer; font-weight: 800; padding: 10px 0; list-style: none; display: flex; align-items: center; gap: 10px; }
+  .gloss summary::-webkit-details-marker { display: none; }
+  .gloss summary::after { content: "＋"; margin-left: auto; color: var(--muted); }
+  .gloss[open] summary::after { content: "－"; }
+  .gloss dl { margin: 0 0 10px; font-size: 12.5px; }
+  .gloss dt { font-weight: 800; color: var(--brown); margin-top: 8px; }
+  .gloss dd { margin: 2px 0 0; color: var(--ink2); }
+  /* 上へ戻る */
+  .to-top { position: fixed; right: 16px; bottom: 20px; z-index: 35; width: 48px; height: 48px; border-radius: 50%; border: 0; background: var(--orange); box-shadow: 0 4px 0 #B85C00, 0 8px 18px rgba(0,0,0,.18); cursor: pointer; display: grid; place-items: center; opacity: 0; transform: translateY(20px) scale(.8); pointer-events: none; transition: opacity .3s, transform .4s cubic-bezier(.3, 1.6, .5, 1); }
+  .to-top.show { opacity: 1; transform: none; pointer-events: auto; }
+  .to-top:active { transform: translateY(3px); box-shadow: 0 1px 0 #B85C00; }
+  .jump { scroll-margin-top: 120px; }
+  .retry { font: inherit; font-weight: 800; border: 0; border-radius: 999px; padding: 10px 20px; margin-top: 14px; background: var(--orange); color: #fff; cursor: pointer; box-shadow: 0 3px 0 #B85C00; }
   @media (max-width: 900px) {
     .card, .s4, .s5, .s7 { grid-column: 1 / -1; }
     .shops { grid-template-columns: repeat(2, 1fr); }
@@ -225,6 +258,7 @@
     <div class="logo" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V11M10 19V5M16 19v-6M22 19H2"/></svg><svg class="tw" viewBox="0 0 24 24"><path d="M12 0l3 9 9 3-9 3-3 9-3-9-9-3 9-3z" fill="#FFC94D"/></svg></div>
     <h1>ホームページ アクセス集計<small id="upd">読み込み中…</small></h1>
     <button id="refresh" class="refresh" type="button" title="この期間の数字を、いまの状態に集め直します"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7M21 4v5h-5"/></svg><span class="rt">最新にする</span></button>
+    <button id="menuBtn" class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="drawer"><i></i></button>
   </div>
   <div class="periods" id="periods" role="group" aria-label="期間">
     <button class="chip" data-p="month" type="button">今月</button>
@@ -253,22 +287,22 @@
     <div id="notes"></div>
     <p class="period" id="period"></p>
     <div class="grid">
-      <section class="card s4 hero rv" id="heroUsers"></section>
+      <section class="card s4 hero rv jump" id="heroUsers"></section>
       <section class="card s4 rv" id="heroCvr"></section>
       <section class="card s4 rv"><div class="minis" id="minis"></div></section>
-      <section class="card s12 rv" data-chart="cDaily"><h2><span class="ic">📈</span>日ごとの訪問回数</h2><p class="sub">オレンジ＝この期間、灰色の点線＝比べる期間（同じ日数目どうし）、緑＝来店につながった訪問（待ち状況・地図・電話・アプリDL）</p><div class="cv"><canvas id="cDaily"></canvas></div></section>
+      <section class="card s12 rv jump" id="sec-daily" data-chart="cDaily"><h2><span class="ic">📈</span>日ごとの訪問回数</h2><p class="sub">オレンジ＝この期間、灰色の点線＝比べる期間（同じ日数目どうし）、緑＝来店につながった訪問（待ち状況・地図・電話・アプリDL）</p><div class="cv"><canvas id="cDaily"></canvas></div></section>
 
-      <h2 class="group rv"><span class="bd">🚶</span>お客様の動き<small>どこから入って、どこへ進み、どこで帰ったか</small></h2>
+      <h2 class="group rv jump" id="sec-flow"><span class="bd">🚶</span>お客様の動き<small>どこから入って、どこへ進み、どこで帰ったか</small></h2>
       <section class="card s7 rv"><h2><span class="ic">🔻</span>来店までの流れ</h2><p class="sub">この期間に来た人のうち、店舗を探し、そのあと待ち状況・地図・電話・アプリDLまで進んだ人数</p><div id="fFunnel"></div></section>
       <section class="card s5 rv"><h2><span class="ic">🚪</span>最初に開いたページ（入口）</h2><p class="sub">「すぐ帰った」＝10秒未満で1ページだけ見て帰った割合</p><div id="tLanding"></div></section>
       <section class="card s12 rv"><h2><span class="ic">🔀</span>ページのつながり</h2><p class="sub">左のページを見たあと、右のページへ進んだ回数の流れ（太いほど多い。上位の流れだけ）。ページ名に指を合わせる・タップすると、そのページの流れだけ濃くなります</p><div id="sankey"></div></section>
       <section class="card s7 rv"><h2><span class="ic">👋</span>ここで終わった人が多いページ</h2><p class="sub">割合は目安。店舗ページは、待ち状況や地図を見てお店に向かった人も含みます（右の「来店・連絡」）</p><div id="tExits"></div></section>
       <section class="card s5 rv"><h2><span class="ic">🧭</span>どこから来たか × 成約率</h2><p class="sub">訪問回数と、そのうち来店につながった割合</p><div id="tChannels"></div></section>
 
-      <h2 class="group rv"><span class="bd">🕒</span>いつ見られているか</h2>
+      <h2 class="group rv jump" id="sec-when"><span class="bd">🕒</span>いつ見られているか</h2>
       <section class="card s12 rv"><h2><span class="ic">🗓️</span>曜日 × 時間帯</h2><p class="sub">訪問回数。色が濃いほど多い</p><div class="heat-box" id="heat"></div></section>
 
-      <h2 class="group rv"><span class="bd">⭐</span>よく見られたもの</h2>
+      <h2 class="group rv jump" id="sec-top"><span class="bd">⭐</span>よく見られたもの</h2>
       <section class="card s12 rv"><h2><span class="ic">💈</span>よく見られた店舗</h2><p class="sub">店舗ページの表示回数と、待ち状況・地図が押された回数</p><div id="tShops"></div></section>
       <section class="card s7 rv" data-chart="cContent"><h2><span class="ic">📄</span>よく見られたページ</h2><p class="sub">ページの種類ごとの表示回数</p><div class="cv tall"><canvas id="cContent"></canvas></div></section>
       <section class="card s5 rv"><h2><span class="ic">📱</span>トップページはどこまで見られたか</h2><p class="sub">トップを開いた人のうち、そのコーナーまでスクロールした割合</p><div id="phone"></div></section>
@@ -277,7 +311,7 @@
       <section class="card rv"><h2><span class="ic">⬇️</span>アプリDLボタンが押された場所</h2><p class="sub">どのページの、どのコーナーのボタンか</p><div id="tAppdl"></div></section>
       <section class="card rv"><h2><span class="ic">🔍</span>店舗検索で調べられた言葉</h2><p class="sub">店舗一覧の検索欄に入力された言葉（大きいほど多い）</p><div id="tSearch"></div></section>
 
-      <h2 class="group rv"><span class="bd">📅</span>これまでの推移<small>月ごと（スプレッドシートに毎朝保存している数字）</small></h2>
+      <h2 class="group rv jump" id="sec-trend"><span class="bd">📅</span>これまでの推移<small>月ごと（スプレッドシートに毎朝保存している数字）</small></h2>
       <section class="card rv" data-chart="cTrend"><h2><span class="ic">👥</span>月ごとの訪問者数</h2><p class="sub">直近12か月（今月は今日まで）</p><div class="cv"><canvas id="cTrend"></canvas></div></section>
       <section class="card rv" data-chart="cAct"><h2><span class="ic">✅</span>月ごとの「来店につながる動き」</h2><p class="sub">アプリDLボタン・待ち状況・地図が押された回数</p><div class="cv"><canvas id="cAct"></canvas></div></section>
     </div>
@@ -287,7 +321,40 @@
   <svg class="scissors" viewBox="0 0 84 84" aria-hidden="true"><g class="ba"><path d="M42 42 L76 30" stroke="#fff" stroke-width="7" stroke-linecap="round"/><circle cx="20" cy="56" r="11" fill="none" stroke="#FFC94D" stroke-width="7"/></g><g class="bb"><path d="M42 42 L76 54" stroke="#fff" stroke-width="7" stroke-linecap="round"/><circle cx="20" cy="28" r="11" fill="none" stroke="#FFC94D" stroke-width="7"/></g></svg>
   <span id="busyTxt">集めています…</span>
 </div>
-<footer>データ：Googleアナリティクス。期間を選ぶと、その場で集めます（数秒〜20秒ほど。同じ期間は6時間まで覚えています）。「最新にする」は、いまの状態に集め直します。月ごとの推移は毎朝6時ごろスプレッドシートに保存しています。社内の閲覧を数えないようにするには、そのスマホ・パソコンでホームページの URL の最後に ?notrack=1 を付けて1回開いてください。</footer>
+<div class="scrim" id="scrim"></div>
+<nav class="drawer" id="drawer" aria-label="メニュー" aria-hidden="true">
+  <div class="dr-head">メニュー<button class="dr-close" id="drClose" type="button" aria-label="メニューを閉じる">×</button></div>
+  <div class="dr-sec"><h3>見たい場所へ</h3>
+    <button class="dr-item" data-go="heroUsers" type="button"><span class="ic">👥</span>主な数字<span class="go">›</span></button>
+    <button class="dr-item" data-go="sec-daily" type="button"><span class="ic">📈</span>日ごとの訪問回数<span class="go">›</span></button>
+    <button class="dr-item" data-go="sec-flow" type="button"><span class="ic">🚶</span><span>お客様の動き<small>来店までの流れ・入口・つながり・離脱</small></span><span class="go">›</span></button>
+    <button class="dr-item" data-go="sec-when" type="button"><span class="ic">🕒</span>いつ見られているか<span class="go">›</span></button>
+    <button class="dr-item" data-go="sec-top" type="button"><span class="ic">⭐</span><span>よく見られたもの<small>店舗・ページ・端末・地域・検索</small></span><span class="go">›</span></button>
+    <button class="dr-item" data-go="sec-trend" type="button"><span class="ic">📅</span>これまでの推移<span class="go">›</span></button>
+  </div>
+  <div class="dr-sec"><h3>開く</h3>
+    <a class="dr-item" id="lnkSite" href="#" target="_blank" rel="noopener"><span class="ic">🏠</span>ホームページ<span class="go">↗</span></a>
+    <a class="dr-item" id="lnkSheet" href="#" target="_blank" rel="noopener"><span class="ic">📗</span><span>スプレッドシート<small>毎朝の数字の保存先</small></span><span class="go">↗</span></a>
+    <a class="dr-item" id="lnkGa" href="#" target="_blank" rel="noopener"><span class="ic">📊</span>Googleアナリティクス<span class="go">↗</span></a>
+  </div>
+  <div class="dr-sec"><h3>設定</h3>
+    <button class="dr-item" id="drRefresh" type="button"><span class="ic">🔄</span><span>最新にする<small>この期間を、いまの状態に集め直す</small></span></button>
+    <a class="dr-item" id="lnkNotrack" href="#" target="_blank" rel="noopener"><span class="ic">🙈</span><span>社内の閲覧を数えない<small>このスマホ・パソコンで1回開くだけ</small></span><span class="go">↗</span></a>
+  </div>
+  <div class="dr-sec"><h3>わからないとき</h3>
+    <details class="gloss"><summary><span class="ic" style="width:28px;height:28px;border-radius:9px;background:var(--tint);display:grid;place-items:center">📖</span>言葉の意味</summary>
+      <dl>
+        <dt>訪問者数</dt><dd>見に来た人の数（同じ人が何回来ても1人）</dd>
+        <dt>訪問回数</dt><dd>見に来た回数（30分以上あくと別の回）</dd>
+        <dt>成約率</dt><dd>訪問のうち、待ち状況・地図・電話・アプリDLのどれかまで進んだ割合</dd>
+        <dt>すぐ帰った</dt><dd>10秒未満で1ページだけ見て帰った</dd>
+        <dt>ここで終わった</dt><dd>そのページを最後に閉じた回数の目安（お店に向かった人も含む）</dd>
+        <dt>比べる期間</dt><dd>今月は先月の同じ日数、過去N日はその前のN日、月は前の月</dd>
+      </dl>
+    </details>
+  </div>
+</nav>
+<button class="to-top" id="toTop" type="button" aria-label="ページの一番上へ"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button>
 <script>
 (function () {
   "use strict";
@@ -353,22 +420,37 @@
     $("main").classList.toggle("busy", !!on && !$("app").hidden);
     $("refresh").disabled = !!on;
   }
+  var timer = null;
   function fail(e) {
+    clearTimeout(timer);
     busy(false);
-    var msg = "読み込めませんでした：" + (e && e.message ? e.message : e);
-    if (!$("app").hidden) $("notes").innerHTML = '<p class="note err">' + esc(msg) + "</p>"; else $("loading").textContent = msg;
+    var msg = (e && e.message ? e.message : String(e || "")).replace(/^(TypeError|Error|ScriptError):\s*/, "");
+    var html = '<div class="note err"><b>うまく読み込めませんでした。</b>' + (msg ? "（" + esc(msg).slice(0, 160) + "）" : "") + '<br><button type="button" class="retry" id="retry">もう一度読み込む</button></div>';
+    if (!$("app").hidden) { $("notes").innerHTML = html; window.scrollTo({ top: 0, behavior: "smooth" }); }
+    else $("loading").innerHTML = html;
+    $("retry").addEventListener("click", function () { location.reload(); });
+  }
+  // サーバーを呼ぶ（呼べないとき・90秒たっても返事がないときは「もう一度読み込む」を出す）
+  function call(name, args, ok) {
+    clearTimeout(timer);
+    timer = setTimeout(function () { fail({ message: "時間がかかっています" }); }, 90000);
+    try {
+      var r = google.script.run.withSuccessHandler(function (x) { clearTimeout(timer); ok(x); }).withFailureHandler(fail);
+      if (typeof r[name] !== "function") throw new Error("画面が古いままです");
+      r[name].apply(r, args);
+    } catch (e) { fail(e); }
   }
   function loadBase(force, then) {
-    google.script.run.withSuccessHandler(function (b) { B = b; if (then) then(); }).withFailureHandler(fail).getBase(!!force);
+    call("getBase", [!!force], function (b) { B = b; links(); if (then) then(); });
   }
   function loadRange(p, force) {
     P = p;
     markChip();
     busy(true, force ? "いまの状態に集め直しています…" : p.label + "の数字を集めています…");
-    google.script.run.withSuccessHandler(function (d) {
+    call("getRangeData", [p.start, p.end, p.cs, p.ce, !!force], function (d) {
       if (P !== p) return; // 途中で別の期間を選んだとき
       D = d; busy(false); show();
-    }).withFailureHandler(fail).getRangeData(p.start, p.end, p.cs, p.ce, !!force);
+    });
   }
   function markChip() {
     document.querySelectorAll("#periods .chip").forEach(function (c) { c.classList.toggle("on", c.getAttribute("data-p") === P.key); });
@@ -767,6 +849,35 @@
       pl.style.transition = RM ? "none" : "stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1) .3s"; pl.style.strokeDashoffset = 0;
     });
   });
+
+  // ---------------- メニュー・上へ戻る
+  function links() {
+    var site = B.siteBase || "";
+    $("lnkSite").href = site;
+    $("lnkNotrack").href = site + "?notrack=1";
+    if (B.ssUrl) $("lnkSheet").href = B.ssUrl; else $("lnkSheet").hidden = true;
+    if (B.gaUrl) $("lnkGa").href = B.gaUrl; else $("lnkGa").hidden = true;
+  }
+  function menu(open) {
+    $("drawer").classList.toggle("open", open); $("scrim").classList.toggle("open", open);
+    $("drawer").setAttribute("aria-hidden", open ? "false" : "true");
+    $("menuBtn").setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) $("drawer").querySelectorAll(".dr-item").forEach(function (el, i) { el.style.setProperty("--d", (RM ? 0 : 0.05 + i * 0.035).toFixed(2) + "s"); });
+  }
+  $("menuBtn").addEventListener("click", function () { menu(true); });
+  $("drClose").addEventListener("click", function () { menu(false); });
+  $("scrim").addEventListener("click", function () { menu(false); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") menu(false); });
+  document.querySelectorAll("[data-go]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      menu(false);
+      var t = $(b.getAttribute("data-go"));
+      if (t && !$("app").hidden) setTimeout(function () { t.scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "start" }); }, 250);
+    });
+  });
+  $("drRefresh").addEventListener("click", function () { menu(false); $("refresh").click(); });
+  $("toTop").addEventListener("click", function () { window.scrollTo({ top: 0, behavior: RM ? "auto" : "smooth" }); });
+  window.addEventListener("scroll", function () { $("toTop").classList.toggle("show", window.scrollY > 500); }, { passive: true });
 
   // ---------------- はじめ
   $("refresh").addEventListener("click", function () {

@@ -508,6 +508,8 @@ function getBase(force) {
     today: Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd'),
     start: START,
     siteBase: 'https://hsktake.github.io/hikari-website/',
+    ssUrl: 'https://docs.google.com/spreadsheets/d/' + SS_ID + '/edit',
+    gaUrl: 'https://analytics.google.com/analytics/web/#/' + PROPERTY.replace('properties/', 'p') + '/reports/intelligenthome',
   };
 }
 // 朝の先読み（今月・先月）。画面の期間の決め方（Dashboard.html の periodOf）と同じ
