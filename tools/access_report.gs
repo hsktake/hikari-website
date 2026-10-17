@@ -114,7 +114,7 @@ const PAGE_TYPES = [
   [/^laladream\//, 'グループ：ララ・ドリーム 清原テクノ店'],
 ];
 function pathOf_(url) { // URL かパスから、パスだけ（? と # は取る）
-  return String(url || '').replace(/^https?:\/\/[^\/]+/, '').split('#')[0].split('?')[0] || '/';
+  return String(url || '').replace(/^https?:\/\/[^\/]+/, '').replace(/^[a-z0-9-]+(\.[a-z0-9-]+)+(?=\/)/i, '').split('#')[0].split('?')[0] || '/';
 }
 function pageType_(path) {
   const rel = pathOf_(path).replace(/^\/hikari-website\//, '/').replace(/^\//, ''); // 本番前（GitHub Pages）の /hikari-website/ を外す
