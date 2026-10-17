@@ -1162,7 +1162,7 @@
     $("lkKpi").innerHTML = '<div><div class="lb">作った数</div><div class="v">' + num(QR.length) + "<small>件</small></div></div>" +
       '<div><div class="lb">使用中</div><div class="v">' + num(active) + "<small>件</small></div></div>" +
       '<div><div class="lb">期間の回数</div><div class="v">' + num(total) + "<small>回</small></div></div>";
-    if (!QR.length) { box.innerHTML = '<p class="empty">まだありません。右上の「新しく作る」から作れます</p>'; return; }
+    if (!QR.length) { box.innerHTML = '<p class="empty">まだありません。「新しく作る」から作れます</p>'; return; }
     var list = QR.filter(function (q) {
       if (FILTER === "off") return q.status === "止める";
       if (FILTER === "all") return true;
