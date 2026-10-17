@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   :root {
     --orange: #EF7A00; --c1: #D96A00; --c2: #2F86B8; --c3: #3E9E5A; --cmp: #B9AFA6; --yellow: #FFC94D; --sky: #CDEBF7;
@@ -19,6 +20,7 @@
     --ease: cubic-bezier(.2, .8, .2, 1);
   }
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
   body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 14px; line-height: 1.6; font-weight: 500; }
   body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
     background: radial-gradient(circle at 8% 12%, rgba(255,201,77,.18) 0, transparent 28%), radial-gradient(circle at 92% 40%, rgba(205,235,247,.45) 0, transparent 30%), radial-gradient(circle at 20% 90%, rgba(239,122,0,.08) 0, transparent 30%); }
@@ -163,6 +165,43 @@
     .kids > .tn { padding-left: 14px; } .kids > .tn::before { width: 14px; }
   }
   @media (prefers-reduced-motion: reduce) { .tree .tn { transition: none; } }
+  /* サイトの選択 */
+  .site-chip { flex: none; border-radius: 999px; background: var(--yellow); padding: 6px 12px; }
+  .site-chip select { font: inherit; font-weight: 800; font-size: 13px; border: 0; background: transparent; color: var(--brown); cursor: pointer; -webkit-appearance: none; appearance: none; outline: none; max-width: 210px; }
+  .site-chip::after { content: " ▾"; color: var(--brown); font-size: 11px; }
+  /* QR・リンク */
+  .qr-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; align-items: end; }
+  .qf { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--ink2); font-weight: 700; }
+  .qf input, .qf select { font: inherit; font-size: 14px; border: 1.5px solid var(--line); border-radius: 12px; padding: 9px 12px; background: #FFFBF5; color: var(--ink); }
+  .qf input:focus, .qf select:focus { outline: none; border-color: var(--orange); }
+  .seg { display: flex; background: #FFFBF5; border: 1.5px solid var(--line); border-radius: 12px; padding: 3px; }
+  .seg button { flex: 1; font: inherit; font-size: 13px; font-weight: 800; border: 0; background: transparent; color: var(--ink2); padding: 7px 8px; border-radius: 9px; cursor: pointer; }
+  .seg button.on { background: var(--brown); color: #fff; }
+  .qr-go { font: inherit; font-weight: 800; font-size: 15px; border: 0; border-radius: 999px; padding: 11px 20px; background: var(--orange); color: #fff; cursor: pointer; box-shadow: 0 3px 0 #B85C00; grid-column: 1 / -1; justify-self: start; min-width: 160px; }
+  .qr-go:disabled { opacity: .6; }
+  .qr-show { font: inherit; font-size: 12px; font-weight: 800; border: 0; border-radius: 999px; padding: 5px 12px; background: var(--tint); color: var(--brown); cursor: pointer; white-space: nowrap; }
+  .tag { display: inline-block; font-size: 10.5px; font-weight: 800; border-radius: 6px; padding: 1px 6px; margin-right: 6px; background: var(--tint); color: var(--brown); vertical-align: 1px; }
+  .tag.off { background: #EEE; color: var(--muted); }
+  .modal { position: fixed; inset: 0; z-index: 60; background: rgba(43,36,32,.45); display: grid; place-items: center; padding: 16px; }
+  .modal[hidden] { display: none; }
+  .modal-card { background: #fff; border-radius: 22px; padding: 20px; width: min(420px, 100%); max-height: 92vh; overflow-y: auto; position: relative; animation: pop .45s cubic-bezier(.2,.9,.3,1.15); }
+  .modal-card h3 { margin: 0 40px 2px 0; font-size: 17px; color: var(--brown); }
+  .mclose { position: absolute; top: 14px; right: 14px; background: var(--tint) !important; color: var(--brown) !important; }
+  .qm-dest { margin: 0 0 12px; font-size: 12.5px; color: var(--ink2); word-break: break-all; }
+  .qm-img { display: grid; place-items: center; background: #FFFBF5; border-radius: 16px; padding: 14px; }
+  .qm-img img, .qm-img canvas { width: 230px !important; height: auto !important; max-width: 100%; }
+  .qm-url { display: flex; gap: 6px; margin: 12px 0 8px; }
+  .qm-url input { flex: 1; min-width: 0; font: inherit; font-size: 12.5px; border: 1.5px solid var(--line); border-radius: 10px; padding: 8px 10px; color: var(--ink); background: #FFFBF5; }
+  .qm-url button, .qm-edit-in button { font: inherit; font-weight: 800; font-size: 13px; border: 0; border-radius: 10px; padding: 8px 12px; background: var(--brown); color: #fff; cursor: pointer; white-space: nowrap; }
+  .qm-btns { display: flex; gap: 8px; }
+  .qm-dl { flex: 1; text-align: center; text-decoration: none; font-weight: 800; background: var(--orange); color: #fff; border-radius: 999px; padding: 10px 14px; box-shadow: 0 3px 0 #B85C00; }
+  .qm-tip { font-size: 11.5px; color: var(--muted); margin: 8px 0 0; }
+  .qm-edit { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 8px; font-size: 13px; }
+  .qm-edit summary { cursor: pointer; font-weight: 800; color: var(--ink2); padding: 4px 0; }
+  .qm-edit-in { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+  .qm-edit-in select, .qm-edit-in input { font: inherit; font-size: 13px; border: 1.5px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+  .qm-stop { font: inherit; font-size: 12.5px; font-weight: 800; border: 0; background: transparent; color: var(--down); cursor: pointer; padding: 6px 0; }
+  @media (max-width: 640px) { .qr-form { grid-template-columns: 1fr; } .qr-go { width: 100%; } }
   /* 表・メーター */
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th, td { padding: 7px 6px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
@@ -310,6 +349,7 @@
     <button id="menuBtn" class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="drawer"><i></i></button>
   </div>
   <div class="periods" id="periods" role="group" aria-label="期間">
+    <span class="site-chip" title="見るサイト"><select id="siteSel" aria-label="見るサイト"><option value="hikari">カットハウスひかり</option></select></span>
     <button class="chip" data-p="month" type="button">今月</button>
     <button class="chip" data-p="last" type="button">先月</button>
     <button class="chip" data-p="d7" type="button">過去7日</button>
@@ -360,8 +400,20 @@
       <section class="card rv"><h2><span class="ic">⬇️</span>アプリDLボタンが押された場所</h2><p class="sub">どのページの、どのコーナーのボタンか</p><div id="tAppdl"></div></section>
       <section class="card rv"><h2><span class="ic">🔍</span>店舗検索で調べられた言葉</h2><p class="sub">店舗一覧の検索欄に入力された言葉（大きいほど多い）</p><div id="tSearch"></div></section>
 
+      <h2 class="group rv jump" id="sec-qr"><span class="bd">🔗</span>QR・リンク<small>チラシ・ポスター・SNS などに使う専用のQR・リンク（どのサイトを選んでいても全部出します）</small></h2>
+      <section class="card s12 rv"><h2><span class="ic">📋</span>作ったQR・リンク</h2><p class="sub">この期間に読み取られた・押された回数。行き先がサイト内なら、そのあと来店につながった割合も出ます</p><div id="tQr"></div></section>
+      <section class="card s12 rv" id="qrMake"><h2><span class="ic">✨</span>QR・リンクを作る</h2><p class="sub">名前と行き先を選んで「作る」を押すだけ。あとから行き先を変えても、同じQRのまま使えます</p>
+        <div class="qr-form">
+          <label class="qf"><span>名前</span><input id="qName" type="text" maxlength="40" placeholder="例：10月チラシ、水戸駅南店ポスター"></label>
+          <div class="qf"><span>種類</span><div class="seg" id="qKind"><button type="button" class="on" data-k="QR">QRコード</button><button type="button" data-k="リンク">リンク（SNSなど）</button></div></div>
+          <label class="qf"><span>行き先</span><select id="qDest"></select></label>
+          <label class="qf" id="qUrlRow" hidden><span>URL</span><input id="qUrl" type="url" placeholder="https://〜"></label>
+          <button type="button" class="qr-go" id="qGo">作る</button>
+        </div>
+      </section>
+
       <h2 class="group rv jump" id="sec-trend"><span class="bd">📅</span>これまでの推移<small>月ごと（スプレッドシートに毎朝保存している数字）</small></h2>
-      <section class="card rv" data-chart="cTrend"><h2><span class="ic">👥</span>月ごとの訪問者数</h2><p class="sub">直近12か月（今月は今日まで）</p><div class="cv"><canvas id="cTrend"></canvas></div></section>
+      <section class="card rv" data-chart="cTrend"><h2><span class="ic">👥</span>月ごとの訪問者数</h2><p class="sub">直近12か月（今月は今日まで。すべてのサイトの合計）</p><div class="cv"><canvas id="cTrend"></canvas></div></section>
       <section class="card rv" data-chart="cAct"><h2><span class="ic">✅</span>月ごとの「来店につながる動き」</h2><p class="sub">アプリDLボタン・待ち状況・地図が押された回数</p><div class="cv"><canvas id="cAct"></canvas></div></section>
     </div>
   </div>
@@ -379,6 +431,8 @@
     <button class="dr-item" data-go="sec-flow" type="button"><span class="ic">🚶</span><span>お客様の動き<small>来店までの流れ・入口・分岐図・離脱</small></span><span class="go">›</span></button>
     <button class="dr-item" data-go="sec-when" type="button"><span class="ic">🕒</span>いつ見られているか<span class="go">›</span></button>
     <button class="dr-item" data-go="sec-top" type="button"><span class="ic">⭐</span><span>よく見られたもの<small>店舗・ページ・端末・地域・検索</small></span><span class="go">›</span></button>
+    <button class="dr-item" data-go="sec-qr" type="button"><span class="ic">🔗</span><span>QR・リンク<small>作ったQR・リンクの数字</small></span><span class="go">›</span></button>
+    <button class="dr-item" data-go="qrMake" type="button"><span class="ic">✨</span>QR・リンクを作る<span class="go">›</span></button>
     <button class="dr-item" data-go="sec-trend" type="button"><span class="ic">📅</span>これまでの推移<span class="go">›</span></button>
   </div>
   <div class="dr-sec"><h3>開く</h3>
@@ -403,6 +457,21 @@
     </details>
   </div>
 </nav>
+<div class="modal" id="qrModal" hidden role="dialog" aria-modal="true" aria-labelledby="qmTitle">
+  <div class="modal-card">
+    <button class="dr-close mclose" id="qmClose" type="button" aria-label="閉じる">×</button>
+    <h3 id="qmTitle"></h3>
+    <p class="qm-dest" id="qmDest"></p>
+    <div class="qm-img" id="qmImg"></div>
+    <div class="qm-url"><input id="qmUrl" readonly><button type="button" id="qmCopy">コピー</button></div>
+    <div class="qm-btns"><a class="qm-dl" id="qmDl" download="qr.png">QR画像を保存</a></div>
+    <p class="qm-tip">保存できないときは、QRの画像を長押しして保存してください</p>
+    <details class="qm-edit"><summary>行き先を変える・止める</summary>
+      <div class="qm-edit-in"><select id="qmDest2"></select><input id="qmUrl2" type="url" placeholder="https://〜" hidden><button type="button" id="qmSave">行き先を変える</button></div>
+      <button type="button" class="qm-stop" id="qmStop">このQR・リンクを止める</button>
+    </details>
+  </div>
+</div>
 <button class="to-top" id="toTop" type="button" aria-label="ページの一番上へ"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button>
 <script>
 (function () {
@@ -413,7 +482,7 @@
   var FUNNEL_SHORT = ["ホームページに来た", "店舗を探した", "来店につながる動き"];
   var WD = ["日", "月", "火", "水", "木", "金", "土"];
   var RM = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
-  var B = null, D = null, P = null, charts = {}, pending = {};
+  var B = null, D = null, P = null, SITE = "hikari", charts = {}, pending = {};
   if (window.Chart) {
     Chart.defaults.font.family = '"M PLUS Rounded 1c","Hiragino Sans","Noto Sans JP",system-ui,sans-serif';
     Chart.defaults.color = INK2;
@@ -496,8 +565,9 @@
     P = p;
     markChip();
     busy(true, force ? "いまの状態に集め直しています…" : p.label + "の数字を集めています…");
-    call("getRangeData", [p.start, p.end, p.cs, p.ce, !!force], function (d) {
-      if (P !== p) return; // 途中で別の期間を選んだとき
+    var site = SITE;
+    call("getRangeData", [p.start, p.end, p.cs, p.ce, !!force, site], function (d) {
+      if (P !== p || site !== SITE) return; // 途中で別の期間・サイトを選んだとき
       D = d; busy(false); show();
     });
   }
@@ -523,6 +593,12 @@
       });
     });
     sel.addEventListener("change", function () { if (sel.value) loadRange(periodOf("pick", sel.value)); });
+    // サイトの選択
+    var ss = $("siteSel");
+    ss.innerHTML = (B.sites || [{ key: "hikari", name: "カットハウスひかり" }]).map(function (x) { return '<option value="' + esc(x.key) + '">' + esc(x.name) + "</option>"; }).join("");
+    ss.value = SITE;
+    ss.addEventListener("change", function () { SITE = ss.value; if (P && P.start) loadRange(P); });
+    setupQr();
     $("cGo").addEventListener("click", function () {
       var a = $("cStart").value, b = $("cEnd").value;
       if (!a || !b) return;
@@ -544,7 +620,7 @@
     pending = {};
     document.querySelectorAll(".rv").forEach(function (el) { el.classList.remove("in"); }); // グラフは出るときに描く
     renderHero(); renderDaily(); renderFlow(); renderChannels(); renderHeat(); renderShops();
-    renderContent(); renderPhone(); renderDev(); renderRegion(); renderAppdl(); renderSearch(); renderTrend();
+    renderContent(); renderPhone(); renderDev(); renderRegion(); renderAppdl(); renderSearch(); renderQr(); renderTrend();
     replay();
   }
 
@@ -664,7 +740,8 @@
   function renderFlow() {
     // 来店までの流れ：段階ごとに「名前・人数・細い横棒」を縦に並べるだけ（シンプル）
     var f = D.cur.funnel, box = $("fFunnel");
-    if (!f || !f[0]) box.innerHTML = EMPTY;
+    if (!f && SITE !== "hikari" && SITE !== "all") box.innerHTML = '<p class="empty">カットハウスひかりのサイトを選ぶと出ます（店舗ページのあるサイトだけ）</p>';
+    else if (!f || !f[0]) box.innerHTML = EMPTY;
     else {
       var n0 = f[0];
       box.innerHTML = '<div class="steps">' + f.map(function (n, i) {
@@ -866,6 +943,111 @@
     });
   });
 
+  // ---------------- QR・リンク
+  var QR = [], KIND = "QR", CUR = null;
+  function destName(d) {
+    var hit = (B.dests || []).filter(function (x) { return x[0] === d; })[0];
+    return hit ? hit[1] : d;
+  }
+  function destOptions(sel) {
+    sel.innerHTML = (B.dests || []).map(function (x) { return '<option value="' + esc(x[0]) + '">' + esc(x[1]) + "</option>"; }).join("") + '<option value="__url">ほかのサイト（URLを入れる）</option>';
+  }
+  function setupQr() {
+    QR = B.qr || [];
+    destOptions($("qDest")); destOptions($("qmDest2"));
+    $("qDest").addEventListener("change", function () { $("qUrlRow").hidden = $("qDest").value !== "__url"; });
+    $("qmDest2").addEventListener("change", function () { $("qmUrl2").hidden = $("qmDest2").value !== "__url"; });
+    $("qKind").querySelectorAll("button").forEach(function (b) { b.addEventListener("click", function () { KIND = b.getAttribute("data-k"); $("qKind").querySelectorAll("button").forEach(function (x) { x.classList.toggle("on", x === b); }); }); });
+    $("qGo").addEventListener("click", function () {
+      var name = $("qName").value.trim(), dest = $("qDest").value === "__url" ? $("qUrl").value.trim() : $("qDest").value;
+      if (!name) { $("qName").focus(); return; }
+      if ($("qDest").value === "__url" && !/^https:\/\//i.test(dest)) { $("qUrl").focus(); alertNote("URLは https:// で始まるものを入れてください"); return; }
+      $("qGo").disabled = true; $("qGo").textContent = "作っています…";
+      call("addLink", [name, KIND, dest], function (r) {
+        $("qGo").disabled = false; $("qGo").textContent = "作る";
+        QR = r.list; $("qName").value = ""; $("qUrl").value = "";
+        renderQr(); openQr(r.id);
+      });
+    });
+    $("qmClose").addEventListener("click", closeQr);
+    $("qrModal").addEventListener("click", function (e) { if (e.target === $("qrModal")) closeQr(); });
+    $("qmCopy").addEventListener("click", function () {
+      var u = $("qmUrl"); u.select();
+      var ok = false; try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      if (navigator.clipboard && !ok) navigator.clipboard.writeText(u.value).catch(function () {});
+      $("qmCopy").textContent = "コピーしました"; setTimeout(function () { $("qmCopy").textContent = "コピー"; }, 1500);
+    });
+    $("qmSave").addEventListener("click", function () {
+      if (!CUR) return;
+      var dest = $("qmDest2").value === "__url" ? $("qmUrl2").value.trim() : $("qmDest2").value;
+      if ($("qmDest2").value === "__url" && !/^https:\/\//i.test(dest)) { $("qmUrl2").focus(); return; }
+      $("qmSave").textContent = "変えています…";
+      call("updateLink", [CUR.id, dest, null], function (list) { QR = list; $("qmSave").textContent = "変えました"; renderQr(); openQr(CUR.id); setTimeout(function () { $("qmSave").textContent = "行き先を変える"; }, 1500); });
+    });
+    $("qmStop").addEventListener("click", function () {
+      if (!CUR) return;
+      var next = CUR.status === "止める" ? "使う" : "止める";
+      call("updateLink", [CUR.id, null, next], function (list) { QR = list; renderQr(); openQr(CUR.id); });
+    });
+  }
+  function alertNote(msg) { $("notes").innerHTML = '<p class="note err">' + esc(msg) + "</p>"; }
+  function statsOf(q) {
+    var t = (D && D.cur && D.cur.tracked) || { camp: [], go: [] };
+    var c = t.camp.filter(function (r) { return r[0] === q.id; })[0], g = t.go.filter(function (r) { return r[0] === q.id; })[0];
+    var external = /^https:\/\//i.test(q.dest);
+    return external ? { n: g ? +g[1] : 0, cvr: null } : { n: c ? +c[1] : 0, cvr: c && +c[1] ? +c[3] / +c[1] : 0 };
+  }
+  function renderQr() {
+    var box = $("tQr");
+    if (!box) return;
+    if (!QR.length) { box.innerHTML = '<p class="empty">まだありません。下の「QR・リンクを作る」で作れます</p>'; return; }
+    var mx = Math.max.apply(null, QR.map(function (q) { return statsOf(q).n; }).concat([1]));
+    box.innerHTML = "<table><thead><tr><th>名前</th><th class=hide-sp>行き先</th><th class=n>回数</th><th style=width:18% class=hide-sp></th><th class=n>成約率</th><th></th></tr></thead><tbody>" +
+      QR.map(function (q) {
+        var st = statsOf(q), off = q.status === "止める";
+        return "<tr><td><span class='tag" + (off ? " off" : "") + "'>" + esc(off ? "停止中" : q.kind) + "</span>" + esc(q.name) + "</td><td class=hide-sp>" + esc(destName(q.dest)) + "</td><td class=n>" + num(st.n) +
+          "</td><td class=hide-sp>" + meter(st.n, mx) + "</td><td class=n>" + (st.cvr === null ? '<span style="color:#9A918A">―</span>' : rateCell(st.cvr, true)) +
+          '</td><td class=n><button type="button" class="qr-show" data-id="' + esc(q.id) + '">' + (q.kind === "QR" ? "QRを見る" : "リンク") + "</button></td></tr>";
+      }).join("") + "</tbody></table>";
+    box.querySelectorAll(".qr-show").forEach(function (b) { b.addEventListener("click", function () { openQr(b.getAttribute("data-id")); }); });
+  }
+  function openQr(id) {
+    var q = QR.filter(function (x) { return x.id === id; })[0];
+    if (!q) return;
+    CUR = q;
+    var url = (B.goBase || "") + q.id;
+    $("qmTitle").textContent = q.name;
+    $("qmDest").textContent = "行き先：" + destName(q.dest) + (q.status === "止める" ? "（停止中）" : "");
+    $("qmUrl").value = url;
+    var img = $("qmImg"); img.innerHTML = "";
+    var isQr = q.kind === "QR";
+    img.hidden = !isQr; $("qmDl").parentNode.hidden = !isQr; document.querySelector(".qm-tip").hidden = !isQr;
+    if (isQr && window.QRCode) {
+      var tmp = document.createElement("div");
+      new QRCode(tmp, { text: url, width: 480, height: 480, correctLevel: QRCode.CorrectLevel.M });
+      setTimeout(function () {
+        var c = tmp.querySelector("canvas");
+        if (!c) return;
+        // 名前入りの画像（印刷用）：QR の下に名前
+        var out = document.createElement("canvas"), pad = 40, W = 480 + pad * 2, H = 480 + pad * 2 + 56;
+        out.width = W; out.height = H;
+        var x = out.getContext("2d");
+        x.fillStyle = "#fff"; x.fillRect(0, 0, W, H);
+        x.drawImage(c, pad, pad, 480, 480);
+        x.fillStyle = "#4A2E1A"; x.font = "bold 28px sans-serif"; x.textAlign = "center";
+        x.fillText(q.name.slice(0, 24), W / 2, 480 + pad + 44);
+        var data = out.toDataURL("image/png");
+        img.innerHTML = '<img alt="' + esc(q.name) + ' のQRコード" src="' + data + '">';
+        $("qmDl").href = data; $("qmDl").setAttribute("download", "QR_" + q.name.replace(/[\\/:*?"<>|\s]+/g, "_") + ".png");
+      }, 60);
+    }
+    var known = (B.dests || []).some(function (x) { return x[0] === q.dest; });
+    $("qmDest2").value = known ? q.dest : "__url"; $("qmUrl2").hidden = known; $("qmUrl2").value = known ? "" : q.dest;
+    $("qmStop").textContent = q.status === "止める" ? "このQR・リンクを再開する" : "このQR・リンクを止める";
+    $("qrModal").hidden = false;
+  }
+  function closeQr() { $("qrModal").hidden = true; CUR = null; }
+
   // ---------------- メニュー・上へ戻る
   function links() {
     var site = B.siteBase || "";
@@ -883,7 +1065,7 @@
   $("menuBtn").addEventListener("click", function () { menu(true); });
   $("drClose").addEventListener("click", function () { menu(false); });
   $("scrim").addEventListener("click", function () { menu(false); });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape") menu(false); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { menu(false); closeQr(); } });
   document.querySelectorAll("[data-go]").forEach(function (b) {
     b.addEventListener("click", function () {
       menu(false);

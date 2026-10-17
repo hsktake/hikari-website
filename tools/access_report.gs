@@ -126,6 +126,39 @@ const GOAL_EVENTS = ['app_download', 'wait_status_click', 'map_click', 'tel_clic
 const VISIT_GOALS = ['wait_status_click', 'map_click', 'tel_click', 'app_download'];
 const ymd_ = (d) => Utilities.formatDate(d, TZ, 'yyyy-MM-dd');
 
+// ---------------------------------------------------------------- サイト（画面の「サイト」で切り替え）
+// ひかりのページの種類（main.js の GROUPS と同じ）。グループのお店は ga.js のコンテンツグループ「グループ：店名」
+const HIKARI_GROUPS = ['トップ', '店舗を探す', '店舗ページ', 'ヘアカット', '眉毛カット', 'フェイスケア', '公式アプリ', 'アプリの使い方', 'お知らせ',
+  '採用情報', 'HiCARD会員', 'よくあるご質問', 'お問い合わせ', '地域とともに', 'グループのお店', '規約・表記', 'その他'];
+const SITES = [
+  { key: 'hikari', name: 'カットハウスひかり' },
+  { key: 'plus', name: 'カットスペースPLUS', group: 'グループ：カットスペースPLUS' },
+  { key: 'delight', name: "Men's Cut & Self DELIGHT", group: "グループ：Men's Cut & Self DELIGHT" },
+  { key: 'mrcool', name: 'HAIR STUDIO MR.COOL', group: 'グループ：HAIR STUDIO MR.COOL' },
+  { key: 'alpha', name: 'シャンプーカット アルファ', group: 'グループ：シャンプーカット アルファ' },
+  { key: 'laladream', name: 'ララ・ドリーム 清原テクノ店', group: 'グループ：ララ・ドリーム 清原テクノ店' },
+  { key: 'all', name: 'すべてのサイトの合計' },
+];
+const OWN_HOSTS = ['hsktake.github.io', 'localhost', '(not set)', ''];
+function siteFilter_(site) {
+  if (!site || site === 'hikari') return inList_('contentGroup', HIKARI_GROUPS);
+  if (site === 'all') return null;
+  if (String(site).indexOf('host:') === 0) return eq_('hostName', String(site).slice(5)); // 計測の1行を入れたほかのサイト
+  const s = SITES.find(x => x.key === site);
+  return s && s.group ? eq_('contentGroup', s.group) : inList_('contentGroup', HIKARI_GROUPS);
+}
+function withSite_(filter, sf) { return sf ? (filter ? and_(filter, sf) : sf) : filter; }
+// 計測しているサイトの一覧（決まったサイト＋計測の1行を入れたほかのドメイン）
+function sites_() {
+  const list = SITES.map(s => ({ key: s.key, name: s.name }));
+  try {
+    const hosts = runRaw_(['hostName'], ['sessions'], null, 50, null, { startDate: '90daysAgo', endDate: 'today' });
+    hosts.filter(r => OWN_HOSTS.indexOf(r[0]) < 0).sort((a, b) => b[1] - a[1])
+      .forEach(r => list.splice(list.length - 1, 0, { key: 'host:' + r[0], name: r[0] }));
+  } catch (e) { /* 一覧が読めなくても決まったサイトは出す */ }
+  return list;
+}
+
 // 来店までの流れ（ファネル）：GA4 の runFunnelReport（v1alpha。Apps Script のサービスにないので直接呼ぶ）
 const FUNNEL_STEPS = ['ホームページに来た', '店舗を探した（店舗一覧・店舗ページを見た）', 'そのあと 待ち状況・地図・電話・アプリDL を押した'];
 function funnel_(ym, usePathField) {
@@ -380,8 +413,9 @@ function write_(ss, name, head, rows, opt) {
 
 // ================================================================ 期間を指定して集計（画面から）
 // 選んだ期間（rg）の数字を、その場で GA4 から集める。月ごとの表（スプレッドシート）とは別に、期間を自由に選べるようにするため
-function collect_(rg) {
-  const R = (o) => Object.assign({ range: rg }, o);
+function collect_(rg, site) {
+  const sf = siteFilter_(site);
+  const R = (o) => { const x = Object.assign({ range: rg }, o); x.filter = withSite_(x.filter, sf); return x; };
   const g = batch_({
     base: R({ mets: ['totalUsers', 'newUsers', 'sessions', 'screenPageViews', 'averageSessionDuration', 'engagementRate'] }),
     ev: R({ dims: ['eventName'], mets: ['eventCount'], filter: inList_('eventName', EVENTS.map(e => e[0])) }),
@@ -447,8 +481,12 @@ function collect_(rg) {
   g.pageGoal.forEach(r => { exRow(pageType_(r[0]))[2] += r[2]; });
   out.exits = Object.values(ex).filter(r => r[1] > 0).map(r => { const next = Math.min(r[1], nextOf[r[0]] || 0), end = r[1] - next; return [r[0], r[1], next, end, end / r[1], r[2]]; }).sort((a, b) => b[3] - a[3]);
   // 来店までの流れ
-  try { out.funnel = funnelFor_(rg, true); }
-  catch (e1) { try { out.funnel = funnelFor_(rg, false); } catch (e2) { out.funnel = null; ERRORS.push('来店までの流れ：' + e2.message); } }
+  // 来店までの流れは、店舗ページのあるカットハウスひかりだけ
+  if (!site || site === 'hikari' || site === 'all') {
+    try { out.funnel = funnelFor_(rg, true); }
+    catch (e1) { try { out.funnel = funnelFor_(rg, false); } catch (e2) { out.funnel = null; ERRORS.push('来店までの流れ：' + e2.message); } }
+  } else out.funnel = null;
+  out.tracked = tracked_(rg);
   return out;
 }
 // 主な数字・動き・日別（比べる期間はこれだけ読む）
@@ -463,8 +501,9 @@ function summary_(g) {
   const daily = g.daily.sort((a, c) => a[0].localeCompare(c[0])).map(r => [r[0].slice(0, 4) + '-' + r[0].slice(4, 6) + '-' + r[0].slice(6), r[1], r[2], r[3], dgm[r[0]] || 0]);
   return { kpi: { users: b[0], newUsers: b[1], sessions: b[2], views: b[3], dur: Math.round(b[4]), eng: b[5], goal: goal, cvr: b[2] ? goal / b[2] : 0 }, ev: ev, daily: daily };
 }
-function collectPrev_(rg) {
-  const R = (o) => Object.assign({ range: rg }, o);
+function collectPrev_(rg, site) {
+  const sf = siteFilter_(site);
+  const R = (o) => { const x = Object.assign({ range: rg }, o); x.filter = withSite_(x.filter, sf); return x; };
   return summary_(batch_({
     base: R({ mets: ['totalUsers', 'newUsers', 'sessions', 'screenPageViews', 'averageSessionDuration', 'engagementRate'] }),
     ev: R({ dims: ['eventName'], mets: ['eventCount'], filter: inList_('eventName', EVENTS.map(e => e[0])) }),
@@ -475,16 +514,18 @@ function collectPrev_(rg) {
 }
 
 // 画面から呼ぶ：期間（start〜end）と、比べる期間（cs〜ce）の数字。同じ期間は6時間まで覚えておく（force で集め直し）
-function getRangeData(start, end, cs, ce, force) {
+function getRangeData(start, end, cs, ce, force, site) {
   const ok = (d) => /^\d{4}-\d{2}-\d{2}$/.test(String(d || ''));
   if (![start, end, cs, ce].every(ok)) throw new Error('期間の指定が正しくありません');
-  const key = ['r4', start, end, cs, ce].join('|');
+  site = String(site || 'hikari').slice(0, 120);
+  const key = ['r5', site, start, end, cs, ce].join('|');
   if (!force) { const c = cacheGet_(key); if (c) return c; }
   ERRORS.length = 0;
   const data = {
     range: { start: start, end: end }, cmp: { start: cs, end: ce },
-    cur: collect_({ startDate: start, endDate: end }),
-    prev: collectPrev_({ startDate: cs, endDate: ce }),
+    site: site,
+    cur: collect_({ startDate: start, endDate: end }, site),
+    prev: collectPrev_({ startDate: cs, endDate: ce }, site),
     errors: ERRORS.join(' ／ ').slice(0, 500),
     at: Utilities.formatDate(new Date(), TZ, 'yyyy/MM/dd HH:mm'),
   };
@@ -510,6 +551,10 @@ function getBase(force) {
     siteBase: 'https://hsktake.github.io/hikari-website/',
     ssUrl: 'https://docs.google.com/spreadsheets/d/' + SS_ID + '/edit',
     gaUrl: 'https://analytics.google.com/analytics/web/#/' + PROPERTY.replace('properties/', 'p') + '/reports/intelligenthome',
+    sites: sites_(),
+    qr: listLinks_(),
+    goBase: GO_BASE,
+    dests: DESTS,
   };
 }
 // 朝の先読み（今月・先月）。画面の期間の決め方（Dashboard.html の periodOf）と同じ
@@ -517,9 +562,91 @@ function prewarm_() {
   const now = new Date();
   const y = Number(Utilities.formatDate(now, TZ, 'yyyy')), m = Number(Utilities.formatDate(now, TZ, 'M')), d = Number(Utilities.formatDate(now, TZ, 'd'));
   const prevLast = new Date(y, m - 1, 0).getDate();
-  getRangeData(ymd_(new Date(y, m - 1, 1)), ymd_(now), ymd_(new Date(y, m - 2, 1)), ymd_(new Date(y, m - 2, Math.min(d, prevLast))), true);
-  getRangeData(ymd_(new Date(y, m - 2, 1)), ymd_(new Date(y, m - 1, 0)), ymd_(new Date(y, m - 3, 1)), ymd_(new Date(y, m - 2, 0)), true);
+  getRangeData(ymd_(new Date(y, m - 1, 1)), ymd_(now), ymd_(new Date(y, m - 2, 1)), ymd_(new Date(y, m - 2, Math.min(d, prevLast))), true, 'hikari');
+  getRangeData(ymd_(new Date(y, m - 2, 1)), ymd_(new Date(y, m - 1, 0)), ymd_(new Date(y, m - 3, 1)), ymd_(new Date(y, m - 2, 0)), true, 'hikari');
 }
+// ================================================================ QR・リンク（登録して追跡）
+// 登録先は「ホームページ管理シート」の「リンク・QR」タブ（go.html がここを見て移動するので公開シート。個人情報は書かない）
+const MGMT_ID = '1RBR08sNvthcwJHfssDh8RFLwtZ-17URXR149_jYetzw';
+const LINK_TAB = 'リンク・QR';
+const LINK_HEAD = ['ID', '名前', '種類', '行き先', '作成日', '状態'];
+const GO_BASE = 'https://hsktake.github.io/hikari-website/go.html?l='; // 本番切り替え後も github.io からの転送で動く
+// 行き先の候補（サイト内はパス。go.html が目印 utm_* を付けて移動する）
+const DESTS = [
+  ['', 'トップページ'], ['shops.html', '店舗を探す'], ['app.html', '公式アプリ'], ['app.html#dl', '公式アプリ（ダウンロード）'],
+  ['haircut.html', 'ヘアカット'], ['brow.html', '眉毛カット'], ['facecare.html', 'フェイスケア'], ['recruit.html', '採用情報'],
+  ['news.html', 'お知らせ'], ['member.html', 'HiCARD会員'], ['plus/', 'カットスペースPLUS'], ['delight/', "Men's Cut & Self DELIGHT"],
+  ['mrcool/', 'HAIR STUDIO MR.COOL'], ['alpha/', 'シャンプーカット アルファ'], ['laladream/', 'ララ・ドリーム 清原テクノ店'],
+];
+function linkSheet_() {
+  const ss = SpreadsheetApp.openById(MGMT_ID);
+  let sh = ss.getSheetByName(LINK_TAB);
+  if (!sh) {
+    sh = ss.insertSheet(LINK_TAB);
+    sh.getRange(1, 1, 1, LINK_HEAD.length).setValues([LINK_HEAD]).setFontWeight('bold').setBackground('#EF7A00').setFontColor('#ffffff');
+    sh.setFrozenRows(1);
+    sh.getRange('A1').setNote('集計画面の「QR・リンクを作る」で自動で書かれます（直接さわらなくて大丈夫です）');
+  }
+  return sh;
+}
+function listLinks_() {
+  try {
+    const ss = SpreadsheetApp.openById(MGMT_ID), sh = ss.getSheetByName(LINK_TAB);
+    if (!sh || sh.getLastRow() < 2) return [];
+    return sh.getRange(2, 1, sh.getLastRow() - 1, LINK_HEAD.length).getDisplayValues()
+      .filter(r => r[0]).map(r => ({ id: r[0], name: r[1], kind: r[2], dest: r[3], created: r[4], status: r[5] || '使う' })).reverse();
+  } catch (e) { return []; }
+}
+function checkDest_(dest) {
+  dest = String(dest || '').trim();
+  if (DESTS.some(d => d[0] === dest)) return dest;
+  if (/^https:\/\/[^\s"'<>]+$/i.test(dest) && dest.length <= 500) return dest;
+  throw new Error('行き先は一覧から選ぶか、https:// で始まるURLを入れてください');
+}
+// 画面から呼ぶ：新しく作る
+function addLink(name, kind, dest) {
+  name = String(name || '').trim().slice(0, 40);
+  if (!name) throw new Error('名前を入れてください');
+  kind = kind === 'リンク' ? 'リンク' : 'QR';
+  dest = checkDest_(dest);
+  const lock = LockService.getScriptLock(); lock.waitLock(10000);
+  try {
+    const sh = linkSheet_();
+    const ids = sh.getLastRow() > 1 ? sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues().map(r => String(r[0])) : [];
+    let id = '';
+    do { id = Array.from({ length: 5 }, () => 'abcdefghjkmnpqrstuvwxyz23456789'[Math.floor(Math.random() * 31)]).join(''); } while (ids.indexOf(id) >= 0);
+    sh.getRange(sh.getLastRow() + 1, 1, 1, LINK_HEAD.length).setNumberFormat('@')
+      .setValues([[id, name, kind, dest, Utilities.formatDate(new Date(), TZ, 'yyyy/MM/dd'), '使う']]);
+    return { id: id, list: listLinks_() };
+  } finally { lock.releaseLock(); }
+}
+// 画面から呼ぶ：行き先を変える／止める・再開する
+function updateLink(id, dest, status) {
+  const sh = linkSheet_();
+  const ids = sh.getLastRow() > 1 ? sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues().map(r => String(r[0])) : [];
+  const i = ids.indexOf(String(id));
+  if (i < 0) throw new Error('見つかりませんでした');
+  if (dest !== null && dest !== undefined) sh.getRange(i + 2, 4).setNumberFormat('@').setValue(checkDest_(dest));
+  if (status === '使う' || status === '止める') sh.getRange(i + 2, 6).setValue(status);
+  return listLinks_();
+}
+// 期間中の数字：サイト内の行き先＝目印（utm_campaign＝ID）の付いた訪問、外部の行き先＝go.html でのクリック
+function tracked_(rg) {
+  const g = batch_({
+    camp: { range: rg, dims: ['sessionCampaignName'], mets: ['sessions', 'totalUsers'], filter: inList_('sessionMedium', ['qr', 'link']) },
+    campGoal: { range: rg, dims: ['sessionCampaignName'], mets: ['sessions'], filter: and_(inList_('sessionMedium', ['qr', 'link']), inList_('eventName', VISIT_GOALS)) },
+    go: { range: rg, dims: ['pagePathPlusQueryString'], mets: ['eventCount'], filter: eq_('eventName', 'link_click') },
+  });
+  const goal = {};
+  g.campGoal.forEach(r => goal[r[0]] = r[1]);
+  const go = {};
+  g.go.forEach(r => { const m = String(r[0]).match(/[?&]l=([a-z0-9]+)/i); if (m) go[m[1]] = (go[m[1]] || 0) + r[1]; });
+  return {
+    camp: g.camp.filter(r => r[0] && r[0] !== '(not set)').map(r => [r[0], r[1], r[2], Math.min(goal[r[0]] || 0, r[1])]),
+    go: Object.keys(go).map(k => [k, go[k]]),
+  };
+}
+
 // キャッシュ（1つ 100KB までなので分けて入れる）
 function cachePut_(key, obj) {
   try {

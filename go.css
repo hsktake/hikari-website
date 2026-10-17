@@ -1,0 +1,8 @@
+/* QR・リンクの中継ページ（go.html） */
+html, body { margin: 0; height: 100%; }
+body { background: #FFFAF2; color: #4A2E1A; font-family: "Hiragino Maru Gothic ProN", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif; }
+.go { min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; box-sizing: border-box; }
+.go-logo { width: 150px; height: auto; margin-bottom: 18px; }
+.go-msg { font-weight: 700; font-size: 16px; margin: 0; }
+.go-home { margin: 16px 0 0; }
+.go-home a { display: inline-block; background: #EF7A00; color: #fff; font-weight: 700; text-decoration: none; padding: 10px 20px; border-radius: 999px; }
