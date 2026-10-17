@@ -127,6 +127,42 @@
   .in .st-bar i { width: var(--w); }
   .st-drop { margin: 8px 0 8px 36px; font-size: 12px; color: var(--muted); font-weight: 700; }
   @media (prefers-reduced-motion: reduce) { .st-bar i { transition: none; } }
+  /* 分岐図（シンプルな箱と細い線） */
+  .tree-roots { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+  .tr-chip { font: inherit; font-size: 12.5px; font-weight: 800; border: 1.5px solid var(--line); background: #fff; color: var(--ink2); border-radius: 999px; padding: 4px 12px; cursor: pointer; transition: all .2s; }
+  .tr-chip.on { background: var(--brown); border-color: var(--brown); color: #fff; }
+  .tree-box { overflow-x: auto; padding-bottom: 4px; }
+  .tree { display: inline-block; min-width: 100%; }
+  .tn { display: flex; align-items: center; position: relative; }
+  .tn .box { width: clamp(150px, 17vw, 210px); flex: none; background: #fff; border: 1.5px solid #D8CCBF; border-radius: 10px; padding: 7px 10px; margin: 5px 0; line-height: 1.35; position: relative; z-index: 1; }
+  .tn.root > .box { background: var(--orange); border-color: var(--orange); color: #fff; }
+  .tn .nm { display: block; font-weight: 800; font-size: 13px; }
+  .tn .vl { display: block; font-size: 11.5px; color: var(--ink2); }
+  .tn .vl b { font-size: 16px; color: var(--c1); margin-right: 2px; }
+  .tn .vl em { font-style: normal; color: var(--muted); margin-left: 6px; font-family: var(--num); }
+  .tn.root > .box .vl, .tn.root > .box .vl b { color: #fff; }
+  .tn .ed { display: block; font-size: 10.5px; color: var(--muted); }
+  .kids { display: flex; flex-direction: column; padding-left: 18px; position: relative; }
+  .kids::before { content: ""; position: absolute; left: 0; top: 50%; width: 18px; border-top: 1.5px solid #B9AFA6; }
+  .kids > .tn { padding-left: 22px; }
+  .kids > .tn::before { content: ""; position: absolute; left: 0; top: 50%; width: 22px; border-top: 1.5px solid #B9AFA6; }
+  .kids > .tn::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 1.5px solid #B9AFA6; }
+  .kids > .tn:first-child::after { top: 50%; }
+  .kids > .tn:last-child::after { bottom: 50%; }
+  .kids > .tn:only-child::after { display: none; }
+  .kids > .tn > .box::before { content: ""; position: absolute; left: -7px; top: 50%; margin-top: -4px; border: 4px solid transparent; border-left: 6px solid #B9AFA6; border-right: 0; }
+  .tree .tn { opacity: 0; transform: translateX(-12px); transition: opacity .45s ease var(--d, 0s), transform .5s var(--ease) var(--d, 0s); }
+  .in .tree .tn { opacity: 1; transform: none; }
+  .tree-note { margin: 8px 0 0; font-size: 11.5px; color: var(--muted); }
+  @media (max-width: 520px) {
+    .tn .box { width: 98px; padding: 6px 7px; }
+    .tn.root > .box { width: 80px; }
+    .tn .vl b { font-size: 14px; }
+    .tn .nm { font-size: 12px; }
+    .kids { padding-left: 10px; } .kids::before { width: 10px; }
+    .kids > .tn { padding-left: 14px; } .kids > .tn::before { width: 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .tree .tn { transition: none; } }
   /* 表・メーター */
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th, td { padding: 7px 6px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
@@ -308,7 +344,7 @@
       <h2 class="group rv jump" id="sec-flow"><span class="bd">🚶</span>お客様の動き<small>どこから入って、どこへ進み、どこで帰ったか</small></h2>
       <section class="card s7 rv"><h2><span class="ic">🔻</span>来店までの流れ</h2><p class="sub">来店につながる動き＝待ち状況・地図・電話・アプリDLのどれかを押した</p><div id="fFunnel"></div></section>
       <section class="card s5 rv"><h2><span class="ic">🚪</span>最初に開いたページ（入口）</h2><p class="sub">「すぐ帰った」＝10秒未満で1ページだけ見て帰った割合</p><div id="tLanding"></div></section>
-      <section class="card s12 rv"><h2><span class="ic">🔀</span>ページのつながり</h2><p class="sub">左のページを見たあと、右のページへ進んだ回数の流れ（太いほど多い。上位の流れだけ）。ページ名に指を合わせる・タップすると、そのページの流れだけ濃くなります</p><div id="sankey"></div></section>
+      <section class="card s12 rv"><h2><span class="ic">🔀</span>ページのつながり（分岐図）</h2><p class="sub">はじめのページから、次にどのページへ進んだか（数字は回数。多い順に上から）</p><div class="tree-roots" id="treeRoots"></div><div class="tree-box" id="tree"></div></section>
       <section class="card s7 rv"><h2><span class="ic">👋</span>ここで終わった人が多いページ</h2><p class="sub">割合は目安。店舗ページは、待ち状況や地図を見てお店に向かった人も含みます（右の「来店・連絡」）</p><div id="tExits"></div></section>
       <section class="card s5 rv"><h2><span class="ic">🧭</span>どこから来たか × 成約率</h2><p class="sub">訪問回数と、そのうち来店につながった割合</p><div id="tChannels"></div></section>
 
@@ -340,7 +376,7 @@
   <div class="dr-sec"><h3>見たい場所へ</h3>
     <button class="dr-item" data-go="heroUsers" type="button"><span class="ic">👥</span>主な数字<span class="go">›</span></button>
     <button class="dr-item" data-go="sec-daily" type="button"><span class="ic">📈</span>日ごとの訪問回数<span class="go">›</span></button>
-    <button class="dr-item" data-go="sec-flow" type="button"><span class="ic">🚶</span><span>お客様の動き<small>来店までの流れ・入口・つながり・離脱</small></span><span class="go">›</span></button>
+    <button class="dr-item" data-go="sec-flow" type="button"><span class="ic">🚶</span><span>お客様の動き<small>来店までの流れ・入口・分岐図・離脱</small></span><span class="go">›</span></button>
     <button class="dr-item" data-go="sec-when" type="button"><span class="ic">🕒</span>いつ見られているか<span class="go">›</span></button>
     <button class="dr-item" data-go="sec-top" type="button"><span class="ic">⭐</span><span>よく見られたもの<small>店舗・ページ・端末・地域・検索</small></span><span class="go">›</span></button>
     <button class="dr-item" data-go="sec-trend" type="button"><span class="ic">📅</span>これまでの推移<span class="go">›</span></button>
@@ -644,71 +680,44 @@
     var lp = D.cur.landing.slice(0, 8);
     $("tLanding").innerHTML = lp.length ? "<table><thead><tr><th>ページ</th><th class=n>訪問</th><th class=n>すぐ帰った</th></tr></thead><tbody>" +
       lp.map(function (r) { return "<tr><td>" + esc(r[0]) + "</td><td class=n>" + num(r[1]) + "</td><td class=n>" + rateCell(r[3]) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
-    renderSankey();
+    renderTree();
     var ex = D.cur.exits.slice(0, 10);
     $("tExits").innerHTML = ex.length ? "<table><thead><tr><th>ページ</th><th class='n hide-sp'>表示</th><th class=n>終わった</th><th class=n>割合</th><th class=n>来店・連絡</th></tr></thead><tbody>" +
       ex.map(function (r) { return "<tr><td>" + esc(r[0]) + "</td><td class='n hide-sp'>" + num(r[1]) + "</td><td class=n>" + num(r[3]) + "</td><td class=n>" + rateCell(r[4]) + "</td><td class=n>" + num(r[5]) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
   }
 
-  function renderSankey() {
-    var box = $("sankey");
-    var lk = D.cur.links.map(function (r) { return { f: String(r[0]), t: String(r[1]), v: Number(r[2]) }; })
-      .filter(function (l) { return l.v > 0; }).sort(function (a, b) { return b.v - a.v; }).slice(0, 14);
-    if (!lk.length) { box.innerHTML = EMPTY; return; }
-    var W = Math.max(320, box.clientWidth || 800), narrow = W < 560;
-    var lab = narrow ? 96 : 170, nodeW = 12, pad = narrow ? 10 : 14, fs = narrow ? 11 : 13;
-    var L = {}, R = {};
-    lk.forEach(function (l) { L[l.f] = (L[l.f] || 0) + l.v; R[l.t] = (R[l.t] || 0) + l.v; });
-    var lNames = Object.keys(L).sort(function (a, b) { return L[b] - L[a]; }), rNames = Object.keys(R).sort(function (a, b) { return R[b] - R[a]; });
-    var total = lk.reduce(function (s, l) { return s + l.v; }, 0);
-    var minNode = narrow ? 26 : 22, n = Math.max(lNames.length, rNames.length);
-    var H = Math.max(240, Math.min(440, n * (narrow ? 44 : 40)));
-    function place(names, sums) {
-      var free = H - pad * (names.length - 1), small = 0, bigSum = 0;
-      names.forEach(function (k) { if (sums[k] / total * free < minNode) small++; else bigSum += sums[k]; });
-      var sc = bigSum ? (free - small * minNode) / bigSum : 0, y = 0, pos = {};
-      names.forEach(function (k) { var h = Math.max(minNode, sums[k] * sc); pos[k] = { y: y, h: h, off: 0 }; y += h + pad; });
-      pos._end = y - pad;
-      return pos;
+  // 分岐図：はじめのページ → 次のページ → その次のページ（前のページ→次のページの回数をつないだ目安）
+  var treeRoot = null;
+  function renderTree() {
+    var links = D.cur.links, box = $("tree"), roots = $("treeRoots");
+    if (!links.length) { box.innerHTML = EMPTY; roots.innerHTML = ""; return; }
+    var out = {}, from = {};
+    links.forEach(function (r) { var f = String(r[0]), t = String(r[1]), v = +r[2]; (out[f] = out[f] || []).push([t, v]); from[f] = (from[f] || 0) + v; });
+    Object.keys(out).forEach(function (k) { out[k].sort(function (a, b) { return b[1] - a[1]; }); });
+    var views = {}, endRate = {};
+    D.cur.exits.forEach(function (r) { views[r[0]] = +r[1]; endRate[r[0]] = +r[4]; });
+    // はじめのページの候補：入口の多い順（つながりがあるものだけ）
+    var cand = D.cur.landing.map(function (r) { return r[0]; }).filter(function (k) { return out[k]; });
+    Object.keys(out).sort(function (a, b) { return from[b] - from[a]; }).forEach(function (k) { if (cand.indexOf(k) < 0) cand.push(k); });
+    cand = cand.slice(0, 6);
+    if (!treeRoot || cand.indexOf(treeRoot) < 0) treeRoot = cand.indexOf("トップ") >= 0 ? "トップ" : cand[0];
+    roots.innerHTML = cand.map(function (k) { return '<button type="button" class="tr-chip' + (k === treeRoot ? " on" : "") + '" data-k="' + esc(k) + '">' + esc(k) + "</button>"; }).join("");
+    roots.querySelectorAll(".tr-chip").forEach(function (b) { b.addEventListener("click", function () { treeRoot = b.getAttribute("data-k"); renderTree(); var c = box.closest(".rv"); if (c) { c.classList.remove("in"); void c.offsetWidth; reveal(c, 0); } }); });
+    var step = 0;
+    function node(name, val, total, depth, parent) {
+      var kids = depth < 2 ? (out[name] || []).filter(function (x) { return depth === 0 || (x[0] !== parent && x[0] !== treeRoot); }).slice(0, depth === 0 ? 5 : 3) : [];
+      var end = endRate[name], pctTxt = total ? Math.round(val / total * 100) + "%" : "";
+      var html = '<div class="tn' + (depth === 0 ? " root" : "") + '" style="--d:' + (RM ? 0 : (step++) * 0.06).toFixed(2) + 's"><div class="box"><span class="nm">' + esc(depth > 0 && name === parent ? "別の" + name : name) + "</span>" +
+        '<span class="vl"><b class="num">' + num(val) + "</b>回" + (pctTxt && depth > 0 ? "<em>" + pctTxt + "</em>" : "") + "</span>" +
+        (end !== undefined && depth > 0 ? '<span class="ed">ここで終了 ' + Math.round(end * 100) + "%</span>" : "") + "</div>";
+      if (kids.length) {
+        var sum = (out[name] || []).reduce(function (s, x) { return s + x[1]; }, 0);
+        html += '<div class="kids">' + kids.map(function (x) { return node(x[0], x[1], sum, depth + 1, name); }).join("") + "</div>";
+      }
+      return html + "</div>";
     }
-    var lp = place(lNames, L), rp = place(rNames, R), H2 = Math.max(lp._end, rp._end);
-    [lp, rp].forEach(function (pos) { var sh = (H2 - pos._end) / 2; Object.keys(pos).forEach(function (k) { if (k !== "_end") pos[k].y += sh; }); });
-    H = Math.ceil(H2) + 2;
-    var x0 = lab, x1 = W - lab - nodeW, out = "";
-    lk.forEach(function (l, i) {
-      var a = lp[l.f], b = rp[l.t], ha = a.h * l.v / L[l.f], hb = b.h * l.v / R[l.t];
-      var ya = a.y + a.off, yb = b.y + b.off; a.off += ha; b.off += hb;
-      var sx = x0 + nodeW, ex = x1, mx = (sx + ex) / 2;
-      out += '<path class="lk" style="--d:' + (0.5 + i * 0.06).toFixed(2) + 's" data-f="' + esc(l.f) + '" data-t="' + esc(l.t) + '" d="M' + sx + "," + ya + " C" + mx + "," + ya + " " + mx + "," + yb + " " + ex + "," + yb + " L" + ex + "," + (yb + hb) + " C" + mx + "," + (yb + hb) + " " + mx + "," + (ya + ha) + " " + sx + "," + (ya + ha) + ' Z" fill="' + C1 + '"><title>' + esc(l.f) + " → " + esc(l.t) + "：" + num(l.v) + "回</title></path>";
-    });
-    function label(x, anchor, p, k, v) {
-      return '<text x="' + x + '" y="' + (p.y + p.h / 2 + fs / 2 - 1) + '" text-anchor="' + anchor + '" font-size="' + fs + '" font-weight="700" fill="' + INK + '">' + esc(k) +
-        ' <tspan font-weight="500" fill="' + INK2 + '" font-size="' + (fs - 1.5) + '" style="font-family:Fredoka,sans-serif">' + num(v) + "</tspan></text>";
-    }
-    lNames.forEach(function (k, i) {
-      var p = lp[k];
-      out += '<g class="nd" data-f="' + esc(k) + '"><rect class="nb" style="--d:' + (i * 0.05).toFixed(2) + 's" x="' + x0 + '" y="' + p.y + '" width="' + nodeW + '" height="' + p.h + '" rx="3" fill="#4A2E1A"/>' + label(x0 - 8, "end", p, k, L[k]) +
-        '<rect x="0" y="' + p.y + '" width="' + (x0 + nodeW) + '" height="' + p.h + '" fill="transparent"/></g>';
-    });
-    rNames.forEach(function (k, i) {
-      var p = rp[k];
-      out += '<g class="nd" data-t="' + esc(k) + '"><rect class="nb" style="--d:' + (0.3 + i * 0.05).toFixed(2) + 's" x="' + x1 + '" y="' + p.y + '" width="' + nodeW + '" height="' + p.h + '" rx="3" fill="' + C2 + '"/>' + label(x1 + nodeW + 8, "start", p, k, R[k]) +
-        '<rect x="' + x1 + '" y="' + p.y + '" width="' + (W - x1) + '" height="' + p.h + '" fill="transparent"/></g>';
-    });
-    box.innerHTML = '<div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:800;color:' + MUTED + ';margin:0 0 6px"><span>◀ 前のページ</span><span>次のページ ▶</span></div><div class="sk">' + svgEl(W, H, out, "ページのつながり") + "</div>";
-    var sk = box.querySelector(".sk");
-    var on = function (g) {
-      var f = g.getAttribute("data-f"), t = g.getAttribute("data-t");
-      sk.classList.add("on");
-      sk.querySelectorAll(".lk").forEach(function (p) { p.classList.toggle("hl", !!((f && p.getAttribute("data-f") === f) || (t && p.getAttribute("data-t") === t))); });
-    };
-    var off = function () { sk.classList.remove("on"); };
-    sk.querySelectorAll(".nd").forEach(function (g) {
-      var id = g.getAttribute("data-f") || g.getAttribute("data-t");
-      g.addEventListener("mouseenter", function () { on(g); });
-      g.addEventListener("mouseleave", function () { if (!sk.dataset.cur) off(); });
-      g.addEventListener("click", function () { if (sk.dataset.cur === id) { sk.dataset.cur = ""; off(); } else { sk.dataset.cur = id; on(g); } });
-    });
+    var rootVal = views[treeRoot] || from[treeRoot] || 0;
+    box.innerHTML = '<div class="tree">' + node(treeRoot, rootVal, 0, 0, null) + '</div><p class="tree-note">2段目より先は、そのページ全体の「次に進んだページ」の回数です（目安）</p>';
   }
 
   function renderChannels() {
@@ -897,7 +906,7 @@
     if (!D || Math.abs(window.innerWidth - lastW) < 40) return;
     lastW = window.innerWidth;
     clearTimeout(rt);
-    rt = setTimeout(function () { renderFlow(); renderHeat(); ["fFunnel", "sankey", "heat"].forEach(function (id) { var c = $(id).closest(".rv"); if (c && c.classList.contains("in")) { c.classList.remove("in"); void c.offsetWidth; reveal(c, 0); } }); }, 200);
+    rt = setTimeout(function () { renderFlow(); renderHeat(); ["fFunnel", "tree", "heat"].forEach(function (id) { var c = $(id).closest(".rv"); if (c && c.classList.contains("in")) { c.classList.remove("in"); void c.offsetWidth; reveal(c, 0); } }); }, 200);
   });
   loadBase(false, function () { setupPeriods(); loadRange(periodOf("month")); });
 })();
