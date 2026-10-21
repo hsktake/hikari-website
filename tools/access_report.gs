@@ -635,6 +635,19 @@ function updateLink(id, dest, status) {
   if (status === '使う' || status === '止める') sh.getRange(i + 2, 6).setValue(status);
   return listLinks_();
 }
+// 画面から呼ぶ：QR・リンクを削除する（シートの行を消す。印刷済みのQRは「見つかりませんでした」になる）
+function deleteLink(id) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const sh = linkSheet_();
+    const ids = sh.getLastRow() > 1 ? sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues().map(r => String(r[0])) : [];
+    const i = ids.indexOf(String(id));
+    if (i < 0) throw new Error('見つかりませんでした');
+    sh.deleteRow(i + 2);
+    return listLinks_();
+  } finally { lock.releaseLock(); }
+}
 // 期間中の数字：サイト内の行き先＝目印（utm_campaign＝ID）の付いた訪問、外部の行き先＝go.html でのクリック
 function tracked_(rg) {
   const g = batch_({

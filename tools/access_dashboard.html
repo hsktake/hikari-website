@@ -247,6 +247,16 @@
   .qm-edit-in { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
   .qm-edit-in select, .qm-edit-in input { font: inherit; font-size: 13px; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
   .qm-stop { font-size: 12.5px; font-weight: 700; border: 0; background: transparent; color: var(--down); cursor: pointer; padding: 6px 0; }
+  .qm-del { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; }
+  .qm-del-btn { font-size: 12.5px; font-weight: 500; border: 0; background: transparent; color: var(--muted); cursor: pointer; padding: 4px 0; text-decoration: underline; text-underline-offset: 3px; }
+  .qm-del-btn:hover { color: var(--down); }
+  .qm-del-ask { background: #FEF3F2; border: 1px solid #FBD5D0; border-radius: 10px; padding: 12px 14px; }
+  .qm-del-ask p { margin: 0 0 10px; font-size: 12.5px; color: #8A2A1C; line-height: 1.6; }
+  .qm-del-row { display: flex; gap: 8px; justify-content: flex-end; }
+  .qm-del-row button { font-size: 13px; font-weight: 700; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+  .qm-del-no { border: 1px solid var(--line); background: #fff; color: var(--ink); }
+  .qm-del-yes { border: 0; background: #B42318; color: #fff; }
+  .qm-del-yes:disabled { opacity: .6; cursor: wait; }
   .gl dl { margin: 6px 0 0; font-size: 13px; }
   .gl dt { font-weight: 700; margin-top: 12px; }
   .gl dd { margin: 2px 0 0; color: var(--ink2); }
@@ -580,6 +590,13 @@
       <div class="qm-edit-in"><select id="qmDest2"></select><input id="qmUrl2" type="url" placeholder="https://〜" hidden><button type="button" id="qmSave">行き先を変える</button></div>
       <button type="button" class="qm-stop" id="qmStop">このQR・リンクを止める</button>
     </details>
+    <div class="qm-del">
+      <button type="button" class="qm-del-btn" id="qmDel">このQR・リンクを削除する</button>
+      <div class="qm-del-ask" id="qmDelAsk" hidden>
+        <p>削除すると、配ったチラシなどのQRを読み取っても「見つかりませんでした」と出ます。これまでの回数も一覧から消えます。元に戻せません。<br>しばらく使わないだけなら「止める」がおすすめです。</p>
+        <div class="qm-del-row"><button type="button" class="qm-del-no" id="qmDelNo">やめる</button><button type="button" class="qm-del-yes" id="qmDelYes">削除する</button></div>
+      </div>
+    </div>
   </div>
 </div>
 <button class="to-top" id="toTop" type="button" aria-label="ページの一番上へ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button>
@@ -1117,6 +1134,13 @@
       $("qmSave").textContent = "変えています…";
       call("updateLink", [CUR.id, dest, null], function (list) { QR = list; $("qmSave").textContent = "変えました"; renderQr(); openQr(CUR.id); setTimeout(function () { $("qmSave").textContent = "行き先を変える"; }, 1500); });
     });
+    $("qmDel").addEventListener("click", function () { $("qmDel").hidden = true; $("qmDelAsk").hidden = false; });
+    $("qmDelNo").addEventListener("click", function () { $("qmDelAsk").hidden = true; $("qmDel").hidden = false; });
+    $("qmDelYes").addEventListener("click", function () {
+      if (!CUR) return;
+      var b = $("qmDelYes"); b.disabled = true; b.textContent = "削除しています…";
+      call("deleteLink", [CUR.id], function (list) { QR = list; b.disabled = false; b.textContent = "削除する"; closeQr(); renderQr(); });
+    });
     $("qmStop").addEventListener("click", function () {
       if (!CUR) return;
       var next = CUR.status === "止める" ? "使う" : "止める";
@@ -1188,6 +1212,7 @@
     var known = (B.dests || []).some(function (x) { return x[0] === q.dest; });
     $("qmDest2").value = known ? q.dest : "__url"; $("qmUrl2").hidden = known; $("qmUrl2").value = known ? "" : q.dest;
     $("qmStop").textContent = q.status === "止める" ? "このQR・リンクを再開する" : "このQR・リンクを止める";
+    $("qmDel").hidden = false; $("qmDelAsk").hidden = true;
     $("qrModal").hidden = false;
   }
   function closeQr() { $("qrModal").hidden = true; CUR = null; }
