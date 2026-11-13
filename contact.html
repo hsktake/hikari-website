@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>お問い合わせ｜カットハウスひかり</title>
-<meta name="description" content="カットハウスひかり本部（株式会社エイチ・エス・ケイ）へのお問い合わせ・ご意見等の受付です。お電話またはメールでお問い合わせください。">
+<meta name="description" content="カットハウスひかり本部（株式会社エイチ・エス・ケイ）へのお問い合わせ・ご意見等の受付です。フォーム（写真も送れます）・お電話・メールでお問い合わせください。">
 <meta name="robots" content="noindex, nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://docs.google.com https://*.googleusercontent.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; script-src 'self' https://www.googletagmanager.com; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://docs.google.com https://*.googleusercontent.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com; script-src 'self' https://www.googletagmanager.com; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#EF7A00">
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
@@ -16,7 +16,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
 <link rel="stylesheet" href="style.css?v=159">
+<link rel="stylesheet" href="contact-form.css?v=1">
 <script src="main.js?v=159"></script>
+<script src="contact-form.js?v=1" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
@@ -50,8 +52,15 @@
   </section>
 
   <div class="wrap legal">
+    <section class="legal-card cf-card" id="form">
+      <h2>フォームでお問い合わせ</h2>
+      <p class="cf-lead">ご質問・ご意見・ご要望などを、お気軽にお寄せください。内容を確認のうえ、担当者よりメールでご返信いたします。仕上がりなどの写真も一緒に送れます。</p>
+      <div class="cf" id="cf" data-api="https://script.google.com/macros/s/AKfycbywBFsL93X_skOM0SAuYSO5EVmUQHwZ8y4JA6OBlz39qTkMBdTS47n2j-HsTUA71Rvbcw/exec"><p class="cf-load"><span class="cf-spin"></span>フォームを読み込んでいます…</p></div>
+      <noscript><p class="cf-load">フォームをお使いいただくには JavaScript を有効にしてください。下のお電話・メールでもお問い合わせいただけます。</p></noscript>
+    </section>
+
     <section class="legal-card contact-card">
-      <h2>カットハウスひかり本部</h2>
+      <h2>お電話・メール（カットハウスひかり本部）</h2>
       <p>（株）エイチ・エス・ケイ<br>茨城県水戸市金町3-4-27</p>
 
       <div class="contact-ways">
