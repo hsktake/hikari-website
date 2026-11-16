@@ -169,8 +169,6 @@ footer{text-align:center;font-size:12px;color:var(--brown-soft);padding:16px}
     h += '<div class="cf-more"><p class="cf-sub">わかる範囲でご記入ください。</p>';
     if (Q.date) h += q("date", "ご利用日", 0, "ご来店された日がわかる場合は、カレンダーからお選びください。", '<input type="date" id="f-date">');
     if (Q.time) h += q("time", "ご利用の時間帯", 0, "", sel("time", Q.time.opts));
-    if (Q.sex) h += q("sex", "性別", 0, "", chips("sex", Q.sex.opts));
-    if (Q.age) h += q("age", "年代", 0, "", sel("age", Q.age.opts));
     if (Q.phone) h += q("phone", "電話番号", 0, "お電話でのご連絡をご希望の場合のみ、ご記入ください。", '<input type="tel" id="f-phone" autocomplete="tel" inputmode="tel" maxlength="20">');
     h += '</div>';
     h += '<div class="cf-hp" aria-hidden="true"><input type="text" id="f-hp" tabindex="-1" autocomplete="off"></div>';
@@ -230,7 +228,7 @@ footer{text-align:center;font-size:12px;color:var(--brown-soft);padding:16px}
   function send() {
     var d = {
       name: val("name"), mail: val("mail"), kind: radio("kind"), pref: val("pref"), store: val("store"), body: val("body"),
-      date: val("date"), time: val("time"), sex: radio("sex"), age: val("age"), phone: val("phone"), hp: val("hp"), from: FROM,
+      date: val("date"), time: val("time"), phone: val("phone"), hp: val("hp"), from: FROM,
       photos: PH.filter(function (p) { return p.data; }).map(function (p) { return { type: "image/jpeg", data: p.data }; })
     };
     ["name", "mail", "kind", "pref", "store", "body", "phone", "photo"].forEach(ok);
