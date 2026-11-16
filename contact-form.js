@@ -1,7 +1,10 @@
 /* お問い合わせフォーム（contact.html）
    ・質問・県ごとの店舗は HSK-VOICE お問い合わせフォーム（GAS）から読み込む（?api=layout）
    ・送信は同じ GAS に POST（本文は JSON。写真は画面で縮めた JPEG を5枚まで）
-   ・URL の ?from=受付媒体 で「どこから来たか」を記録。なければ スマホ／パソコン のHP
+   ・URL の ?from=受付媒体 で「どこから来たか」を記録（お客様は何も選ばない）
+   ・?from がないときは、直前に見ていたページから自動で判断する
+       Google・Yahoo! などの検索 → 検索 ／ Instagram → Instagram ／ LINE → LINE
+       ホームページの中から → メール（スマホHP）・メール（パソコンHP） ／ 分からない → お問い合わせフォーム
 */
 (function () {
   "use strict";
@@ -14,8 +17,17 @@
     try { f = new URLSearchParams(location.search).get("from") || ""; } catch (e) {}
     f = f.replace(/[<>"'&\\]/g, "").trim().slice(0, 40);
     if (f) return f;
-    var sp = /iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent) || (window.matchMedia && matchMedia("(max-width: 768px)").matches);
-    return sp ? "メール（スマホHP）" : "メール（パソコンHP）";
+    var ua = navigator.userAgent || "", ref = "";
+    try { ref = document.referrer ? new URL(document.referrer).hostname.toLowerCase() : ""; } catch (e) {}
+    // アプリの中のブラウザ（Instagram・LINE）は、来たページが分からないことが多いので、ブラウザの名前でも判断する
+    if (/instagram\.com$/.test(ref) || /Instagram/.test(ua)) return "Instagram";
+    if (/(^|\.)line\.me$|(^|\.)line-apps\.com$/.test(ref) || / Line\//.test(ua)) return "LINE";
+    if (/(^|\.)google\.[a-z.]+$|(^|\.)yahoo\.co\.jp$|(^|\.)yahoo\.com$|(^|\.)bing\.com$|duckduckgo\.com$/.test(ref)) return "検索";
+    if (ref && (ref === location.hostname.toLowerCase() || /(^|\.)cut-hikari\.com$/.test(ref))) {
+      var sp = /iPhone|iPad|iPod|Android|Mobile/i.test(ua) || (window.matchMedia && matchMedia("(max-width: 768px)").matches);
+      return sp ? "メール（スマホHP）" : "メール（パソコンHP）";
+    }
+    return "お問い合わせフォーム";
   })();
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
