@@ -64,7 +64,8 @@ function buildReq_(s) {
     metrics: s.mets.map(n => ({ name: n })),
     limit: s.limit || 10000,
   };
-  if (s.filter) req.dimensionFilter = s.filter;
+  // お問い合わせフォーム（お客様からの声の入口。HSK-VOICE で見る）は、ホームページの数字にいっさい入れない（オーナー指示 2026-11-17）
+  req.dimensionFilter = s.filter ? and_(s.filter, NOT_FORM) : NOT_FORM;
   return req;
 }
 function rows_(res) {
@@ -88,6 +89,7 @@ function batch_(specs) {
 const eq_ = (field, value) => ({ filter: { fieldName: field, stringFilter: { value: value, matchType: 'EXACT' } } });
 const inList_ = (field, values) => ({ filter: { fieldName: field, inListFilter: { values: values } } });
 const and_ = (...f) => ({ andGroup: { expressions: f } });
+const NOT_FORM = { notExpression: eq_('contentGroup', 'お問い合わせフォーム') };
 
 function monthLabel_(ym) { return ym.slice(0, 4) + '年' + Number(ym.slice(4)) + '月'; }
 function months_() { // 計測開始から今月まで（新しい順）
@@ -137,8 +139,6 @@ const SITES = [
   { key: 'mrcool', name: 'HAIR STUDIO MR.COOL', group: 'グループ：HAIR STUDIO MR.COOL' },
   { key: 'alpha', name: 'シャンプーカット アルファ', group: 'グループ：シャンプーカット アルファ' },
   { key: 'laladream', name: 'ララ・ドリーム 清原テクノ店', group: 'グループ：ララ・ドリーム 清原テクノ店' },
-  // 会社のホームページ（cut-hikari.com）に置いたお問い合わせフォーム（contact.html）。HSK-VOICE に届く件の入口
-  { key: 'contact', name: 'お問い合わせフォーム', group: 'お問い合わせフォーム' },
   { key: 'all', name: 'すべてのサイトの合計' },
 ];
 const OWN_HOSTS = ['hsktake.github.io', 'localhost', '(not set)', ''];
@@ -170,7 +170,7 @@ function funnel_(ym, usePathField) {
   const last = Utilities.formatDate(lastD > today ? today : lastD, TZ, 'yyyy-MM-dd');
   return funnelFor_({ startDate: first < START ? START : first, endDate: last }, usePathField);
 }
-function funnelFor_(rg, usePathField) {
+function funnelFor_(rg, usePathField, keepForm) {
   const shopStep = usePathField
     ? { funnelFieldFilter: { fieldName: 'pagePath', stringFilter: { matchType: 'CONTAINS', value: '/shop' } } }
     : { funnelEventFilter: { eventName: 'page_view', funnelParameterFilterExpression: { funnelParameterFilter: { eventParameterName: 'page_location', stringFilter: { matchType: 'CONTAINS', value: '/shop' } } } } };
@@ -179,7 +179,9 @@ function funnelFor_(rg, usePathField) {
     funnel: {
       isOpenFunnel: false,
       steps: [
-        { name: FUNNEL_STEPS[0], filterExpression: { funnelEventFilter: { eventName: 'session_start' } } },
+        // お問い合わせフォームだけを開いた訪問は入れない（読めないときは入れたままで集める）
+        { name: FUNNEL_STEPS[0], filterExpression: keepForm ? { funnelEventFilter: { eventName: 'session_start' } }
+          : { andGroup: { expressions: [{ funnelEventFilter: { eventName: 'session_start' } }, { notExpression: { funnelFieldFilter: { fieldName: 'contentGroup', stringFilter: { matchType: 'EXACT', value: 'お問い合わせフォーム' } } } }] } } },
         { name: FUNNEL_STEPS[1], filterExpression: shopStep },
         { name: FUNNEL_STEPS[2], filterExpression: { orGroup: { expressions: ['wait_status_click', 'map_click', 'tel_click', 'app_download'].map(e => ({ funnelEventFilter: { eventName: e } })) } } },
       ],
@@ -189,6 +191,7 @@ function funnelFor_(rg, usePathField) {
     method: 'post', contentType: 'application/json', payload: JSON.stringify(body), muteHttpExceptions: true,
     headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
   });
+  if (res.getResponseCode() !== 200 && !keepForm) return funnelFor_(rg, usePathField, true);
   if (res.getResponseCode() !== 200) throw new Error('ファネル ' + res.getResponseCode() + ' ' + res.getContentText().slice(0, 200));
   const t = JSON.parse(res.getContentText()).funnelTable || {};
   const mh = (t.metricHeaders || []).map(h => h.name);
@@ -415,32 +418,10 @@ function write_(ss, name, head, rows, opt) {
 
 // ================================================================ 期間を指定して集計（画面から）
 // 選んだ期間（rg）の数字を、その場で GA4 から集める。月ごとの表（スプレッドシート）とは別に、期間を自由に選べるようにするため
-// お問い合わせフォーム：置く場所はページ名「お問い合わせフォーム（置く場所）」から、店舗は送信したときの store から
-const CONTACT_EVENTS = ['page_view', 'contact_start', 'contact_submit'];
-function contactSpecs_(R) {
-  return {
-    cf: R({ dims: ['pageTitle', 'eventName'], mets: ['eventCount'], filter: inList_('eventName', CONTACT_EVENTS) }),
-    cfStore: R({ dims: ['customEvent:store'], mets: ['eventCount'], filter: eq_('eventName', 'contact_submit') }),
-  };
-}
-function contactOut_(g) {
-  const pl = {}, tot = [0, 0, 0];
-  (g.cf || []).forEach(r => {
-    const m = String(r[0] || '').match(/（([^（）]+)）\s*$/), k = m ? m[1] : 'わからない';
-    const i = CONTACT_EVENTS.indexOf(r[1]);
-    if (i < 0) return;
-    pl[k] = pl[k] || [k, 0, 0, 0]; pl[k][i + 1] += r[2]; tot[i] += r[2];
-  });
-  return {
-    opened: tot[0], started: tot[1], sent: tot[2],
-    places: Object.values(pl).sort((a, b) => b[1] - a[1]),
-    stores: (g.cfStore || []).filter(r => r[0] && r[0] !== '(not set)').sort((a, b) => b[1] - a[1]),
-  };
-}
 function collect_(rg, site) {
   const sf = siteFilter_(site);
   const R = (o) => { const x = Object.assign({ range: rg }, o); x.filter = withSite_(x.filter, sf); return x; };
-  const g = batch_(Object.assign(site === 'contact' ? contactSpecs_(R) : {}, {
+  const g = batch_({
     base: R({ mets: ['totalUsers', 'newUsers', 'sessions', 'screenPageViews', 'averageSessionDuration', 'engagementRate'] }),
     ev: R({ dims: ['eventName'], mets: ['eventCount'], filter: inList_('eventName', EVENTS.map(e => e[0])) }),
     goal: R({ mets: ['sessions'], filter: inList_('eventName', VISIT_GOALS) }),
@@ -461,9 +442,8 @@ function collect_(rg, site) {
     links: R({ dims: ['hostName', 'pageReferrer', 'pagePath'], mets: ['screenPageViews'] }),
     pv: R({ dims: ['pagePath'], mets: ['screenPageViews'] }),
     pageGoal: R({ dims: ['pagePath', 'eventName'], mets: ['eventCount'], filter: inList_('eventName', GOAL_EVENTS) }),
-  }));
+  });
   const out = summary_(g);
-  out.contact = site === 'contact' ? contactOut_(g) : null;
   // ページの種類ごと
   out.content = g.content.filter(r => r[0] && r[0] !== '(not set)').sort((a, b) => b[1] - a[1]).map(r => [r[0], r[1], r[2], r[1] ? Math.round(r[3] / r[1]) : 0]);
   // 店舗
@@ -534,15 +514,14 @@ function summary_(g) {
 function collectPrev_(rg, site) {
   const sf = siteFilter_(site);
   const R = (o) => { const x = Object.assign({ range: rg }, o); x.filter = withSite_(x.filter, sf); return x; };
-  const g = batch_(Object.assign(site === 'contact' ? contactSpecs_(R) : {}, {
+  const g = batch_({
     base: R({ mets: ['totalUsers', 'newUsers', 'sessions', 'screenPageViews', 'averageSessionDuration', 'engagementRate'] }),
     ev: R({ dims: ['eventName'], mets: ['eventCount'], filter: inList_('eventName', EVENTS.map(e => e[0])) }),
     goal: R({ mets: ['sessions'], filter: inList_('eventName', VISIT_GOALS) }),
     daily: R({ dims: ['date'], mets: ['totalUsers', 'sessions', 'screenPageViews'] }),
     dailyGoal: R({ dims: ['date'], mets: ['sessions'], filter: inList_('eventName', VISIT_GOALS) }),
-  }));
+  });
   const out = summary_(g);
-  out.contact = site === 'contact' ? contactOut_(g) : null;
   return out;
 }
 
@@ -551,7 +530,7 @@ function getRangeData(start, end, cs, ce, force, site) {
   const ok = (d) => /^\d{4}-\d{2}-\d{2}$/.test(String(d || ''));
   if (![start, end, cs, ce].every(ok)) throw new Error('期間の指定が正しくありません');
   site = String(site || 'hikari').slice(0, 120);
-  const key = ['r8', site, start, end, cs, ce].join('|');
+  const key = ['r9', site, start, end, cs, ce].join('|');
   if (!force) { const c = cacheGet_(key); if (c) return c; }
   ERRORS.length = 0;
   const data = {
