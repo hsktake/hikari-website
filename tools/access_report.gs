@@ -137,6 +137,8 @@ const SITES = [
   { key: 'mrcool', name: 'HAIR STUDIO MR.COOL', group: 'グループ：HAIR STUDIO MR.COOL' },
   { key: 'alpha', name: 'シャンプーカット アルファ', group: 'グループ：シャンプーカット アルファ' },
   { key: 'laladream', name: 'ララ・ドリーム 清原テクノ店', group: 'グループ：ララ・ドリーム 清原テクノ店' },
+  // 会社のホームページ（cut-hikari.com）に置いたお問い合わせフォーム（contact.html）。HSK-VOICE に届く件の入口
+  { key: 'contact', name: 'お問い合わせフォーム', group: 'お問い合わせフォーム' },
   { key: 'all', name: 'すべてのサイトの合計' },
 ];
 const OWN_HOSTS = ['hsktake.github.io', 'localhost', '(not set)', ''];
@@ -413,10 +415,32 @@ function write_(ss, name, head, rows, opt) {
 
 // ================================================================ 期間を指定して集計（画面から）
 // 選んだ期間（rg）の数字を、その場で GA4 から集める。月ごとの表（スプレッドシート）とは別に、期間を自由に選べるようにするため
+// お問い合わせフォーム：置く場所はページ名「お問い合わせフォーム（置く場所）」から、店舗は送信したときの store から
+const CONTACT_EVENTS = ['page_view', 'contact_start', 'contact_submit'];
+function contactSpecs_(R) {
+  return {
+    cf: R({ dims: ['pageTitle', 'eventName'], mets: ['eventCount'], filter: inList_('eventName', CONTACT_EVENTS) }),
+    cfStore: R({ dims: ['customEvent:store'], mets: ['eventCount'], filter: eq_('eventName', 'contact_submit') }),
+  };
+}
+function contactOut_(g) {
+  const pl = {}, tot = [0, 0, 0];
+  (g.cf || []).forEach(r => {
+    const m = String(r[0] || '').match(/（([^（）]+)）\s*$/), k = m ? m[1] : 'わからない';
+    const i = CONTACT_EVENTS.indexOf(r[1]);
+    if (i < 0) return;
+    pl[k] = pl[k] || [k, 0, 0, 0]; pl[k][i + 1] += r[2]; tot[i] += r[2];
+  });
+  return {
+    opened: tot[0], started: tot[1], sent: tot[2],
+    places: Object.values(pl).sort((a, b) => b[1] - a[1]),
+    stores: (g.cfStore || []).filter(r => r[0] && r[0] !== '(not set)').sort((a, b) => b[1] - a[1]),
+  };
+}
 function collect_(rg, site) {
   const sf = siteFilter_(site);
   const R = (o) => { const x = Object.assign({ range: rg }, o); x.filter = withSite_(x.filter, sf); return x; };
-  const g = batch_({
+  const g = batch_(Object.assign(site === 'contact' ? contactSpecs_(R) : {}, {
     base: R({ mets: ['totalUsers', 'newUsers', 'sessions', 'screenPageViews', 'averageSessionDuration', 'engagementRate'] }),
     ev: R({ dims: ['eventName'], mets: ['eventCount'], filter: inList_('eventName', EVENTS.map(e => e[0])) }),
     goal: R({ mets: ['sessions'], filter: inList_('eventName', VISIT_GOALS) }),
@@ -437,8 +461,9 @@ function collect_(rg, site) {
     links: R({ dims: ['hostName', 'pageReferrer', 'pagePath'], mets: ['screenPageViews'] }),
     pv: R({ dims: ['pagePath'], mets: ['screenPageViews'] }),
     pageGoal: R({ dims: ['pagePath', 'eventName'], mets: ['eventCount'], filter: inList_('eventName', GOAL_EVENTS) }),
-  });
+  }));
   const out = summary_(g);
+  out.contact = site === 'contact' ? contactOut_(g) : null;
   // ページの種類ごと
   out.content = g.content.filter(r => r[0] && r[0] !== '(not set)').sort((a, b) => b[1] - a[1]).map(r => [r[0], r[1], r[2], r[1] ? Math.round(r[3] / r[1]) : 0]);
   // 店舗
@@ -509,13 +534,16 @@ function summary_(g) {
 function collectPrev_(rg, site) {
   const sf = siteFilter_(site);
   const R = (o) => { const x = Object.assign({ range: rg }, o); x.filter = withSite_(x.filter, sf); return x; };
-  return summary_(batch_({
+  const g = batch_(Object.assign(site === 'contact' ? contactSpecs_(R) : {}, {
     base: R({ mets: ['totalUsers', 'newUsers', 'sessions', 'screenPageViews', 'averageSessionDuration', 'engagementRate'] }),
     ev: R({ dims: ['eventName'], mets: ['eventCount'], filter: inList_('eventName', EVENTS.map(e => e[0])) }),
     goal: R({ mets: ['sessions'], filter: inList_('eventName', VISIT_GOALS) }),
     daily: R({ dims: ['date'], mets: ['totalUsers', 'sessions', 'screenPageViews'] }),
     dailyGoal: R({ dims: ['date'], mets: ['sessions'], filter: inList_('eventName', VISIT_GOALS) }),
   }));
+  const out = summary_(g);
+  out.contact = site === 'contact' ? contactOut_(g) : null;
+  return out;
 }
 
 // 画面から呼ぶ：期間（start〜end）と、比べる期間（cs〜ce）の数字。同じ期間は6時間まで覚えておく（force で集め直し）
@@ -523,7 +551,7 @@ function getRangeData(start, end, cs, ce, force, site) {
   const ok = (d) => /^\d{4}-\d{2}-\d{2}$/.test(String(d || ''));
   if (![start, end, cs, ce].every(ok)) throw new Error('期間の指定が正しくありません');
   site = String(site || 'hikari').slice(0, 120);
-  const key = ['r7', site, start, end, cs, ce].join('|');
+  const key = ['r8', site, start, end, cs, ce].join('|');
   if (!force) { const c = cacheGet_(key); if (c) return c; }
   ERRORS.length = 0;
   const data = {

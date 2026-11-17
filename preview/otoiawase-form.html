@@ -90,6 +90,16 @@ footer{text-align:center;font-size:12px;color:var(--sub);padding:0 16px 24px}
 </main>
 <footer>&copy; 1997 H.S.K</footer>
 <script>
+/* アクセス解析（Googleアナリティクス）：会社のホームページ（cut-hikari.com）に置いたときだけ動きます。お名前・メールアドレス・内容は送りません。
+   社内の人は、このページを ?notrack=1 を付けて1回開くと、そのブラウザからは数えません（?notrack=0 で元に戻ります） */
+(function(){
+ if(!/(^|\.)cut-hikari\.com$/.test(location.hostname))return;
+ try{var q=new URLSearchParams(location.search).get("notrack");if(q==="1")localStorage.setItem("hk_notrack","1");if(q==="0")localStorage.removeItem("hk_notrack");if(localStorage.getItem("hk_notrack")==="1")return}catch(e){}
+ var s=document.createElement("script");s.async=true;s.src="https://www.googletagmanager.com/gtag/js?id=G-P582HM9KTN";document.head.appendChild(s);
+ window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag("js",new Date());window.HK_GA=1;
+})();
+</script>
+<script>
 (function(){
 "use strict";
 // 送り先（Google Apps Script「HSK-VOICE お問い合わせフォーム」）
@@ -112,6 +122,10 @@ var FROM=(function(){
  var sp=/iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent||"")||(window.matchMedia&&matchMedia("(max-width: 768px)").matches);
  return sp?"ホームページ（スマホ）":"ホームページ（パソコン）";
 })();
+// アクセス解析：置く場所はページ名に入れる（集計画面で「置く場所ごと」に出すため）
+function ga(n,p){try{if(window.HK_GA)gtag("event",n,p||{})}catch(e){}}
+if(window.HK_GA){gtag("set",{content_group:"お問い合わせフォーム",page_title:"お問い合わせフォーム（"+FROM+"）"});gtag("config","G-P582HM9KTN")}
+var STARTED=0;document.addEventListener("input",function(){if(!STARTED){STARTED=1;ga("contact_start")}},true);
 
 function drawTimes(){var cur=$("f-time").value;$("f-time").innerHTML='<option value="">時間帯</option>'+L.times.map(function(t){return '<option>'+esc(t)+'</option>'}).join("");$("f-time").value=cur}
 // ご利用店舗：いちばん上に「利用していない・わからない」、次に県。県を押すと、その県の店舗だけが出る
@@ -177,6 +191,7 @@ $("send").addEventListener("click",function(){
  var again=function(t){b.disabled=false;b.textContent="送信する";m.className="msg on";m.textContent=(t||"送信できませんでした")+"。お手数ですが、もう一度お試しください。";m.scrollIntoView({behavior:"smooth",block:"center"})};
  fetch(API,{method:"POST",body:JSON.stringify(d)}).then(function(r){return r.json()}).then(function(x){
   if(!x||!x.ok)return again(x&&x.error);
+  ga("contact_submit",{store:d.store||"店舗なし"});
   $("app").innerHTML='<div class="done"><h2>送信が完了しました</h2><p>お問い合わせいただき、ありがとうございます。<br>内容を確認のうえ、担当者よりメールにてご連絡いたします。</p><p class="note">内容によっては、ご連絡までにお時間をいただく場合がございます。</p></div>';
   window.scrollTo(0,0);
  }).catch(function(){again()});
