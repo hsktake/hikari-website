@@ -10,18 +10,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-  /* ===== 色・文字（オーナー指示 2026-10-17：デザイン性を高く、メニューをわかりやすく）
-     こげ茶のメニュー（ブランドのこげ茶を深くした色）＋白い紙面。オレンジは「いま選んでいるもの」と大事な数字だけ ===== */
+  /* ===== 色・文字（オーナー指示 2026-10-17：デザイン性を高く、メニューをわかりやすく／2026-11-17：黒っぽいメニューはやめ、白い帯＋オレンジでほかの社内アプリとそろえる）
+     白い帯と白い角丸カード＋薄いグレーの紙面。オレンジは「いま選んでいるもの」と大事な数字だけ ===== */
   :root {
-    --espresso: #2A1C13; --espresso2: #3A281C; --on-dark: #D9CFC6; --on-dark2: #A39588;
     --orange: #EF7A00; --c1: #D96A00; --c2: #2F86B8; --c3: #3E9E5A; --cmp: #B9AFA6;
-    --paper: #F4F3F1; --card: #FFFFFF; --line: #E6E3DF; --grid: #EEECE9; --tint: #F3F1EE; --otint: #FDF0E3;
+    --paper: #F3F2F0; --card: #FFFFFF; --line: #E6E3DF; --grid: #EEECE9; --tint: #F3F1EE; --otint: #FDF0E3;
     --ink: #221A15; --ink2: #5F5750; --muted: #8E867F;
     --up: #2E7D4F; --down: #B3402A;
     --font: "Noto Sans JP", "Hiragino Sans", "Yu Gothic UI", system-ui, sans-serif;
     --num: "Inter", "Noto Sans JP", system-ui, sans-serif;
     --ease: cubic-bezier(.2, .8, .2, 1);
-    --side: 248px;
   }
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
@@ -32,48 +30,49 @@
   .num, td.n { font-family: var(--num); font-feature-settings: "tnum"; }
   .num { font-weight: 600; }
 
-  /* ===== メニュー（パソコン：左に固定／スマホ：下のタブ） ===== */
-  .side { position: fixed; top: 0; left: 0; bottom: 0; width: var(--side); background: var(--espresso); color: var(--on-dark); display: flex; flex-direction: column; z-index: 40; overflow-y: auto; }
-  .brand { display: flex; align-items: center; gap: 12px; padding: 22px 20px 20px; }
-  .mark { width: 36px; height: 36px; border-radius: 9px; background: var(--orange); display: grid; place-items: center; flex: none; }
-  .brand b { display: block; color: #fff; font-size: 15px; font-weight: 700; line-height: 1.3; }
-  .brand small { display: block; font-size: 11.5px; color: var(--on-dark2); }
-  .nav { padding: 6px 12px; }
-  .nav h3 { margin: 18px 10px 6px; font-size: 11.5px; font-weight: 500; color: var(--on-dark2); }
-  .nav-item { display: flex; align-items: center; gap: 12px; width: 100%; border: 0; background: none; color: var(--on-dark); padding: 10px 12px; border-radius: 8px; cursor: pointer; text-align: left; text-decoration: none; font-size: 14px; position: relative; }
-  .nav-item svg { flex: none; opacity: .8; }
-  .nav-item:hover { background: rgba(255,255,255,.06); color: #fff; }
-  .nav-item.on { background: rgba(239,122,0,.16); color: #fff; font-weight: 700; }
-  .nav-item.on svg { opacity: 1; stroke: var(--orange); }
-  .nav-item.on::before { content: ""; position: absolute; left: -12px; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0; background: var(--orange); }
-  .nav-item .cnt-badge { margin-left: auto; font-family: var(--num); font-size: 11px; font-weight: 600; background: rgba(255,255,255,.1); border-radius: 999px; padding: 0 7px; }
-  .nav-item .cnt-badge:empty { display: none; }
-  .side-foot { margin-top: auto; padding: 8px 12px 18px; border-top: 1px solid rgba(255,255,255,.08); }
-  .side-foot .nav-item { font-size: 13px; padding: 8px 12px; color: var(--on-dark2); }
-  .side-foot .nav-item:hover { color: #fff; }
-  .side-upd { padding: 10px 12px 0; font-size: 11px; color: var(--on-dark2); line-height: 1.5; }
+  /* ===== 上の帯（オーナー指示 2026-11-17：HSK-MEMO などほかの社内アプリと同じ形。白い帯・左上にオレンジのアイコンとタイトル・その下に横のタブ） ===== */
+  .shell { min-height: 100vh; }
+  .hd { background: #fff; border-bottom: 1px solid var(--line); }
+  .hd-in { max-width: 1240px; margin: 0 auto; padding: 16px 32px; display: flex; align-items: center; gap: 14px; }
+  .mark { width: 46px; height: 46px; border-radius: 12px; background: var(--orange); display: grid; place-items: center; flex: none; box-shadow: 0 2px 6px rgba(239,122,0,.25); }
+  .hd-ttl { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; min-width: 0; }
+  .hd-ttl b { font-size: 26px; font-weight: 700; color: var(--orange); letter-spacing: .02em; line-height: 1.2; white-space: nowrap; }
+  .hd-ttl small { font-size: 14px; color: var(--muted); white-space: nowrap; }
+  .hd-right { margin-left: auto; display: flex; align-items: center; gap: 10px; flex: none; }
+  .hd-upd { font-size: 11.5px; color: var(--muted); text-align: right; line-height: 1.5; }
 
-  .tabbar { display: none; }
+  /* タブ（いま見ているページはオレンジの文字＋下線） */
+  .bar { position: sticky; top: 0; z-index: 30; background: #fff; border-bottom: 1px solid var(--line); box-shadow: 0 2px 10px rgba(34,26,21,.04); }
+  .bar-in { max-width: 1240px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; gap: 16px; }
+  .tabs { display: flex; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { position: relative; border: 0; background: none; cursor: pointer; padding: 16px 18px 14px; font-size: 15px; font-weight: 500; color: var(--muted); white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
+  .tab:hover { color: var(--ink2); }
+  .tab.on { color: var(--orange); font-weight: 700; }
+  .tab.on::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; border-radius: 3px 3px 0 0; background: var(--orange); }
+  .tab .s { display: none; }
+  .cnt-badge { font-family: var(--num); font-size: 11px; font-weight: 600; background: var(--otint); color: #9A4700; border-radius: 999px; padding: 0 7px; line-height: 18px; }
+  .cnt-badge:empty { display: none; }
 
-  /* ===== 上の帯（期間・サイトの選択） ===== */
-  .shell { margin-left: var(--side); min-height: 100vh; }
-  .top { position: sticky; top: 0; z-index: 30; background: rgba(244,243,241,.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-  .top-in { max-width: 1240px; margin: 0 auto; padding: 12px 32px; display: flex; align-items: center; gap: 10px; }
-  .top-brand { display: none; }
-  .ctrls { display: flex; align-items: center; gap: 8px; margin-left: auto; min-width: 0; }
+  /* その他のメニュー（右から出る白い窓）の中の行 */
+  .nav-item { display: flex; align-items: center; gap: 12px; width: 100%; border: 0; background: none; color: var(--ink); padding: 12px 14px; border-radius: 10px; cursor: pointer; text-align: left; text-decoration: none; font-size: 14px; }
+  .nav-item svg { flex: none; color: var(--orange); }
+  .nav-item:hover { background: var(--otint); }
+
+  .ctrls { display: flex; align-items: center; gap: 8px; margin-left: auto; min-width: 0; padding: 8px 0; }
   .pill { display: inline-flex; align-items: center; gap: 8px; height: 38px; border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: 0 12px; font-size: 13.5px; font-weight: 500; color: var(--ink); cursor: pointer; white-space: nowrap; min-width: 0; }
-  .pill:hover { border-color: #CFCAC4; }
-  .pill svg { flex: none; color: var(--muted); }
+  .pill:hover { border-color: var(--orange); }
+  .pill svg { flex: none; color: var(--orange); }
   .pill .lbl { overflow: hidden; text-overflow: ellipsis; }
   .pill .lbl b { font-weight: 700; }
   .pill .caret { color: var(--muted); font-size: 10px; }
-  .site-chip { position: relative; }
+  .site-chip { position: relative; max-width: 260px; }
   .site-chip select { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; font-size: 16px; }
   body.v-links .site-chip { display: none; }
   .icon-btn { width: 38px; height: 38px; border: 1px solid var(--line); background: #fff; border-radius: 10px; display: grid; place-items: center; cursor: pointer; flex: none; color: var(--ink); }
-  .icon-btn:hover { border-color: #CFCAC4; }
+  .icon-btn:hover { border-color: var(--orange); }
   .icon-btn:disabled svg { animation: spin 1s linear infinite; }
-  .menu-btn { display: none; }
+  .icon-btn.menu-btn { width: auto; padding: 0 14px 0 10px; gap: 6px; display: inline-flex; align-items: center; font-size: 13.5px; font-weight: 500; white-space: nowrap; }
 
   /* 期間のえらびかた（パソコン：下に開く／スマホ：下から出る） */
   .pop-wrap { position: relative; }
@@ -87,7 +86,7 @@
   .pop .pick { padding: 2px 10px 6px; }
   .pop select, .pop input[type=date] { width: 100%; font: inherit; font-size: 14px; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: #fff; color: var(--ink); }
   .pop .custom { display: grid; grid-template-columns: 1fr auto 1fr; gap: 6px; align-items: center; padding: 2px 10px 10px; font-size: 13px; color: var(--muted); }
-  .pop .custom button { grid-column: 1 / -1; border: 0; border-radius: 8px; padding: 9px; background: var(--ink); color: #fff; font-weight: 700; cursor: pointer; }
+  .pop .custom button { grid-column: 1 / -1; border: 0; border-radius: 8px; padding: 9px; background: var(--orange); color: #fff; font-weight: 700; cursor: pointer; }
   .pop hr { border: 0; border-top: 1px solid var(--line); margin: 6px 4px; }
   .pop-scrim { display: none; }
 
@@ -102,10 +101,13 @@
   .note { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; color: var(--ink2); font-size: 13px; }
   .note.err { background: #FEF3F2; border-color: #FBD5D0; color: #8A2A1C; }
   .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
-  .card { grid-column: span 6; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px 22px; min-width: 0; position: relative; overflow: hidden; }
+  .card { grid-column: span 6; background: var(--card); border: 0; border-radius: 20px; padding: 22px 24px 24px; min-width: 0; position: relative; overflow: hidden; box-shadow: 0 1px 2px rgba(34,26,21,.04), 0 6px 20px rgba(34,26,21,.05); }
   .s4 { grid-column: span 4; } .s5 { grid-column: span 5; } .s7 { grid-column: span 7; } .s8 { grid-column: span 8; } .s12 { grid-column: 1 / -1; }
-  .card h2 { margin: 0; font-size: 15px; font-weight: 700; color: var(--ink); }
-  .card .sub { margin: 2px 0 16px; font-size: 12.5px; color: var(--muted); }
+  /* カードの見出しにオレンジの番号（ページごとに 1, 2, 3…） */
+  .page { counter-reset: sec; }
+  .card h2 { margin: 0; font-size: 17px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 10px; line-height: 1.4; }
+  .card > h2::before { counter-increment: sec; content: counter(sec); flex: none; width: 28px; height: 28px; border-radius: 8px; background: var(--orange); color: #fff; font-family: var(--num); font-size: 14px; font-weight: 700; display: grid; place-items: center; }
+  .card .sub { margin: 4px 0 16px 38px; font-size: 12.5px; color: var(--muted); }
   .empty { color: var(--muted); font-size: 13px; padding: 26px 0; text-align: center; }
   .cv { position: relative; height: 260px; }
   .cv.tall { height: 340px; }
@@ -135,7 +137,7 @@
   .ring-wrap { display: flex; align-items: center; gap: 18px; }
   .ring-txt p { margin: 4px 0 6px; font-size: 12.5px; color: var(--ink2); }
   .ring .prog { transition: stroke-dasharray 1.2s var(--ease) .2s; }
-  .minis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin: -20px -22px -22px; height: calc(100% + 42px); }
+  .minis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin: -22px -24px -24px; height: calc(100% + 46px); }
   .mini { padding: 14px 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .mini:nth-child(2n) { border-right: 0; }
   .mini:nth-last-child(-n+2) { border-bottom: 0; }
@@ -171,12 +173,12 @@
   /* 分岐図 */
   .tree-roots { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
   .tr-chip { font-size: 12.5px; font-weight: 500; border: 1px solid var(--line); background: #fff; color: var(--ink2); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
-  .tr-chip.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .tr-chip.on { background: var(--orange); border-color: var(--orange); color: #fff; font-weight: 700; }
   .tree-box { overflow-x: auto; padding-bottom: 4px; }
   .tree { display: inline-block; min-width: 100%; }
   .tn { display: flex; align-items: center; position: relative; }
   .tn .box { width: clamp(150px, 15vw, 200px); flex: none; background: #fff; border: 1px solid #D6D1CB; border-radius: 8px; padding: 7px 10px; margin: 5px 0; line-height: 1.35; position: relative; z-index: 1; }
-  .tn.root > .box { background: var(--espresso); border-color: var(--espresso); color: #fff; }
+  .tn.root > .box { background: var(--orange); border-color: var(--orange); color: #fff; }
   .tn .nm { display: block; font-weight: 700; font-size: 13px; }
   .tn .vl { display: block; font-size: 11.5px; color: var(--ink2); }
   .tn .vl b { font-size: 16px; color: var(--c1); margin-right: 2px; }
@@ -214,7 +216,7 @@
   .lk-head .page-head { margin: 0; }
   .lk-new { font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 10px; padding: 10px 16px; background: var(--orange); color: #fff; cursor: pointer; }
   .lk-new:hover { filter: brightness(.96); }
-  .lk-kpi { display: grid; grid-template-columns: repeat(3, 1fr); background: #fff; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 16px; }
+  .lk-kpi { display: grid; grid-template-columns: repeat(3, 1fr); background: #fff; border-radius: 20px; margin-bottom: 16px; box-shadow: 0 1px 2px rgba(34,26,21,.04), 0 6px 20px rgba(34,26,21,.05); }
   .lk-kpi > div { padding: 16px 20px; border-right: 1px solid var(--line); }
   .lk-kpi > div:last-child { border-right: 0; }
   .lk-kpi .lb { font-size: 12px; color: var(--ink2); }
@@ -222,7 +224,7 @@
   .lk-kpi .v small { font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--ink2); margin-left: 3px; }
   .lk-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
   .lk-filter .chip { border: 1px solid var(--line); background: #fff; color: var(--ink2); border-radius: 999px; padding: 4px 12px; font-size: 12.5px; cursor: pointer; }
-  .lk-filter .chip.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .lk-filter .chip.on { background: var(--orange); border-color: var(--orange); color: #fff; font-weight: 700; }
   .lk-foot { margin: 12px 0 0; font-size: 12px; color: var(--muted); }
   #tQr td .dt { display: block; font-size: 11.5px; color: var(--muted); margin-top: 2px; }
   #tQr tbody tr { cursor: pointer; }
@@ -238,7 +240,7 @@
   .qm-img img, .qm-img canvas { width: 230px !important; height: auto !important; max-width: 100%; }
   .qm-url { display: flex; gap: 6px; margin: 12px 0 8px; }
   .qm-url input { flex: 1; min-width: 0; font: inherit; font-size: 12.5px; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; color: var(--ink); }
-  .qm-url button, .qm-edit-in button { font-weight: 700; font-size: 13px; border: 0; border-radius: 8px; padding: 8px 12px; background: var(--ink); color: #fff; cursor: pointer; white-space: nowrap; }
+  .qm-url button, .qm-edit-in button { font-weight: 700; font-size: 13px; border: 0; border-radius: 8px; padding: 8px 12px; background: var(--orange); color: #fff; cursor: pointer; white-space: nowrap; }
   .qm-btns { display: flex; gap: 8px; }
   .qm-dl { flex: 1; text-align: center; text-decoration: none; font-weight: 700; background: var(--orange); color: #fff; border-radius: 9px; padding: 10px 14px; }
   .qm-tip { font-size: 11.5px; color: var(--muted); margin: 8px 0 0; }
@@ -278,8 +280,8 @@
   .arrow { color: var(--muted); margin: 0 4px; }
 
   /* トップページのスクロール（スマホの形） */
-  .phone { width: 230px; margin: 0 auto; border: 6px solid var(--espresso); border-radius: 28px; padding: 18px 12px 14px; background: #fff; position: relative; }
-  .phone::before { content: ""; position: absolute; top: 6px; left: 50%; width: 44px; height: 4px; border-radius: 2px; background: var(--espresso); transform: translateX(-50%); opacity: .35; }
+  .phone { width: 230px; margin: 0 auto; border: 6px solid #DDD8D2; border-radius: 28px; padding: 18px 12px 14px; background: #fff; position: relative; }
+  .phone::before { content: ""; position: absolute; top: 6px; left: 50%; width: 44px; height: 4px; border-radius: 2px; background: #B9B2AB; transform: translateX(-50%); opacity: .6; }
   .ph-row { margin: 6px 0; }
   .ph-row .t { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--ink); }
   .ph-row .t span:last-child { color: var(--ink2); font-family: var(--num); }
@@ -290,7 +292,7 @@
   .shops { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 14px; }
   .shop { border-radius: 10px; overflow: hidden; background: #fff; border: 1px solid var(--line); position: relative; }
   .shop .ph { height: 120px; background: var(--tint) center / cover no-repeat; }
-  .shop .rk { position: absolute; top: 10px; left: 10px; min-width: 26px; height: 26px; border-radius: 6px; background: var(--espresso); color: #fff; font-family: var(--num); font-weight: 600; font-size: 13px; display: grid; place-items: center; padding: 0 6px; }
+  .shop .rk { position: absolute; top: 10px; left: 10px; min-width: 26px; height: 26px; border-radius: 6px; background: var(--orange); color: #fff; font-family: var(--num); font-weight: 600; font-size: 13px; display: grid; place-items: center; padding: 0 6px; }
   .shop .bd { padding: 10px 12px 12px; }
   .shop .nm { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .shop .st { display: flex; gap: 12px; font-size: 12px; color: var(--ink2); margin-top: 2px; flex-wrap: wrap; }
@@ -323,7 +325,7 @@
   /* 読み込み中 */
   #loading { text-align: center; padding: 120px 0; color: var(--muted); }
   #loading::before { content: ""; display: block; width: 28px; height: 28px; margin: 0 auto 14px; border-radius: 50%; border: 3px solid var(--line); border-top-color: var(--orange); animation: spin .9s linear infinite; }
-  .busy-pill { position: fixed; left: calc(50% + var(--side) / 2); bottom: 24px; transform: translateX(-50%) translateY(220px); z-index: 60; background: var(--espresso); color: #fff; padding: 10px 18px; border-radius: 999px; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.2); transition: transform .35s var(--ease); font-size: 13px; white-space: nowrap; }
+  .busy-pill { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(220px); z-index: 60; background: var(--orange); color: #fff; padding: 10px 18px; border-radius: 999px; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.2); transition: transform .35s var(--ease); font-size: 13px; white-space: nowrap; }
   .busy-pill::before { content: ""; width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; animation: spin .9s linear infinite; }
   .busy-pill.show { transform: translateX(-50%) translateY(0); }
   .retry { font-weight: 700; border: 0; border-radius: 9px; padding: 10px 20px; margin-top: 14px; background: var(--orange); color: #fff; cursor: pointer; }
@@ -331,11 +333,12 @@
   /* スマホの「その他」（右から出る） */
   .scrim { position: fixed; inset: 0; background: rgba(34,26,21,.4); z-index: 55; opacity: 0; pointer-events: none; transition: opacity .25s; }
   .scrim.open { opacity: 1; pointer-events: auto; }
-  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(320px, 86vw); background: var(--espresso); color: var(--on-dark); z-index: 56; transform: translateX(105%); transition: transform .3s var(--ease); overflow-y: auto; padding: 0 0 24px; }
+  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(320px, 86vw); background: #fff; color: var(--ink); box-shadow: -8px 0 30px rgba(34,26,21,.12); z-index: 56; transform: translateX(105%); transition: transform .3s var(--ease); overflow-y: auto; padding: 0 0 24px; }
   .drawer.open { transform: none; }
-  .dr-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 16px 8px 22px; color: #fff; font-weight: 700; font-size: 15px; }
-  .dr-close { border: 0; background: rgba(255,255,255,.1); color: #fff; width: 36px; height: 36px; border-radius: 9px; font-size: 18px; cursor: pointer; line-height: 1; }
-  .drawer .nav-item { color: var(--on-dark); }
+  .dr-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 16px 10px 22px; color: var(--orange); font-weight: 700; font-size: 16px; border-bottom: 1px solid var(--line); }
+  .dr-close { border: 0; background: var(--tint); color: var(--ink); width: 36px; height: 36px; border-radius: 9px; font-size: 18px; cursor: pointer; line-height: 1; }
+  .drawer .nav { padding: 10px 12px; }
+  .dr-upd { margin: 6px 26px 0; font-size: 11.5px; color: var(--muted); line-height: 1.6; }
 
   /* 上へ戻る */
   .to-top { position: fixed; right: 20px; bottom: 24px; z-index: 35; width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--line); background: #fff; box-shadow: 0 4px 12px rgba(34,26,21,.1); cursor: pointer; display: grid; place-items: center; opacity: 0; pointer-events: none; transition: opacity .25s; color: var(--ink); }
@@ -352,37 +355,42 @@
     .minis-card .mini:nth-last-child(-n+3) { border-bottom: 0; }
     .shops { grid-template-columns: repeat(2, 1fr); }
   }
+  @media (max-width: 1180px) {
+    .tab { padding-left: 14px; padding-right: 14px; }
+    .tab .l { display: none; } .tab .s { display: inline; }
+  }
   @media (max-width: 860px) {
-    .side { display: none; }
-    .shell { margin-left: 0; }
-    .top { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--paper); }
-    .top-in { padding: 10px 16px; flex-wrap: wrap; gap: 8px; }
+    .hd-in { padding: 14px 16px; gap: 12px; }
+    .mark { width: 42px; height: 42px; border-radius: 11px; }
+    .mark svg { width: 22px; height: 22px; }
+    .hd-ttl { gap: 0 10px; }
+    .hd-ttl b { font-size: 22px; }
+    .hd-ttl small { font-size: 12px; }
+    .hd-upd, .menu-btn .t { display: none; }
+    .icon-btn.menu-btn { width: 38px; padding: 0; justify-content: center; }
+    .bar { position: static; box-shadow: none; }
+    .bar-in { padding: 0; flex-wrap: wrap; gap: 0; }
+    .tabs { width: 100%; display: grid; grid-template-columns: .8fr .8fr .8fr 1.2fr 1.3fr; }
+    .tab { justify-content: center; padding: 14px 2px 12px; font-size: 14px; }
+    .tab .cnt-badge { display: none; }
+    .ctrls { width: 100%; margin-left: 0; padding: 10px 16px; border-top: 1px solid var(--line); background: var(--paper); }
     .pill .pd { display: none; }
-    .site-chip { flex: 1; }
-    .top-brand { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
-    .top-brand .mark { width: 30px; height: 30px; border-radius: 8px; }
-    .top-brand b { font-size: 15px; font-weight: 700; }
-    .menu-btn { display: grid; }
-    .ctrls { order: 3; width: 100%; margin-left: 0; }
+    .site-chip { flex: 1; max-width: none; }
     .ctrls .pop-wrap { flex: none; }
-    main { padding: 20px 16px 110px; }
+    main { padding: 18px 14px 60px; }
     .page-head h1 { font-size: 21px; }
     .sum-lead { font-size: 18px; }
-    .tabbar { display: grid; grid-template-columns: repeat(5, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: var(--espresso); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); }
-    .tabbar .nav-item { flex-direction: column; gap: 3px; padding: 6px 2px; font-size: 10.5px; justify-content: center; text-align: center; border-radius: 8px; line-height: 1.2; white-space: nowrap; }
-    .tabbar .nav-item.on { background: none; color: #fff; }
-    .tabbar .nav-item.on::before { left: 30%; right: 30%; top: -6px; bottom: auto; width: auto; height: 3px; border-radius: 0 0 3px 3px; }
-    .busy-pill { left: 50%; bottom: 86px; }
-    .to-top { bottom: 84px; right: 14px; }
+    .to-top { right: 14px; bottom: 20px; }
     .pop { position: fixed; left: 0; right: 0; bottom: 0; top: auto; width: auto; border-radius: 16px 16px 0 0; padding: 12px 12px calc(16px + env(safe-area-inset-bottom)); max-height: 80vh; overflow-y: auto; }
     .pop.open { animation: rise .25s var(--ease); }
     .pop-scrim.open { display: block; position: fixed; inset: 0; background: rgba(34,26,21,.4); z-index: 45; }
-    body.pop-open .top { z-index: 50; }
+    body.pop-open .bar { z-index: 50; position: relative; }
   }
   @media (max-width: 640px) {
     .kpi3 { grid-column: 1 / -1; }
-    .card { padding: 16px 16px 18px; }
-    .minis { margin: -16px -16px -18px; height: auto; }
+    .card { padding: 18px 16px 20px; border-radius: 18px; }
+    .card .sub { margin-left: 0; }
+    .minis { margin: -18px -16px -20px; height: auto; }
     .minis-card .minis { grid-template-columns: repeat(2, 1fr); }
     .minis-card .mini:nth-child(3n) { border-right: 1px solid var(--line); }
     .minis-card .mini:nth-child(2n) { border-right: 0; }
@@ -414,27 +422,23 @@
 </style>
 </head>
 <body>
-<!-- パソコン：左のメニュー -->
-<aside class="side" aria-label="メニュー">
-  <div class="brand"><span class="mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M5 19v-6M12 19V6M19 19v-9"/></svg></span><span><b>アクセス集計</b><small>カットハウスひかり</small></span></div>
-  <nav class="nav">
-    <h3>サイトの分析</h3>
-    <button class="nav-item" type="button" data-view="overview"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>概要</span></button><button class="nav-item" type="button" data-view="flow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="18" cy="19" r="2"/><path d="M8 5h7a3.5 3.5 0 0 1 0 7H9a3.5 3.5 0 0 0 0 7h7"/></svg><span>お客様の動き</span></button><button class="nav-item" type="button" data-view="popular"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4l-5.3 3 1.2-6-4.5-4.1 6-.7z"/></svg><span>人気のページ・店舗</span></button><button class="nav-item" type="button" data-view="when"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>いつ・どこから</span></button>
-    <h3>集客の道具</h3>
-    <button class="nav-item" type="button" data-view="links"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20.5 14v.01M14 20.5h.01M17 20.5h3.5V17"/></svg><span>QR・リンク</span><span class="cnt-badge" id="qrCount"></span></button>
-  </nav>
-  <div class="side-foot">
-    <a class="nav-item" data-link="site" href="#" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span>ホームページを開く</span></a><a class="nav-item" data-link="sheet" href="#" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M10 3v18"/></svg><span>スプレッドシート</span></a><a class="nav-item" data-link="ga" href="#" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V12M12 20V5M19 20v-9"/></svg><span>Googleアナリティクス</span></a><button class="nav-item do-refresh" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7M21 4v5h-5"/></svg><span>最新の数字にする</span></button><a class="nav-item" data-link="notrack" href="#" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M10.6 6.1A9.9 9.9 0 0 1 12 6c5 0 9 6 9 6a17 17 0 0 1-2.7 3.3M6.6 6.6C4.3 8 3 12 3 12s4 6 9 6c1.6 0 3-.4 4.3-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg><span>社内の閲覧を数えない</span></a><button class="nav-item" type="button" data-gloss><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17.5v.01"/></svg><span>言葉の意味</span></button>
-    <div class="side-upd" id="upd">読み込み中…</div>
-  </div>
-</aside>
-
 <div class="shell">
-  <div class="top">
-    <div class="top-in">
-      <div class="top-brand"><span class="mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M5 19v-6M12 19V6M19 19v-9"/></svg></span><b>アクセス集計</b></div>
-      <button id="menuBtn" class="icon-btn menu-btn" type="button" aria-label="その他のメニューを開く" aria-expanded="false" aria-controls="drawer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg></button>
-      <div class="ctrls">
+  <!-- 上の帯：左上にオレンジのアイコンとタイトル（ほかの社内アプリと同じ） -->
+  <header class="hd">
+    <div class="hd-in">
+      <span class="mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/></svg></span>
+      <div class="hd-ttl"><b>アクセス集計</b><small>ホームページの見られ方</small></div>
+      <div class="hd-right">
+        <div class="hd-upd" id="upd">読み込み中…</div>
+        <button id="menuBtn" class="icon-btn menu-btn" type="button" aria-label="その他のメニューを開く" aria-expanded="false" aria-controls="drawer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg><span class="t">その他</span></button>
+      </div>
+    </div>
+  </header>
+  <!-- タブ（ページ）＋サイト・期間 -->
+  <div class="bar">
+    <div class="bar-in">
+      <nav class="tabs" aria-label="ページ"><button class="tab" type="button" data-view="overview"><span class="l">概要</span><span class="s">概要</span></button><button class="tab" type="button" data-view="flow"><span class="l">お客様の動き</span><span class="s">動き</span></button><button class="tab" type="button" data-view="popular"><span class="l">人気のページ・店舗</span><span class="s">人気</span></button><button class="tab" type="button" data-view="when"><span class="l">いつ・どこから</span><span class="s">いつ・どこ</span></button><button class="tab" type="button" data-view="links"><span class="l">QR・リンク</span><span class="s">QR・リンク</span><span class="cnt-badge" id="qrCount"></span></button></nav>
+        <div class="ctrls">
         <label class="pill site-chip" id="siteChip" title="見るサイト"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span class="lbl" id="siteLbl">カットハウスひかり</span><span class="caret">▼</span><select id="siteSel" aria-label="見るサイト"><option value="hikari">カットハウスひかり</option></select></label>
         <div class="pop-wrap">
           <button class="pill" id="periodBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="periods"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span class="lbl" id="periodLbl">今月</span><span class="caret">▼</span></button>
@@ -538,14 +542,12 @@
   </main>
 </div>
 
-<!-- スマホ：下のタブ -->
-<nav class="tabbar" aria-label="ページ"><button class="nav-item" type="button" data-view="overview"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>概要</span></button><button class="nav-item" type="button" data-view="flow"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="18" cy="19" r="2"/><path d="M8 5h7a3.5 3.5 0 0 1 0 7H9a3.5 3.5 0 0 0 0 7h7"/></svg><span>動き</span></button><button class="nav-item" type="button" data-view="popular"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4l-5.3 3 1.2-6-4.5-4.1 6-.7z"/></svg><span>人気</span></button><button class="nav-item" type="button" data-view="when"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>いつ・どこ</span></button><button class="nav-item" type="button" data-view="links"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20.5 14v.01M14 20.5h.01M17 20.5h3.5V17"/></svg><span>QR・リンク</span></button></nav>
-
 <div class="busy-pill" id="busy" role="status" aria-live="polite"><span id="busyTxt">集めています…</span></div>
 <div class="scrim" id="scrim"></div>
 <nav class="drawer" id="drawer" aria-label="その他のメニュー" aria-hidden="true">
-  <div class="dr-head">その他<button class="dr-close" id="drClose" type="button" aria-label="閉じる">×</button></div>
+  <div class="dr-head">その他のメニュー<button class="dr-close" id="drClose" type="button" aria-label="閉じる">×</button></div>
   <div class="nav"><a class="nav-item" data-link="site" href="#" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span>ホームページを開く</span></a><a class="nav-item" data-link="sheet" href="#" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M10 3v18"/></svg><span>スプレッドシート</span></a><a class="nav-item" data-link="ga" href="#" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V12M12 20V5M19 20v-9"/></svg><span>Googleアナリティクス</span></a><button class="nav-item do-refresh" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7M21 4v5h-5"/></svg><span>最新の数字にする</span></button><a class="nav-item" data-link="notrack" href="#" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M10.6 6.1A9.9 9.9 0 0 1 12 6c5 0 9 6 9 6a17 17 0 0 1-2.7 3.3M6.6 6.6C4.3 8 3 12 3 12s4 6 9 6c1.6 0 3-.4 4.3-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg><span>社内の閲覧を数えない</span></a><button class="nav-item" type="button" data-gloss><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17.5v.01"/></svg><span>言葉の意味</span></button></div>
+<p class="dr-upd" id="upd2"></p>
 </nav>
 
 <div class="modal" id="glossModal" hidden role="dialog" aria-modal="true" aria-labelledby="glTitle">
@@ -741,7 +743,8 @@
   // ---------------- 表示
   function show() {
     $("loading").hidden = true; $("app").hidden = false;
-    $("upd").innerHTML = "集めた時刻 " + esc(D.at || "") + (B.updated ? "<br>月ごとの表の保存 " + esc(B.updated) : "");
+    $("upd").innerHTML = "集めた時刻 " + esc(D.at || "");
+    $("upd2").innerHTML = "集めた時刻 " + esc(D.at || "") + (B.updated ? "<br>月ごとの表の保存 " + esc(B.updated) : "");
     var notes = "";
     if (D.errors) notes += '<p class="note err">一部の表が読み込めませんでした：' + esc(D.errors) + "</p>";
     if ((D.cur.kpi.users || 0) < 30 && (D.prev.kpi.users || 0) < 30) notes += '<p class="note">本番公開前のため、数字はまだわずかです。</p>';
@@ -1241,7 +1244,7 @@
   function setView(v, push) {
     VIEW = VIEWS.indexOf(v) >= 0 ? v : "overview";
     document.body.classList.toggle("v-links", VIEW === "links");
-    document.querySelectorAll(".nav-item[data-view]").forEach(function (t) { var on = t.getAttribute("data-view") === VIEW; t.classList.toggle("on", on); if (on) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current"); });
+    document.querySelectorAll(".tab[data-view]").forEach(function (t) { var on = t.getAttribute("data-view") === VIEW; t.classList.toggle("on", on); if (on) t.setAttribute("aria-current", "page"); else t.removeAttribute("aria-current"); });
     document.querySelectorAll(".page").forEach(function (p) { p.hidden = p.getAttribute("data-page") !== VIEW; });
     window.scrollTo(0, 0);
     if (push && window.google && google.script && google.script.history) { try { google.script.history.push({ view: VIEW }, VIEW === "overview" ? {} : { page: VIEW }); } catch (e) { /* なくても動く */ } }
