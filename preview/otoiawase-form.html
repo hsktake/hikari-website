@@ -39,6 +39,9 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
 .seg input{position:absolute;opacity:0;pointer-events:none}
 .seg span{display:block;text-align:center;border:1px solid var(--line);border-radius:4px;padding:10px 6px;font-size:14px;background:#fff}
 .seg input:checked+span{border-color:var(--accent);color:var(--accent-d);background:#fff6ee;font-weight:700}
+.seg.pref label.full{flex:1 1 100%}
+.dt{display:flex;gap:8px}.dt input{flex:1.25;min-width:0}.dt select{flex:1;min-width:0}
+.sw{margin-top:10px}
 .seg input:focus-visible+span{box-shadow:0 0 0 3px rgba(228,108,10,.25)}
 .addph{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:9px 16px;font-size:14px;color:var(--ink);background:#fff;cursor:pointer}
 .addph input{display:none}
@@ -67,7 +70,7 @@ footer{text-align:center;font-size:12px;color:var(--sub);padding:0 16px 24px}
 </style>
 </head>
 <body>
-<header><div class="in"><a href="https://www.cut-hikari.com/">カットハウスひかり</a><a class="home" href="https://www.cut-hikari.com/">ホームへ戻る</a></div></header>
+<header><div class="in"><a href="https://www.cut-hikari.com/">カットハウスひかり</a></div></header>
 <main>
 <h1>お問い合わせ</h1>
 <p class="lead">ご質問・ご意見・ご要望を受け付けております。内容を確認のうえ、担当者よりメールにてご連絡いたします。</p>
@@ -76,15 +79,14 @@ footer{text-align:center;font-size:12px;color:var(--sub);padding:0 16px 24px}
   <div class="f" id="q-name"><label for="f-name">お名前<span class="req">必須</span></label><input type="text" id="f-name" autocomplete="name" maxlength="60"><p class="err"></p></div>
   <div class="f" id="q-mail"><label for="f-mail">メールアドレス<span class="req">必須</span></label><input type="email" id="f-mail" autocomplete="email" inputmode="email" maxlength="120"><p class="err"></p></div>
   <div class="f" id="q-kind"><span class="t">お問い合わせの種類<span class="req">必須</span></span><div class="seg" id="kinds"></div><p class="err"></p></div>
-  <div class="f" id="q-store"><label for="f-store">ご利用の店舗<span class="req">必須</span></label><select id="f-store"></select><p class="err"></p></div>
   <div class="f" id="q-body"><label for="f-body">お問い合わせ内容<span class="req">必須</span></label><textarea id="f-body" maxlength="4000"></textarea><p class="err"></p></div>
-  <div class="f" id="q-date"><label for="f-date">ご利用日<span class="opt">任意</span></label><input type="date" id="f-date"><p class="err"></p></div>
+  <div class="f" id="q-date"><span class="t">ご利用日時<span class="opt">任意</span></span><div class="dt"><input type="date" id="f-date" aria-label="ご利用日"><select id="f-time" aria-label="ご利用の時間帯"></select></div><p class="err"></p></div>
+  <div class="f" id="q-store"><span class="t">ご利用店舗<span class="req">必須</span></span><div class="seg pref" id="prefs"></div><div class="sw" id="storeWrap" hidden><select id="f-store" aria-label="ご利用店舗"></select></div><p class="err"></p></div>
   <div class="f" id="q-photo"><span class="t">写真<span class="opt">任意</span></span><label class="addph">写真を添付する（5枚まで）<input type="file" id="f-photo" accept="image/*" multiple></label><div class="ph" id="ph"></div><p class="err"></p></div>
   <div class="hp" aria-hidden="true"><input type="text" id="f-hp" tabindex="-1" autocomplete="off"></div>
   <p class="agree">ご入力いただいた個人情報は、<a href="https://www.cut-hikari.com/privacypolicy.html" target="_blank" rel="noopener">プライバシーポリシー</a>に基づき適切に取り扱います。</p>
   <button type="button" class="send" id="send">送信する</button>
 </div>
-<p class="tel">お急ぎの場合は、お電話にてお問い合わせください。<a href="tel:05017205983">050-1720-5983</a>（音声ガイダンスが流れます）</p>
 </main>
 <footer>&copy; 1997 H.S.K</footer>
 <script>
@@ -93,7 +95,7 @@ footer{text-align:center;font-size:12px;color:var(--sub);padding:0 16px 24px}
 // 送り先（Google Apps Script「HSK-VOICE お問い合わせフォーム」）
 var API="https://script.google.com/macros/s/AKfycbywBFsL93X_skOM0SAuYSO5EVmUQHwZ8y4JA6OBlz39qTkMBdTS47n2j-HsTUA71Rvbcw/exec";
 // 種類と店舗（Googleフォームと同じ。開いたあと、最新の一覧を裏で読み込んで入れ替えます）
-var L={kinds:["ご質問","ご意見・ご要望","お褒めの言葉","その他"],prefs:[
+var L={kinds:["ご質問","ご意見・ご要望","お褒めの言葉","その他"],times:["9時台","10時台","11時台","12時台","13時台","14時台","15時台","16時台","17時台","18時台","19時台","20時台","わからない"],prefs:[
 {label:"茨城県",stores:["青葉店","アクロスモール守谷店","麻生店","鮎川店","荒川本郷店","石岡中央店","石下店","稲敷パルナ店","稲敷パンプ店","岩井店","大津港店","鹿嶋東店","カットスペースPLUS","上水戸店","川尻店","サプラ龍ヶ崎店","下妻店","大子店","高場店","高萩店","つくば梅園店","つくば高見原店","友部店","羽鳥店","常陸太田店","藤代駅南口店","鉾田SC店","真壁店","水海道淵頭店","水戸赤塚店","水戸エクセル店","みらい平店"]},
 {label:"栃木県",stores:["今市店","氏家オータニ店","大金店","小山城東店","鹿沼栄町店","上三川店","さくらベイシア店","自治医大店","鶴田店","西方店","二宮店","野沢店","HAIR STUDIO MR.COOL","ベイシア壬生店","御幸ヶ原店","Men's Cut & Self DELIGHT","真岡荒町店"]},
 {label:"千葉県",stores:["旭店","芦崎店","小見川店","酒々井店","シャンプーカット アルファ","ちはら台店","天王台店","PIACITY八街店","四街道店"]},
@@ -119,20 +121,30 @@ var FROM=(function(){
 })();
 
 function drawKinds(){$("kinds").innerHTML=L.kinds.map(function(k){return '<label><input type="radio" name="kind" value="'+esc(k)+'"><span>'+esc(k)+'</span></label>'}).join("")}
-function drawStores(){
- var cur=$("f-store").value,h='<option value="">選択してください</option>';
- L.prefs.forEach(function(p,i){
-  if(p.stores.length)h+='<optgroup label="'+esc(p.label)+'">'+p.stores.map(function(s){return '<option value="'+i+'|'+esc(s)+'">'+esc(s)+'</option>'}).join("")+'</optgroup>';
-  else h+='<option value="'+i+'|">'+esc(p.label)+'</option>';
- });
- $("f-store").innerHTML=h;$("f-store").value=cur;
+function drawTimes(){var cur=$("f-time").value;$("f-time").innerHTML='<option value="">時間帯</option>'+L.times.map(function(t){return '<option>'+esc(t)+'</option>'}).join("");$("f-time").value=cur}
+// ご利用店舗：いちばん上に「利用していない・わからない」、次に県。県を押すと、その県の店舗だけが出る
+function prefList(){var none=L.prefs.filter(function(p){return !p.stores.length}),rest=L.prefs.filter(function(p){return p.stores.length});return none.concat(rest)}
+function prefOf(){var r=document.querySelector('input[name=pref]:checked');return r?prefList()[+r.value]:null}
+function drawPrefs(){
+ var cur=prefOf(),curStore=$("f-store").value;
+ $("prefs").innerHTML=prefList().map(function(p,i){return '<label'+(p.stores.length?'':' class="full"')+'><input type="radio" name="pref" value="'+i+'"'+(cur&&cur.label===p.label?' checked':'')+'><span>'+esc(p.stores.length?p.label:"利用していない・わからない")+'</span></label>'}).join("");
+ drawStores(curStore);
 }
-drawKinds();drawStores();
+function drawStores(keep){
+ var p=prefOf(),w=$("storeWrap");
+ if(!p||!p.stores.length){w.hidden=true;$("f-store").innerHTML="";return}
+ $("f-store").innerHTML='<option value="">店舗を選択してください（'+esc(p.label)+'）</option>'+p.stores.map(function(s){return '<option value="'+esc(s)+'">'+esc(s)+'</option>'}).join("");
+ if(keep)$("f-store").value=keep;w.hidden=false;
+}
+$("prefs").addEventListener("change",function(){drawStores("")});
+drawKinds();drawTimes();drawPrefs();
 // 最新の店舗一覧を裏で読み込む（読めなくても、上の一覧でそのまま送れる）
 try{fetch(API+"?api=layout").then(function(r){return r.json()}).then(function(x){
  if(!x||!x.ok||!x.layout)return;var y=x.layout;
  if(y.q&&y.q.kind&&y.q.kind.opts&&y.q.kind.opts.length&&!document.querySelector('input[name=kind]:checked')){L.kinds=y.q.kind.opts;drawKinds()}
- if(y.prefs&&y.prefs.length){L.prefs=y.prefs.map(function(p){return{label:p.label,stores:p.stores||[]}});drawStores()}
+ if(y.q&&y.q.time&&y.q.time.opts&&y.q.time.opts.length){L.times=y.q.time.opts;drawTimes()}
+ if(y.prefs&&y.prefs.length){var keep=$("f-store").value,cur=prefOf();L.prefs=y.prefs.map(function(p){return{label:p.label,stores:p.stores||[]}});
+  $("prefs").innerHTML="";drawPrefs();if(cur){var i=prefList().map(function(p){return p.label}).indexOf(cur.label);if(i>=0){document.querySelectorAll('input[name=pref]')[i].checked=true;drawStores(keep)}}}
 }).catch(function(){})}catch(e){}
 
 function bad(id,m){var e=$("q-"+id);e.classList.add("bad");e.querySelector(".err").textContent=m}
@@ -160,16 +172,17 @@ function drawPh(){
 }
 
 $("send").addEventListener("click",function(){
- var v=function(id){return String($("f-"+id).value||"").trim()},k=document.querySelector('input[name=kind]:checked'),st=v("store").split("|"),p=L.prefs[+st[0]];
- var d={name:v("name"),mail:v("mail"),kind:k?k.value:"",pref:st[0]!==""&&p?p.label:"",store:st[1]||"",body:v("body"),date:v("date"),hp:v("hp"),from:FROM,
+ var v=function(id){return String($("f-"+id).value||"").trim()},k=document.querySelector('input[name=kind]:checked'),p=prefOf();
+ var d={name:v("name"),mail:v("mail"),kind:k?k.value:"",pref:p?p.label:"",store:p&&p.stores.length?v("store"):"",body:v("body"),date:v("date"),time:v("time"),hp:v("hp"),from:FROM,
   photos:PH.filter(function(x){return x.data}).map(function(x){return{type:"image/jpeg",data:x.data}})};
  ["name","mail","kind","store","body","photo"].forEach(ok);
  var first=null,need=function(c,id,m){if(!c){bad(id,m);first=first||id}};
  need(d.name,"name","お名前を入力してください");
  need(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.mail),"mail","メールアドレスを正しく入力してください");
  need(d.kind,"kind","お問い合わせの種類を選択してください");
- need(d.pref,"store","ご利用の店舗を選択してください");
  need(d.body,"body","お問い合わせ内容を入力してください");
+ need(d.pref,"store","ご利用店舗を選択してください");
+ if(p&&p.stores.length)need(d.store,"store","店舗を選択してください");
  if(PH.some(function(x){return !x.data})){bad("photo","写真を読み込み中です。少し待ってから送信してください");first=first||"photo"}
  if(first){$("q-"+first).scrollIntoView({behavior:"smooth",block:"center"});return}
  var b=$("send"),m=$("msg");b.disabled=true;b.textContent="送信しています…";m.className="msg";
