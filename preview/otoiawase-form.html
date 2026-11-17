@@ -11,7 +11,7 @@
   株式会社エイチ・エス・ケイ お問い合わせフォーム（このファイル1つで動きます。ロゴの画像もこのファイルの中に入っています）
   ・送信した内容は、裏で Google（HSK-VOICE お問い合わせフォーム）に送られ、HSK-VOICE に自動で入ります。
   ・このファイルには、パスワードやお客様の情報は入っていません。
-  ・どこから来たか（受付媒体）は自動で記録します。リンクの最後に ?from=受付媒体 を付けると、その名前で記録します。
+  ・どこから来たか（受付媒体）は、リンクの最後の ?from=置く場所 で記録します（HSK-VOICEの設定「フォーム」に置く場所ごとのURLがあります）。
 -->
 <style>
 :root{--ink:#222;--sub:#666;--line:#d5d8dc;--bg:#f5f6f7;--accent:#138a8f;--accent-d:#0d6e72;--ng:#c62828}
@@ -105,19 +105,12 @@ var MAX=5,PH=[];
 function $(i){return document.getElementById(i)}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 
-// どこから来たか（お客様は何も選ばない）
+// どこから来たか（お客様は何も選ばない）：リンクの最後の ?from=置く場所 をそのまま記録。なければ、スマホ／パソコンでホームページとみなす
 var FROM=(function(){
  var f="";try{f=new URLSearchParams(location.search).get("from")||""}catch(e){}
  f=f.replace(/[<>"'&\\]/g,"").trim().slice(0,40);if(f)return f;
- var ua=navigator.userAgent||"",ref="";try{ref=document.referrer?new URL(document.referrer).hostname.toLowerCase():""}catch(e){}
- if(/instagram\.com$/.test(ref)||/Instagram/.test(ua))return "Instagram";
- if(/(^|\.)line\.me$|(^|\.)line-apps\.com$/.test(ref)||/ Line\//.test(ua))return "LINE";
- if(/(^|\.)google\.[a-z.]+$|(^|\.)yahoo\.co\.jp$|(^|\.)yahoo\.com$|(^|\.)bing\.com$|duckduckgo\.com$/.test(ref))return "検索";
- if(ref&&(ref===location.hostname.toLowerCase()||/(^|\.)cut-hikari\.com$/.test(ref))){
-  var sp=/iPhone|iPad|iPod|Android|Mobile/i.test(ua)||(window.matchMedia&&matchMedia("(max-width: 768px)").matches);
-  return sp?"メール（スマホHP）":"メール（パソコンHP）";
- }
- return "お問い合わせフォーム";
+ var sp=/iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent||"")||(window.matchMedia&&matchMedia("(max-width: 768px)").matches);
+ return sp?"ホームページ（スマホ）":"ホームページ（パソコン）";
 })();
 
 function drawTimes(){var cur=$("f-time").value;$("f-time").innerHTML='<option value="">時間帯</option>'+L.times.map(function(t){return '<option>'+esc(t)+'</option>'}).join("");$("f-time").value=cur}
