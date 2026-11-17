@@ -81,7 +81,7 @@ footer{text-align:center;font-size:12px;color:var(--sub);padding:0 16px 24px}
   <div class="f" id="q-mail"><label for="f-mail">メールアドレス<span class="req">必須</span></label><input type="email" id="f-mail" autocomplete="email" inputmode="email" maxlength="120"><p class="err"></p></div>
   <div class="f" id="q-body"><label for="f-body">お問い合わせ内容<span class="req">必須</span></label><textarea id="f-body" maxlength="4000"></textarea><p class="err"></p></div>
   <div class="f" id="q-date"><span class="t">ご利用日時<span class="opt">任意</span></span><div class="dt"><input type="date" id="f-date" aria-label="ご利用日"><select id="f-time" aria-label="ご利用の時間帯"></select></div><p class="err"></p></div>
-  <div class="f" id="q-store"><span class="t">ご利用店舗<span class="req">必須</span></span><div class="seg pref" id="prefs"></div><div class="sw" id="storeWrap" hidden><select id="f-store" aria-label="ご利用店舗"></select></div><p class="err"></p></div>
+  <div class="f" id="q-store"><span class="t">ご利用店舗<span class="opt">任意</span></span><div class="seg pref" id="prefs"></div><div class="sw" id="storeWrap" hidden><select id="f-store" aria-label="ご利用店舗"></select></div><p class="err"></p></div>
   <div class="f" id="q-photo"><span class="t">写真<span class="opt">任意</span></span><label class="addph">写真を添付する（5枚まで）<input type="file" id="f-photo" accept="image/*" multiple></label><div class="ph" id="ph"></div><p class="err"></p></div>
   <div class="hp" aria-hidden="true"><input type="text" id="f-hp" tabindex="-1" autocomplete="off"></div>
   <p class="agree">ご入力いただいた個人情報は、<a href="https://www.cut-hikari.com/privacypolicy.html" target="_blank" rel="noopener">プライバシーポリシー</a>に基づき適切に取り扱います。</p>
@@ -171,8 +171,6 @@ $("send").addEventListener("click",function(){
  need(d.name,"name","お名前を入力してください");
  need(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.mail),"mail","メールアドレスを正しく入力してください");
  need(d.body,"body","お問い合わせ内容を入力してください");
- need(d.pref,"store","ご利用店舗を選択してください");
- if(p&&p.stores.length)need(d.store,"store","店舗を選択してください");
  if(PH.some(function(x){return !x.data})){bad("photo","写真を読み込み中です。少し待ってから送信してください");first=first||"photo"}
  if(first){$("q-"+first).scrollIntoView({behavior:"smooth",block:"center"});return}
  var b=$("send"),m=$("msg");b.disabled=true;b.textContent="送信しています…";m.className="msg";
