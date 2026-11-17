@@ -30,120 +30,134 @@
   .num, td.n { font-family: var(--num); font-feature-settings: "tnum"; }
   .num { font-weight: 600; }
 
-  /* ===== 上の帯（オーナー指示 2026-11-17：HSK-MEMO などほかの社内アプリと同じ形。白い帯・左上にオレンジのアイコンとタイトル・その下に横のタブ） ===== */
+  /* ===== 上の帯（オーナー指示 2026-11-17：HSK-DB と同じ形。白い帯の左上にオレンジのタイトル、右にサイト・期間・比較の切り替え、下にオレンジのタブ） ===== */
   .shell { min-height: 100vh; }
-  .hd { background: #fff; border-bottom: 1px solid var(--line); }
-  .hd-in { max-width: 1240px; margin: 0 auto; padding: 16px 32px; display: flex; align-items: center; gap: 14px; }
-  .mark { width: 46px; height: 46px; border-radius: 12px; background: var(--orange); display: grid; place-items: center; flex: none; box-shadow: 0 2px 6px rgba(239,122,0,.25); }
-  .hd-ttl { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; min-width: 0; }
-  .hd-ttl b { font-size: 26px; font-weight: 700; color: var(--orange); letter-spacing: .02em; line-height: 1.2; white-space: nowrap; }
-  .hd-ttl small { font-size: 14px; color: var(--muted); white-space: nowrap; }
-  .hd-right { margin-left: auto; display: flex; align-items: center; gap: 10px; flex: none; }
-  .hd-upd { font-size: 11.5px; color: var(--muted); text-align: right; line-height: 1.5; }
+  .top { position: sticky; top: 0; z-index: 30; background: #fff; border-bottom: 1px solid var(--line); box-shadow: 0 2px 10px rgba(34,26,21,.04); }
+  .top-in { max-width: 1240px; margin: 0 auto; padding: 12px 32px 10px; display: flex; flex-direction: column; gap: 10px; }
+  .row1 { display: flex; align-items: center; gap: 10px 18px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 12px; margin-right: auto; min-width: 0; }
+  .mark { width: 40px; height: 40px; border-radius: 11px; background: var(--orange); display: grid; place-items: center; flex: none; box-shadow: 0 2px 6px rgba(239,122,0,.25); }
+  .mark svg { width: 22px; height: 22px; }
+  .hd-ttl { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+  .hd-ttl b { font-size: 22px; font-weight: 700; color: var(--orange); letter-spacing: .02em; line-height: 1.2; white-space: nowrap; }
+  .hd-ttl small { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
 
-  /* タブ（いま見ているページはオレンジの文字＋下線） */
-  .bar { position: sticky; top: 0; z-index: 30; background: #fff; border-bottom: 1px solid var(--line); box-shadow: 0 2px 10px rgba(34,26,21,.04); }
-  .bar-in { max-width: 1240px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; gap: 16px; }
-  .tabs { display: flex; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  /* しぼりこみ（ラベル＋選ぶ欄） */
+  .kf { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; font-size: 13px; min-width: 0; }
+  .kfg { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .kfg > label, .kfl { color: var(--ink2); font-weight: 700; white-space: nowrap; font-size: 12.5px; }
+  .kfc { display: flex; align-items: center; gap: 6px; min-width: 0; color: var(--muted); }
+  .ksel { font: inherit; font-size: 13.5px; height: 36px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); max-width: 100%; min-width: 0; cursor: pointer; }
+  .ksel:hover { border-color: #CFCAC4; }
+  .ksel:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(239,122,0,.15); }
+  select.ksel { padding-right: 30px; -webkit-appearance: none; appearance: none; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23EF7A00' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; }
+  .kwide { width: 13.5rem; }
+  .kdate { width: 9.6rem; font-family: var(--num); font-feature-settings: "tnum"; }
+  .kfb { gap: 8px; }
+  /* 比べる：オン・オフの切り替え（HSK-DB の「前年と比較」と同じ形） */
+  .kly { font: inherit; display: inline-flex; align-items: center; gap: 8px; height: 36px; font-size: 13px; font-weight: 700; padding: 0 8px 0 12px; border: 1.5px solid var(--line); border-radius: 999px; background: #fff; color: var(--ink2); cursor: pointer; white-space: nowrap; }
+  .kly::before { content: "オフ"; order: 2; font-size: 11px; font-weight: 700; opacity: .55; }
+  .kly::after { content: ""; order: 3; flex: none; width: 38px; height: 22px; border-radius: 11px; background: var(--line); box-shadow: inset -16px 0 0 3px #fff; transition: box-shadow .15s, background .15s; }
+  .kly[aria-pressed="true"] { border-color: var(--orange); background: var(--otint); color: #B85A00; }
+  .kly[aria-pressed="true"]::before { content: "オン"; opacity: 1; }
+  .kly[aria-pressed="true"]::after { background: var(--orange); box-shadow: inset 16px 0 0 3px #fff; }
+  body.v-links .site-g, body.v-links .kly { display: none; }
+
+  /* タブ（白い箱の中で、いま見ているページはオレンジでぬる） */
+  .tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 4px; }
   .tabs::-webkit-scrollbar { display: none; }
-  .tab { position: relative; border: 0; background: none; cursor: pointer; padding: 16px 18px 14px; font-size: 15px; font-weight: 500; color: var(--muted); white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
-  .tab:hover { color: var(--ink2); }
-  .tab.on { color: var(--orange); font-weight: 700; }
-  .tab.on::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; border-radius: 3px 3px 0 0; background: var(--orange); }
+  .tab { flex: none; border: 0; background: transparent; font: inherit; font-size: 14px; font-weight: 700; color: var(--ink2); padding: 8px 18px; border-radius: 7px; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
+  .tab:hover { background: var(--tint); }
+  .tab.on { background: var(--orange); color: #fff; }
   .tab .s { display: none; }
-  .cnt-badge { font-family: var(--num); font-size: 11px; font-weight: 600; background: var(--otint); color: #9A4700; border-radius: 999px; padding: 0 7px; line-height: 18px; }
+  .cnt-badge { font-family: var(--num); font-size: 11px; font-weight: 700; background: var(--otint); color: #9A4700; border-radius: 999px; padding: 0 7px; line-height: 18px; }
+  .tab.on .cnt-badge { background: rgba(255,255,255,.25); color: #fff; }
   .cnt-badge:empty { display: none; }
 
   /* その他のメニュー（右から出る白い窓）の中の行 */
   .nav-item { display: flex; align-items: center; gap: 12px; width: 100%; border: 0; background: none; color: var(--ink); padding: 12px 14px; border-radius: 10px; cursor: pointer; text-align: left; text-decoration: none; font-size: 14px; }
   .nav-item svg { flex: none; color: var(--orange); }
   .nav-item:hover { background: var(--otint); }
-
-  .ctrls { display: flex; align-items: center; gap: 8px; margin-left: auto; min-width: 0; padding: 8px 0; }
-  .pill { display: inline-flex; align-items: center; gap: 8px; height: 38px; border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: 0 12px; font-size: 13.5px; font-weight: 500; color: var(--ink); cursor: pointer; white-space: nowrap; min-width: 0; }
-  .pill:hover { border-color: var(--orange); }
-  .pill svg { flex: none; color: var(--orange); }
-  .pill .lbl { overflow: hidden; text-overflow: ellipsis; }
-  .pill .lbl b { font-weight: 700; }
-  .pill .caret { color: var(--muted); font-size: 10px; }
-  .site-chip { position: relative; max-width: 260px; }
-  .site-chip select { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; font-size: 16px; }
-  body.v-links .site-chip { display: none; }
-  .icon-btn { width: 38px; height: 38px; border: 1px solid var(--line); background: #fff; border-radius: 10px; display: grid; place-items: center; cursor: pointer; flex: none; color: var(--ink); }
-  .icon-btn:hover { border-color: var(--orange); }
+  .icon-btn { width: 36px; height: 36px; border: 1px solid var(--line); background: #fff; border-radius: 8px; display: grid; place-items: center; cursor: pointer; flex: none; color: var(--ink); }
+  .icon-btn:hover { border-color: var(--orange); color: var(--orange); }
   .icon-btn:disabled svg { animation: spin 1s linear infinite; }
-  .icon-btn.menu-btn { width: auto; padding: 0 14px 0 10px; gap: 6px; display: inline-flex; align-items: center; font-size: 13.5px; font-weight: 500; white-space: nowrap; }
+  .icon-btn.menu-btn { width: auto; padding: 0 12px 0 9px; gap: 6px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 700; white-space: nowrap; }
 
-  /* 期間のえらびかた（パソコン：下に開く／スマホ：下から出る） */
-  .pop-wrap { position: relative; }
-  .pop { position: absolute; right: 0; top: calc(100% + 8px); width: 300px; background: #fff; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 16px 40px rgba(34,26,21,.14); padding: 8px; z-index: 45; display: none; }
-  .pop.open { display: block; animation: drop .18s ease; }
-  .pop h4 { margin: 10px 10px 6px; font-size: 12px; font-weight: 500; color: var(--muted); }
-  .pop .chip { display: flex; align-items: center; width: 100%; border: 0; background: none; padding: 9px 10px; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--ink); text-align: left; }
-  .pop .chip:hover { background: var(--tint); }
-  .pop .chip.on { font-weight: 700; color: var(--c1); }
-  .pop .chip.on::after { content: ""; margin-left: auto; width: 14px; height: 8px; border-left: 2px solid var(--c1); border-bottom: 2px solid var(--c1); transform: rotate(-45deg) translateY(-3px); }
-  .pop .pick { padding: 2px 10px 6px; }
-  .pop select, .pop input[type=date] { width: 100%; font: inherit; font-size: 14px; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: #fff; color: var(--ink); }
-  .pop .custom { display: grid; grid-template-columns: 1fr auto 1fr; gap: 6px; align-items: center; padding: 2px 10px 10px; font-size: 13px; color: var(--muted); }
-  .pop .custom button { grid-column: 1 / -1; border: 0; border-radius: 8px; padding: 9px; background: var(--orange); color: #fff; font-weight: 700; cursor: pointer; }
-  .pop hr { border: 0; border-top: 1px solid var(--line); margin: 6px 4px; }
-  .pop-scrim { display: none; }
+  /* 「？」と、その説明（押すと出る） */
+  .q { all: unset; cursor: pointer; width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--line); color: var(--muted); font-size: 11px; font-weight: 700; display: inline-grid; place-items: center; flex: none; line-height: 1; font-family: var(--num); background: #fff; }
+  .q:hover, .q[aria-expanded="true"] { border-color: var(--orange); color: var(--orange); }
+  .q:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+  .kpop { position: absolute; z-index: 65; max-width: 300px; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 8px 24px rgba(34,26,21,.14); padding: 10px 12px; font-size: 12.5px; line-height: 1.7; color: var(--ink); font-weight: 500; }
 
-  /* ===== 中身 ===== */
-  main { max-width: 1240px; margin: 0 auto; padding: 28px 32px 80px; transition: opacity .25s; }
+  /* ===== 中身（HSK-DB と同じ：見出しの左にオレンジの線、数字のタイル、白いカード） ===== */
+  main { max-width: 1240px; margin: 0 auto; padding: 18px 32px 80px; transition: opacity .25s; }
   main.busy { opacity: .5; pointer-events: none; }
-  .page-head { margin: 0 0 18px; }
-  .page-head h1 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: .01em; line-height: 1.35; }
-  .page-head p { margin: 4px 0 0; color: var(--ink2); font-size: 13.5px; }
-  .period { color: var(--muted); font-size: 12.5px; margin: 0 0 18px; display: flex; flex-wrap: wrap; gap: 2px 14px; }
-  .period b { color: var(--ink2); font-weight: 500; }
   .note { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; color: var(--ink2); font-size: 13px; }
   .note.err { background: #FEF3F2; border-color: #FBD5D0; color: #8A2A1C; }
-  .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
-  .card { grid-column: span 6; background: var(--card); border: 0; border-radius: 20px; padding: 22px 24px 24px; min-width: 0; position: relative; overflow: hidden; box-shadow: 0 1px 2px rgba(34,26,21,.04), 0 6px 20px rgba(34,26,21,.05); }
+  /* いまの条件（期間・比べる期間・サイト） */
+  .kctx { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12.5px; color: var(--muted); margin: 0 0 4px; }
+  .kctx span { background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; white-space: nowrap; }
+  .kctx b { color: var(--ink); font-weight: 700; margin-left: 4px; font-family: var(--num), var(--font); }
+  .kctx span.n { background: transparent; border: 0; padding: 3px 2px; font-size: 12px; }
+  body.no-cmp .kctx .cmpc { display: none; }
+  body.v-links .kctx .cmpc, body.v-links .kctx .sitec { display: none; }
+  /* 見出し */
+  .ksh { grid-column: 1 / -1; margin: 22px 0 2px; font-size: 16px; font-weight: 800; color: var(--ink); display: flex; align-items: center; gap: 10px; line-height: 1.4; }
+  .ksh::before { content: ""; width: 5px; height: 20px; border-radius: 3px; background: var(--orange); flex: none; }
+  .ksh::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .page > .ksh:first-child, .page > .grid > .ksh:first-child { margin-top: 10px; }
+  .page { display: flex; flex-direction: column; gap: 12px; }
+  .page[hidden] { display: none; }
+  .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; }
+  .card { grid-column: span 6; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px 18px; min-width: 0; position: relative; overflow: hidden; }
   .s4 { grid-column: span 4; } .s5 { grid-column: span 5; } .s7 { grid-column: span 7; } .s8 { grid-column: span 8; } .s12 { grid-column: 1 / -1; }
-  /* カードの見出しにオレンジの番号（ページごとに 1, 2, 3…） */
-  .page { counter-reset: sec; }
-  .card h2 { margin: 0; font-size: 17px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 10px; line-height: 1.4; }
-  .card > h2::before { counter-increment: sec; content: counter(sec); flex: none; width: 28px; height: 28px; border-radius: 8px; background: var(--orange); color: #fff; font-family: var(--num); font-size: 14px; font-weight: 700; display: grid; place-items: center; }
-  .card .sub { margin: 4px 0 16px 38px; font-size: 12.5px; color: var(--muted); }
+  .card h2 { margin: 0 0 14px; font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 8px; line-height: 1.4; }
+  .card h2 .sp { margin-left: auto; }
   .empty { color: var(--muted); font-size: 13px; padding: 26px 0; text-align: center; }
   .cv { position: relative; height: 260px; }
   .cv.tall { height: 340px; }
   .up { color: var(--up); } .down { color: var(--down); }
-  .delta { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .delta b { font-family: var(--num); font-weight: 600; font-size: 11.5px; padding: 1px 6px; border-radius: 5px; background: var(--tint); color: var(--ink2); }
-  .delta b.up { background: #E8F3EC; color: var(--up); }
-  .delta b.down { background: #FBECE8; color: var(--down); }
+  /* 比べた増減：色付きのまるい札（％） */
+  .pl { align-self: flex-start; width: fit-content; max-width: 100%; display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 999px; font-family: var(--num); font-size: 12px; font-weight: 700; line-height: 1.5; white-space: nowrap; background: var(--tint); color: var(--ink2); }
+  .pl.up { background: #E6F2EA; color: var(--up); }
+  .pl.down { background: #FBEAE6; color: var(--down); }
+  .pl small { font-family: var(--font); font-weight: 500; font-size: 11px; opacity: .8; }
+  body.no-cmp .pl, body.no-cmp .cmpl { display: none !important; }
+  /* グラフの色の見かた */
+  .kleg { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--ink2); margin: -6px 0 10px; }
+  .kleg i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; margin-right: 5px; vertical-align: middle; background: var(--c1); }
+  .kleg i.ly { background: repeating-linear-gradient(90deg, var(--cmp) 0 4px, transparent 4px 7px); }
+  .kleg i.g { background: var(--c3); }
 
-  /* ひとことまとめ（概要の一番上） */
-  .summary { grid-column: 1 / -1; padding: 2px 0 8px; }
-  .sum-lead { margin: 0; font-size: 22px; line-height: 1.7; font-weight: 500; color: var(--ink); max-width: 46em; }
-  .sum-lead b { font-family: var(--num); font-weight: 700; font-size: 1.35em; letter-spacing: -.01em; margin: 0 2px; border-bottom: 3px solid rgba(239,122,0,.45); }
-  .sum-pts { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-  .sum-pts button { display: inline-flex; align-items: baseline; gap: 8px; border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 6px 14px; cursor: pointer; font-size: 13px; color: var(--ink2); }
-  .sum-pts button:hover { border-color: #CFCAC4; color: var(--ink); }
-  .sum-pts button b { color: var(--ink); font-weight: 700; }
-  .sum-pts button .up, .sum-pts button .down { font-family: var(--num); }
-
-  /* 主な数字 */
-  .hero { display: flex; flex-direction: column; justify-content: space-between; }
-  .hero .lb, .ring-txt .lb { font-size: 13px; font-weight: 500; color: var(--ink2); }
-  .hero .big { font-family: var(--num); font-size: 48px; font-weight: 600; line-height: 1.1; letter-spacing: -.02em; margin: 6px 0 4px; }
-  .hero .big small { font-family: var(--font); font-size: 15px; font-weight: 500; color: var(--ink2); margin-left: 4px; letter-spacing: 0; }
-  .hero .spark { margin-top: 14px; }
-  #heroCvr { display: flex; align-items: center; }
-  .ring-wrap { display: flex; align-items: center; gap: 18px; }
-  .ring-txt p { margin: 4px 0 6px; font-size: 12.5px; color: var(--ink2); }
-  .ring .prog { transition: stroke-dasharray 1.2s var(--ease) .2s; }
-  .minis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin: -22px -24px -24px; height: calc(100% + 46px); }
-  .mini { padding: 14px 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .mini:nth-child(2n) { border-right: 0; }
-  .mini:nth-last-child(-n+2) { border-bottom: 0; }
-  .mini .lb { font-size: 12px; color: var(--ink2); }
-  .mini .v { font-family: var(--num); font-size: 24px; font-weight: 600; line-height: 1.25; white-space: nowrap; letter-spacing: -.01em; }
-  .mini .v small { font-family: var(--font); font-size: 12px; color: var(--ink2); margin-left: 2px; font-weight: 500; letter-spacing: 0; }
+  /* 主な数字のタイル（上にオレンジの線・アイコン・大きな数字・増減の札・小さな推移） */
+  .khero { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 12px; }
+  .ktile { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .kbig { position: relative; overflow: hidden; padding: 16px 18px 10px; min-height: 176px; gap: 6px; }
+  .kbig::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--orange); }
+  .ktl { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; color: var(--ink); }
+  .kic { width: 28px; height: 28px; border-radius: 8px; background: var(--otint); color: var(--orange); display: inline-grid; place-items: center; flex: none; }
+  .kic svg { width: 16px; height: 16px; }
+  .ktv { font-family: var(--num); font-size: clamp(24px, 2.4vw, 31px); font-weight: 700; letter-spacing: -.01em; line-height: 1.2; white-space: nowrap; }
+  .ktv small { font-family: var(--font); font-size: 13px; font-weight: 500; margin-left: 3px; color: var(--muted); letter-spacing: 0; }
+  .ksub { font-size: 11.5px; color: var(--muted); }
+  .ksub b { font-family: var(--num); color: var(--ink2); }
+  .kspark { height: 44px; margin-top: auto; min-width: 0; }
+  .kspark svg { display: block; width: 100%; height: 44px; }
+  .kmini { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 10px; }
+  .kmini .ktile { padding: 10px 14px; }
+  .kmini .ktl { font-size: 12.5px; color: var(--ink2); }
+  .kmini .ktv { font-size: 22px; }
+  .kmini .kic { width: 24px; height: 24px; border-radius: 7px; }
+  .kmini .kic svg { width: 14px; height: 14px; }
+  /* 注目ポイント（押すとくわしいページへ） */
+  .krk { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 10px; }
+  .krk button { all: unset; box-sizing: border-box; cursor: pointer; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; transition: border-color .15s, box-shadow .15s; }
+  .krk button:hover { border-color: var(--orange); box-shadow: 0 2px 10px rgba(239,122,0,.15); }
+  .krk button:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+  .krk .l { font-size: 12.5px; font-weight: 700; color: var(--ink2); display: flex; align-items: center; gap: 6px; }
+  .krk .l::after { content: "›"; margin-left: auto; color: var(--orange); font-size: 16px; line-height: 1; }
+  .krk .r { font-size: 19px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .krk .r.num { font-family: var(--num); }
 
   /* 図 */
   svg text { font-family: var(--font); }
@@ -212,15 +226,15 @@
   .qr-show { font-size: 12px; font-weight: 500; border: 1px solid var(--line); border-radius: 7px; padding: 4px 10px; background: #fff; color: var(--ink); cursor: pointer; white-space: nowrap; }
   .tag { display: inline-block; font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 1px 6px; margin-right: 8px; background: var(--otint); color: #9A4700; vertical-align: 1px; }
   .tag.off { background: var(--tint); color: var(--muted); }
-  .lk-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 0 0 18px; }
-  .lk-head .page-head { margin: 0; }
+  .lk-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 0 0 18px; }
+  .lk-head .ksh { flex: 1; margin: 10px 0 0; }
   .lk-new { font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 10px; padding: 10px 16px; background: var(--orange); color: #fff; cursor: pointer; }
   .lk-new:hover { filter: brightness(.96); }
-  .lk-kpi { display: grid; grid-template-columns: repeat(3, 1fr); background: #fff; border-radius: 20px; margin-bottom: 16px; box-shadow: 0 1px 2px rgba(34,26,21,.04), 0 6px 20px rgba(34,26,21,.05); }
-  .lk-kpi > div { padding: 16px 20px; border-right: 1px solid var(--line); }
-  .lk-kpi > div:last-child { border-right: 0; }
-  .lk-kpi .lb { font-size: 12px; color: var(--ink2); }
-  .lk-kpi .v { font-family: var(--num); font-size: 26px; font-weight: 600; line-height: 1.25; }
+  .lk-kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .lk-kpi > div { padding: 16px 18px 14px; background: #fff; border: 1px solid var(--line); border-radius: 12px; position: relative; overflow: hidden; }
+  .lk-kpi > div::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--orange); }
+  .lk-kpi .lb { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .lk-kpi .v { font-family: var(--num); font-size: 28px; font-weight: 700; line-height: 1.3; }
   .lk-kpi .v small { font-family: var(--font); font-size: 13px; font-weight: 500; color: var(--ink2); margin-left: 3px; }
   .lk-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
   .lk-filter .chip { border: 1px solid var(--line); background: #fff; color: var(--ink2); border-radius: 999px; padding: 4px 12px; font-size: 12.5px; cursor: pointer; }
@@ -347,56 +361,50 @@
   /* ===== 幅ごと ===== */
   @media (max-width: 1100px) {
     .card, .s4, .s5, .s7, .s8 { grid-column: 1 / -1; }
-    .kpi3 { grid-column: span 6; }
-    .kpi3.minis-card { grid-column: 1 / -1; }
-    .minis-card .minis { grid-template-columns: repeat(3, 1fr); }
-    .minis-card .mini:nth-child(2n) { border-right: 1px solid var(--line); }
-    .minis-card .mini:nth-child(3n) { border-right: 0; }
-    .minis-card .mini:nth-last-child(-n+3) { border-bottom: 0; }
     .shops { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 1180px) {
-    .tab { padding-left: 14px; padding-right: 14px; }
-    .tab .l { display: none; } .tab .s { display: inline; }
+    .row1 .kf { order: 3; width: 100%; }
+    .top { position: static; }
   }
   @media (max-width: 860px) {
-    .hd-in { padding: 14px 16px; gap: 12px; }
-    .mark { width: 42px; height: 42px; border-radius: 11px; }
-    .mark svg { width: 22px; height: 22px; }
-    .hd-ttl { gap: 0 10px; }
-    .hd-ttl b { font-size: 22px; }
-    .hd-ttl small { font-size: 12px; }
-    .hd-upd, .menu-btn .t { display: none; }
-    .icon-btn.menu-btn { width: 38px; padding: 0; justify-content: center; }
-    .bar { position: static; box-shadow: none; }
-    .bar-in { padding: 0; flex-wrap: wrap; gap: 0; }
-    .tabs { width: 100%; display: grid; grid-template-columns: .8fr .8fr .8fr 1.2fr 1.3fr; }
-    .tab { justify-content: center; padding: 14px 2px 12px; font-size: 14px; }
+    .top { position: static; box-shadow: none; }
+    .top-in { padding: 12px 14px 10px; }
+    .mark { width: 38px; height: 38px; border-radius: 10px; }
+    .hd-ttl b { font-size: 21px; }
+    .hd-ttl small { display: none; }
+    .menu-btn .t { display: none; }
+    .icon-btn.menu-btn { width: 36px; padding: 0; justify-content: center; }
+    .kf { flex-direction: column; align-items: stretch; gap: 8px; }
+    .kfg { display: grid; grid-template-columns: 3.6em minmax(0, 1fr); align-items: center; gap: 8px; }
+    .kfc { flex-wrap: wrap; }
+    .kfc #perSel { flex: 1 1 100%; }
+    .kfc .kdate { flex: 1 1 0; width: auto; }
+    .kwide { width: 100%; }
+    .kfb { display: flex; padding-left: calc(3.6em + 8px); }
+    .kfb .kly { flex: 1; justify-content: space-between; }
+    .tabs { display: grid; grid-template-columns: .8fr .8fr .8fr 1.15fr 1.25fr; }
+    .tab { justify-content: center; padding: 9px 2px; font-size: 13px; }
+    .tab .l { display: none; } .tab .s { display: inline; }
     .tab .cnt-badge { display: none; }
-    .ctrls { width: 100%; margin-left: 0; padding: 10px 16px; border-top: 1px solid var(--line); background: var(--paper); }
-    .pill .pd { display: none; }
-    .site-chip { flex: 1; max-width: none; }
-    .ctrls .pop-wrap { flex: none; }
-    main { padding: 18px 14px 60px; }
-    .page-head h1 { font-size: 21px; }
-    .sum-lead { font-size: 18px; }
+    main { padding: 12px 14px 60px; }
     .to-top { right: 14px; bottom: 20px; }
-    .pop { position: fixed; left: 0; right: 0; bottom: 0; top: auto; width: auto; border-radius: 16px 16px 0 0; padding: 12px 12px calc(16px + env(safe-area-inset-bottom)); max-height: 80vh; overflow-y: auto; }
-    .pop.open { animation: rise .25s var(--ease); }
-    .pop-scrim.open { display: block; position: fixed; inset: 0; background: rgba(34,26,21,.4); z-index: 45; }
-    body.pop-open .bar { z-index: 50; position: relative; }
   }
   @media (max-width: 640px) {
-    .kpi3 { grid-column: 1 / -1; }
-    .card { padding: 18px 16px 20px; border-radius: 18px; }
-    .card .sub { margin-left: 0; }
-    .minis { margin: -18px -16px -20px; height: auto; }
-    .minis-card .minis { grid-template-columns: repeat(2, 1fr); }
-    .minis-card .mini:nth-child(3n) { border-right: 1px solid var(--line); }
-    .minis-card .mini:nth-child(2n) { border-right: 0; }
-    .minis-card .mini:nth-last-child(-n+3) { border-bottom: 1px solid var(--line); }
-    .minis-card .mini:nth-last-child(-n+2) { border-bottom: 0; }
-    .hero .big { font-size: 42px; }
+    .card { padding: 14px 14px 16px; }
+    .khero { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .khero .kbig:last-child:nth-child(odd) { grid-column: span 2; }
+    .kbig { min-height: 138px; padding: 12px 12px 8px; }
+    .ktv { font-size: 22px; }
+    .kbig .ktv { font-size: 22px; }
+    .ktl { font-size: 12px; gap: 5px; }
+    .kic { width: 22px; height: 22px; border-radius: 6px; }
+    .kic svg { width: 13px; height: 13px; }
+    .pl { font-size: 11px; padding: 1px 7px; }
+    .kspark, .kspark svg { height: 32px; }
+    .kmini { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .krk { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .krk .r { font-size: 16px; }
     .hide-sp { display: none; }
     td:first-child { min-width: 5.5em; }
     .shops { grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -405,7 +413,8 @@
     .dev .dn { margin: 0 auto; }
     .qr-form { grid-template-columns: 1fr; }
     .qr-go, .lk-new { width: 100%; justify-content: center; }
-    .lk-kpi > div { padding: 12px 12px; }
+    .lk-kpi { gap: 8px; }
+    .lk-kpi > div { padding: 12px 12px 10px; }
     .lk-kpi .v { font-size: 20px; }
     .tn .box { width: 98px; padding: 6px 7px; }
     .tn.root > .box { width: 80px; }
@@ -416,71 +425,47 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .rv, .rv.in { opacity: 1; animation: none; }
-    .fb, .ft, .fc, .hc, .cloud span, .meter, .rate .track i, .ph-row .b i, .ring .prog, .st-bar i, .tree .tn { transition: none !important; }
-    .pop.open, .modal-card { animation: none; }
+    .fb, .ft, .fc, .hc, .cloud span, .meter, .rate .track i, .ph-row .b i, .st-bar i, .tree .tn { transition: none !important; }
+    .modal-card { animation: none; }
   }
 </style>
 </head>
 <body>
 <div class="shell">
-  <!-- 上の帯：左上にオレンジのアイコンとタイトル（ほかの社内アプリと同じ） -->
-  <header class="hd">
-    <div class="hd-in">
-      <span class="mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/></svg></span>
-      <div class="hd-ttl"><b>アクセス集計</b><small>ホームページの見られ方</small></div>
-      <div class="hd-right">
-        <div class="hd-upd" id="upd">読み込み中…</div>
+  <!-- 上の帯（HSK-DB と同じ形）：左上にオレンジのタイトル、右にサイト・期間・比較、下にタブ -->
+  <div class="top" id="top">
+    <div class="top-in">
+      <div class="row1">
+        <div class="brand"><span class="mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/></svg></span><div class="hd-ttl"><b>アクセス集計</b><small>ホームページ</small></div></div>
+        <div class="kf" id="filters">
+          <div class="kfg site-g"><label for="siteSel">サイト</label><div class="kfc"><select class="ksel kwide" id="siteSel"><option value="hikari">カットハウスひかり</option></select></div></div>
+          <div class="kfg"><label for="perSel">期間</label><div class="kfc"><select class="ksel" id="perSel" aria-label="期間のえらびかた"></select><input type="date" class="ksel kdate" id="cStart" aria-label="はじめの日"><span>〜</span><input type="date" class="ksel kdate" id="cEnd" aria-label="おわりの日"></div></div>
+          <div class="kfg kfb"><button type="button" class="kly" id="cmpBtn" aria-pressed="true" title="前の同じ長さの期間とくらべて、増えたか減ったかを出します"><span>前の期間と比較</span></button><button id="refresh" class="icon-btn" type="button" title="この期間の数字を、いまの状態に集め直します" aria-label="最新にする"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7M21 4v5h-5"/></svg></button></div>
+        </div>
         <button id="menuBtn" class="icon-btn menu-btn" type="button" aria-label="その他のメニューを開く" aria-expanded="false" aria-controls="drawer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg><span class="t">その他</span></button>
       </div>
-    </div>
-  </header>
-  <!-- タブ（ページ）＋サイト・期間 -->
-  <div class="bar">
-    <div class="bar-in">
-      <nav class="tabs" aria-label="ページ"><button class="tab" type="button" data-view="overview"><span class="l">概要</span><span class="s">概要</span></button><button class="tab" type="button" data-view="flow"><span class="l">お客様の動き</span><span class="s">動き</span></button><button class="tab" type="button" data-view="popular"><span class="l">人気のページ・店舗</span><span class="s">人気</span></button><button class="tab" type="button" data-view="when"><span class="l">いつ・どこから</span><span class="s">いつ・どこ</span></button><button class="tab" type="button" data-view="links"><span class="l">QR・リンク</span><span class="s">QR・リンク</span><span class="cnt-badge" id="qrCount"></span></button></nav>
-        <div class="ctrls">
-        <label class="pill site-chip" id="siteChip" title="見るサイト"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span class="lbl" id="siteLbl">カットハウスひかり</span><span class="caret">▼</span><select id="siteSel" aria-label="見るサイト"><option value="hikari">カットハウスひかり</option></select></label>
-        <div class="pop-wrap">
-          <button class="pill" id="periodBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="periods"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span class="lbl" id="periodLbl">今月</span><span class="caret">▼</span></button>
-          <div class="pop" id="periods" role="dialog" aria-label="期間をえらぶ">
-            <h4>期間をえらぶ</h4>
-            <button class="chip" data-p="month" type="button">今月</button>
-            <button class="chip" data-p="last" type="button">先月</button>
-            <button class="chip" data-p="d7" type="button">過去7日</button>
-            <button class="chip" data-p="d30" type="button">過去30日</button>
-            <button class="chip" data-p="d90" type="button">過去90日</button>
-            <hr>
-            <h4>月をえらぶ</h4>
-            <div class="pick" data-p="pick"><select id="pickMonth" aria-label="月をえらぶ"><option value="">月をえらぶ</option></select></div>
-            <h4>日付を指定する</h4>
-            <div class="custom" id="custom">
-              <input type="date" id="cStart" aria-label="はじめの日"><span>〜</span><input type="date" id="cEnd" aria-label="おわりの日">
-              <button type="button" id="cGo">この期間を見る</button>
-            </div>
-          </div>
-        </div>
-        <button id="refresh" class="icon-btn" type="button" title="この期間の数字を、いまの状態に集め直します" aria-label="最新にする"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7M21 4v5h-5"/></svg></button>
-      </div>
+      <nav class="tabs" role="tablist" aria-label="ページ"><button class="tab" type="button" data-view="overview"><span class="l">概要</span><span class="s">概要</span></button><button class="tab" type="button" data-view="flow"><span class="l">お客様の動き</span><span class="s">動き</span></button><button class="tab" type="button" data-view="popular"><span class="l">人気のページ・店舗</span><span class="s">人気</span></button><button class="tab" type="button" data-view="when"><span class="l">いつ・どこから</span><span class="s">いつ・どこ</span></button><button class="tab" type="button" data-view="links"><span class="l">QR・リンク</span><span class="s">QR・リンク</span><span class="cnt-badge" id="qrCount"></span></button></nav>
     </div>
   </div>
-  <div class="pop-scrim" id="popScrim"></div>
 
   <main id="main">
     <div id="loading">数字を集めています…</div>
     <div id="app" hidden>
       <div id="notes"></div>
+      <div class="kctx" id="ctx"></div>
 
       <!-- 概要 -->
       <section class="page" data-page="overview">
-        <div class="page-head"><h1>概要</h1><p>どれだけ見られて、お店に向かったか</p></div>
-        <p class="period" id="period"></p>
-        <div class="grid hero-row">
-          <div class="summary rv" id="summary"></div>
-          <section class="card s4 hero rv kpi3" id="heroUsers"></section>
-          <section class="card s4 rv kpi3" id="heroCvr"></section>
-          <section class="card s4 rv kpi3 minis-card"><div class="minis" id="minis"></div></section>
-          <section class="card s12 rv" id="cfCard" hidden><h2>お問い合わせフォーム</h2><p class="sub">開いた → 入力を始めた → 送信した（置く場所ごと）と、送信で選ばれた店舗</p><div id="cfBody"></div></section>
-          <section class="card s12 rv" data-chart="cDaily"><h2>日ごとの訪問回数</h2><p class="sub">オレンジ＝この期間、灰色の点線＝比べる期間（同じ日数目どうし）、緑＝お店に向かう動きがあった訪問</p><div class="cv"><canvas id="cDaily"></canvas></div></section>
+        <h3 class="ksh">主な数字</h3>
+        <div class="khero rv" id="hero"></div>
+        <h3 class="ksh">お店に向かう動き<button class="q" type="button" data-tip="お店に向かう動き＝待ち状況・地図・電話・アプリDLのどれかを押したこと。押された回数です">?</button></h3>
+        <div class="kmini rv" id="minis"></div>
+        <h3 class="ksh">注目ポイント</h3>
+        <div class="krk rv" id="summary"></div>
+        <div class="grid">
+          <section class="card s12 rv" id="cfCard" hidden style="margin-top:10px"><h2>お問い合わせフォーム</h2><p class="sub">開いた → 入力を始めた → 送信した（置く場所ごと）と、送信で選ばれた店舗</p><div id="cfBody"></div></section>
+          <h3 class="ksh">推移</h3>
+          <section class="card s12 rv" data-chart="cDaily"><h2>日ごとの訪問回数</h2><div class="kleg"><span><i></i>この期間</span><span class="cmpl"><i class="ly"></i>比べる期間</span><span><i class="g"></i>お店に向かう動きがあった訪問</span></div><div class="cv"><canvas id="cDaily"></canvas></div></section>
           <section class="card rv" data-chart="cTrend"><h2>月ごとの訪問者数</h2><p class="sub">直近12か月（今月は今日まで。すべてのサイトの合計）</p><div class="cv"><canvas id="cTrend"></canvas></div></section>
           <section class="card rv" data-chart="cAct"><h2>月ごとの「お店に向かう動き」</h2><p class="sub">アプリDLボタン・待ち状況・地図が押された回数</p><div class="cv"><canvas id="cAct"></canvas></div></section>
         </div>
@@ -488,10 +473,11 @@
 
       <!-- お客様の動き -->
       <section class="page" data-page="flow" hidden>
-        <div class="page-head"><h1>お客様の動き</h1><p>どこから入って、どのページへ進み、どこで帰ったか</p></div>
         <div class="grid">
+          <h3 class="ksh">来店まで</h3>
           <section class="card s7 rv"><h2>来店までの流れ</h2><p class="sub">お店に向かう動き＝待ち状況・地図・電話・アプリDLのどれかを押した</p><div id="fFunnel"></div></section>
           <section class="card s5 rv"><h2>どこから来たか</h2><p class="sub">訪問回数と、そのうちお店に向かう動きがあった割合（成約率）</p><div id="tChannels"></div></section>
+          <h3 class="ksh">ページの動き</h3>
           <section class="card s12 rv"><h2>ページのつながり</h2><p class="sub">はじめのページを選ぶと、次にどのページへ進んだかが分かります（数字は回数）</p><div class="tree-roots" id="treeRoots"></div><div class="tree-box" id="tree"></div></section>
           <section class="card s5 rv"><h2>最初に開いたページ</h2><p class="sub">「すぐ帰った」＝10秒未満で1ページだけ見て帰った割合</p><div id="tLanding"></div></section>
           <section class="card s7 rv"><h2>ここで終わった人が多いページ</h2><p class="sub">割合は目安。店舗ページは、待ち状況や地図を見てお店に向かった人も含みます</p><div id="tExits"></div></section>
@@ -500,9 +486,10 @@
 
       <!-- 人気のページ・店舗 -->
       <section class="page" data-page="popular" hidden>
-        <div class="page-head"><h1>人気のページ・店舗</h1><p>よく見られた店舗やページ、押されたボタン、調べられた言葉</p></div>
         <div class="grid">
+          <h3 class="ksh">店舗</h3>
           <section class="card s12 rv"><h2>よく見られた店舗</h2><p class="sub">店舗ページの表示回数と、待ち状況・地図が押された回数</p><div id="tShops"></div></section>
+          <h3 class="ksh">ページ・ボタン</h3>
           <section class="card s7 rv" data-chart="cContent"><h2>よく見られたページ</h2><p class="sub">ページの種類ごとの表示回数</p><div class="cv tall"><canvas id="cContent"></canvas></div></section>
           <section class="card s5 rv"><h2>トップページはどこまで見られたか</h2><p class="sub">トップを開いた人のうち、そのコーナーまでスクロールした割合</p><div id="phone"></div></section>
           <section class="card rv"><h2>アプリDLボタンが押された場所</h2><p class="sub">どのページの、どのコーナーのボタンか</p><div id="tAppdl"></div></section>
@@ -512,9 +499,10 @@
 
       <!-- いつ・どこから -->
       <section class="page" data-page="when" hidden>
-        <div class="page-head"><h1>いつ・どこから</h1><p>見られている曜日と時間帯、スマホかパソコンか、どの地域か</p></div>
         <div class="grid">
+          <h3 class="ksh">曜日・時間帯</h3>
           <section class="card s12 rv"><h2>曜日 × 時間帯</h2><p class="sub">訪問回数。色が濃いほど多い</p><div class="heat-box" id="heat"></div></section>
+          <h3 class="ksh">端末・地域</h3>
           <section class="card s5 rv" data-chart="cDev"><h2>スマホ・パソコン</h2><p class="sub">訪問者数</p><div id="tDev"></div></section>
           <section class="card s7 rv"><h2>地域</h2><p class="sub">訪問者数（上位8）</p><div id="tRegion"></div></section>
         </div>
@@ -523,10 +511,11 @@
       <!-- QR・リンク -->
       <section class="page" data-page="links" id="viewLinks" hidden>
         <div class="lk-head">
-          <div class="page-head"><h1>QR・リンク</h1><p>チラシ・ポスター・SNS 用の専用QR・リンクを作って、読み取られた回数を見られます</p></div>
+          <h3 class="ksh">QR・リンク<button class="q" type="button" data-tip="チラシ・ポスター・SNS 用の専用QR・リンクを作って、読み取られた回数を見られます">?</button></h3>
           <button type="button" class="lk-new" id="qrNewBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>新しく作る</button>
         </div>
         <div class="lk-kpi" id="lkKpi"></div>
+        <h3 class="ksh">一覧<button class="q" type="button" data-tip="回数＝えらんだ期間に読み取られた・押された回数。行き先がサイト内なら、そのあとお店に向かった割合（成約率）も出ます。行を押すと、QR画像の保存・行き先の変更ができます">?</button></h3>
         <section class="card">
           <div class="lk-filter" id="lkFilter" role="group" aria-label="しぼりこみ">
             <button type="button" class="chip on" data-f="all">すべて</button>
@@ -535,7 +524,6 @@
             <button type="button" class="chip" data-f="off">停止中</button>
           </div>
           <div id="tQr"></div>
-          <p class="lk-foot">回数＝えらんだ期間に読み取られた・押された回数。行き先がサイト内なら、そのあとお店に向かった割合（成約率）も出ます。行を押すと、QR画像の保存・行き先の変更ができます</p>
         </section>
       </section>
     </div>
@@ -547,7 +535,7 @@
 <nav class="drawer" id="drawer" aria-label="その他のメニュー" aria-hidden="true">
   <div class="dr-head">その他のメニュー<button class="dr-close" id="drClose" type="button" aria-label="閉じる">×</button></div>
   <div class="nav"><a class="nav-item" data-link="site" href="#" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span>ホームページを開く</span></a><a class="nav-item" data-link="sheet" href="#" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M10 3v18"/></svg><span>スプレッドシート</span></a><a class="nav-item" data-link="ga" href="#" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V12M12 20V5M19 20v-9"/></svg><span>Googleアナリティクス</span></a><button class="nav-item do-refresh" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7M21 4v5h-5"/></svg><span>最新の数字にする</span></button><a class="nav-item" data-link="notrack" href="#" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M10.6 6.1A9.9 9.9 0 0 1 12 6c5 0 9 6 9 6a17 17 0 0 1-2.7 3.3M6.6 6.6C4.3 8 3 12 3 12s4 6 9 6c1.6 0 3-.4 4.3-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg><span>社内の閲覧を数えない</span></a><button class="nav-item" type="button" data-gloss><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17.5v.01"/></svg><span>言葉の意味</span></button></div>
-<p class="dr-upd" id="upd2"></p>
+<p class="dr-upd" id="upd2"></p><span id="upd" hidden></span>
 </nav>
 
 <div class="modal" id="glossModal" hidden role="dialog" aria-modal="true" aria-labelledby="glTitle">
@@ -606,7 +594,7 @@
 <script>
 (function () {
   "use strict";
-  var C1 = "#D96A00", C2 = "#2F86B8", C3 = "#3E9E5A", CMP = "#B9AFA6", GRID = "#EEECE9", INK = "#221A15", INK2 = "#6B625B", MUTED = "#9A918A";
+  var C1 = "#D96A00", C2 = "#2F86B8", C3 = "#3E9E5A", CMP_C = "#B9AFA6", GRID = "#EEECE9", INK = "#221A15", INK2 = "#6B625B", MUTED = "#9A918A";
   var HEAT = ["#F7EFE6", "#FCE3C6", "#F8C88F", "#F2A856", "#E58424", "#C46200", "#8F4500"];
   var FUNNEL = ["#9A4700", "#D96A00", "#F0A050"];
   var FUNNEL_SHORT = ["ホームページに来た", "店舗を探した", "来店につながる動き"];
@@ -701,44 +689,55 @@
       D = d; busy(false); show();
     });
   }
+  // 期間の欄を、いま見ている期間に合わせる
   function markChip() {
-    document.querySelectorAll("#periods .chip").forEach(function (c) { c.classList.toggle("on", c.getAttribute("data-p") === P.key); });
-    if (P.key !== "pick") $("pickMonth").value = "";
-    var sd = function (s) { var d = pd(s); return (d.getMonth() + 1) + "/" + d.getDate(); };
-    $("periodLbl").innerHTML = "<b>" + esc(P.label || "") + '</b><span class="pd">（' + sd(P.start) + "〜" + sd(P.end) + "）</span>";
-    pop(false);
+    var sel = $("perSel"), v = P.key === "pick" ? "pick:" + P.arg : P.key;
+    sel.value = v;
+    if (sel.value !== v) sel.value = "custom";
+    $("cStart").value = P.start; $("cEnd").value = P.end;
   }
   function setupPeriods() {
-    var sel = $("pickMonth"), st = pd(B.start), t = pd(B.today), opts = [];
-    for (var d = new Date(t.getFullYear(), t.getMonth(), 1); d >= new Date(st.getFullYear(), st.getMonth(), 1); d.setMonth(d.getMonth() - 1)) {
-      opts.push('<option value="' + d.getFullYear() + "-" + (d.getMonth() + 1) + '">' + d.getFullYear() + "年" + (d.getMonth() + 1) + "月</option>");
+    var sel = $("perSel"), st = pd(B.start), t = pd(B.today), months = [];
+    for (var d = new Date(t.getFullYear(), t.getMonth() - 1, 1); d >= new Date(st.getFullYear(), st.getMonth(), 1); d.setMonth(d.getMonth() - 1)) {
+      months.push('<option value="pick:' + d.getFullYear() + "-" + (d.getMonth() + 1) + '">' + d.getFullYear() + "年" + (d.getMonth() + 1) + "月</option>");
     }
-    sel.innerHTML = '<option value="">月をえらぶ</option>' + opts.join("");
+    sel.innerHTML = '<option value="month">今月</option><option value="last">先月</option><option value="d7">過去7日</option><option value="d30">過去30日</option><option value="d90">過去90日</option>' +
+      (months.length ? '<optgroup label="月をえらぶ">' + months.join("") + "</optgroup>" : "") + '<option value="custom">日付を指定</option>';
     $("cStart").min = $("cEnd").min = B.start; $("cStart").max = $("cEnd").max = B.today;
-    var c0 = fd(add(t, -13));
-    $("cStart").value = c0 < B.start ? B.start : c0; $("cEnd").value = B.today;
-    document.querySelectorAll("#periods button.chip").forEach(function (c) {
-      c.addEventListener("click", function () {
-        var k = c.getAttribute("data-p");
-        loadRange(periodOf(k));
-      });
+    sel.addEventListener("change", function () {
+      var v = sel.value;
+      if (v === "custom") { $("cStart").focus(); try { $("cStart").showPicker(); } catch (e) { /* 使えないブラウザもある */ } return; }
+      loadRange(v.indexOf("pick:") === 0 ? periodOf("pick", v.slice(5)) : periodOf(v));
     });
-    sel.addEventListener("change", function () { if (sel.value) loadRange(periodOf("pick", sel.value)); });
+    var onDate = function () {
+      var a = $("cStart").value, b = $("cEnd").value;
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(a) || !/^\d{4}-\d{2}-\d{2}$/.test(b)) return;
+      if (a > b) { var x = a; a = b; b = x; }
+      if (P && a === P.start && b === P.end) return;
+      loadRange(periodOf("custom", [a, b]));
+    };
+    $("cStart").addEventListener("change", onDate); $("cEnd").addEventListener("change", onDate);
     // サイトの選択
     var ss = $("siteSel");
     ss.innerHTML = (B.sites || [{ key: "hikari", name: "カットハウスひかり" }]).map(function (x) { return '<option value="' + esc(x.key) + '">' + esc(x.name) + "</option>"; }).join("");
     ss.value = SITE;
-    var siteName = function () { var o = ss.options[ss.selectedIndex]; $("siteLbl").textContent = o ? o.text : ""; };
-    siteName();
-    ss.addEventListener("change", function () { SITE = ss.value; siteName(); if (P && P.start) loadRange(P); });
+    ss.addEventListener("change", function () { SITE = ss.value; if (P && P.start) loadRange(P); });
     setupQr();
-    $("cGo").addEventListener("click", function () {
-      var a = $("cStart").value, b = $("cEnd").value;
-      if (!a || !b) return;
-      if (a > b) { var x = a; a = b; b = x; }
-      loadRange(periodOf("custom", [a, b]));
-    });
   }
+  // 前の期間と比較（オン・オフ。ブラウザに覚えておく）
+  var CMP = true;
+  try { CMP = localStorage.getItem("hk-acc-cmp") !== "0"; } catch (e) { /* 覚えられなくても動く */ }
+  function applyCmp() { document.body.classList.toggle("no-cmp", !CMP); $("cmpBtn").setAttribute("aria-pressed", CMP ? "true" : "false"); }
+  applyCmp();
+  $("cmpBtn").addEventListener("click", function () {
+    CMP = !CMP;
+    try { localStorage.setItem("hk-acc-cmp", CMP ? "1" : "0"); } catch (e) { /* なくても動く */ }
+    applyCmp();
+    if (D) {
+      renderHero(); renderDaily(); renderContactForm();
+      $("hero").querySelectorAll("polyline.draw").forEach(function (pl) { pl.style.strokeDashoffset = 0; });
+    }
+  });
 
   // ---------------- 表示
   function show() {
@@ -749,8 +748,9 @@
     if (D.errors) notes += '<p class="note err">一部の表が読み込めませんでした：' + esc(D.errors) + "</p>";
     if ((D.cur.kpi.users || 0) < 30 && (D.prev.kpi.users || 0) < 30) notes += '<p class="note">本番公開前のため、数字はまだわずかです。</p>';
     $("notes").innerHTML = notes;
-    var n = daysBetween(D.range.start, D.range.end);
-    $("period").innerHTML = "<span><b>" + md(D.range.start) + "〜" + md(D.range.end) + '</b>（<span class="num">' + n + '</span>日間）</span><span class="vs">比べる期間：' + md(D.cmp.start) + "〜" + md(D.cmp.end) + "</span>";
+    var n = daysBetween(D.range.start, D.range.end), so = $("siteSel").options[$("siteSel").selectedIndex];
+    $("ctx").innerHTML = "<span>期間<b>" + md(D.range.start) + "〜" + md(D.range.end) + "</b>（" + n + '日間）</span><span class="cmpc">比べる期間<b>' + md(D.cmp.start) + "〜" + md(D.cmp.end) + "</b></span>" +
+      '<span class="sitec">サイト<b>' + esc(so ? so.text : "") + "</b></span>" + '<span class="n">集めた時刻 ' + esc(D.at || "") + "</span>";
     pending = {};
     document.querySelectorAll(".rv").forEach(function (el) { el.classList.remove("in"); }); // グラフは出るときに描く
     renderSummary(); renderHero(); renderDaily(); renderFlow(); renderChannels(); renderHeat(); renderShops();
@@ -803,15 +803,26 @@
     if (card && card.classList.contains("in")) f(); else pending[id] = f;
   }
 
-  function delta(a, b, isRate) {
-    if (b === null || b === undefined) return '<span class="delta">比べるデータなし</span>';
-    if (isRate) {
-      var p = Math.round((a - b) * 1000) / 10;
-      return '<span class="delta">' + pct(b) + ' → <b class="' + (p > 0 ? "up" : p < 0 ? "down" : "") + '">' + (p > 0 ? "▲" : p < 0 ? "▼" : "±") + Math.abs(p) + "ポイント</b></span>";
-    }
-    if (!b) return '<span class="delta">比べる期間 ' + num(b) + "</span>";
+  // 比べた増減（色付きの札。率も「何％増えたか」で出す）
+  function delta(a, b) {
+    if (b === null || b === undefined) return "";
+    a = Number(a || 0); b = Number(b || 0);
+    if (!b) return '<span class="pl" title="比べる期間 ' + num(b) + '">' + (a ? "新しく出た数字" : "±0%") + "</span>";
     var d = Math.round((a - b) / b * 100);
-    return '<span class="delta">' + num(b) + ' → <b class="' + (d > 0 ? "up" : d < 0 ? "down" : "") + '">' + (d > 0 ? "▲" : d < 0 ? "▼" : "±") + Math.abs(d) + "%</b></span>";
+    return '<span class="pl ' + (d > 0 ? "up" : d < 0 ? "down" : "") + '" title="比べる期間 ' + num(Math.round(b * 1000) / 1000) + '">' + (d > 0 ? "▲" : d < 0 ? "▼" : "±") + Math.abs(d) + "%</span>";
+  }
+  // タイルの小さな推移（オレンジ＝この期間、灰色の点線＝比べる期間）
+  function spark2(cur, prev) {
+    var W = 240, H = 44, n = Math.max(cur.length, 1), all = cur.concat(CMP ? prev : []).concat([1]), mx = Math.max.apply(null, all);
+    var xy = function (v, i) { return [(n === 1 ? W / 2 : i / (n - 1) * (W - 8) + 4).toFixed(1), (H - 4 - v / mx * (H - 10)).toFixed(1)]; };
+    var line = function (vals) { return vals.slice(0, n).map(function (v, i) { return xy(v, i).join(","); }).join(" "); };
+    if (!cur.length) return "";
+    var c = line(cur), first = xy(cur[0], 0), last = xy(cur[cur.length - 1], cur.length - 1), len = Math.round(W * 2.2);
+    var out = '<path d="M' + first[0] + "," + (H - 2) + " L" + c.split(" ").join(" L") + " L" + last[0] + "," + (H - 2) + ' Z" fill="' + C1 + '" opacity=".1"/>';
+    if (CMP && prev.length) out += '<polyline points="' + line(prev) + '" fill="none" stroke="' + CMP_C + '" stroke-width="1.8" stroke-dasharray="4 3" stroke-linejoin="round"/>';
+    out += '<polyline class="draw" points="' + c + '" fill="none" stroke="' + C1 + '" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="' + len + '" stroke-dashoffset="' + (RM ? 0 : len) + '" data-len="' + len + '"/>';
+    out += '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="3.6" fill="' + C1 + '" stroke="#fff" stroke-width="1.6" class="ft" style="--d:1.3s"/>';
+    return '<svg class="viz" viewBox="0 0 ' + W + " " + H + '" preserveAspectRatio="none" role="img" aria-label="日ごとの推移">' + out + "</svg>";
   }
   function sparkline(vals, w, h, color) {
     if (!vals.length) return "";
@@ -824,40 +835,54 @@
   }
   function star(x, y, s, c) { return '<svg style="left:' + x + "px;top:" + y + 'px" width="' + s + '" height="' + s + '" viewBox="0 0 24 24"><path d="M12 0l3 9 9 3-9 3-3 9-3-9-9-3 9-3z" fill="' + c + '"/></svg>'; }
 
-  // ひとことまとめ：数字を文章で。下のボタンから、くわしいページへ
+  var IC = {
+    users: '<path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><circle cx="9" cy="8" r="3.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.8c1.6.8 2.6 2.6 3 5.2"/>',
+    visit: '<path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/>',
+    page: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>',
+    shop: '<path d="M4 10v10h16V10"/><path d="M2.5 10 5 4h14l2.5 6z"/><path d="M10 20v-5h4v5"/>',
+    rate: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/>',
+    dl: '<rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M12 8v7M9 12.5l3 3 3-3"/>',
+    wait: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2.5h6"/>',
+    map: '<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/>',
+    tel: '<path d="M5 3.5h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 5.6 5.6l1.4-2.3 4.5 1.8V18a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2z"/>',
+    form: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+    send: '<path d="M21 3 3 10.5l7 2.5 2.5 7z"/><path d="m10 13 4-4"/>'
+  };
+  function ic(k) { return '<span class="kic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + IC[k] + "</svg></span>"; }
+  function qb(t) { return '<button class="q" type="button" aria-label="説明" data-tip="' + esc(t) + '">?</button>'; }
+  // 数字のタイル（o.big：上にオレンジの線と小さな推移）
+  function tile(o) {
+    var v = o.rate ? (Math.round((o.v || 0) * 1000) / 10).toFixed(1).replace(/\.0$/, "") : cnt(o.v);
+    return '<div class="ktile' + (o.big ? " kbig" : "") + '"><div class="ktl">' + ic(o.ic) + esc(o.lb) + (o.tip ? qb(o.tip) : "") + "</div>" +
+      '<div class="ktv">' + v + "<small>" + o.unit + "</small></div>" + delta(o.v, o.p) + (o.sub ? '<div class="ksub">' + o.sub + "</div>" : "") +
+      (o.big ? '<div class="kspark">' + (o.sp ? spark2(o.sp[0], o.sp[1]) : "") + "</div>" : "") + "</div>";
+  }
+  // 注目ポイント（押すと、くわしいページへ）
   function renderSummary() {
-    var k = D.cur.kpi, p = D.prev.kpi, lbl = (P && P.label) || "この期間";
-    var lead = (k.users || 0) > 0
-      ? esc(lbl) + "は<b>" + num(k.users) + "</b>人が見に来て、<b>" + num(k.goal) + "</b>回お店に向かう動きがありました。"
-      : esc(lbl) + "は、まだ見に来た人の記録がありません。";
     var pts = [];
-    if (p.users) { var ch = Math.round((k.users - p.users) / p.users * 100); pts.push(["overview", "比べる期間より", '<b class="' + (ch > 0 ? "up" : ch < 0 ? "down" : "") + '">' + (ch > 0 ? "+" : "") + ch + "%</b>"]); }
-    var sh = D.cur.shops[0]; if (sh && +sh[1]) pts.push(["popular", "一番見られた店舗", "<b>" + esc(sh[0]) + "</b>"]);
-    var cn = D.cur.channels[0]; if (cn && +cn[1]) pts.push(["flow", "一番多い来かた", "<b>" + esc(String(cn[0]).replace(/（.*）/, "")) + "</b>"]);
+    var sh = D.cur.shops[0]; if (sh && +sh[1]) pts.push(["popular", "一番見られた店舗", esc(sh[0])]);
+    var ct = D.cur.content[0]; if (ct && +ct[1]) pts.push(["popular", "一番見られたページ", esc(ct[0])]);
+    var cn = D.cur.channels[0]; if (cn && +cn[1]) pts.push(["flow", "一番多い来かた", esc(String(cn[0]).replace(/（.*）/, ""))]);
     var hb = null; D.cur.heat.forEach(function (r) { if (+r[2] && (!hb || +r[2] > +hb[2])) hb = r; });
-    if (hb) pts.push(["when", "よく見られる時間", "<b>" + WD[+hb[0]] + "曜 " + (+hb[1]) + "時台</b>"]);
-    $("summary").innerHTML = '<p class="sum-lead">' + lead + "</p>" + (pts.length ? '<ul class="sum-pts">' + pts.map(function (x) { return '<li><button type="button" data-view="' + x[0] + '">' + x[1] + " " + x[2] + "</button></li>"; }).join("") + "</ul>" : "");
+    if (hb) pts.push(["when", "よく見られる時間", WD[+hb[0]] + "曜 " + (+hb[1]) + "時台"]);
+    $("summary").innerHTML = pts.length ? pts.map(function (x) { return '<button type="button" data-view="' + x[0] + '"><span class="l">' + x[1] + '</span><span class="r">' + x[2] + "</span></button>"; }).join("") : '<p class="empty" style="grid-column:1/-1">この期間のデータはまだありません</p>';
   }
 
   function renderHero() {
-    var cur = D.cur.kpi, prev = D.prev.kpi;
-    $("heroUsers").innerHTML = '' +
-      '<div><div class="lb">訪問者数（見に来た人）</div><div class="big">' + cnt(cur.users) + "<small>人</small></div>" +
-      delta(cur.users, prev.users) + '<div class="delta">うち はじめての人 <span class="num">' + num(cur.newUsers) + "</span>人</div></div>" +
-      '<div class="spark">' + sparkline(D.cur.daily.map(function (r) { return +r[1]; }), 300, 56, C1) + "</div>";
-    var v = Math.max(0, Math.min(1, cur.cvr || 0)), R = 54, L = 2 * Math.PI * R;
-    var ring = '<svg class="viz ring" style="width:136px;flex:none" viewBox="0 0 136 136" width="136" height="136" role="img" aria-label="成約率 ' + pct(v) + '">' +
-      '<circle cx="68" cy="68" r="' + R + '" fill="none" stroke="#F1EEEA" stroke-width="12"/>' +
-      '<circle class="prog" cx="68" cy="68" r="' + R + '" fill="none" stroke="' + C1 + '" stroke-width="12" stroke-linecap="' + (v > 0 ? "round" : "butt") + '" data-dash="' + (L * v).toFixed(1) + " " + L.toFixed(1) + '" style="stroke-dasharray:' + (RM ? (L * v).toFixed(1) : "0") + " " + L.toFixed(1) + '" transform="rotate(-90 68 68)"/>' +
-      '<text x="68" y="72" text-anchor="middle" font-size="32" font-weight="600" fill="' + INK + '" style="font-family:Inter,sans-serif">' + Math.round(v * 100) + '<tspan font-size="15">%</tspan></text>' +
-      '<text x="68" y="94" text-anchor="middle" font-size="11" fill="' + INK2 + '">成約率</text></svg>';
-    $("heroCvr").innerHTML = '<div class="ring-wrap">' + ring + '<div class="ring-txt"><div class="lb">来店につながった割合</div><p>訪問 <span class="num">' + num(cur.sessions) + "</span>回のうち、待ち状況・地図・電話・アプリDLまで進んだのは <b>" + cnt(cur.goal) + "回</b></p>" + delta(cur.cvr, prev.cvr, true) + "</div></div>";
+    var k = D.cur.kpi, pk = D.prev.kpi, dc = D.cur.daily, dp = D.prev.daily;
+    var col = function (rows, i) { return rows.map(function (r) { return +r[i] || 0; }); };
+    var rate = function (rows) { return rows.map(function (r) { return +r[2] ? (+r[4] || 0) / +r[2] : 0; }); };
+    var pv = function (x) { return CMP ? x : null; };
+    $("hero").innerHTML = [
+      tile({ big: 1, ic: "users", lb: "訪問者数", unit: "人", v: k.users, p: pv(pk.users), sp: [col(dc, 1), col(dp, 1)], tip: "見に来た人の数（同じ人が何回来ても1人）", sub: "うち はじめての人 <b>" + num(k.newUsers) + "</b>人" }),
+      tile({ big: 1, ic: "visit", lb: "訪問回数", unit: "回", v: k.sessions, p: pv(pk.sessions), sp: [col(dc, 2), col(dp, 2)], tip: "見に来た回数（30分以上あくと別の回）" }),
+      tile({ big: 1, ic: "page", lb: "ページ表示", unit: "回", v: k.views, p: pv(pk.views), sp: [col(dc, 3), col(dp, 3)], tip: "ページが開かれた回数" }),
+      tile({ big: 1, ic: "shop", lb: "お店に向かう動き", unit: "回", v: k.goal, p: pv(pk.goal), sp: [col(dc, 4), col(dp, 4)], tip: "待ち状況・地図・電話・アプリDLのどれかを押した訪問の数" }),
+      tile({ big: 1, ic: "rate", lb: "成約率", unit: "%", rate: 1, v: k.cvr, p: pv(pk.cvr), sp: [rate(dc), rate(dp)], tip: "訪問のうち、お店に向かう動きまで進んだ割合。増減は「何％増えたか」です" })
+    ].join("");
     var e = D.cur.ev, pe = D.prev.ev;
-    var M = [["訪問回数", cur.sessions, prev.sessions, "回", "🔁"], ["ページ表示", cur.views, prev.views, "回", "📄"],
-      ["アプリDL", e["アプリDLボタン"], pe["アプリDLボタン"], "回", "⬇️"], ["待ち状況", e["待ち状況を見た"], pe["待ち状況を見た"], "回", "⏱️"],
-      ["地図", e["地図を開いた"], pe["地図を開いた"], "回", "📍"], ["電話", e["電話をかけた"], pe["電話をかけた"], "回", "📞"]];
-    $("minis").innerHTML = M.map(function (k) {
-      return '<div class="mini"><div class="lb">' + k[0] + '</div><div class="v">' + cnt(k[1]) + "<small>" + k[3] + "</small></div>" + delta(+k[1] || 0, +k[2] || 0) + "</div>";
+    $("minis").innerHTML = [["dl", "アプリDL", "アプリDLボタン"], ["wait", "待ち状況", "待ち状況を見た"], ["map", "地図", "地図を開いた"], ["tel", "電話", "電話をかけた"]].map(function (x) {
+      return tile({ ic: x[0], lb: x[1], unit: "回", v: +e[x[2]] || 0, p: pv(+pe[x[2]] || 0) });
     }).join("");
   }
 
@@ -869,13 +894,13 @@
     lazy("cDaily", function () {
       if (!window.Chart) return;
       if (charts.cDaily) charts.cDaily.destroy();
-      var o = baseOpts({ legend: true });
+      var o = baseOpts({ legend: false });
       o.scales.x.ticks = { maxRotation: 0, autoSkip: true, maxTicksLimit: 12, color: function (c) { var t = labels[c.index] || ""; return /\(土\)/.test(t) ? C2 : /\(日\)/.test(t) ? "#B3402A" : INK2; } };
-      o.plugins.tooltip = { callbacks: { title: function (it) { var i = it[0].dataIndex; return labels[i] + (prv[i] ? "（比べる期間：" + md(prv[i][0]) + "）" : ""); } } };
+      o.plugins.tooltip = { callbacks: { title: function (it) { var i = it[0].dataIndex; return labels[i] + (CMP && prv[i] ? "（比べる期間：" + md(prv[i][0]) + "）" : ""); } } };
       charts.cDaily = new Chart($("cDaily"), { type: "line", data: { labels: labels, datasets: [
         { label: "この期間", data: a, borderColor: C1, backgroundColor: "rgba(217,106,0,.14)", fill: true, borderWidth: 2.6, pointRadius: 0, pointHoverRadius: 6, pointBackgroundColor: C1, tension: .35 },
-        { label: "比べる期間", data: b, borderColor: CMP, borderDash: [5, 4], borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, tension: .35, fill: false },
-        { label: "来店につながった訪問", data: g, borderColor: C3, backgroundColor: C3, borderWidth: 2.2, pointRadius: 0, pointHoverRadius: 5, tension: .35, fill: false }
+        { label: "比べる期間", data: CMP ? b : [], hidden: !CMP, borderColor: CMP_C, borderDash: [5, 4], borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, tension: .35, fill: false },
+        { label: "お店に向かう動きがあった訪問", data: g, borderColor: C3, backgroundColor: C3, borderWidth: 2.2, pointRadius: 0, pointHoverRadius: 5, tension: .35, fill: false }
       ] }, options: o });
     });
   }
@@ -1004,7 +1029,7 @@
     var top = dv.slice(0, 3), restN = dv.slice(3).reduce(function (s, r) { return s + Number(r[1]); }, 0);
     var labels = top.map(function (r) { return r[0]; }), data = top.map(function (r) { return +r[1]; });
     if (restN) { labels.push("その他"); data.push(restN); }
-    var cols = [C1, C2, C3, CMP], tot = data.reduce(function (s, x) { return s + x; }, 0) || 1;
+    var cols = [C1, C2, C3, CMP_C], tot = data.reduce(function (s, x) { return s + x; }, 0) || 1;
     $("tDev").innerHTML = '<div class="dev"><div class="dn"><canvas id="cDev"></canvas><div class="ct"><div><b class="cnt" data-v="' + Math.round(data[0] / tot * 100) + '">' + Math.round(data[0] / tot * 100) + "</b>%" + esc(labels[0]) + '</div></div></div><ul class="legend">' +
       labels.map(function (l, i) { return '<li><i style="background:' + cols[i] + '"></i><span>' + esc(l) + "</span><span>" + num(data[i]) + "人（" + Math.round(data[i] / tot * 100) + "%）</span></li>"; }).join("") + "</ul></div>";
     lazy("cDev", function () {
@@ -1027,8 +1052,8 @@
     if (!c) return;
     var rate = c.opened ? c.sent / c.opened : 0, prate = pc && pc.opened ? pc.sent / pc.opened : 0;
     var K = [["開いた", c.opened, pc && pc.opened, "回"], ["入力を始めた", c.started, pc && pc.started, "回"], ["送信した", c.sent, pc && pc.sent, "件"]];
-    var html = '<div class="minis">' + K.map(function (k) { return '<div class="mini"><div class="lb">' + k[0] + '</div><div class="v">' + cnt(k[1]) + "<small>" + k[3] + "</small></div>" + delta(+k[1] || 0, pc ? +k[2] || 0 : null) + "</div>"; }).join("") +
-      '<div class="mini"><div class="lb">送信率（開いた人のうち）</div><div class="v">' + Math.round(rate * 100) + "<small>%</small></div>" + delta(rate, pc ? prate : null, true) + "</div></div>";
+    var html = '<div class="kmini">' + K.map(function (k, i) { return tile({ ic: ["page", "form", "send"][i], lb: k[0], unit: k[3], v: +k[1] || 0, p: pc && CMP ? +k[2] || 0 : null }); }).join("") +
+      tile({ ic: "rate", lb: "送信率", unit: "%", rate: 1, v: rate, p: pc && CMP ? prate : null, tip: "開いた人のうち、送信まで進んだ割合" }) + "</div>";
     var mx = Math.max.apply(null, c.places.map(function (r) { return +r[1]; }).concat([1]));
     html += "<h3 style=\"margin:18px 0 6px;font-size:14px\">置く場所ごと</h3>" + (c.places.length ? "<table><thead><tr><th>置く場所</th><th class=n>開いた</th><th class=n>入力を始めた</th><th class=n>送信した</th><th class=n>送信率</th><th style=width:22%></th></tr></thead><tbody>" +
       c.places.map(function (r) { return "<tr><td>" + esc(r[0]) + "</td><td class=n>" + num(r[1]) + "</td><td class=n>" + num(r[2]) + "</td><td class=n>" + num(r[3]) + "</td><td class=n>" + (+r[1] ? Math.round(r[3] / r[1] * 100) + "%" : "—") + "</td><td>" + meter(r[1], mx) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY);
@@ -1260,14 +1285,35 @@
     if (google.script.url) google.script.url.getLocation(function (loc) { if (loc && loc.parameter && loc.parameter.page) setView(loc.parameter.page, false); });
   } catch (e) { /* 試しの画面など */ }
 
-  // ---------------- 期間のえらびかた（開く・閉じる）
-  function pop(open) {
-    $("periods").classList.toggle("open", open); $("popScrim").classList.toggle("open", open); document.body.classList.toggle("pop-open", open);
-    $("periodBtn").setAttribute("aria-expanded", open ? "true" : "false");
+  // ---------------- 「？」の説明（押すと下に出る。もう一度押す・外を押すと消える）
+  var tipEl = null, tipBtn = null;
+  function closeTip() {
+    if (tipEl) { tipEl.remove(); tipEl = null; }
+    if (tipBtn) { tipBtn.setAttribute("aria-expanded", "false"); tipBtn = null; }
   }
-  $("periodBtn").addEventListener("click", function (e) { e.stopPropagation(); pop(!$("periods").classList.contains("open")); });
-  $("popScrim").addEventListener("click", function () { pop(false); });
-  document.addEventListener("click", function (e) { if ($("periods").classList.contains("open") && !e.target.closest(".pop-wrap")) pop(false); });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest(".q") : null;
+    if (!b) { if (tipEl && !e.target.closest(".kpop")) closeTip(); return; }
+    e.preventDefault(); e.stopPropagation();
+    if (tipBtn === b) { closeTip(); return; }
+    closeTip();
+    tipEl = document.createElement("div"); tipEl.className = "kpop"; tipEl.setAttribute("role", "tooltip");
+    tipEl.textContent = b.getAttribute("data-tip") || "";
+    tipEl.style.maxWidth = Math.min(300, window.innerWidth - 24) + "px";
+    document.body.appendChild(tipEl);
+    var r = b.getBoundingClientRect(), sx = window.scrollX || 0, sy = window.scrollY || 0;
+    var left = Math.max(12, Math.min(r.left + sx - 16, sx + window.innerWidth - tipEl.offsetWidth - 12));
+    tipEl.style.left = left + "px"; tipEl.style.top = (r.bottom + sy + 8) + "px";
+    b.setAttribute("aria-expanded", "true"); tipBtn = b;
+  }, true);
+  window.addEventListener("resize", closeTip);
+  // カードの下の説明文は「？」の中へ（画面に長い文を出さない）
+  document.querySelectorAll(".card > p.sub").forEach(function (p) {
+    var h = p.parentNode.querySelector("h2");
+    if (!h) return;
+    h.insertAdjacentHTML("beforeend", qb(p.textContent));
+    p.remove();
+  });
 
   // ---------------- 言葉の意味
   document.querySelectorAll("[data-gloss]").forEach(function (b) { b.addEventListener("click", function () { menu(false); $("glossModal").hidden = false; }); });
@@ -1287,7 +1333,7 @@
   $("menuBtn").addEventListener("click", function () { menu(true); });
   $("drClose").addEventListener("click", function () { menu(false); });
   $("scrim").addEventListener("click", function () { menu(false); });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { menu(false); pop(false); closeQr(); $("qrNew").hidden = true; $("glossModal").hidden = true; } });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { menu(false); closeTip(); closeQr(); $("qrNew").hidden = true; $("glossModal").hidden = true; } });
   document.querySelectorAll(".do-refresh").forEach(function (b) { b.addEventListener("click", function () { menu(false); $("refresh").click(); }); });
   $("toTop").addEventListener("click", function () { window.scrollTo({ top: 0, behavior: RM ? "auto" : "smooth" }); });
   window.addEventListener("scroll", function () { $("toTop").classList.toggle("show", window.scrollY > 500); }, { passive: true });
