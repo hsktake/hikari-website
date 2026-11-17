@@ -40,7 +40,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
 .seg input{position:absolute;opacity:0;pointer-events:none}
 .seg span{display:block;text-align:center;border:1px solid var(--line);border-radius:4px;padding:10px 6px;font-size:14px;background:#fff}
 .seg input:checked+span{border-color:var(--accent);color:var(--accent-d);background:#eef7f7;font-weight:700}
-.seg.pref label.full{flex:1 1 100%}
 .dt{display:flex;gap:8px}.dt input{flex:1.25;min-width:0}.dt select{flex:1;min-width:0}
 .sw{margin-top:10px}
 .seg input:focus-visible+span{box-shadow:0 0 0 3px rgba(19,138,143,.25)}
@@ -57,6 +56,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
 .note{font-size:12.5px;color:var(--sub);margin:4px 0 0}
 .agree{font-size:13px;color:var(--sub);margin:4px 0 16px}
 .agree a{color:var(--ink)}
+.notes{list-style:none;margin:22px 0 0;padding:16px 0 0;border-top:1px solid var(--line);font-size:13px;color:var(--sub);line-height:1.7}
+.notes li{position:relative;padding-left:1.2em;margin:0 0 8px}
+.notes li::before{content:"■";position:absolute;left:0;top:0;font-size:.85em}
+.notes .hq{display:block;margin-top:4px;color:var(--ink)}
+.notes a{color:var(--ink);font-weight:700;text-decoration:none}
 .send{display:block;width:100%;font:inherit;font-size:16px;font-weight:700;letter-spacing:.1em;color:#fff;background:var(--accent);border:0;border-radius:4px;padding:15px;cursor:pointer}
 .send:hover{background:var(--accent-d)}
 .send[disabled]{opacity:.6;cursor:wait}
@@ -79,13 +83,18 @@ footer{text-align:center;font-size:12px;color:var(--sub);padding:0 16px 24px}
   <div class="msg" id="msg"></div>
   <div class="f" id="q-name"><label for="f-name">お名前<span class="req">必須</span></label><input type="text" id="f-name" autocomplete="name" maxlength="60"><p class="err"></p></div>
   <div class="f" id="q-mail"><label for="f-mail">メールアドレス<span class="req">必須</span></label><input type="email" id="f-mail" autocomplete="email" inputmode="email" maxlength="120"><p class="err"></p></div>
-  <div class="f" id="q-body"><label for="f-body">お問い合わせ内容<span class="req">必須</span></label><textarea id="f-body" maxlength="4000"></textarea><p class="err"></p></div>
   <div class="f" id="q-date"><span class="t">ご利用日時<span class="opt">任意</span></span><div class="dt"><input type="date" id="f-date" aria-label="ご利用日"><select id="f-time" aria-label="ご利用の時間帯"></select></div><p class="err"></p></div>
   <div class="f" id="q-store"><span class="t">ご利用店舗<span class="opt">任意</span></span><div class="seg pref" id="prefs"></div><div class="sw" id="storeWrap" hidden><select id="f-store" aria-label="ご利用店舗"></select></div><p class="err"></p></div>
+  <div class="f" id="q-body"><label for="f-body">お問い合わせ内容<span class="req">必須</span></label><textarea id="f-body" maxlength="4000"></textarea><p class="err"></p></div>
   <div class="f" id="q-photo"><span class="t">写真<span class="opt">任意</span></span><label class="addph">写真を添付する（5枚まで）<input type="file" id="f-photo" accept="image/*" multiple></label><div class="ph" id="ph"></div><p class="err"></p></div>
   <div class="hp" aria-hidden="true"><input type="text" id="f-hp" tabindex="-1" autocomplete="off"></div>
-  <p class="agree">ご入力いただいた個人情報は、<a href="https://www.cut-hikari.com/sp-privacypolicy.html" target="_blank" rel="noopener">プライバシーポリシー</a>に基づき適切に取り扱います。</p>
+  <p class="agree">ご入力いただいた個人情報は、<a href="https://www.cut-hikari.com/sp/sp-privacypolicy.html" target="_blank" rel="noopener">プライバシーポリシー</a>に基づき適切に取り扱います。</p>
   <button type="button" class="send" id="send">送信する</button>
+  <ul class="notes">
+   <li>担当者からのご連絡には数日かかる場合もございます。即時対応はできませんのでご了承ください。</li>
+   <li>お客様のメール受信設定等の状態によっては弊社からのご連絡メールが届かない場合がございます。</li>
+   <li>お問い合わせ送信から1週間以上たっても弊社からのご連絡がなく、返信を必要とする内容の場合は、お手数でもお電話でお問い合わせください。<span class="hq">カットハウスひかり本部<br><a href="tel:05017205983">050-1720-5983</a></span></li>
+  </ul>
 </div>
 </main>
 <footer>&copy; 1997 H.S.K</footer>
@@ -109,8 +118,7 @@ var L={times:["9時台","10時台","11時台","12時台","13時台","14時台","
 {label:"茨城県",stores:["青葉店","アクロスモール守谷店","麻生店","鮎川店","荒川本郷店","石岡中央店","石下店","稲敷パルナ店","稲敷パンプ店","岩井店","大津港店","鹿嶋東店","カットスペースPLUS","上水戸店","川尻店","サプラ龍ヶ崎店","下妻店","大子店","高場店","高萩店","つくば梅園店","つくば高見原店","友部店","羽鳥店","常陸太田店","藤代駅南口店","鉾田SC店","真壁店","水海道淵頭店","水戸赤塚店","水戸エクセル店","みらい平店"]},
 {label:"栃木県",stores:["今市店","氏家オータニ店","大金店","小山城東店","鹿沼栄町店","上三川店","さくらベイシア店","自治医大店","鶴田店","西方店","二宮店","野沢店","HAIR STUDIO MR.COOL","ベイシア壬生店","御幸ヶ原店","Men's Cut & Self DELIGHT","真岡荒町店"]},
 {label:"千葉県",stores:["旭店","芦崎店","小見川店","酒々井店","シャンプーカット アルファ","ちはら台店","天王台店","PIACITY八街店","四街道店"]},
-{label:"福島県",stores:["いわき泉店","いわき錦町店","ベイシアモール白河店","矢吹店"]},
-{label:"店舗を利用していない・わからない",stores:[]}]};
+{label:"福島県",stores:["いわき泉店","いわき錦町店","ベイシアモール白河店","矢吹店"]}]};
 var MAX=5,PH=[];
 function $(i){return document.getElementById(i)}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
@@ -128,12 +136,12 @@ if(window.HK_GA){gtag("set",{content_group:"お問い合わせフォーム",page
 var STARTED=0;document.addEventListener("input",function(){if(!STARTED){STARTED=1;ga("contact_start")}},true);
 
 function drawTimes(){var cur=$("f-time").value;$("f-time").innerHTML='<option value="">時間帯</option>'+L.times.map(function(t){return '<option>'+esc(t)+'</option>'}).join("");$("f-time").value=cur}
-// ご利用店舗：いちばん上に「利用していない・わからない」、次に県。県を押すと、その県の店舗だけが出る
-function prefList(){var none=L.prefs.filter(function(p){return !p.stores.length}),rest=L.prefs.filter(function(p){return p.stores.length});return none.concat(rest)}
+// ご利用店舗（任意）：県を押すと、その県の店舗だけが出る。選んだ県をもう一度押すと選択を外せる
+function prefList(){return L.prefs.filter(function(p){return p.stores.length})}
 function prefOf(){var r=document.querySelector('input[name=pref]:checked');return r?prefList()[+r.value]:null}
 function drawPrefs(){
  var cur=prefOf(),curStore=$("f-store").value;
- $("prefs").innerHTML=prefList().map(function(p,i){return '<label'+(p.stores.length?'':' class="full"')+'><input type="radio" name="pref" value="'+i+'"'+(cur&&cur.label===p.label?' checked':'')+'><span>'+esc(p.stores.length?p.label:"利用していない・わからない")+'</span></label>'}).join("");
+ $("prefs").innerHTML=prefList().map(function(p,i){return '<label><input type="radio" name="pref" value="'+i+'"'+(cur&&cur.label===p.label?' checked':'')+'><span>'+esc(p.label)+'</span></label>'}).join("");
  drawStores(curStore);
 }
 function drawStores(keep){
@@ -143,6 +151,8 @@ function drawStores(keep){
  if(keep)$("f-store").value=keep;w.hidden=false;
 }
 $("prefs").addEventListener("change",function(){drawStores("")});
+var WAS=null;$("prefs").addEventListener("pointerdown",function(e){var l=e.target.closest("label");WAS=l&&l.querySelector("input").checked?l:null});
+$("prefs").addEventListener("click",function(e){var l=e.target.closest("label");if(!l||e.target.tagName!=="INPUT")return;if(WAS===l){l.querySelector("input").checked=false;drawStores("")}WAS=null});
 drawTimes();drawPrefs();
 // 最新の店舗一覧を裏で読み込む（読めなくても、上の一覧でそのまま送れる）
 try{fetch(API+"?api=layout").then(function(r){return r.json()}).then(function(x){
