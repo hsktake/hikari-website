@@ -115,10 +115,10 @@ var MAX=5,PH=[];
 function $(i){return document.getElementById(i)}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 
-// どこから来たか（お客様は何も選ばない）：リンクの最後の ?from=置く場所 をそのまま記録。なければ、スマホ／パソコンでホームページとみなす
+// どこから来たか（お客様は何も選ばない）：リンクの最後の ?from=印（pc・sp・app など。HSK-VOICEの設定「フォーム」で決まる）を記録。なければ、スマホ／パソコンでホームページとみなす
 var FROM=(function(){
  var f="";try{f=new URLSearchParams(location.search).get("from")||""}catch(e){}
- f=f.replace(/[<>"'&\\]/g,"").trim().slice(0,40);if(f)return f;
+ f=f.replace(/[<>"'&\\]/g,"").trim().slice(0,40);if(f)return {pc:"ホームページ（パソコン）",sp:"ホームページ（スマホ）",app:"アプリ・マイページ"}[f.toLowerCase()]||f;
  var sp=/iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent||"")||(window.matchMedia&&matchMedia("(max-width: 768px)").matches);
  return sp?"ホームページ（スマホ）":"ホームページ（パソコン）";
 })();
