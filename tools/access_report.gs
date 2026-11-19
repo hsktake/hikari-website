@@ -1,8 +1,9 @@
 /**
- * ホームページ アクセス集計（カットハウスひかり）
- *  - データ置き場：スプレッドシート（SS_ID）。人は直接さわらない
- *  - 集計：毎朝6時ごろ、Googleアナリティクス 4 の数字をスプレッドシートの各タブに書き込む（updateAll）
- *  - 表示：ウェブアプリ（doGet → Dashboard.html）。URL を開くとグラフ付きの画面
+ * HSK-COUNT（ホームページのアクセス集計・カットハウスひかり）
+ *  - データ置き場：スプレッドシート「HSK-COUNT管理」（SS_ID）。タブは 使い方・月別・更新情報 だけ。人は直接さわらない
+ *  - 集計：毎朝6時ごろ、Googleアナリティクス 4 の月ごとの数字を「月別」に書き、今月・先月を先に集めておく（updateAll）
+ *          期間ごとの数字（店舗別・流入元など）は、画面で期間を選んだときにその場で集める（getRangeData）
+ *  - 表示：ウェブアプリ（doGet → Dashboard.html）
  *
  * このコードの元は GitHub の hsktake/hikari-website の tools/access_report.gs と tools/access_dashboard.html（Claude が管理）。
  * Apps Script の「サービス」に Google Analytics Data API（AnalyticsData v1beta）を追加しています。
@@ -163,13 +164,6 @@ function sites_() {
 
 // 来店までの流れ（ファネル）：GA4 の runFunnelReport（v1alpha。Apps Script のサービスにないので直接呼ぶ）
 const FUNNEL_STEPS = ['ホームページに来た', '店舗を探した（店舗一覧・店舗ページを見た）', 'そのあと 待ち状況・地図・電話・アプリDL を押した'];
-function funnel_(ym, usePathField) {
-  const y = Number(ym.slice(0, 4)), m = Number(ym.slice(4));
-  const first = Utilities.formatDate(new Date(y, m - 1, 1), TZ, 'yyyy-MM-dd');
-  const lastD = new Date(y, m, 0), today = new Date();
-  const last = Utilities.formatDate(lastD > today ? today : lastD, TZ, 'yyyy-MM-dd');
-  return funnelFor_({ startDate: first < START ? START : first, endDate: last }, usePathField);
-}
 function funnelFor_(rg, usePathField, keepForm) {
   const shopStep = usePathField
     ? { funnelFieldFilter: { fieldName: 'pagePath', stringFilter: { matchType: 'CONTAINS', value: '/shop' } } }
@@ -232,164 +226,10 @@ function updateAll(e) {
   });
   write_(ss, '月別', mHead, mRows, { pct: [7, mHead.length] });
 
-  // 1b) 今月の途中までを、先月の同じ日数と比べる（公平な比較）
-  const now = new Date();
-  const d = Number(Utilities.formatDate(now, TZ, 'd'));
-  const y0 = Number(Utilities.formatDate(now, TZ, 'yyyy')), m0 = Number(Utilities.formatDate(now, TZ, 'M'));
-  const prevLast = new Date(y0, m0 - 1, 0).getDate();
-  const ranges = [
-    ['今月', { startDate: ymd_(new Date(y0, m0 - 1, 1)), endDate: ymd_(now) }],
-    ['先月の同じ期間', { startDate: ymd_(new Date(y0, m0 - 2, 1)), endDate: ymd_(new Date(y0, m0 - 2, Math.min(d, prevLast))) }],
-  ];
-  const cRows = ranges.map(([name, rg]) => {
-    const b = run_([], ['totalUsers', 'newUsers', 'sessions', 'screenPageViews', 'engagementRate'], null, null, null, rg)[0] || [0, 0, 0, 0, 0];
-    const e = {};
-    run_(['eventName'], ['eventCount'], inList_('eventName', EVENTS.map(x => x[0])), null, null, rg).forEach(r => e[r[0]] = r[1]);
-    const g = (run_([], ['sessions'], inList_('eventName', VISIT_GOALS), null, null, rg)[0] || [0])[0];
-    return [name, rg.startDate, rg.endDate, b[0], b[1], b[2], b[3], b[4], g, b[2] ? Math.min(1, g / b[2]) : 0].concat(EVENTS.map(x => e[x[0]] || 0));
-  });
-  write_(ss, '同じ期間の比較', ['期間', '開始', '終了', '訪問者数', 'うち はじめての人', '訪問回数', 'ページ表示回数', 'しっかり見た割合', '来店につながった訪問', '成約率'].concat(EVENTS.map(e => e[1])), cRows, { pct: [8, 10], text: [2, 3] });
+  // ほかの集計（店舗別・流入元など）は、画面で期間を選んだときにその場で GA4 から集める（getRangeData）。
+  // スプレッドシートに置くのは「月別」と「更新情報」だけ（2026-11-20 整理）
 
-  // 1c) 日別（グラフ用。計測開始から今日まで）
-  const dy = run_(['date'], ['totalUsers', 'sessions', 'screenPageViews']);
-  const dg = run_(['date'], ['sessions'], inList_('eventName', VISIT_GOALS));
-  const dgm = {};
-  dg.forEach(r => dgm[r[0]] = r[1]);
-  const dRows0 = dy.sort((a, b) => a[0].localeCompare(b[0]))
-    .map(r => [r[0].slice(0, 4) + '-' + r[0].slice(4, 6) + '-' + r[0].slice(6), r[1], r[2], r[3], dgm[r[0]] || 0]);
-  write_(ss, '日別', ['日付', '訪問者数', '訪問回数', 'ページ表示回数', '来店につながった訪問'], dRows0, { text: [1] });
-
-  // 1d) 曜日×時間帯（訪問回数）
-  const wh = run_(['yearMonth', 'dayOfWeek', 'hour'], ['sessions']);
-  const whRows = wh.sort((a, b) => b[0].localeCompare(a[0]) || Number(a[1]) - Number(b[1]) || Number(a[2]) - Number(b[2]))
-    .map(r => [monthLabel_(r[0]), Number(r[1]), Number(r[2]), r[3]]);
-  write_(ss, '曜日×時間帯', ['月', '曜日（0=日）', '時', '訪問回数'], whRows);
-
-  // 2) コンテンツ別（ページの種類）
-  const cg = run_(['yearMonth', 'contentGroup'], ['screenPageViews', 'totalUsers', 'userEngagementDuration']);
-  const cgRows = cg.filter(r => r[1] && r[1] !== '(not set)')
-    .sort((a, b) => b[0].localeCompare(a[0]) || b[2] - a[2])
-    .map(r => [monthLabel_(r[0]), r[1], r[2], r[3], r[2] ? Math.round(r[4] / r[2]) : 0]);
-  write_(ss, 'コンテンツ別', ['月', 'コンテンツ', 'ページ表示回数', '訪問者数', '1回あたりの滞在（秒）'], cgRows);
-
-  // 3) 店舗別（店舗ページの表示 ＋ 待ち状況・地図のクリック）
-  const sp = run_(['yearMonth', 'pageTitle', 'pagePath'], ['screenPageViews', 'totalUsers'], eq_('contentGroup', '店舗ページ'));
-  const sc = run_(['yearMonth', 'customEvent:shop_name', 'eventName'], ['eventCount'], inList_('eventName', ['wait_status_click', 'map_click']));
-  const shops = {};
-  const key = (m, s) => m + '|' + s;
-  sp.forEach(r => {
-    const k = key(r[0], shopLabel_(r[1]));
-    shops[k] = shops[k] || [r[0], shopLabel_(r[1]), 0, 0, 0, 0, ''];
-    shops[k][2] += r[3]; shops[k][3] += r[4];
-    const mc = String(r[2]).match(/shop\/(\d+)\.html/);
-    if (mc) shops[k][6] = mc[1];
-  });
-  sc.forEach(r => {
-    if (!r[1] || r[1] === '(not set)') return;
-    const k = key(r[0], shopLabel_(r[1])); shops[k] = shops[k] || [r[0], shopLabel_(r[1]), 0, 0, 0, 0, ''];
-    shops[k][r[2] === 'wait_status_click' ? 4 : 5] += r[3];
-  });
-  const sRows = Object.values(shops).sort((a, b) => b[0].localeCompare(a[0]) || b[2] - a[2]).map(r => [monthLabel_(r[0])].concat(r.slice(1)));
-  write_(ss, '店舗別', ['月', '店舗', 'ページ表示回数', '訪問者数', '待ち状況を見た', '地図を開いた', '店舗コード'], sRows, { text: [7] });
-
-  // 4) 流入元
-  const ch = run_(['yearMonth', 'sessionDefaultChannelGroup'], ['sessions', 'totalUsers']);
-  const chg = {};
-  run_(['yearMonth', 'sessionDefaultChannelGroup'], ['sessions'], inList_('eventName', VISIT_GOALS)).forEach(r => chg[r[0] + '|' + r[1]] = r[2]);
-  const chRows = ch.sort((a, b) => b[0].localeCompare(a[0]) || b[2] - a[2]).map(r => {
-    const g = Math.min(chg[r[0] + '|' + r[1]] || 0, r[2]);
-    return [monthLabel_(r[0]), CHANNELS[r[1]] || r[1], r[2], r[3], g, r[2] ? g / r[2] : 0];
-  });
-  write_(ss, '流入元', ['月', 'どこから来たか', '訪問回数', '訪問者数', '来店につながった訪問', '成約率'], chRows, { pct: [6] });
-
-  // 5) トップのコーナー（トップを開いた回数のうち、そのコーナーまで見た割合）
-  const topViews = {};
-  cg.filter(r => r[1] === 'トップ').forEach(r => topViews[r[0]] = r[2]);
-  const secRaw = run_(['yearMonth', 'customEvent:section_name'], ['eventCount'], and_(eq_('eventName', 'section_view'), eq_('contentGroup', 'トップ')));
-  const sec = {};
-  secRaw.forEach(r => sec[r[0] + '|' + r[1]] = r[2]);
-  const secRows = [];
-  months.forEach(m => TOP_SECTIONS.forEach(n => {
-    const c = sec[m + '|' + n] || 0;
-    secRows.push([monthLabel_(m), n, c, topViews[m] ? Math.min(1, c / topViews[m]) : 0]);
-  }));
-  write_(ss, 'トップのコーナー', ['月', 'コーナー', '見た回数', 'トップを開いた人のうち見た割合'], secRows, { pct: [4] });
-
-  // 6) アプリのダウンロードボタンが押された場所
-  const ad = run_(['yearMonth', 'contentGroup', 'customEvent:section_name', 'customEvent:store'], ['eventCount'], eq_('eventName', 'app_download'));
-  const adRows = ad.sort((a, b) => b[0].localeCompare(a[0]) || b[4] - a[4]).map(r => [monthLabel_(r[0]), r[1], r[2], r[3], r[4]]);
-  write_(ss, 'アプリDLの場所', ['月', 'ページ', '押された場所', 'ストア', '押された回数'], adRows);
-
-  // 7) 店舗検索の言葉
-  const st = run_(['yearMonth', 'searchTerm'], ['eventCount'], eq_('eventName', 'search'));
-  const stRows = st.filter(r => r[1] && r[1] !== '(not set)').sort((a, b) => b[0].localeCompare(a[0]) || b[2] - a[2]).map(r => [monthLabel_(r[0]), r[1], r[2]]);
-  write_(ss, '検索ワード', ['月', '検索された言葉', '回数'], stRows);
-
-  // 8) 端末・地域・時間帯
-  const dv = run_(['yearMonth', 'deviceCategory'], ['totalUsers']);
-  const rg = run_(['yearMonth', 'region'], ['totalUsers']);
-  const hr = run_(['yearMonth', 'hour'], ['sessions']);
-  const dRows = [];
-  dv.sort((a, b) => b[0].localeCompare(a[0]) || b[2] - a[2]).forEach(r => dRows.push([monthLabel_(r[0]), '端末', DEVICES[r[1]] || r[1], r[2]]));
-  rg.sort((a, b) => b[0].localeCompare(a[0]) || b[2] - a[2]).forEach(r => dRows.push([monthLabel_(r[0]), '地域', REGIONS[r[1]] || r[1], r[2]]));
-  hr.sort((a, b) => b[0].localeCompare(a[0]) || Number(a[1]) - Number(b[1])).forEach(r => dRows.push([monthLabel_(r[0]), '時間帯', Number(r[1]) + '時台', r[2]]));
-  write_(ss, '端末・地域・時間帯', ['月', '種類', '内容', '人数・回数'], dRows);
-
-  // 9) お客様の動き：入口のページ（最初に開いたページ）と、すぐ帰った割合
-  const lp = run_(['yearMonth', 'landingPage'], ['sessions', 'engagedSessions']);
-  const land = {};
-  lp.forEach(r => {
-    if (!r[1] || r[1] === '(not set)') return;
-    const k = r[0] + '|' + pageType_(r[1]);
-    land[k] = land[k] || [r[0], pageType_(r[1]), 0, 0];
-    land[k][2] += r[2]; land[k][3] += r[3];
-  });
-  const lRows = Object.values(land).sort((a, b) => b[0].localeCompare(a[0]) || b[2] - a[2])
-    .map(r => [monthLabel_(r[0]), r[1], r[2], Math.max(0, r[2] - r[3]), r[2] ? Math.max(0, r[2] - r[3]) / r[2] : 0]);
-  write_(ss, '入口のページ', ['月', '最初に開いたページ', '訪問回数', 'すぐ帰った回数', 'すぐ帰った割合'], lRows, { pct: [5] });
-
-  // 10) ページのつながり（前のページ → 次のページ）。前のページ＝同じサイト内の参照元（pageReferrer）
-  const tr = run_(['yearMonth', 'hostName', 'pageReferrer', 'pagePath'], ['screenPageViews']);
-  const link = {}, nextOf = {};
-  tr.forEach(r => {
-    const ref = String(r[2] || ''), mt = ref.match(/^https?:\/\/([^\/]+)/);
-    if (!mt || mt[1] !== r[1]) return;                  // サイトの外から来た（＝入口）は入口のページの表で数える
-    if (pathOf_(ref) === pathOf_(r[3])) return;          // 同じページの読み込み直しは数えない
-    const from = pageType_(ref), to = pageType_(r[3]);
-    const k = r[0] + '|' + from + '|' + to;
-    link[k] = link[k] || [r[0], from, to, 0];
-    link[k][3] += r[4];
-    nextOf[r[0] + '|' + from] = (nextOf[r[0] + '|' + from] || 0) + r[4];
-  });
-  const tRows = Object.values(link).sort((a, b) => b[0].localeCompare(a[0]) || b[3] - a[3]).map(r => [monthLabel_(r[0]), r[1], r[2], r[3]]);
-  write_(ss, 'ページのつながり', ['月', '前のページ', '次のページ', '回数'], tRows);
-
-  // 11) 離脱：ページごとの「ここで終わった」（表示回数 − 次のページへ進んだ回数。目安）と、来店・連絡につながる動き
-  const pv = run_(['yearMonth', 'pagePath'], ['screenPageViews']);
-  const gv = run_(['yearMonth', 'pagePath', 'eventName'], ['eventCount'], inList_('eventName', GOAL_EVENTS));
-  const ex = {};
-  const exRow = (m, t) => (ex[m + '|' + t] = ex[m + '|' + t] || [m, t, 0, 0, 0]);
-  pv.forEach(r => { exRow(r[0], pageType_(r[1]))[2] += r[2]; });
-  gv.forEach(r => { exRow(r[0], pageType_(r[1]))[4] += r[3]; });
-  const xRows = Object.values(ex).filter(r => r[2] > 0).map(r => {
-    const next = Math.min(r[2], nextOf[r[0] + '|' + r[1]] || 0), end = r[2] - next;
-    return [r[0], r[1], r[2], next, end, end / r[2], r[4]];
-  }).sort((a, b) => b[0].localeCompare(a[0]) || b[2] - a[2]).map(r => [monthLabel_(r[0])].concat(r.slice(1)));
-  write_(ss, '離脱', ['月', 'ページ', '表示回数', '次のページへ進んだ', 'ここで終わった', 'ここで終わった割合', '来店・連絡につながる動き'], xRows, { pct: [6] });
-
-  // 12) 来店までの流れ（ファネル。人数）
-  const fRows = [];
-  months.slice(0, 12).forEach(m => {
-    let f = null;
-    try { f = funnel_(m, true); }
-    catch (e1) {
-      try { f = funnel_(m, false); } catch (e2) { ERRORS.push('来店までの流れ：' + e2.message); }
-    }
-    if (f) FUNNEL_STEPS.forEach((s, i) => fRows.push([monthLabel_(m), i + 1, s, f[i]]));
-  });
-  write_(ss, '来店までの流れ', ['月', '順番', '段階', '人数'], fRows);
-
-  // 13) 更新情報（画面の「最終更新」）
+  // 2) 更新情報（画面の「最終更新」）
   const info = ss.getSheetByName('更新情報') || ss.insertSheet('更新情報');
   info.clear();
   info.getRange(1, 1, 2, 2).setValues([
@@ -707,39 +547,3 @@ function doGet() {
 /** タブ・ホーム画面のアイコン（ほかの HSK アプリと同じ：オレンジ地に白い絵＋HSK-COUNT）。消さないでください */
 const HSK_COUNT_ICON = 'data:image/png;base64,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';
 
-// 画面から呼ぶ：スプレッドシートの数字をまとめて返す（まだ空のとき・「最新にする」のときは先に集計する）
-function getData(force) {
-  const ss = SpreadsheetApp.openById(SS_ID);
-  const mon = ss.getSheetByName('月別');
-  if (force || !mon || mon.getLastRow() < 2) updateAll();
-  const read = (name) => {
-    const sh = ss.getSheetByName(name);
-    if (!sh || sh.getLastRow() < 2) return [];
-    return sh.getRange(2, 1, sh.getLastRow() - 1, sh.getLastColumn()).getValues()
-      .map(r => r.map(v => v instanceof Date ? Utilities.formatDate(v, TZ, 'yyyy/MM/dd HH:mm') : v));
-  };
-  const info = ss.getSheetByName('更新情報');
-  const iv = info ? info.getRange(1, 2, 2, 1).getValues() : [[''], ['']];
-  return {
-    updated: iv[0][0] instanceof Date ? Utilities.formatDate(iv[0][0], TZ, 'yyyy/MM/dd HH:mm') : String(iv[0][0] || ''),
-    errors: String(iv[1][0] || ''),
-    events: EVENTS.map(e => e[1]),
-    monthly: read('月別'),
-    content: read('コンテンツ別'),
-    shops: read('店舗別'),
-    channels: read('流入元'),
-    sections: read('トップのコーナー'),
-    appdl: read('アプリDLの場所'),
-    search: read('検索ワード'),
-    dev: read('端末・地域・時間帯'),
-    landing: read('入口のページ'),
-    links: read('ページのつながり'),
-    exits: read('離脱'),
-    funnel: read('来店までの流れ'),
-    compare: read('同じ期間の比較'),
-    daily: read('日別'),
-    heat: read('曜日×時間帯'),
-    today: Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd'),
-    siteBase: 'https://hsktake.github.io/hikari-website/',
-  };
-}
