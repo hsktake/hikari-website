@@ -60,7 +60,7 @@
   .kly[aria-pressed="true"] { border-color: var(--orange); background: var(--otint); color: #B85A00; }
   .kly[aria-pressed="true"]::before { content: "オン"; opacity: 1; }
   .kly[aria-pressed="true"]::after { background: var(--orange); box-shadow: inset 16px 0 0 3px #fff; }
-  body.v-links .site-g, body.v-links .kly { display: none; }
+  body.v-links .site-g, body.v-links #cmpBtn { display: none; }
 
   /* タブ（白い箱の中で、いま見ているページはオレンジでぬる） */
   .tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 4px; }
@@ -255,6 +255,7 @@
   .qm-url input { flex: 1; min-width: 0; font: inherit; font-size: 12.5px; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; color: var(--ink); }
   .qm-url button, .qm-edit-in button { font-weight: 700; font-size: 13px; border: 0; border-radius: 8px; padding: 8px 12px; background: var(--orange); color: #fff; cursor: pointer; white-space: nowrap; }
   .qm-btns { display: flex; gap: 8px; }
+  .qm-name { display: flex; justify-content: center; margin: 10px 0 0; }
   .qm-dl { flex: 1; text-align: center; text-decoration: none; font-weight: 700; background: var(--orange); color: #fff; border-radius: 9px; padding: 10px 14px; }
   .qm-tip { font-size: 11.5px; color: var(--muted); margin: 8px 0 0; }
   .qm-edit { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 8px; font-size: 13px; }
@@ -572,6 +573,7 @@
     <h3 id="qmTitle"></h3>
     <p class="qm-dest" id="qmDest"></p>
     <div class="qm-img" id="qmImg"></div>
+    <div class="qm-name" id="qmNameRow"><button type="button" class="kly" id="qmName" aria-pressed="false"><span>QRの下に名前を入れる</span></button></div>
     <div class="qm-url"><input id="qmUrl" readonly><button type="button" id="qmCopy">コピー</button></div>
     <div class="qm-btns"><a class="qm-dl" id="qmDl" download="qr.png">QR画像を保存</a></div>
     <p class="qm-tip">保存できないときは、QRの画像を長押しして保存してください</p>
@@ -1217,23 +1219,16 @@
     var img = $("qmImg"); img.innerHTML = "";
     var isQr = q.kind === "QR";
     img.hidden = !isQr; $("qmDl").parentNode.hidden = !isQr; document.querySelector(".qm-tip").hidden = !isQr;
+    $("qmNameRow").hidden = !isQr;
+    $("qmName").setAttribute("aria-pressed", QR_NAME ? "true" : "false");
     if (isQr && window.QRCode) {
       var tmp = document.createElement("div");
       new QRCode(tmp, { text: url, width: 480, height: 480, correctLevel: QRCode.CorrectLevel.M });
       setTimeout(function () {
         var c = tmp.querySelector("canvas");
         if (!c) return;
-        // 名前入りの画像（印刷用）：QR の下に名前
-        var out = document.createElement("canvas"), pad = 40, W = 480 + pad * 2, H = 480 + pad * 2 + 56;
-        out.width = W; out.height = H;
-        var x = out.getContext("2d");
-        x.fillStyle = "#fff"; x.fillRect(0, 0, W, H);
-        x.drawImage(c, pad, pad, 480, 480);
-        x.fillStyle = "#4A2E1A"; x.font = "bold 28px sans-serif"; x.textAlign = "center";
-        x.fillText(q.name.slice(0, 24), W / 2, 480 + pad + 44);
-        var data = out.toDataURL("image/png");
-        img.innerHTML = '<img alt="' + esc(q.name) + ' のQRコード" src="' + data + '">';
-        $("qmDl").href = data; $("qmDl").setAttribute("download", "QR_" + q.name.replace(/[\\/:*?"<>|\s]+/g, "_") + ".png");
+        QR_CANVAS = c;
+        drawQrImg(q);
       }, 60);
     }
     var known = (B.dests || []).some(function (x) { return x[0] === q.dest; });
@@ -1242,7 +1237,28 @@
     $("qmDel").hidden = false; $("qmDelAsk").hidden = true;
     $("qrModal").hidden = false;
   }
-  function closeQr() { $("qrModal").hidden = true; CUR = null; }
+  // QR画像（名前を入れる・入れないを切り替えられる。最後に選んだほうをブラウザが覚える）
+  var QR_CANVAS = null, QR_NAME = false;
+  try { QR_NAME = localStorage.getItem("hk-qr-name") === "1"; } catch (e) { /* 覚えられなくても動く */ }
+  function drawQrImg(q) {
+    if (!QR_CANVAS || !q) return;
+    var img = $("qmImg"), out = document.createElement("canvas"), pad = 40, W = 480 + pad * 2, H = 480 + pad * 2 + (QR_NAME ? 56 : 0);
+    out.width = W; out.height = H;
+    var x = out.getContext("2d");
+    x.fillStyle = "#fff"; x.fillRect(0, 0, W, H);
+    x.drawImage(QR_CANVAS, pad, pad, 480, 480);
+    if (QR_NAME) { x.fillStyle = "#4A2E1A"; x.font = "bold 28px sans-serif"; x.textAlign = "center"; x.fillText(q.name.slice(0, 24), W / 2, 480 + pad + 44); }
+    var data = out.toDataURL("image/png");
+    img.innerHTML = '<img alt="' + esc(q.name) + ' のQRコード" src="' + data + '">';
+    $("qmDl").href = data; $("qmDl").setAttribute("download", "QR_" + q.name.replace(/[\\/:*?"<>|\s]+/g, "_") + ".png");
+  }
+  $("qmName").addEventListener("click", function () {
+    QR_NAME = !QR_NAME;
+    try { localStorage.setItem("hk-qr-name", QR_NAME ? "1" : "0"); } catch (e) { /* なくても動く */ }
+    $("qmName").setAttribute("aria-pressed", QR_NAME ? "true" : "false");
+    drawQrImg(CUR);
+  });
+  function closeQr() { $("qrModal").hidden = true; CUR = null; QR_CANVAS = null; }
 
   // ---------------- ページの切り替え（概要／お客様の動き／人気／いつ・どこから／QR・リンク）
   var VIEWS = ["overview", "flow", "popular", "when", "links"], VIEW = "overview";
