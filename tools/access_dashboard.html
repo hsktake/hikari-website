@@ -225,6 +225,15 @@
   .qr-show { font-size: 12px; font-weight: 500; border: 1px solid var(--line); border-radius: 7px; padding: 4px 10px; background: #fff; color: var(--ink); cursor: pointer; white-space: nowrap; }
   .tag { display: inline-block; font-size: 10.5px; font-weight: 700; border-radius: 4px; padding: 1px 6px; margin-right: 8px; background: var(--otint); color: #9A4700; vertical-align: 1px; }
   .tag.off { background: var(--tint); color: var(--muted); }
+  /* 稼働中／停止中の札（オーナー指示 2026-11-25：QRが動いているかひと目で分かるように） */
+  .stb { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 3px 11px; border-radius: 999px; white-space: nowrap; background: #E6F2EA; color: var(--up); }
+  .stb::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 3px rgba(31,138,76,.18); }
+  .stb.off { background: var(--tint); color: var(--muted); }
+  .stb.off::before { box-shadow: none; }
+  #tQr tr.is-off td { color: var(--muted); }
+  .qm-st { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: -4px 0 12px; padding: 10px 12px; border-radius: 10px; background: #F3FAF5; border: 1px solid #CFE8D8; }
+  .qm-st.off { background: var(--tint); border-color: var(--line); }
+  .qm-st p { margin: 4px 0 0; font-size: 11.5px; color: var(--ink2); width: 100%; }
   .lk-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 0 0 18px; }
   .lk-head .ksh { flex: 1; margin: 10px 0 0; }
   .lk-new { font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 10px; padding: 10px 16px; background: var(--orange); color: #fff; cursor: pointer; }
@@ -406,6 +415,8 @@
     .krk { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
     .krk .r { font-size: 16px; }
     .hide-sp { display: none; }
+    #tQr .track { display: none; }
+    #tQr .stb { font-size: 11px; padding: 2px 8px; gap: 5px; }
     td:first-child { min-width: 5.5em; }
     .shops { grid-template-columns: 1fr 1fr; gap: 8px; }
     .shop .ph { height: 88px; }
@@ -572,14 +583,14 @@
     <button class="mclose" id="qmClose" type="button" aria-label="閉じる">×</button>
     <h3 id="qmTitle"></h3>
     <p class="qm-dest" id="qmDest"></p>
+    <div class="qm-st" id="qmStRow"><span class="stb" id="qmSt"></span><button type="button" class="kly" id="qmStop" aria-pressed="true"><span>稼働させる</span></button><p id="qmStNote"></p></div>
     <div class="qm-img" id="qmImg"></div>
     <div class="qm-name" id="qmNameRow"><button type="button" class="kly" id="qmName" aria-pressed="false"><span>QRの下に名前を入れる</span></button></div>
     <div class="qm-url"><input id="qmUrl" readonly><button type="button" id="qmCopy">コピー</button></div>
     <div class="qm-btns"><a class="qm-dl" id="qmDl" download="qr.png">QR画像を保存</a></div>
     <p class="qm-tip">保存できないときは、QRの画像を長押しして保存してください</p>
-    <details class="qm-edit"><summary>行き先を変える・止める</summary>
+    <details class="qm-edit"><summary>行き先を変える</summary>
       <div class="qm-edit-in"><select id="qmDest2"></select><input id="qmUrl2" type="url" placeholder="https://〜" hidden><button type="button" id="qmSave">行き先を変える</button></div>
-      <button type="button" class="qm-stop" id="qmStop">このQR・リンクを止める</button>
     </details>
     <div class="qm-del">
       <button type="button" class="qm-del-btn" id="qmDel">このQR・リンクを削除する</button>
@@ -1173,7 +1184,8 @@
     $("qmStop").addEventListener("click", function () {
       if (!CUR) return;
       var next = CUR.status === "止める" ? "使う" : "止める";
-      call("updateLink", [CUR.id, null, next], function (list) { QR = list; renderQr(); openQr(CUR.id); });
+      $("qmStop").disabled = true;
+      call("updateLink", [CUR.id, null, next], function (list) { $("qmStop").disabled = false; QR = list; renderQr(); openQr(CUR.id); });
     });
   }
   function statsOf(q) {
@@ -1189,7 +1201,7 @@
     QR.forEach(function (q) { total += statsOf(q).n; });
     $("qrCount").textContent = QR.length ? String(QR.length) : "";
     $("lkKpi").innerHTML = '<div><div class="lb">作った数</div><div class="v">' + num(QR.length) + "<small>件</small></div></div>" +
-      '<div><div class="lb">使用中</div><div class="v">' + num(active) + "<small>件</small></div></div>" +
+      '<div><div class="lb">稼働中</div><div class="v">' + num(active) + "<small>件</small></div></div>" +
       '<div><div class="lb">期間の回数</div><div class="v">' + num(total) + "<small>回</small></div></div>";
     if (!QR.length) { box.innerHTML = '<p class="empty">まだありません。「新しく作る」から作れます</p>'; return; }
     var list = QR.filter(function (q) {
@@ -1199,12 +1211,12 @@
     });
     if (!list.length) { box.innerHTML = '<p class="empty">あてはまるものがありません</p>'; return; }
     var mx = Math.max.apply(null, list.map(function (q) { return statsOf(q).n; }).concat([1]));
-    box.innerHTML = "<table><thead><tr><th>名前</th><th class=hide-sp>行き先</th><th class=n>回数</th><th style=width:16% class=hide-sp></th><th class=n>成約率</th><th></th></tr></thead><tbody>" +
+    box.innerHTML = "<table><thead><tr><th>状態</th><th>名前</th><th class=hide-sp>行き先</th><th class=n>回数</th><th style=width:16% class=hide-sp></th><th class=n>成約率</th><th class=hide-sp></th></tr></thead><tbody>" +
       list.map(function (q) {
         var st = statsOf(q), off = q.status === "止める";
-        return "<tr data-id='" + esc(q.id) + "'><td><span class='tag" + (off ? " off" : "") + "'>" + esc(off ? "停止中" : q.kind) + "</span>" + esc(q.name) + "<span class=dt>" + esc(q.created || "") + "</span></td><td class=hide-sp>" + esc(destName(q.dest)) + "</td><td class=n>" + num(st.n) +
+        return "<tr data-id='" + esc(q.id) + "'" + (off ? " class='is-off'" : "") + "><td><span class='stb" + (off ? " off" : "") + "'>" + (off ? "停止中" : "稼働中") + "</span></td><td><span class='tag" + (off ? " off" : "") + "'>" + esc(q.kind) + "</span>" + esc(q.name) + "<span class=dt>" + esc(q.created || "") + "</span></td><td class=hide-sp>" + esc(destName(q.dest)) + "</td><td class=n>" + num(st.n) +
           "</td><td class=hide-sp>" + meter(st.n, mx) + "</td><td class=n>" + (st.cvr === null ? '<span style="color:#8A919E">―</span>' : rateCell(st.cvr, true)) +
-          '</td><td class=n><button type="button" class="qr-show" data-id="' + esc(q.id) + '">' + (q.kind === "QR" ? "QRを見る" : "開く") + "</button></td></tr>";
+          '</td><td class="n hide-sp"><button type="button" class="qr-show" data-id="' + esc(q.id) + '">' + (q.kind === "QR" ? "QRを見る" : "開く") + "</button></td></tr>";
       }).join("") + "</tbody></table>";
     box.querySelectorAll("tbody tr").forEach(function (tr) { tr.addEventListener("click", function () { openQr(tr.getAttribute("data-id")); }); });
   }
@@ -1214,7 +1226,7 @@
     CUR = q;
     var url = (B.goBase || "") + q.id;
     $("qmTitle").textContent = q.name;
-    $("qmDest").textContent = "行き先：" + destName(q.dest) + (q.status === "止める" ? "（停止中）" : "");
+    $("qmDest").textContent = "行き先：" + destName(q.dest);
     $("qmUrl").value = url;
     var img = $("qmImg"); img.innerHTML = "";
     var isQr = q.kind === "QR";
@@ -1233,7 +1245,11 @@
     }
     var known = (B.dests || []).some(function (x) { return x[0] === q.dest; });
     $("qmDest2").value = known ? q.dest : "__url"; $("qmUrl2").hidden = known; $("qmUrl2").value = known ? "" : q.dest;
-    $("qmStop").textContent = q.status === "止める" ? "このQR・リンクを再開する" : "このQR・リンクを止める";
+    var off = q.status === "止める";
+    $("qmSt").textContent = off ? "停止中" : "稼働中"; $("qmSt").className = "stb" + (off ? " off" : "");
+    $("qmStRow").className = "qm-st" + (off ? " off" : "");
+    $("qmStop").setAttribute("aria-pressed", off ? "false" : "true");
+    $("qmStNote").textContent = off ? "読み取ると「受付は終了しました」と出ます" : "読み取ると行き先へ移動し、回数を数えます";
     $("qmDel").hidden = false; $("qmDelAsk").hidden = true;
     $("qrModal").hidden = false;
   }
