@@ -1188,6 +1188,14 @@
     var hit = (B.dests || []).filter(function (x) { return x[0] === d; })[0];
     return hit ? hit[1] : d;
   }
+  // 一覧用の短い行き先（外部のURLはサイト名だけ。全体は窓で見られる）
+  function destShort(d) {
+    if (!/^https:\/\//i.test(d)) return destName(d);
+    var h = String(d).replace(/^https:\/\//i, "").split(/[\/?#]/)[0].replace(/^www\./, "");
+    var KNOWN = [[/drive\.google|docs\.google/, "Googleドライブ"], [/instagram\.com/, "Instagram"], [/youtube\.com|youtu\.be/, "YouTube"], [/line\.me|lin\.ee/, "LINE"], [/cut-hikari-app/, "公式アプリ紹介サイト"], [/cut-hikari/, "カットハウスひかり（会社サイト）"]];
+    for (var i = 0; i < KNOWN.length; i++) if (KNOWN[i][0].test(h)) return KNOWN[i][1] + "（外部）";
+    return h + "（外部）";
+  }
   function destOptions(sel) {
     sel.innerHTML = (B.dests || []).map(function (x) { return '<option value="' + esc(x[0]) + '">' + esc(x[1]) + "</option>"; }).join("") + '<option value="__url">ほかのサイト（URLを入れる）</option>';
   }
@@ -1268,7 +1276,7 @@
     box.innerHTML = "<table><thead><tr><th>状態</th><th>名前</th><th class=hide-sp>行き先</th><th class=n>回数</th><th style=width:16% class=hide-sp></th><th class=n>成約率</th><th class=hide-sp></th></tr></thead><tbody>" +
       list.map(function (q) {
         var st = statsOf(q), off = q.status === "止める";
-        return "<tr data-id='" + esc(q.id) + "'" + (off ? " class='is-off'" : "") + "><td><span class='stb" + (off ? " off" : "") + "'>" + (off ? "停止中" : "稼働中") + "</span></td><td><span class='tag" + (off ? " off" : "") + "'>" + esc(q.kind) + "</span>" + esc(q.name) + (function () { var t = testOf(q.id); return t && t.n30 ? "<span class=tbadge>テストOK</span>" : ""; })() + "<span class=dt>" + esc(q.created || "") + "</span></td><td class=hide-sp>" + esc(destName(q.dest)) + "</td><td class=n>" + num(st.n) +
+        return "<tr data-id='" + esc(q.id) + "'" + (off ? " class='is-off'" : "") + "><td><span class='stb" + (off ? " off" : "") + "'>" + (off ? "停止中" : "稼働中") + "</span></td><td><span class='tag" + (off ? " off" : "") + "'>" + esc(q.kind) + "</span>" + esc(q.name) + (function () { var t = testOf(q.id); return t && t.n30 ? "<span class=tbadge>テストOK</span>" : ""; })() + "<span class=dt>" + esc(q.created || "") + "</span></td><td class=hide-sp title='" + esc(q.dest) + "'>" + esc(destShort(q.dest)) + "</td><td class=n>" + num(st.n) +
           "</td><td class=hide-sp>" + meter(st.n, mx) + "</td><td class=n>" + (st.cvr === null ? '<span style="color:#8A919E">―</span>' : rateCell(st.cvr, true)) +
           '</td><td class="n hide-sp"><button type="button" class="qr-show" data-id="' + esc(q.id) + '">' + (q.kind === "QR" ? "QRを見る" : "開く") + "</button></td></tr>";
       }).join("") + "</tbody></table>";
