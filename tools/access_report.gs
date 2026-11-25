@@ -66,6 +66,7 @@ function buildReq_(s) {
     limit: s.limit || 10000,
   };
   // お問い合わせフォーム（お客様からの声の入口。HSK-VOICE で見る）は、ホームページの数字にいっさい入れない（オーナー指示 2026-11-17）
+  // 社内テスト（notrack.html で「テストで数える」にした端末）も入れない。テストの回数は getTests で別に見る
   req.dimensionFilter = s.filter ? and_(s.filter, NOT_FORM) : NOT_FORM;
   return req;
 }
@@ -90,7 +91,8 @@ function batch_(specs) {
 const eq_ = (field, value) => ({ filter: { fieldName: field, stringFilter: { value: value, matchType: 'EXACT' } } });
 const inList_ = (field, values) => ({ filter: { fieldName: field, inListFilter: { values: values } } });
 const and_ = (...f) => ({ andGroup: { expressions: f } });
-const NOT_FORM = { notExpression: eq_('contentGroup', 'お問い合わせフォーム') };
+const NOT_OURS = ['お問い合わせフォーム', '社内テスト']; // ホームページの数字に入れないコンテンツグループ
+const NOT_FORM = { notExpression: inList_('contentGroup', NOT_OURS) };
 
 function monthLabel_(ym) { return ym.slice(0, 4) + '年' + Number(ym.slice(4)) + '月'; }
 function months_() { // 計測開始から今月まで（新しい順）
@@ -173,9 +175,9 @@ function funnelFor_(rg, usePathField, keepForm) {
     funnel: {
       isOpenFunnel: false,
       steps: [
-        // お問い合わせフォームだけを開いた訪問は入れない（読めないときは入れたままで集める）
+        // お問い合わせフォーム・社内テストだけの訪問は入れない（読めないときは入れたままで集める）
         { name: FUNNEL_STEPS[0], filterExpression: keepForm ? { funnelEventFilter: { eventName: 'session_start' } }
-          : { andGroup: { expressions: [{ funnelEventFilter: { eventName: 'session_start' } }, { notExpression: { funnelFieldFilter: { fieldName: 'contentGroup', stringFilter: { matchType: 'EXACT', value: 'お問い合わせフォーム' } } } }] } } },
+          : { andGroup: { expressions: [{ funnelEventFilter: { eventName: 'session_start' } }, { notExpression: { funnelFieldFilter: { fieldName: 'contentGroup', inListFilter: { values: NOT_OURS } } } }] } } },
         { name: FUNNEL_STEPS[1], filterExpression: shopStep },
         { name: FUNNEL_STEPS[2], filterExpression: { orGroup: { expressions: ['wait_status_click', 'map_click', 'tel_click', 'app_download'].map(e => ({ funnelEventFilter: { eventName: e } })) } } },
       ],
@@ -370,7 +372,7 @@ function getRangeData(start, end, cs, ce, force, site) {
   const ok = (d) => /^\d{4}-\d{2}-\d{2}$/.test(String(d || ''));
   if (![start, end, cs, ce].every(ok)) throw new Error('期間の指定が正しくありません');
   site = String(site || 'hikari').slice(0, 120);
-  const key = ['r9', site, start, end, cs, ce].join('|');
+  const key = ['r10', site, start, end, cs, ce].join('|');
   if (!force) { const c = cacheGet_(key); if (c) return c; }
   ERRORS.length = 0;
   const data = {
@@ -510,6 +512,32 @@ function tracked_(rg) {
     camp: g.camp.filter(r => r[0] && r[0] !== '(not set)').map(r => [r[0], r[1], r[2], Math.min(goal[r[0]] || 0, r[1])]),
     go: Object.keys(go).map(k => [k, go[k]]),
   };
+}
+
+// 画面から呼ぶ：社内テストの読み取り（notrack.html で「テストで数える」にした端末。go.js がページ名「QRテスト：ID」で qr_test を送る）
+// recent＝リアルタイム（いまから30分以内。1分ほどで出る）、week＝過去7日（数時間〜1日おくれて出る）
+function getTests() {
+  const idOf = t => { const m = String(t).match(/QRテスト：([a-z0-9]+)/i); return m ? m[1] : ''; };
+  const out = { recent: {}, week: {}, at: Utilities.formatDate(new Date(), TZ, 'HH:mm') };
+  try {
+    const rt = AnalyticsData.Properties.runRealtimeReport({
+      dimensions: [{ name: 'unifiedScreenName' }, { name: 'minutesAgo' }], metrics: [{ name: 'eventCount' }],
+      dimensionFilter: eq_('eventName', 'qr_test'), limit: 1000,
+    }, PROPERTY);
+    rows_(rt).forEach(r => {
+      const id = idOf(r[0]); if (!id) return;
+      const o = out.recent[id] || (out.recent[id] = { n: 0, min: 99 });
+      o.n += r[2]; o.min = Math.min(o.min, Number(r[1]));
+    });
+  } catch (e) { out.err = 'リアルタイム：' + String(e.message || e).slice(0, 120); }
+  try {
+    const wk = AnalyticsData.Properties.runReport({
+      dateRanges: [{ startDate: '6daysAgo', endDate: 'today' }], dimensions: [{ name: 'pageTitle' }], metrics: [{ name: 'eventCount' }],
+      dimensionFilter: eq_('eventName', 'qr_test'), limit: 1000,
+    }, PROPERTY);
+    rows_(wk).forEach(r => { const id = idOf(r[0]); if (id) out.week[id] = (out.week[id] || 0) + r[1]; });
+  } catch (e) { out.err = (out.err ? out.err + ' ／ ' : '') + '7日：' + String(e.message || e).slice(0, 120); }
+  return out;
 }
 
 // キャッシュ（1つ 100KB までなので分けて入れる）

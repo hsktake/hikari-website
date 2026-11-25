@@ -6,3 +6,24 @@ body { background: #FFFAF2; color: #4A2E1A; font-family: "Hiragino Maru Gothic P
 .go-msg { font-weight: 700; font-size: 16px; margin: 0; }
 .go-home { margin: 16px 0 0; }
 .go-home a { display: inline-block; background: #EF7A00; color: #fff; font-weight: 700; text-decoration: none; padding: 10px 20px; border-radius: 999px; }
+
+/* この端末の計測設定（notrack.html・社内用） */
+.nt { max-width: 460px; margin: 0 auto; padding: 32px 18px 40px; text-align: center; box-sizing: border-box; }
+.nt h1 { font-size: 21px; margin: 0 0 6px; }
+.nt h1 small { display: inline-block; margin-left: 8px; font-size: 12px; background: #4A2E1A; color: #fff; padding: 2px 9px; border-radius: 999px; vertical-align: 3px; }
+.nt-now { white-space: pre-line; font-weight: 700; margin: 10px 0 18px; padding: 10px 14px; border-radius: 12px; background: #fff; border: 2px solid #E8DCCB; }
+.nt-now.off { border-color: #9AA0A6; }
+.nt-now.test { border-color: #2F86B8; background: #EAF5FB; color: #1D5E86; }
+.nt-now.on { border-color: #EF7A00; background: #FFF1E0; }
+.nt-now.ng { border-color: #C0392B; color: #C0392B; }
+.nt-opts { display: grid; gap: 10px; }
+.nt-opt { display: grid; grid-template-columns: 44px 1fr; grid-template-rows: auto auto; column-gap: 10px; align-items: center; text-align: left; width: 100%; padding: 14px 16px; border-radius: 16px; border: 2px solid #E8DCCB; background: #fff; color: #4A2E1A; font: inherit; cursor: pointer; }
+.nt-opt .nt-ic { grid-row: 1 / 3; font-size: 28px; text-align: center; }
+.nt-opt b { font-size: 16px; }
+.nt-opt span:last-child { font-size: 12.5px; color: #7A6656; line-height: 1.5; }
+.nt-opt[aria-checked="true"] { border-color: #EF7A00; background: #FFF1E0; box-shadow: 0 0 0 3px rgba(239,122,0,.18); }
+.nt-opt.test[aria-checked="true"] { border-color: #2F86B8; background: #EAF5FB; box-shadow: 0 0 0 3px rgba(47,134,184,.18); }
+.nt-opt[aria-checked="true"] b::after { content: "  ✓ いまの設定"; font-size: 12px; color: #EF7A00; }
+.nt-opt.test[aria-checked="true"] b::after { color: #2F86B8; }
+.nt-note { font-size: 12px; color: #7A6656; margin: 16px 0 0; line-height: 1.6; }
+

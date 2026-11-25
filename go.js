@@ -2,7 +2,9 @@
    ホームページ管理シートの「リンク・QR」タブ（集計画面の「QR・リンクを作る」で作った行）から行き先を探して移動する。
    ・行き先がサイト内（パス）：目印 utm_source/medium/campaign（＝ID）を付けて移動。ここでは計測しない（移動先で「QR・リンクから来た訪問」として数える）
    ・行き先が外部（https://〜）：ここで link_click を記録してから移動
-   行き先は管理シートに登録したものだけ（勝手な飛び先は使えない）。 */
+   行き先は管理シートに登録したものだけ（勝手な飛び先は使えない）。
+   この端末が「テストで数える」（notrack.html。hk_notrack=test）のとき：ページ名「QRテスト：ID」で qr_test を記録してから移動
+   （コンテンツグループ「社内テスト」。ふだんの数字には入らず、HSK-COUNT の「テスト」に1分ほどで出る） */
 (function () {
   "use strict";
   var GA_ID = "G-P582HM9KTN";
@@ -35,16 +37,18 @@
     var s = kind === "QR" ? "qr" : "link";
     return url + (url.indexOf("?") >= 0 ? "&" : "?") + "utm_source=" + s + "&utm_medium=" + s + "&utm_campaign=" + encodeURIComponent(id) + hash;
   }
-  function track(then) {
-    var off = false, done = false;
-    try { off = localStorage.getItem("hk_notrack") === "1"; } catch (e) { /* 読めなくても動く */ }
-    if (off || /^(localhost|127\.)/.test(location.hostname)) { then(); return; }
+  var MODE = "";
+  try { MODE = localStorage.getItem("hk_notrack") || ""; } catch (e) { /* 読めなくても動く */ }
+  function track(then, test) {
+    var done = false;
+    if (MODE === "1" || /^(localhost|127\.)/.test(location.hostname)) { then(); return; }
     var go = function () { if (!done) { done = true; then(); } };
+    if (test) document.title = "QRテスト：" + id;
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
     window.gtag("js", new Date());
-    window.gtag("config", GA_ID, { content_group: "リンク" });
-    window.gtag("event", "link_click", { event_callback: go, event_timeout: 1500 });
+    window.gtag("config", GA_ID, { content_group: test ? "社内テスト" : "リンク" });
+    window.gtag("event", test ? "qr_test" : "link_click", { event_callback: go, event_timeout: 1500 });
     var s = document.createElement("script");
     s.async = true;
     s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
@@ -63,8 +67,13 @@
       if (!row) { fail("このリンクは見つかりませんでした"); return; }
       if (cs >= 0 && String(row[cs]).trim() === "止める") { fail("このリンクの受付は終了しました"); return; }
       var dest = String(row[cd] || "").trim(), kind = String(row[ck] || "").trim();
-      if (/^https:\/\//i.test(dest)) { track(function () { location.replace(dest); }); return; }
-      if (/^[a-z0-9_\-\/\.#]*$/i.test(dest) && dest.indexOf("..") < 0) { location.replace(withUtm(ROOT + dest.replace(/^\/+/, ""), kind)); return; }
+      var test = MODE === "test";
+      if (/^https:\/\//i.test(dest)) { track(function () { location.replace(dest); }, test); return; }
+      if (/^[a-z0-9_\-\/\.#]*$/i.test(dest) && dest.indexOf("..") < 0) {
+        var to = withUtm(ROOT + dest.replace(/^\/+/, ""), kind);
+        if (test) track(function () { location.replace(to); }, true); else location.replace(to);
+        return;
+      }
       fail("このリンクの行き先が正しくありません");
     })
     .catch(function () { fail("移動できませんでした。時間をおいてもう一度お試しください"); });

@@ -5,25 +5,29 @@
   "use strict";
   var GA_ID = "G-P582HM9KTN";
   if (/^(localhost|127\.|\[::1\])/.test(location.hostname) || location.protocol === "file:") return; // 手元の確認では送らない
-  // 社内の閲覧を数えない：URL に ?notrack=1 を付けて1回開くと、このブラウザからは送らない（?notrack=0 で元に戻す）
-  var nt = location.search.match(/[?&]notrack=([01])/), off = false;
+  // 社内の閲覧：この端末の計測設定（notrack.html）か、URL に ?notrack=1（数えない）・?notrack=test（テストで数える）・?notrack=0（元に戻す）を付けて1回開く
+  // テストで数える＝コンテンツグループ「社内テスト」で送る（HSK-COUNT のふだんの数字には入らず、「テスト」に出る）
+  var nt = location.search.match(/[?&]notrack=(0|1|test)/), mode = "";
   try {
-    if (nt) { if (nt[1] === "1") localStorage.setItem("hk_notrack", "1"); else localStorage.removeItem("hk_notrack"); }
-    off = localStorage.getItem("hk_notrack") === "1";
-  } catch (e) { off = !!(nt && nt[1] === "1"); }
+    if (nt) { if (nt[1] === "0") localStorage.removeItem("hk_notrack"); else localStorage.setItem("hk_notrack", nt[1]); }
+    mode = localStorage.getItem("hk_notrack") || "";
+  } catch (e) { mode = nt && nt[1] !== "0" ? nt[1] : ""; }
+  var off = mode === "1", testMode = mode === "test";
+  var later = function (fn) { if (document.body) fn(); else document.addEventListener("DOMContentLoaded", fn); };
   if (nt) {
-    var toast = function () {
+    later(function () {
       var d = document.createElement("div");
       d.setAttribute("role", "status");
-      d.textContent = off ? "このブラウザからの閲覧は、アクセス集計に数えません（社内用の設定）" : "このブラウザからの閲覧を、アクセス集計に数えるように戻しました";
+      d.textContent = off ? "このブラウザからの閲覧は、アクセス集計に数えません（社内用の設定）"
+        : testMode ? "このブラウザからの閲覧は「テスト」として数えます（ふだんの数字には入りません）"
+        : "このブラウザからの閲覧を、アクセス集計に数えるように戻しました";
       var s = d.style;
       s.position = "fixed"; s.left = "50%"; s.bottom = "24px"; s.transform = "translateX(-50%)"; s.zIndex = "9999";
       s.background = "#4A2E1A"; s.color = "#fff"; s.padding = "12px 18px"; s.borderRadius = "14px"; s.fontWeight = "700";
       s.fontSize = "14px"; s.maxWidth = "calc(100% - 32px)"; s.boxShadow = "0 6px 20px rgba(0,0,0,.25)"; s.textAlign = "center";
       document.body.appendChild(d);
       setTimeout(function () { d.remove(); }, 6000);
-    };
-    if (document.body) toast(); else document.addEventListener("DOMContentLoaded", toast);
+    });
   }
   if (off) return;
   var script = document.currentScript;
@@ -39,6 +43,18 @@
     [/^(privacy|tokushoho)\.html/, "規約・表記"]];
   var group = "その他";
   for (var i = 0; i < GROUPS.length; i++) if (GROUPS[i][0].test(rel)) { group = GROUPS[i][1]; break; }
+  if (testMode) {
+    group = "社内テスト";
+    later(function () { // テスト中の札（押すと設定のページ）
+      var a = document.createElement("a");
+      a.href = ROOT + "notrack.html"; a.textContent = "🧪 テストで計測中";
+      var s = a.style;
+      s.position = "fixed"; s.left = "12px"; s.bottom = "12px"; s.zIndex = "9998"; s.background = "#2F86B8"; s.color = "#fff";
+      s.fontWeight = "700"; s.fontSize = "12.5px"; s.padding = "8px 14px"; s.borderRadius = "999px"; s.textDecoration = "none";
+      s.boxShadow = "0 4px 14px rgba(0,0,0,.2)";
+      document.body.appendChild(a);
+    });
+  }
 
   window.dataLayer = window.dataLayer || [];
   function gtag() { window.dataLayer.push(arguments); }
