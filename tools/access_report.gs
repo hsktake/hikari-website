@@ -525,7 +525,7 @@ function getTests() {
     // リアルタイムでは「ページ名」と「イベント名」を一緒に使えないので、ページ名「QRテスト：ID」の表示回数で数える
     const rt = AnalyticsData.Properties.runRealtimeReport({
       dimensions: [{ name: 'unifiedScreenName' }, { name: 'minutesAgo' }], metrics: [{ name: 'screenPageViews' }],
-      dimensionFilter: { filter: { fieldName: 'unifiedScreenName', stringFilter: { value: 'QRテスト：', matchType: 'BEGINS_WITH' } } }, limit: 1000,
+      limit: 10000, // 絞りこみはここでせず、ページ名を下で見分ける（リアルタイムの絞りこみで「QRテスト：」が一致しなかったため）
     }, PROPERTY);
     rows_(rt).forEach(r => {
       const id = idOf(r[0]); if (!id) return;
