@@ -1356,7 +1356,7 @@
     return { n30: r ? r.n : 0, min: r ? r.min : null, week: Math.max(w, r ? r.n : 0) };
   }
   function testText(t) {
-    if (!t || (!t.n30 && !t.week)) return "テストの読み取りはまだありません";
+    if (!t || (!t.n30 && !t.week)) return TESTS && TESTS.err ? "テストの結果を読めませんでした。少しおいて「もう一度見る」を押してください" : "テストの読み取りはまだありません（読み取ってから1分ほどで出ます）";
     if (t.n30) return "テストOK：" + (t.min <= 0 ? "1分以内" : t.min + "分前") + "に読み取り（30分で" + t.n30 + "回）";
     return "テスト：過去7日に" + t.week + "回";
   }

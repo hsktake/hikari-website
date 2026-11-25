@@ -516,13 +516,16 @@ function tracked_(rg) {
 
 // 画面から呼ぶ：社内テストの読み取り（notrack.html で「テストで数える」にした端末。go.js がページ名「QRテスト：ID」で qr_test を送る）
 // recent＝リアルタイム（いまから30分以内。1分ほどで出る）、week＝過去7日（数時間〜1日おくれて出る）
+// zzCheckTests はスクリプトエディタから動作を確かめる用（実行ログに結果が出る）
+function zzCheckTests() { console.log(JSON.stringify(getTests())); }
 function getTests() {
   const idOf = t => { const m = String(t).match(/QRテスト：([a-z0-9]+)/i); return m ? m[1] : ''; };
   const out = { recent: {}, week: {}, at: Utilities.formatDate(new Date(), TZ, 'HH:mm') };
   try {
+    // リアルタイムでは「ページ名」と「イベント名」を一緒に使えないので、ページ名「QRテスト：ID」の表示回数で数える
     const rt = AnalyticsData.Properties.runRealtimeReport({
-      dimensions: [{ name: 'unifiedScreenName' }, { name: 'minutesAgo' }], metrics: [{ name: 'eventCount' }],
-      dimensionFilter: eq_('eventName', 'qr_test'), limit: 1000,
+      dimensions: [{ name: 'unifiedScreenName' }, { name: 'minutesAgo' }], metrics: [{ name: 'screenPageViews' }],
+      dimensionFilter: { filter: { fieldName: 'unifiedScreenName', stringFilter: { value: 'QRテスト：', matchType: 'BEGINS_WITH' } } }, limit: 1000,
     }, PROPERTY);
     rows_(rt).forEach(r => {
       const id = idOf(r[0]); if (!id) return;
