@@ -239,6 +239,12 @@
   .lk-new { font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 10px; padding: 10px 16px; background: var(--orange); color: #fff; cursor: pointer; }
   .lk-new:hover { filter: brightness(.96); }
   .lk-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .qr-copy { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; border: 1px solid #F3C99A; border-radius: 7px; padding: 4px 10px; background: #FFF6EC; color: #B45A00; cursor: pointer; white-space: nowrap; margin-right: 6px; }
+  .qr-copy:hover { background: #FFEBD6; }
+  .qr-copy.done { background: #EAF6EE; border-color: #B8DEC4; color: #2E7D46; }
+  .qr-copy svg { flex: none; }
+  .qm-made { margin: -2px 0 12px; padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 700; background: #EAF6EE; color: #2E7D46; border: 1px solid #B8DEC4; }
+  .qm-made.ng { background: #FFF6EC; color: #B45A00; border-color: #F3C99A; }
   #tQr small.u { font-size: 11px; color: var(--ink2); margin-left: 2px; font-weight: 500; }
   .lk-test { font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; border: 1px solid #B8D9EC; border-radius: 10px; padding: 9px 14px; background: #EAF5FB; color: #1D5E86; cursor: pointer; }
   .lk-test:hover { background: #DDEFF8; }
@@ -445,6 +451,8 @@
     .krk .r { font-size: 16px; }
     .hide-sp { display: none; }
     #tQr .track { display: none; }
+    .qr-copy { padding: 6px 8px; margin-right: 0; }
+    .qr-copy .t { display: none; }
     #tQr .stb { font-size: 11px; padding: 2px 8px; gap: 5px; }
     td:first-child { min-width: 5.5em; }
     .shops { grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -638,6 +646,7 @@
     <h3 id="qmTitle"></h3>
     <p class="qm-dest" id="qmDest"></p>
     <div class="qm-st" id="qmStRow"><span class="stb" id="qmSt"></span><button type="button" class="kly" id="qmStop" aria-pressed="true"><span>稼働させる</span></button><p id="qmStNote"></p></div>
+    <div class="qm-made" id="qmMade" hidden></div>
     <div class="qm-test" id="qmTest" hidden></div>
     <div class="qm-img" id="qmImg"></div>
     <div class="qm-name" id="qmNameRow"><button type="button" class="kly" id="qmName" aria-pressed="false"><span>QRの下に名前を入れる</span></button></div>
@@ -1220,15 +1229,22 @@
         QR = r.list; $("qName").value = ""; $("qUrl").value = "";
         $("qrNew").hidden = true;
         renderQr(); openQr(r.id);
+        var made = $("qmMade");
+        copyText((B.goBase || "") + r.id, function (ok) {
+          made.className = "qm-made" + (ok ? "" : " ng");
+          made.textContent = ok ? "できました。リンクをコピーしたので、LINEやチャットにそのまま貼り付けられます"
+            : "できました。下の「コピー」を押すと、リンクをコピーできます";
+          made.hidden = false;
+        });
       });
     });
     $("qmClose").addEventListener("click", closeQr);
     $("qrModal").addEventListener("click", function (e) { if (e.target === $("qrModal")) closeQr(); });
     $("qmCopy").addEventListener("click", function () {
       var u = $("qmUrl"); u.select();
-      var ok = false; try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
-      if (navigator.clipboard && !ok) navigator.clipboard.writeText(u.value).catch(function () {});
-      $("qmCopy").textContent = "コピーしました"; setTimeout(function () { $("qmCopy").textContent = "コピー"; }, 1500);
+      copyText(u.value, function (ok) {
+        $("qmCopy").textContent = ok ? "コピーしました" : "長押しでコピー"; setTimeout(function () { $("qmCopy").textContent = "コピー"; }, 1600);
+      });
     });
     $("qmSave").addEventListener("click", function () {
       if (!CUR) return;
@@ -1258,6 +1274,20 @@
     // 閲覧数＝読み取った・押した人の数（同じ人は1回まで）。外部の行き先は go の3つ目（人数）、サイト内は camp の3つ目（人数）
     return external ? { n: g ? +(g[2] != null ? g[2] : g[1]) : 0 } : { n: c ? +c[2] : 0 };
   }
+  // 追跡リンクをコピー（新しいブラウザは clipboard、だめなら隠した欄を選んでコピー）。結果を cb(true/false) で返す
+  var COPY_IC = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>';
+  var CHECK_IC = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>';
+  function copyText(text, cb) {
+    var old = function () {
+      var t = document.createElement("textarea"); t.value = text; t.setAttribute("readonly", "");
+      t.style.position = "fixed"; t.style.top = "-1000px"; document.body.appendChild(t); t.select();
+      var ok = false; try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      t.remove(); return ok;
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { cb(true); }, function () { cb(old()); });
+    } else cb(old());
+  }
   function renderQr() {
     var box = $("tQr");
     if (!box) return;
@@ -1275,19 +1305,31 @@
     });
     if (!list.length) { box.innerHTML = '<p class="empty">あてはまるものがありません</p>'; return; }
     var mx = Math.max.apply(null, list.map(function (q) { return statsOf(q).n; }).concat([1]));
-    box.innerHTML = "<table><thead><tr><th>状態</th><th>名前</th><th class=hide-sp>行き先</th><th class=n>閲覧数</th><th style=width:22% class=hide-sp></th><th class=hide-sp></th></tr></thead><tbody>" +
+    box.innerHTML = "<table><thead><tr><th>状態</th><th>名前</th><th class=hide-sp>行き先</th><th class=n>閲覧数</th><th style=width:18% class=hide-sp></th><th class=n></th></tr></thead><tbody>" +
       list.map(function (q) {
         var st = statsOf(q), off = q.status === "止める";
         return "<tr data-id='" + esc(q.id) + "'" + (off ? " class='is-off'" : "") + "><td><span class='stb" + (off ? " off" : "") + "'>" + (off ? "停止中" : "稼働中") + "</span></td><td><span class='tag" + (off ? " off" : "") + "'>" + esc(q.kind) + "</span>" + esc(q.name) + (function () { var t = testOf(q.id); return t && t.n30 ? "<span class=tbadge>テストOK</span>" : ""; })() + "<span class=dt>" + esc(q.created || "") + "</span></td><td class=hide-sp title='" + esc(q.dest) + "'>" + esc(destShort(q.dest)) + "</td><td class=n>" + num(st.n) +
           "<small class=u>人</small></td><td class=hide-sp>" + meter(st.n, mx) +
-          '</td><td class="n hide-sp"><button type="button" class="qr-show" data-id="' + esc(q.id) + '">' + (q.kind === "QR" ? "QRを見る" : "開く") + "</button></td></tr>";
+          '</td><td class=n><button type="button" class="qr-copy" data-id="' + esc(q.id) + '" title="リンクをコピー">' + COPY_IC + '<span class=t>コピー</span></button><button type="button" class="qr-show hide-sp" data-id="' + esc(q.id) + '">' + (q.kind === "QR" ? "QRを見る" : "開く") + "</button></td></tr>";
       }).join("") + "</tbody></table>";
     box.querySelectorAll("tbody tr").forEach(function (tr) { tr.addEventListener("click", function () { openQr(tr.getAttribute("data-id")); }); });
+    box.querySelectorAll(".qr-copy").forEach(function (b) {
+      b.addEventListener("click", function (e) {
+        e.stopPropagation(); // 行を押したとき（窓を開く）とは別
+        var url = (B.goBase || "") + b.getAttribute("data-id");
+        copyText(url, function (ok) {
+          if (!ok) { openQr(b.getAttribute("data-id")); return; } // コピーできない端末は窓を開いて「コピー」から
+          b.classList.add("done"); b.innerHTML = CHECK_IC + "<span class=t>コピーしました</span>";
+          setTimeout(function () { b.classList.remove("done"); b.innerHTML = COPY_IC + "<span class=t>コピー</span>"; }, 1600);
+        });
+      });
+    });
   }
   function openQr(id) {
     var q = QR.filter(function (x) { return x.id === id; })[0];
     if (!q) return;
     CUR = q;
+    $("qmMade").hidden = true;
     var url = (B.goBase || "") + q.id;
     $("qmTitle").textContent = q.name;
     $("qmDest").textContent = "行き先：" + destName(q.dest);
