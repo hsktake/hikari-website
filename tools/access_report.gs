@@ -127,7 +127,7 @@ function pageType_(path) {
   return 'その他';
 }
 const GOAL_EVENTS = ['app_download', 'wait_status_click', 'map_click', 'tel_click', 'recruit_contact'];
-// 「来店につながった訪問」＝この動きが1つでもあった訪問（成約率の分子）
+// 「来店につながった訪問」＝この動きが1つでもあった訪問（来店アクション率の分子）
 const VISIT_GOALS = ['wait_status_click', 'map_click', 'tel_click', 'app_download'];
 const ymd_ = (d) => Utilities.formatDate(d, TZ, 'yyyy-MM-dd');
 
@@ -221,7 +221,7 @@ function updateAll(e) {
   months.forEach(m => monthly[m] = { users: 0, newUsers: 0, sessions: 0, views: 0, dur: 0, eng: 0, ev: {} });
   base.forEach(r => { const o = monthly[r[0]]; if (o) Object.assign(o, { users: r[1], newUsers: r[2], sessions: r[3], views: r[4], dur: r[5], eng: r[6] }); });
   ev.forEach(r => { const o = monthly[r[0]]; if (o) o.ev[r[1]] = r[2]; });
-  const mHead = ['月', '訪問者数', 'うち はじめての人', '訪問回数', 'ページ表示回数', '平均滞在時間（秒）', 'しっかり見た割合'].concat(EVENTS.map(e => e[1]), ['来店につながった訪問', '成約率']);
+  const mHead = ['月', '訪問者数', 'うち はじめての人', '訪問回数', 'ページ表示回数', '平均滞在時間（秒）', 'しっかり見た割合'].concat(EVENTS.map(e => e[1]), ['来店につながった訪問', '来店アクション率']);
   const mRows = months.map(m => {
     const o = monthly[m], g = Math.min(goalSes[m] || 0, o.sessions || 0);
     return [monthLabel_(m), o.users, o.newUsers, o.sessions, o.views, Math.round(o.dur), o.eng].concat(EVENTS.map(e => o.ev[e[0]] || 0), [g, o.sessions ? g / o.sessions : 0]);

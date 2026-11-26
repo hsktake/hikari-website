@@ -518,7 +518,7 @@
         <div class="grid">
           <h3 class="ksh">来店まで</h3>
           <section class="card s7 rv"><h2>来店までの流れ</h2><p class="sub">お店に向かう動き＝待ち状況・地図・電話・アプリDLのどれかを押した</p><div id="fFunnel"></div></section>
-          <section class="card s5 rv"><h2>どこから来たか</h2><p class="sub">訪問回数と、そのうちお店に向かう動きがあった割合（成約率）</p><div id="tChannels"></div></section>
+          <section class="card s5 rv"><h2>どこから来たか</h2><p class="sub">訪問回数と、そのうちお店に向かう動きがあった割合（来店アクション率）</p><div id="tChannels"></div></section>
           <h3 class="ksh">ページの動き</h3>
           <section class="card s12 rv"><h2>ページのつながり</h2><p class="sub">はじめのページを選ぶと、次にどのページへ進んだかが分かります（数字は回数）</p><div class="tree-roots" id="treeRoots"></div><div class="tree-box" id="tree"></div></section>
           <section class="card s5 rv"><h2>最初に開いたページ</h2><p class="sub">「すぐ帰った」＝10秒未満で1ページだけ見て帰った割合</p><div id="tLanding"></div></section>
@@ -557,7 +557,7 @@
           <div class="lk-btns"><button type="button" class="lk-test" id="ltBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/><path d="M7.5 15h9"/></svg>社内テスト</button><button type="button" class="lk-new" id="qrNewBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>新しく作る</button></div>
         </div>
         <div class="lk-kpi" id="lkKpi"></div>
-        <h3 class="ksh">一覧<button class="q" type="button" data-tip="回数＝えらんだ期間に読み取られた・押された回数。行き先がサイト内なら、そのあとお店に向かった割合（成約率）も出ます。行を押すと、QR画像の保存・行き先の変更ができます">?</button></h3>
+        <h3 class="ksh">一覧<button class="q" type="button" data-tip="回数＝えらんだ期間に読み取られた・押された回数。行き先がサイト内なら、そのあとお店に向かった割合（来店アクション率）も出ます。行を押すと、QR画像の保存・行き先の変更ができます">?</button></h3>
         <section class="card">
           <div class="lk-filter" id="lkFilter" role="group" aria-label="しぼりこみ">
             <button type="button" class="chip on" data-f="all">すべて</button>
@@ -588,7 +588,7 @@
       <dt>訪問者数</dt><dd>見に来た人の数（同じ人が何回来ても1人）</dd>
       <dt>訪問回数</dt><dd>見に来た回数（30分以上あくと別の回）</dd>
       <dt>お店に向かう動き</dt><dd>待ち状況・地図・電話・アプリDLのどれかを押したこと</dd>
-      <dt>成約率</dt><dd>訪問のうち、お店に向かう動きまで進んだ割合</dd>
+      <dt>来店アクション率</dt><dd>訪問のうち、待ち状況・地図・電話・アプリDLのどれかまで進んだ割合</dd>
       <dt>すぐ帰った</dt><dd>10秒未満で1ページだけ見て帰った</dd>
       <dt>ここで終わった</dt><dd>そのページを最後に閉じた回数の目安（お店に向かった人も含む）</dd>
       <dt>比べる期間</dt><dd>今月は先月の同じ日数、過去N日はその前のN日、月は前の月</dd>
@@ -943,7 +943,7 @@
       tile({ big: 1, ic: "visit", lb: "訪問回数", unit: "回", v: k.sessions, p: pv(pk.sessions), sp: [col(dc, 2), col(dp, 2)], tip: "見に来た回数（30分以上あくと別の回）" }),
       tile({ big: 1, ic: "page", lb: "ページ表示", unit: "回", v: k.views, p: pv(pk.views), sp: [col(dc, 3), col(dp, 3)], tip: "ページが開かれた回数" }),
       tile({ big: 1, ic: "shop", lb: "お店に向かう動き", unit: "回", v: k.goal, p: pv(pk.goal), sp: [col(dc, 4), col(dp, 4)], tip: "待ち状況・地図・電話・アプリDLのどれかを押した訪問の数" }),
-      tile({ big: 1, ic: "rate", lb: "成約率", unit: "%", rate: 1, v: k.cvr, p: pv(pk.cvr), sp: [rate(dc), rate(dp)], tip: "訪問のうち、お店に向かう動きまで進んだ割合。増減は「何％増えたか」です" })
+      tile({ big: 1, ic: "rate", lb: "来店アクション率", unit: "%", rate: 1, v: k.cvr, p: pv(pk.cvr), sp: [rate(dc), rate(dp)], tip: "訪問のうち、待ち状況・地図・電話・アプリDLのどれかまで進んだ割合。増減は「何％増えたか」です" })
     ].join("");
     var e = D.cur.ev, pe = D.prev.ev;
     $("minis").innerHTML = [["dl", "アプリDL", "アプリDLボタン"], ["wait", "待ち状況", "待ち状況を見た"], ["map", "地図", "地図を開いた"], ["tel", "電話", "電話をかけた"]].map(function (x) {
@@ -1038,7 +1038,7 @@
 
   function renderChannels() {
     var ch = D.cur.channels.slice(0, 8), mx = Math.max.apply(null, ch.map(function (r) { return +r[1]; }).concat([1]));
-    $("tChannels").innerHTML = ch.length ? "<table><thead><tr><th>どこから</th><th class=n>訪問</th><th style=width:22%></th><th class=n>成約率</th></tr></thead><tbody>" +
+    $("tChannels").innerHTML = ch.length ? "<table><thead><tr><th>どこから</th><th class=n>訪問</th><th style=width:22%></th><th class=n>来店<br>アクション率</th></tr></thead><tbody>" +
       ch.map(function (r) { return '<tr><td title="' + esc(r[0]) + '">' + esc(String(r[0]).replace(/（.*）/, "")) + "</td><td class=n>" + num(r[1]) + "</td><td>" + meter(r[1], mx) + "</td><td class=n>" + rateCell(r[4], true) + "</td></tr>"; }).join("") + "</tbody></table>" : EMPTY;
   }
 
@@ -1273,7 +1273,7 @@
     });
     if (!list.length) { box.innerHTML = '<p class="empty">あてはまるものがありません</p>'; return; }
     var mx = Math.max.apply(null, list.map(function (q) { return statsOf(q).n; }).concat([1]));
-    box.innerHTML = "<table><thead><tr><th>状態</th><th>名前</th><th class=hide-sp>行き先</th><th class=n>回数</th><th style=width:16% class=hide-sp></th><th class=n>成約率</th><th class=hide-sp></th></tr></thead><tbody>" +
+    box.innerHTML = "<table><thead><tr><th>状態</th><th>名前</th><th class=hide-sp>行き先</th><th class=n>回数</th><th style=width:16% class=hide-sp></th><th class=n>来店<br>アクション率</th><th class=hide-sp></th></tr></thead><tbody>" +
       list.map(function (q) {
         var st = statsOf(q), off = q.status === "止める";
         return "<tr data-id='" + esc(q.id) + "'" + (off ? " class='is-off'" : "") + "><td><span class='stb" + (off ? " off" : "") + "'>" + (off ? "停止中" : "稼働中") + "</span></td><td><span class='tag" + (off ? " off" : "") + "'>" + esc(q.kind) + "</span>" + esc(q.name) + (function () { var t = testOf(q.id); return t && t.n30 ? "<span class=tbadge>テストOK</span>" : ""; })() + "<span class=dt>" + esc(q.created || "") + "</span></td><td class=hide-sp title='" + esc(q.dest) + "'>" + esc(destShort(q.dest)) + "</td><td class=n>" + num(st.n) +
