@@ -239,6 +239,7 @@
   .lk-new { font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 10px; padding: 10px 16px; background: var(--orange); color: #fff; cursor: pointer; }
   .lk-new:hover { filter: brightness(.96); }
   .lk-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  #tQr small.u { font-size: 11px; color: var(--ink2); margin-left: 2px; font-weight: 500; }
   .lk-test { font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; border: 1px solid #B8D9EC; border-radius: 10px; padding: 9px 14px; background: #EAF5FB; color: #1D5E86; cursor: pointer; }
   .lk-test:hover { background: #DDEFF8; }
   .tbadge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #EAF5FB; color: #1D5E86; margin-left: 6px; white-space: nowrap; vertical-align: 1px; }
@@ -557,8 +558,8 @@
           <div class="lk-btns"><button type="button" class="lk-test" id="ltBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/><path d="M7.5 15h9"/></svg>社内テスト</button><button type="button" class="lk-new" id="qrNewBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>新しく作る</button></div>
         </div>
         <div class="lk-kpi" id="lkKpi"></div>
-        <h3 class="ksh">一覧<button class="q" type="button" data-tip="回数＝えらんだ期間に読み取られた・押された回数。行き先がサイト内なら、そのあとアクションがあった割合（アクション率）も出ます。行を押すと、QR画像の保存・行き先の変更ができます">?</button></h3>
-        <section class="card">
+        <h3 class="ksh">一覧<button class="q" type="button" data-tip="閲覧数＝えらんだ期間に読み取った・押した人の数（同じ人が何回読んでも1人と数えます）。行を押すと、QR画像の保存・行き先の変更ができます">?</button></h3>
+        <section class="card in">
           <div class="lk-filter" id="lkFilter" role="group" aria-label="しぼりこみ">
             <button type="button" class="chip on" data-f="all">すべて</button>
             <button type="button" class="chip" data-f="QR">QRコード</button>
@@ -1254,7 +1255,8 @@
     var t = (D && D.cur && D.cur.tracked) || { camp: [], go: [] };
     var c = t.camp.filter(function (r) { return r[0] === q.id; })[0], g = t.go.filter(function (r) { return r[0] === q.id; })[0];
     var external = /^https:\/\//i.test(q.dest);
-    return external ? { n: g ? +g[1] : 0, cvr: null } : { n: c ? +c[1] : 0, cvr: c && +c[1] ? +c[3] / +c[1] : 0 };
+    // 閲覧数＝読み取った・押した人の数（同じ人は1回まで）。外部の行き先は go の3つ目（人数）、サイト内は camp の3つ目（人数）
+    return external ? { n: g ? +(g[2] != null ? g[2] : g[1]) : 0 } : { n: c ? +c[2] : 0 };
   }
   function renderQr() {
     var box = $("tQr");
@@ -1264,7 +1266,7 @@
     $("qrCount").textContent = QR.length ? String(QR.length) : "";
     $("lkKpi").innerHTML = '<div><div class="lb">作った数</div><div class="v">' + num(QR.length) + "<small>件</small></div></div>" +
       '<div><div class="lb">稼働中</div><div class="v">' + num(active) + "<small>件</small></div></div>" +
-      '<div><div class="lb">期間の回数</div><div class="v">' + num(total) + "<small>回</small></div></div>";
+      '<div><div class="lb">期間の閲覧数</div><div class="v">' + num(total) + "<small>人</small></div></div>";
     if (!QR.length) { box.innerHTML = '<p class="empty">まだありません。「新しく作る」から作れます</p>'; return; }
     var list = QR.filter(function (q) {
       if (FILTER === "off") return q.status === "止める";
@@ -1273,11 +1275,11 @@
     });
     if (!list.length) { box.innerHTML = '<p class="empty">あてはまるものがありません</p>'; return; }
     var mx = Math.max.apply(null, list.map(function (q) { return statsOf(q).n; }).concat([1]));
-    box.innerHTML = "<table><thead><tr><th>状態</th><th>名前</th><th class=hide-sp>行き先</th><th class=n>回数</th><th style=width:16% class=hide-sp></th><th class=n>アクション率</th><th class=hide-sp></th></tr></thead><tbody>" +
+    box.innerHTML = "<table><thead><tr><th>状態</th><th>名前</th><th class=hide-sp>行き先</th><th class=n>閲覧数</th><th style=width:22% class=hide-sp></th><th class=hide-sp></th></tr></thead><tbody>" +
       list.map(function (q) {
         var st = statsOf(q), off = q.status === "止める";
         return "<tr data-id='" + esc(q.id) + "'" + (off ? " class='is-off'" : "") + "><td><span class='stb" + (off ? " off" : "") + "'>" + (off ? "停止中" : "稼働中") + "</span></td><td><span class='tag" + (off ? " off" : "") + "'>" + esc(q.kind) + "</span>" + esc(q.name) + (function () { var t = testOf(q.id); return t && t.n30 ? "<span class=tbadge>テストOK</span>" : ""; })() + "<span class=dt>" + esc(q.created || "") + "</span></td><td class=hide-sp title='" + esc(q.dest) + "'>" + esc(destShort(q.dest)) + "</td><td class=n>" + num(st.n) +
-          "</td><td class=hide-sp>" + meter(st.n, mx) + "</td><td class=n>" + (st.cvr === null ? '<span style="color:#8A919E">―</span>' : rateCell(st.cvr, true)) +
+          "<small class=u>人</small></td><td class=hide-sp>" + meter(st.n, mx) +
           '</td><td class="n hide-sp"><button type="button" class="qr-show" data-id="' + esc(q.id) + '">' + (q.kind === "QR" ? "QRを見る" : "開く") + "</button></td></tr>";
       }).join("") + "</tbody></table>";
     box.querySelectorAll("tbody tr").forEach(function (tr) { tr.addEventListener("click", function () { openQr(tr.getAttribute("data-id")); }); });

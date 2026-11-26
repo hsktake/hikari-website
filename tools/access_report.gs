@@ -372,7 +372,7 @@ function getRangeData(start, end, cs, ce, force, site) {
   const ok = (d) => /^\d{4}-\d{2}-\d{2}$/.test(String(d || ''));
   if (![start, end, cs, ce].every(ok)) throw new Error('期間の指定が正しくありません');
   site = String(site || 'hikari').slice(0, 120);
-  const key = ['r10', site, start, end, cs, ce].join('|');
+  const key = ['r11', site, start, end, cs, ce].join('|');
   if (!force) { const c = cacheGet_(key); if (c) return c; }
   ERRORS.length = 0;
   const data = {
@@ -501,16 +501,17 @@ function deleteLink(id) {
 function tracked_(rg) {
   const g = batch_({
     camp: { range: rg, dims: ['sessionCampaignName'], mets: ['sessions', 'totalUsers'], filter: inList_('sessionMedium', ['qr', 'link']) },
-    campGoal: { range: rg, dims: ['sessionCampaignName'], mets: ['sessions'], filter: and_(inList_('sessionMedium', ['qr', 'link']), inList_('eventName', VISIT_GOALS)) },
-    go: { range: rg, dims: ['pagePathPlusQueryString'], mets: ['eventCount'], filter: eq_('eventName', 'link_click') },
+    go: { range: rg, dims: ['pagePathPlusQueryString'], mets: ['eventCount', 'totalUsers'], filter: eq_('eventName', 'link_click') },
   });
-  const goal = {};
-  g.campGoal.forEach(r => goal[r[0]] = r[1]);
+  // QR・リンクは「閲覧数（同じ人は1回まで）」だけを見る（オーナー指示 2026-11-26）。camp・go とも [ID, 回数, 人数]
   const go = {};
-  g.go.forEach(r => { const m = String(r[0]).match(/[?&]l=([a-z0-9]+)/i); if (m) go[m[1]] = (go[m[1]] || 0) + r[1]; });
+  g.go.forEach(r => {
+    const m = String(r[0]).match(/[?&]l=([a-z0-9]+)/i); if (!m) return;
+    const o = go[m[1]] || (go[m[1]] = [0, 0]); o[0] += r[1]; o[1] += r[2];
+  });
   return {
-    camp: g.camp.filter(r => r[0] && r[0] !== '(not set)').map(r => [r[0], r[1], r[2], Math.min(goal[r[0]] || 0, r[1])]),
-    go: Object.keys(go).map(k => [k, go[k]]),
+    camp: g.camp.filter(r => r[0] && r[0] !== '(not set)').map(r => [r[0], r[1], r[2]]),
+    go: Object.keys(go).map(k => [k, go[k][0], go[k][1]]),
   };
 }
 
