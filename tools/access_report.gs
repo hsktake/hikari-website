@@ -5,7 +5,7 @@
  *          期間ごとの数字（店舗別・流入元など）は、画面で期間を選んだときにその場で集める（getRangeData）
  *  - 表示：ウェブアプリ（doGet → Dashboard.html）
  *
- * このコードの元は GitHub の hsktake/hikari-website の tools/access_report.gs と tools/access_dashboard.html（Claude が管理）。
+ * このコードの元は GitHub の hsk-hikari/hikari-website の tools/access_report.gs と tools/access_dashboard.html（Claude が管理）。
  * Apps Script の「サービス」に Google Analytics Data API（AnalyticsData v1beta）を追加しています。
  */
 const SS_ID = '1ebLbFcPGZ5JQCqlUOQZTOJPvTJ8KSz5iMmKcknia7jw';
@@ -144,7 +144,7 @@ const SITES = [
   { key: 'laladream', name: 'ララ・ドリーム 清原テクノ店', group: 'グループ：ララ・ドリーム 清原テクノ店' },
   { key: 'all', name: 'すべてのサイトの合計' },
 ];
-const OWN_HOSTS = ['hsktake.github.io', 'localhost', '(not set)', ''];
+const OWN_HOSTS = ['hsk-hikari.github.io', 'hsktake.github.io', 'localhost', '(not set)', ''];
 function siteFilter_(site) {
   if (!site || site === 'hikari') return inList_('contentGroup', HIKARI_GROUPS);
   if (site === 'all') return null;
@@ -402,7 +402,7 @@ function getBase(force) {
     monthly: monthly.map(r => r.map(v => v instanceof Date ? Utilities.formatDate(v, TZ, 'yyyy/MM/dd') : v)),
     today: Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd'),
     start: START,
-    siteBase: 'https://hsktake.github.io/hikari-website/',
+    siteBase: 'https://hsk-hikari.github.io/hikari-website/',
     ssUrl: 'https://docs.google.com/spreadsheets/d/' + SS_ID + '/edit',
     gaUrl: 'https://analytics.google.com/analytics/web/#/' + PROPERTY.replace('properties/', 'p') + '/reports/intelligenthome',
     sites: sites_(),
@@ -424,7 +424,7 @@ function prewarm_() {
 const MGMT_ID = '1RBR08sNvthcwJHfssDh8RFLwtZ-17URXR149_jYetzw';
 const LINK_TAB = 'リンク・QR';
 const LINK_HEAD = ['ID', '名前', '種類', '行き先', '作成日', '状態'];
-const GO_BASE = 'https://hsktake.github.io/hikari-website/go.html?l='; // 本番切り替え後も github.io からの転送で動く
+const GO_BASE = 'https://hsk-hikari.github.io/hikari-website/go.html?l='; // 本番切り替え後も github.io からの転送で動く
 // 行き先の候補（サイト内はパス。go.html が目印 utm_* を付けて移動する）
 const DESTS = [
   ['', 'トップページ'], ['shops.html', '店舗を探す'], ['app.html', '公式アプリ'], ['app.html#dl', '公式アプリ（ダウンロード）'],
